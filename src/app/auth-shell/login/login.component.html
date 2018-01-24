@@ -1,0 +1,119 @@
+<!-- <div class="wrapper-page animated fadeInDown">
+    <div class="panel panel-color panel-primary">
+        <div class="panel-heading"> 
+           <h3 class="text-center m-t-10"> Sign In to <strong>LegalFriend</strong> </h3>
+        </div> 
+
+        <form class="form-horizontal m-t-40" [formGroup]="loginForm">
+                                    
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <input class="form-control" type="text" placeholder="Username" formControlName="username">
+                </div>
+            </div>
+            <div class="form-group ">
+                
+                <div class="col-xs-12">
+                    <input class="form-control" type="password" placeholder="Password" formControlName="password">
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <label class="cr-styled">
+                        <input type="checkbox" checked>
+                        <i class="fa"></i> 
+                        Remember me
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group text-right">
+                <div class="col-xs-12">
+                    <button class="btn btn-purple w-md" type="button" (click)="login(loginForm.value);">Log In</button>
+                </div>
+            </div>
+            <div class="form-group m-t-30">
+                <div class="col-sm-7">
+                    <a><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
+                </div>
+                <div class="col-sm-5 text-right">
+                    <span (click)="register();"><a>Create an account</a></span>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>     -->
+
+<!-- <div class="login-page"> -->
+<div class="login-box">
+    <div class="login-logo">
+        <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
+        <span style="vertical-align: middle;">
+            <b>Legal</b>Friend</span>
+        <!-- <a href="../../index2.html">
+                <b>Admin</b>LTE</a> -->
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+            <div class="form-group has-feedback">
+                <input type="email" class="form-control" placeholder="Username" formControlName="email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <div class="error" *ngIf="loginForm.get('email')==='kaushal.ng12'">
+                    <p class="error-block">
+                        <span>Invalid Username</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" placeholder="Password" formControlName="password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <div class="error" *ngIf="!loginForm.get('password')=='kaushal@1234'">
+                    <p class="error-block">
+                        <span>Invalid Password</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox">
+                            <span>Remember Me</span>
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat" >Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+        <!-- <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                <i class="fa fa-facebook"></i> Sign in using Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                <i class="fa fa-google-plus"></i> Sign in using Google+
+            </a>
+        </div> -->
+        <!-- /.social-auth-links -->
+
+        <div class="login-footer">
+            <p>
+                <a (click)="forgotPassword()" class="pull-left">Forgot Password</a>
+                <a (click)="register()" class="pull-right">Sign Up</a>
+            </p>
+        </div>
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- </div> -->

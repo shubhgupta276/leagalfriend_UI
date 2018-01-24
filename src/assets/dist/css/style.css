@@ -1,0 +1,48 @@
+.skin-blue .main-header .navbar{
+    background-color: #222d32;
+}
+.skin-blue .main-header .logo{
+    background-color: #222d32;
+}
+.skin-blue .main-header .logo:hover{
+    background-color: #222d32;
+}
+.sidebar-mini.sidebar-collapse .main-header .logo>.logo-mini{
+    margin-left: 0px;
+}
+.main-header .logo  {
+    padding: 0 5px;
+    text-align: left;
+}
+.skin-black .main-header>.logo{
+    background-color: #222d32;
+    color: white;
+}
+.skin-black .main-header>.logo:hover{
+    background-color: #222d32;
+}
+.checkbox, .radio{
+    margin-left: 20px;
+}
+.login-box{
+    background-color: #222d32;
+    border: 1px solid;
+    border-radius: 3px;
+    margin: 100px 100% 100% 635px;
+}
+.login-logo, .register-logo{
+    margin-top: 20px;
+    color: white;
+}
+.login-footer{
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+/* .sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.treeview-menu>li>a>.fa, .treeview-menu>li>a>.glyphicon, .treeview-menu>li>a>.ion{
+    margin-left: 10px;
+    margin-right: 10px;
+} */
