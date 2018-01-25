@@ -180,7 +180,7 @@
     </div>
   </div>
 </div> -->
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-12">
     <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
     <div class="box">
@@ -361,4 +361,94 @@
       </div>
     </div>
   </div>
+</div> -->
+<div class="register-logo">
+  <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
+  <span style="vertical-align: middle;">
+    <b>Legal</b>Friend</span>
+</div>
+
+<div class="register-box-body">
+  <p class="login-box-msg">Register a new membership</p>
+
+  <form [formGroup]="signupForm" (ngSubmit)="registerUser(signupForm.value)">
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
+      <input type="text" class="form-control" placeholder="First name" formControlName="firstName">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      <!-- <div class="col-sm-3" *ngIf="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
+        <small class="text-danger">
+          <span>First name is required.</span>
+        </small>
+      </div> -->
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
+      <input type="text" class="form-control" placeholder="Last name" formControlName="lastName">
+      <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
+      <input type="text" class="form-control" placeholder="Organisation" formControlName="organisation">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
+      <input type="text" class="form-control" placeholder="Address Line 1" formControlName="addressLine1">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
+      <input type="text" class="form-control" placeholder="Address Line 2" formControlName="addressLine2">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
+      <input type="text" class="form-control" placeholder="Postal Code" formControlName="postalCode">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('email').invalid &&  signupForm.get('email').touched">
+      <input type="email" class="form-control" placeholder="Email" formControlName="email">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
+      <input type="text" class="form-control" placeholder="Mobile Number" formControlName="mobileNumber">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('password').invalid &&  signupForm.get('password').touched">
+      <input type="password" class="form-control" placeholder="Password" formControlName="password">
+      <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback" [class.has-error]="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
+      <input type="password" class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
+      <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <input type="text" class="form-control" placeholder="Role" formControlName="role">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <input type="text" class="form-control" placeholder="Status" formControlName="status">
+      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="row">
+      <div class="col-xs-8">
+        <div class="checkbox icheck">
+          <label>
+            <input type="checkbox"> I agree to the
+            <a href="#">terms</a>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary btn-block btn-flat">Signup</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- <div class="social-auth-links text-center">
+    <p>- OR -</p>
+    <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+      <i class="fa fa-facebook"></i> Sign up using Facebook
+    </a>
+    <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+      <i class="fa fa-google-plus"></i> Sign up using Google+
+    </a>
+  </div> -->
+
+  <a href="login.html" class="text-center">I already have a membership</a>
 </div>

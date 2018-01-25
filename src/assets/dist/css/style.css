@@ -24,25 +24,42 @@
 .checkbox, .radio{
     margin-left: 20px;
 }
-.login-box{
+.login-box, .register-box{
     background-color: #222d32;
-    border: 1px solid;
     border-radius: 3px;
-    margin: 100px 100% 100% 635px;
+    width: 450px;
+    margin: 4% auto;
 }
 .login-logo, .register-logo{
-    margin-top: 20px;
     color: white;
+    margin-bottom: 15px;
+    padding-top: 10px;
 }
-.login-footer{
+.login-footer, .register-footer{
     margin-top: 10px;
     margin-bottom: 25px;
 }
-/* .sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion{
-    margin-left: 10px;
-    margin-right: 10px;
+.content-wrapper{
+    min-height: 845px;
 }
-.treeview-menu>li>a>.fa, .treeview-menu>li>a>.glyphicon, .treeview-menu>li>a>.ion{
-    margin-left: 10px;
-    margin-right: 10px;
+.valodation-padding{
+    padding-left:170px;
+}
+
+/* .modal-header {
+background-color: #3c8dbc;
+color: white;
 } */
+
+.modal-header {
+padding: 15px;
+border-bottom: 3px solid #757272;
+}
+
+.createUserLabel{
+font-weight: 400;
+padding-left: 20px;
+}
+.astrick{
+color: #dd4b39;
+}

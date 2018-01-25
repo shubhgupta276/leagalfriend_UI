@@ -1,8 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue } from '../../shared/Utility/util-common';
 import { matchValidator } from '../../shared/Utility/util-custom.validation';
+import {
+  HttpClient,
+  HttpRequest,
+  HttpResponse,
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpParams
+} from '@angular/common/http';
 
+declare let $;
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -15,9 +25,50 @@ export class SignupComponent implements OnInit {
   Status: KeyValue[] = UserStatus;
   emailValidationMessage: string = "Email address is required.";
 
-  constructor(private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder, private _httpClient: HttpClient) {
     this.createSignup();
   }
+
+  ngOnInit() {
+    this.signupPageLayout();
+    this.signupForm.get('email').valueChanges.subscribe(
+      (e) => {
+        if (e != "") {
+          this.signupForm.get('email').setValidators([Validators.email]);
+          this.emailValidationMessage = "Email format is not correct.";
+        } else {
+          this.signupForm.get('email').setValidators([Validators.required]);
+          this.emailValidationMessage = "Email address is required.";
+        }
+      }
+    )
+  }
+
+  signupPageLayout(){
+    $(window.document).ready(function () {
+      $("body").addClass("register-page");
+      $("body").removeClass("skin-black");
+      $("body").removeClass("sidebar-mini");
+      $("body").addClass("hold-transition");
+      $("body").removeAttr("style");
+      $("#wrapper_id").removeClass("wrapper").addClass("register-box");
+      $("#wrapper_id").removeAttr("style");
+
+    });
+  }
+
+  // revertSignupPageLayout(){
+  //   console.log("Hello");
+  //   $(window.document).ready(function () {
+  //     $("body").addClass("skin-black");
+  //     $("body").addClass("sidebar-mini");
+  //     $("body").removeClass("register-page");
+  //     $("body").removeClass("hold-transition");
+  //     $("#wrapper_id").removeClass("register-box").addClass("wrapper");
+  //     $("#wrapper_id").css({"height":"auto", "min-height":"100%"});
+  //     $("body").css({"height":"auto", "min-height":"100%"});
+  //   });
+  // }
 
   createSignup() {
     this.signupForm = this.fb.group({
@@ -37,22 +88,12 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser(data) {
-    debugger;
-    alert("Regiter user.");
+    // debugger;
+    // alert("Regiter user.");
+    // this.revertSignupPageLayout();
+    this.router.navigate(['/']);
   }
-
-  ngOnInit() {
-    this.signupForm.get('email').valueChanges.subscribe(
-      (e) => {
-        if (e != "") {
-          this.signupForm.get('email').setValidators([Validators.email]);
-          this.emailValidationMessage = "Email format is not correct.";
-        } else {
-          this.signupForm.get('email').setValidators([Validators.required]);
-          this.emailValidationMessage = "Email address is required.";
-        }
-      }
-    )
-  }
+    
+  
 }
 

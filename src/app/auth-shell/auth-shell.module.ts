@@ -6,9 +6,12 @@ import { AuthShellComponent } from './auth-shell.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SignupComponent } from './signup/signup.component';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
     imports: [ 
+      HttpClientModule,
       CommonModule,
       FormsModule,
       ReactiveFormsModule,

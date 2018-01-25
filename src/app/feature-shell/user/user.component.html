@@ -1,16 +1,5 @@
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
-      User Management
-      <!-- <small>advanced tables</small> -->
-    </h1>
-    <!-- <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="#">Tables</a></li>
-      <li class="active">Data tables</li>
-    </ol> -->
-  </section>
 
   <!-- Main content -->
   <section class="content">
@@ -21,7 +10,10 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Data Table With Full Features</h3>
+            <h3 class="box-title">Users</h3>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+              Create User
+             </button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -463,3 +455,214 @@
   </section>
   <!-- /.content -->
 </div>
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Create User</h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body">
+        <!-- Create User Starts -->
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+              <form [formGroup]="signupForm" class="form-horizontal" (ngSubmit)="registerUser(signupForm.value)">
+                <div class="form-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active">
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">First Name:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
+                          <input class="form-control" placeholder="First Name" formControlName="firstName">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
+                          <small class="text-danger">
+                            <span>First name is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Last Name:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
+                          <input class="form-control" placeholder="Last Name" formControlName="lastName">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
+                          <small class="text-danger">
+                            <span>Last name is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Organisation:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
+                          <input class="form-control" placeholder="Organisation" formControlName="organisation">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
+                          <small class="text-danger">
+                            <span>Organisation is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Address Line1:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
+                          <input class="form-control" placeholder="Address Line1" formControlName="addressLine1">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
+                          <small class="text-danger">
+                            <span>Address Line1 is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Address Line2:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
+                          <input class="form-control" placeholder="Address Line2" formControlName="addressLine2">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
+                          <small class="text-danger">
+                            <span>Address Line2 is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Postalcode/Zip:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
+                          <input class="form-control" placeholder="Postalcode/Zip" formControlName="postalCode">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
+                          <small class="text-danger">
+                            <span>Postal/Zip code is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Email:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('email').invalid &&  signupForm.get('email').touched">
+                          <input class="form-control" placeholder="Email Address" formControlName="email">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('email').invalid &&  signupForm.get('email').touched">
+                          <small class="text-danger">
+                            <span>{{emailValidationMessage}}</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Password:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('password').invalid &&  signupForm.get('password').touched">
+                          <input class="form-control" placeholder="Password" formControlName="password">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('password').invalid &&  signupForm.get('password').touched">
+                          <small class="text-danger">
+                            <span>Password is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Confirm Password:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
+                          <input class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
+                        </div>
+                        <div class="col-sm-9" style="padding-left:15px" *ngIf="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
+                          <small class="text-danger">
+                            <span>Confirm password is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Mobile No:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
+                          <input class="form-control" placeholder="Mobile No" formControlName="mobileNumber">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
+                          <small class="text-danger">
+                            <span>Mobile number is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Role:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                          <select formControlName="role">
+                            <option *ngFor="let option of Roles" [ngValue]="option.id">
+                              {{ option.name }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Status:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                          <select formControlName="status">
+                            <option *ngFor="let option of Status" [ngValue]="option.id">
+                              {{ option.name }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-4">
+                          <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+                      Submit
+                      <i class="m-icon-swapright m-icon-white"></i>
+                    </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                  <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+        <!-- Create User ends -->
+      </div>
+      <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+          
+        </div> -->
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
