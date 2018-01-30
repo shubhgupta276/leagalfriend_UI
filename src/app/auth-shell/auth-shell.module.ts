@@ -5,6 +5,7 @@ import { AuthShellRoutingModule } from './auth-shell-routing.module';
 import { AuthShellComponent } from './auth-shell.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -21,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
        AuthShellComponent,
        LoginComponent,
        ForgotPasswordComponent,
+       ResetPasswordComponent,
        SignupComponent
     ]
   })
