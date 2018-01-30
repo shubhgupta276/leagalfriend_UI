@@ -63,3 +63,11 @@ padding-left: 20px;
 .astrick{
 color: #dd4b39;
 }
+
+.label-pink{
+background-color: red;
+}
+.btn:hover { 
+    background-color:#222d32;
+    color:white;
+}

@@ -13,18 +13,63 @@ import {
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { URLSearchParams } from '@angular/http';
-// import { Config } from './environment-config';
-// import { LoaderService } from '../spinner/loader/loader.service';
-const featureConfig = require('../../feature-shell/administration/user-management/user-management-config');
-// import { Storage } from '../../shared/services/storage-provider';
-// import { CommonService } from "./common.service";
+import { endpoint_url } from '../shared-config';
 
 @Injectable()
-export class ApiGateway{
-    constructor(private _httpClient:HttpClient){};
+export class ApiGateway {
+    _endPointUrl: string;
 
-    public post<T>(apiPath: string, body): Observable<any>{
-        const _url: string = apiPath;
-        return this._httpClient.post<T>(_url, body, { observe: 'response' });
+    constructor(private _httpClient: HttpClient) {
+        this._endPointUrl = endpoint_url;
+    };
+
+    public post<T>(apiPath: string, body): Observable<any> {
+        console.log(apiPath);
+        const _url: string = this.createApiUrl(apiPath);
+        return this._httpClient.post<T>(_url, body, { observe: 'response' })
+            .catch(initialError => {
+                return Observable.throw(initialError);
+            });
+    }
+
+    public get<T>(apiPath: string, params?: Object, headers?: string): Observable<T> {
+        const _url: string = this.createApiUrl(apiPath);
+        const urlParams = new URLSearchParams();
+        const options: Object = {
+            params: urlParams
+        };
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const value = params[key];
+                urlParams.set(key, value);
+            }
+        }
+        return this._httpClient.get<T>(_url, options)
+            .catch(initialError => {
+                return Observable.throw(initialError);
+            });
+    }
+
+    public delete<T>(apiPath: string, params?: Object, headers?: string): Observable<any> {
+        console.log(apiPath);
+        const _url: string = this.createApiUrl(apiPath);
+        const urlParams = new URLSearchParams();
+        const options: Object = {
+            params: urlParams
+        };
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const value = params[key];
+                urlParams.set(key, value);
+            }
+        }
+        return this._httpClient.delete<T>(_url, options)
+            .catch(initialError => {
+                return Observable.throw(initialError);
+            });
+    }
+
+    private createApiUrl(apiPath: string) {
+        return this._endPointUrl + '/' + apiPath;
     }
 }

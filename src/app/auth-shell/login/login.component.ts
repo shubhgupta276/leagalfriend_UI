@@ -11,6 +11,8 @@ import {
   HttpErrorResponse,
   HttpParams
 } from '@angular/common/http';
+import { LoginModel } from '../../shared/models/auth/login.model';
+import { AuthService } from '../auth-shell.service';
 
 declare let $;
 
@@ -18,7 +20,7 @@ declare let $;
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [] 
+  providers: [AuthService]
 })
 export class LoginComponent implements OnInit {
 
@@ -28,25 +30,14 @@ export class LoginComponent implements OnInit {
 
   public submitted: boolean;
   public events: any[] = []; 
-  constructor(private router: Router, fb: FormBuilder, private _httpClient: HttpClient) {    
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {    
     this.loginForm = fb.group({
       email: [null, Validators.required],
       password: [null, Validators.required]     
   });
    }  
     ngOnInit() {
-      // $(function () {
-      //   $('input').iCheck({
-      //     checkboxClass: 'icheckbox_square-blue',
-      //     radioClass: 'iradio_square-blue',
-      //     increaseArea: '20%' // optional
-      //   });
-      // });
       this.loginPageLayout();
-      // $(window.document).ready(function () {
-      //   $("body").addClass("login-page");
-      //   $("body").removeClass("skin-black");
-      // });
       this.loginForm.get('email').valueChanges.subscribe(
         (e) => {
           if (e != "") {
@@ -58,7 +49,6 @@ export class LoginComponent implements OnInit {
           }
         }
       )
-      
     }
     
     loginPageLayout(){
@@ -95,67 +85,66 @@ export class LoginComponent implements OnInit {
       });
     }
 
-    // revertLoginPageLayout(){
-    //   console.log("Hello");
-    //   $(window.document).ready(function () {
-    //     $("body").addClass("skin-black");
-    //     $("body").addClass("sidebar-mini");
-    //     $("body").removeClass("login-page");
-    //     $("body").removeClass("hold-transition");
-    //     $("#wrapper_id").removeClass("login-box").addClass("wrapper");
-    //     $("#wrapper_id").css({"height":"auto", "min-height":"100%"});
-    //     $("body").css({"height":"auto", "min-height":"100%"});
-    //   });
-      
-    // }
-    
     register():void{      
       this.router.navigate(['signup']);
     }
+    
     login(data){
-      if(data.email=="kaushal.ng12" && data.password=="kaushal@1234"){
-        this.getToken();
-        // alert("Login successfull");
-        // this.revertLoginPageLayout();
-        this.router.navigate(['admin']);
-      }else{
-        alert("Invalid username and password");
-      }
+      const loginDetails = new LoginModel();
+      loginDetails.username = data.email;
+      loginDetails.password = data.password;
+      this.authService.login(loginDetails).subscribe(
+        result => {
+          // console.log(result);
+          this._login = result;
+          const accessToken = this._login.body.token;
+          const clientId = this._login.body.clientId;
+          if(accessToken){
+            localStorage.setItem('access_token', accessToken);
+            localStorage.setItem('client_id', clientId);
+            localStorage.setItem('user_id', data.email);
+            this.router.navigate(['admin']);
+          }
+        },
+        err => {
+          console.log(err);
+      });
     }
+
     forgotPassword():void{      
       this.router.navigate(['forgotpassword']);
     }
 
-    getToken(){
-      const _url: string = "http://13.126.129.8:7777/login";
-      const body = {
-        "username":"kaushal.ng12",
-        "password":"kaushal@1234"
-        }
-      this._httpClient.post(_url,body, { observe: 'response' }).subscribe(result => {
-        // Read the result field from the JSON response.
-        this._login = result;
-        console.log(result);
-      });
-      // const _url: string = "http://13.126.129.8:7777/users/user";
-      // const body = 
-      //   {
-      //     "email": "kaushal.ng17",
-      //     "organization": "gl",
-      //     "password": "kaushal@1234",
-      //     "firstName": "kaushalNand",
-      //     "lastName": "Gairola",
-      //     "login" : {
-      //      "userLoginId" : "kaushal.ng17",
-      //      "password" : "kaushal@1234"
-      //     },
-      //     "isClient" : 1
-      //     };
+    // getToken(){
+    //   const _url: string = "http://13.126.129.8:7777/login";
+    //   const body = {
+    //     "username":"kaushal.ng12",
+    //     "password":"kaushal@1234"
+    //     }
+    //   this._httpClient.post(_url,body, { observe: 'response' }).subscribe(result => {
+    //     // Read the result field from the JSON response.
+    //     this._login = result;
+    //     console.log(result);
+    //   });
+    //   // const _url: string = "http://13.126.129.8:7777/users/user";
+    //   // const body = 
+    //   //   {
+    //   //     "email": "kaushal.ng17",
+    //   //     "organization": "gl",
+    //   //     "password": "kaushal@1234",
+    //   //     "firstName": "kaushalNand",
+    //   //     "lastName": "Gairola",
+    //   //     "login" : {
+    //   //      "userLoginId" : "kaushal.ng17",
+    //   //      "password" : "kaushal@1234"
+    //   //     },
+    //   //     "isClient" : 1
+    //   //     };
         
-      // this._httpClient.post(_url,body, { observe: 'response' }).subscribe(result => {
-      //   // Read the result field from the JSON response.
-      //   this._login = result;
-      //   console.log(result);
-      // });
-    }
+    //   // this._httpClient.post(_url,body, { observe: 'response' }).subscribe(result => {
+    //   //   // Read the result field from the JSON response.
+    //   //   this._login = result;
+    //   //   console.log(result);
+    //   // });
+    // }
 }

@@ -3,10 +3,10 @@ export class UserModel {
     lastName: string;
     organization: string;
     email: string;
-    isClient: boolean;
+    isClient: number;
     login : {
-        userLoginId : string,
-        paswword : string
+        userLoginId : string;
+        // paswword : string
     }
     // mobile: number;
     // password: string;
@@ -15,5 +15,5 @@ export class UserModel {
     // address2 : string;
     // role : string;
     // status : string;
-    }
+}
    

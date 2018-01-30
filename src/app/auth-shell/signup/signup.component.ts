@@ -11,21 +11,24 @@ import {
   HttpErrorResponse,
   HttpParams
 } from '@angular/common/http';
-
+import { UserModel } from '../../shared/models/user/user.model';
+import { AuthService } from '../auth-shell.service';
 declare let $;
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
+  providers: [AuthService]
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
-
+  public _signup: any;
   Roles: KeyValue[] = UserRoles;
   Status: KeyValue[] = UserStatus;
   emailValidationMessage: string = "Email address is required.";
 
-  constructor(private router: Router, private fb: FormBuilder, private _httpClient: HttpClient) {
+  constructor(private router: Router, private fb: FormBuilder, private _httpClient: HttpClient,
+    private authService: AuthService) {
     this.createSignup();
   }
 
@@ -44,7 +47,7 @@ export class SignupComponent implements OnInit {
     )
   }
 
-  signupPageLayout(){
+  signupPageLayout() {
     $(window.document).ready(function () {
       $("body").addClass("register-page");
       $("body").removeClass("skin-black");
@@ -56,19 +59,6 @@ export class SignupComponent implements OnInit {
 
     });
   }
-
-  // revertSignupPageLayout(){
-  //   console.log("Hello");
-  //   $(window.document).ready(function () {
-  //     $("body").addClass("skin-black");
-  //     $("body").addClass("sidebar-mini");
-  //     $("body").removeClass("register-page");
-  //     $("body").removeClass("hold-transition");
-  //     $("#wrapper_id").removeClass("register-box").addClass("wrapper");
-  //     $("#wrapper_id").css({"height":"auto", "min-height":"100%"});
-  //     $("body").css({"height":"auto", "min-height":"100%"});
-  //   });
-  // }
 
   createSignup() {
     this.signupForm = this.fb.group({
@@ -88,12 +78,32 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser(data) {
-    // debugger;
-    // alert("Regiter user.");
-    // this.revertSignupPageLayout();
-    this.router.navigate(['/']);
+    debugger;
+    // this.router.navigate(['/']);
+    const signUpDetails = new UserModel();
+    signUpDetails.firstName = data.firstName;
+    signUpDetails.lastName = data.lastName;
+    signUpDetails.email = data.email;
+    signUpDetails.isClient = 1;
+    signUpDetails.login.userLoginId = data.email;
+    this.authService.signup(signUpDetails).subscribe(
+      result => {
+        debugger;
+        console.log(result);
+        this._signup = result;
+        // const accessToken = this._login.body.token;
+        // const clientId = this._login.body.clientId;
+        // if (accessToken) {
+        //   localStorage.setItem('access_token', accessToken);
+        //   localStorage.setItem('client_id', clientId);
+        //   this.router.navigate(['admin']);
+        // }
+      },
+      err => {
+        console.log(err);
+      });
   }
-    
-  
+
+
 }
 
