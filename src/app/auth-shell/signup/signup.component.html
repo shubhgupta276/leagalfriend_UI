@@ -370,7 +370,8 @@
 
 <div class="register-box-body">
   <p class="login-box-msg">Register a new membership</p>
-
+ <!-- form container start -->
+ <ng-container *ngIf="!isMailSent">
   <form [formGroup]="signupForm" (ngSubmit)="registerUser(signupForm.value)">
     <div class="form-group has-feedback" [class.has-error]="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
       <input type="text" class="form-control" placeholder="First name" formControlName="firstName">
@@ -451,4 +452,16 @@
   </div> -->
 
   <a href="login.html" class="text-center">I already have a membership</a>
+</ng-container>
+<!-- end form container -->
+  <ng-container *ngIf="isMailSent">
+    <div class="center text-success divMailSentMsg">
+        <p >Thank You..!!</p>
+        <p >We have sent a verification mail in you email. Please check you inbox and confirm.</p>
+    </div>
+    <div class="center" >
+           
+        <button type="submit" class="btn btn-primary btn-flat" (click)="redirectToLogin()">Login</button>
+    </div>
+</ng-container>
 </div>
