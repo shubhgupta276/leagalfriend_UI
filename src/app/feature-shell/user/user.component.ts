@@ -7,76 +7,24 @@ import { filter } from 'rxjs/operators/filter';
 declare var $;
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: "app-user",
+  templateUrl: "./user.component.html",
+  styleUrls: ["./user.component.css"]
 })
-
 export class UserComponent implements OnInit {
   arr: any[];
   usertype: string  = "All";
   filterby: string = "All";
 
-  signupForm: FormGroup;
-
-  Roles: KeyValue[] = UserRoles;
-  Status: KeyValue[] = UserStatus;
-  emailValidationMessage: string = "Email address is required.";
-
-  createSignup() {
-    this.signupForm = this.fb.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
-      organisation: [null, Validators.required],
-      addressLine1: [null, Validators.required],
-      addressLine2: [null, Validators.required],
-      postalCode: [null, Validators.required],
-      email: [null, Validators.required],
-      password: [null, Validators.required],
-      confirmPassword: [null, Validators.compose([Validators.required, matchValidator("password")])],
-      mobileNumber: [null, Validators.required],
-      role: [1],
-      status: [1]
-    });
-  }
-
-  constructor(private fb: FormBuilder) {
-    this.createSignup();
-  }
-
-  registerUser(data) {
-    
-    alert("Regiter user.");
-  }
+  constructor() {}
 
   ngOnInit() {
-    // setTimeout(function () {
-    //   $('#example1').dataTable();
-    // }, 50);
-    
     this.GetAllCustomer();
-
-    this.signupForm.get('email').valueChanges.subscribe(
-      (e) => {
-        if (e != "") {
-          this.signupForm.get('email').setValidators([Validators.email]);
-          this.emailValidationMessage = "Email format is not correct.";
-        } else {
-          this.signupForm.get('email').setValidators([Validators.required]);
-          this.emailValidationMessage = "Email address is required.";
-        }
-      }
-    )
   }
 
- 
   GetAllCustomer() {
-
     this.arr = [
-
-
       {
-
         Status: "Active",
         CustomerName: "Puneet Chauhan",
         Organisation: "GlobalLogic",
@@ -84,8 +32,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Sector-15,Noida",
         UserType: "Manager"
-
-
       },
       {
         Status: "Active",
@@ -95,9 +41,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Sector-15,Noida",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Active",
@@ -107,10 +50,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
-
       },
       {
         Status: "Trial",
@@ -120,9 +59,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -133,9 +69,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Agra",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -146,9 +79,6 @@ export class UserComponent implements OnInit {
         Mobile: "8483939202",
         Address: "MP",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -159,9 +89,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Patna",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -172,9 +99,6 @@ export class UserComponent implements OnInit {
         Mobile: "7575484733",
         Address: "Lucknow",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -185,9 +109,6 @@ export class UserComponent implements OnInit {
         Mobile: "9758460007",
         Address: "Moradabad",
         UserType: "Employee"
-
-
-
       },
 
       {
@@ -198,9 +119,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Agra",
         UserType: "Client"
-
-
-
       },
 
       {
@@ -211,9 +129,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Agra",
         UserType: "Client"
-
-
-
       },
       {
         Status: "Expired",
@@ -223,9 +138,6 @@ export class UserComponent implements OnInit {
         Mobile: "8474747479",
         Address: "Agra",
         UserType: "Client"
-
-
-
       },
       {
         Status: "Expired",
@@ -235,9 +147,6 @@ export class UserComponent implements OnInit {
         Mobile: "74748389839",
         Address: "Dhampur",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Trial",
@@ -247,9 +156,6 @@ export class UserComponent implements OnInit {
         Mobile: "7484747474",
         Address: "Saharanpur",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -259,9 +165,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Jaipur",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -271,9 +174,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Agra",
         UserType: "Employee"
-
-
-
       },
       {
         Status: "Expired",
@@ -283,9 +183,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Employee"
-
-
-
       },
       {
         Status: "Expired",
@@ -295,9 +192,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -307,9 +201,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -319,9 +210,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -331,9 +219,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Nepal",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -343,12 +228,7 @@ export class UserComponent implements OnInit {
         Mobile: "87378373798",
         Address: "UP",
         UserType: "Manager"
-
-
-
-      },
-
-
+      }
     ];
     
     // this.arr = this.arr.filter(
@@ -406,6 +286,32 @@ export class UserComponent implements OnInit {
            
         });
 
+      //   $("#example1").DataTable({
+      //     initComplete: function() {
+      //       this.api()
+      //         .columns([4,5])
+      //         .every(function() {
+      //           var column = this;
+      //           var select = $('<select><option value=""></option></select>')
+      //             .appendTo($(column.footer()).empty())
+      //             .on("change", function() {
+      //               var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  
+      //               column.search(val ? "^" + val + "$" : "", true, false).draw();
+      //             });
+  
+      //           column
+      //             .data()
+      //             .unique()
+      //             .sort()
+      //             .each(function(d, j) {
+      //               select.append('<option value="' + d + '">' + d + "</option>");
+      //             });
+      //         });
+      //     }
+      //   });
+      // });
+
         $(".statusFilter").click(function(){
             $(".statusFilter").removeClass("active2");
             $(this).addClass("active2");
@@ -418,4 +324,3 @@ export class UserComponent implements OnInit {
 
       }
 }
-

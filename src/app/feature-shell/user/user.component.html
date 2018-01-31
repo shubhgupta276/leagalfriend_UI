@@ -4,7 +4,7 @@
     <h1>
       User Management
     </h1>
-  </section> 
+  </section>
 
   <!-- Main content -->
   <section class="content">
@@ -68,28 +68,37 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                 <tr *ngFor="let item of arr; let i=index" data-toggle="modal"  data-target="#editUserModal" >
-                        <td>{{i+1}}</td>
-                        <td>{{item.CustomerName}}</td>
-                        <td>{{item.Email}}</td>
-                        <td>{{item.Mobile}}</td>
-                        <td>{{item.UserType}}</td>
-                         <td *ngIf="item.Status==='Active'">
-                            <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
-                        </td>
-                        <td *ngIf="item.Status==='Trial'">
-                            <button class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
-                            
-
-                        </td>
-                        <td *ngIf="item.Status==='Expired'" >
-                            <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
-                            </td> 
-                    </tr>
-              </tbody>
               <tfoot>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th>Role</th>
+                  <th>Status</th>
+                </tr>
               </tfoot>
+              <tbody>
+                <tr *ngFor="let item of arr; let i=index" data-toggle="modal" data-target="#editUserModal">
+                  <td>{{i+1}}</td>
+                  <td>{{item.CustomerName}}</td>
+                  <td>{{item.Email}}</td>
+                  <td>{{item.Mobile}}</td>
+                  <td>{{item.UserType}}</td>
+                  <td *ngIf="item.Status==='Active'">
+                    <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                  </td>
+                  <td *ngIf="item.Status==='Trial'">
+                    <button class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+
+
+                  </td>
+                  <td *ngIf="item.Status==='Expired'">
+                    <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                  </td>
+                </tr>
+              </tbody>
+
             </table>
           </div>
           <!-- /.box-body -->

@@ -4,12 +4,12 @@ export class UserModel {
     organization: string;
     email: string;
     isClient: number;
-    login : {
-        userLoginId : string;
-        // paswword : string
-    }
+    // login : {
+    //     userLoginId : string,
+    //     paswword : string
+    // }
     // mobile: number;
-    // password: string;
+    password: string;
     // postcode: number;
     // address1: string;
     // address2 : string;
