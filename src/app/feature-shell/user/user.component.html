@@ -4,7 +4,14 @@
     <h1>
       User Management
     </h1>
-  </section>
+    <!-- <input type="text" id="myInputTextField">
+    <select name='length_change' id='length_change'>
+      <option value='10'>10</option>
+      <option value='5'>5</option>
+      <option value='15'>15</option>
+      <option value='20'>20</option>
+    </select>-->
+  </section> 
 
   <!-- Main content -->
   <section class="content">
@@ -90,16 +97,16 @@
             <h3 class="box-title">Users</h3>
           </div> -->
           <div class="btn-group m-b-6">
-            <button class="btn btn-default" (click)="FilterGridData('All')">All</button>
-            <button class="btn btn-default" (click)="FilterGridData('Active')">Active</button>
-            <button class="btn btn-default" (click)="FilterGridData('Trial')">Trial</button>
-            <button class="btn btn-default" (click)="FilterGridData('Expired')">Expired</button>
+            <button class="btn btn-default btn1 type active" (click)="FilterGridData('All')">All</button>
+            <button class="btn btn-default btn1 type " (click)="FilterGridData('Active')">Active</button>
+            <button class="btn btn-default btn1 type " (click)="FilterGridData('Trial')">Trial</button>
+            <button class="btn btn-default btn1 type" (click)="FilterGridData('Expired')">Expired</button>
           </div>
           <div class="btn-group m-b-6">
-            <button class="btn btn-default" (click)="FilterGridData('All')">All</button>
-            <button class="btn btn-default" (click)="FilterGridData('Client')">Client</button>
-            <button class="btn btn-default" (click)="FilterGridData('Manager')">Manager</button>
-            <button class="btn btn-default" (click)="FilterGridData('Employee')">Employee</button>
+            <button class="btn btn-default btn1 type active " (click)="FilterGridData('All')">All</button>
+            <button class="btn btn-default btn1 type " (click)="FilterGridData('Client')">Client</button>
+            <button class="btn btn-default btn1 type " (click)="FilterGridData('Manager')">Manager</button>
+            <button class="btn btn-default btn1 type " (click)="FilterGridData('Employee')">Employee</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -119,32 +126,32 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of arr; let i=index" data-toggle="modal" data-target="#editUserModal">
-                  <td>{{i+1}}</td>
-                  <td>{{item.CustomerName}}</td>
-                  <td>{{item.Email}}</td>
-                  <td>{{item.Mobile}}</td>
-                  <td>{{item.UserType}}</td>
-                  <td *ngIf="item.Status==='Active'">
-                    <button class="label label-success" style="width:80px;font-size:small">{{item.Status}}</button>
-                  </td>
-                  <td *ngIf="item.Status==='Trial'">
-                    <button class="label label-warning" style="width:80px;font-size:small">{{item.Status}}</button>
+                 <tr *ngFor="let item of arr; let i=index" data-toggle="modal"  data-target="#con-close-modal" >
+                        <td>{{i+1}}</td>
+                        <td>{{item.CustomerName}}</td>
+                        <td>{{item.Email}}</td>
+                        <td>{{item.Mobile}}</td>
+                        <td>{{item.UserType}}</td>
+                         <td *ngIf="item.Status==='Active'">
+                            <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                        </td>
+                        <td *ngIf="item.Status==='Trial'">
+                            <button class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                            
 
-
-                  </td>
-                  <td *ngIf="item.Status==='Expired'">
-                    <button class="label label-pink" style="width:80px;font-size:small">{{item.Status}}</button>
-                  </td>
-
-
-                  <!-- <td>{{item.Organisation}}</td> -->
-
-                  <!-- <td>{{item.Mobile}}</td> -->
-                  <!-- <td>{{item.Address}}</td> -->
-                  <!-- <td>{{item.UserType}}</td> -->
-
-                </tr>
+                        </td>
+                        <td *ngIf="item.Status==='Expired'" >
+                            <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                            </td> 
+                      
+                       
+                        <!-- <td>{{item.Organisation}}</td> -->
+                       
+                        <!-- <td>{{item.Mobile}}</td> -->
+                        <!-- <td>{{item.Address}}</td> -->
+                        <!-- <td>{{item.UserType}}</td> -->
+                        
+                    </tr>
                 <!-- <tr *ngIf="!arr || arr.length==0">
                         <td colspan="5">No Record Found..</td>
                     </tr> -->

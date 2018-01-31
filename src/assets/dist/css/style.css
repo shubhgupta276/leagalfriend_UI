@@ -67,7 +67,25 @@ color: #dd4b39;
 .label-pink{
 background-color: red;
 }
-.btn:hover { 
-    background-color:#222d32;
-    color:white;
+.btn1:hover { 
+    background-color:#222d32; 
+   color:white;
 }
+.btn2:hover { 
+    background-color:#00a65a; 
+}
+.btn3:hover { 
+    background-color:#f39c12; 
+}
+.btn4:hover { 
+    background-color:#dd4b39; 
+}
+.btn5 { 
+    background-color:#222d32; 
+}
+.active { 
+    background-color:#222d32 !important; 
+    color:white !important;
+}
+
+

@@ -43,7 +43,7 @@ export class UserComponent implements OnInit {
   }
 
   registerUser(data) {
-    debugger;
+    
     alert("Regiter user.");
   }
 
@@ -51,7 +51,7 @@ export class UserComponent implements OnInit {
     // setTimeout(function () {
     //   $('#example1').dataTable();
     // }, 50);
-    this.bindDataTable();
+    
     this.GetAllCustomer();
 
     this.signupForm.get('email').valueChanges.subscribe(
@@ -67,11 +67,7 @@ export class UserComponent implements OnInit {
     )
   }
 
-  bindDataTable(){
-    setTimeout(function () {
-      $('#example1').dataTable();
-    }, 50);
-  }
+ 
   GetAllCustomer() {
 
     this.arr = [
@@ -352,16 +348,32 @@ export class UserComponent implements OnInit {
 
 
     ];
-    debugger
+    
     this.arr = this.arr.filter(
       f => (this.filterby == 'All') ? 1 == 1 : f.Status == this.filterby || f.UserType == this.filterby);
-    debugger
+    
+      $( $.document ).ready(function() {
+        $('#example1').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false
+        });
+        });
+        $(".type").click(function(){
+          $(".type").removeClass("active");
+          $(this).addClass("active");
+          
+       });
 
   }
   FilterGridData(filterby: string) {
     this.filterby = filterby;
+    $('#example1').DataTable().destroy();
     this.GetAllCustomer();
-    // this.bindDataTable();
+   
   }
 
 }
