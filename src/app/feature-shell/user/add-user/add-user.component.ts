@@ -4,7 +4,7 @@ import { UserRoles, UserStatus, KeyValue } from '../../../shared/Utility/util-co
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
 import { UserService } from '../user.service';
 import { UserModel } from '../../../shared/models/user/user.model';
-
+declare var $;
 
 @Component({
   selector: 'app-add-user',
@@ -64,6 +64,7 @@ export class AddUserComponent implements OnInit {
       err => {
         console.log(err);
       });
+    $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
   }
 
   

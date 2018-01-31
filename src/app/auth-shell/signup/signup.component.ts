@@ -26,7 +26,7 @@ export class SignupComponent implements OnInit {
   Roles: KeyValue[] = UserRoles;
   Status: KeyValue[] = UserStatus;
   emailValidationMessage: string = "Email address is required.";
-
+  public isMailSent: boolean = false;
   constructor(private router: Router, private fb: FormBuilder, private _httpClient: HttpClient,
     private authService: AuthService) {
     this.createSignup();
@@ -79,7 +79,6 @@ export class SignupComponent implements OnInit {
 
   registerUser(data) {
     debugger;
-    // this.router.navigate(['/']);
     const signUpDetails = new UserModel();
     signUpDetails.firstName = data.firstName;
     signUpDetails.lastName = data.lastName;
@@ -87,25 +86,23 @@ export class SignupComponent implements OnInit {
     signUpDetails.organization = data.organisation;
     signUpDetails.password = data.password;
     signUpDetails.isClient = 1;
-    // signUpDetails.login.userLoginId = data.email;
     this.authService.signup(signUpDetails).subscribe(
       result => {
         debugger;
         console.log(result);
         this._signup = result;
-        // const accessToken = this._login.body.token;
-        // const clientId = this._login.body.clientId;
-        // if (accessToken) {
-        //   localStorage.setItem('access_token', accessToken);
-        //   localStorage.setItem('client_id', clientId);
-        //   this.router.navigate(['admin']);
-        // }
+        this.isMailSent=true;
+        this.router.navigate(['/']);
       },
       err => {
         console.log(err);
       });
   }
 
+  redirectToLogin()
+  {
+    this.router.navigate(['login']);
+  }
 
 }
 
