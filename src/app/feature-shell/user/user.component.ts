@@ -1,9 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { UserRoles, UserStatus, KeyValue } from '../../shared/Utility/util-common';
-import { matchValidator } from '../../shared/Utility/util-custom.validation';
-import { debug } from 'util';
-import { filter } from 'rxjs/operators/filter';
+import { Component, OnInit } from "@angular/core";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from "@angular/forms";
+import {
+  UserRoles,
+  UserStatus,
+  KeyValue
+} from "../../shared/Utility/util-common";
+import { matchValidator } from "../../shared/Utility/util-custom.validation";
+import { debug } from "util";
+import { filter } from "rxjs/operators/filter";
 declare var $;
 
 @Component({
@@ -13,7 +22,7 @@ declare var $;
 })
 export class UserComponent implements OnInit {
   arr: any[];
-  usertype: string  = "All";
+  usertype: string = "All";
   filterby: string = "All";
 
   constructor() {}
@@ -230,97 +239,113 @@ export class UserComponent implements OnInit {
         UserType: "Manager"
       }
     ];
-    
+
     // this.arr = this.arr.filter(
     //   f => (this.filterby == 'All') ? 1 == 1 : f.Status == this.filterby || f.UserType == this.filterby);
-    
-      $( $.document ).ready(function() {
-           
-                var $table = $('#example1').DataTable(
-                    {
-                      columns: [
-                        {"name": "#", "orderable": true},
-                        {"name": "Name", "orderable": true},
-                        {"name": "Email", "orderable": true},
-                        {"name": "Phone", "orderable": true},
-                        {"name": "Role", "orderable": false},
-                        {"name": "Status", "orderable": false}
-                        ],
-                      initComplete: function () {
-                        $("#example1_wrapper").find("#example1_filter,.dataTables_length").hide();
-                      }
-                    });
-                  
-                  $table.columns().every( function () {
-                        $('#txtSearch').on( 'keyup change', function () {
-                          $table.search(this.value ).draw();
-                          
-                         } );
-                         //status filter
-                         $('#ddlStatusFilter').on( 'change', function () {
-                              
-                              var status=$(this).val();
-                              
-                              if(status=="All")
-                                  $table.search(status).draw();
-                              else{
-                                  if ( $table.search() !== this.value ) 
-                                    $table.search(status).draw();
-                              }
-                             
-                         } );
-                        //user filter
-                         $('#ddlUserFilter').on( 'change', function () {
-                          var status=$(this).val();
-                            if(status=="All")
-                             { $table.draw();}
-                            else
-                              if ( $table.columns(4).search() !== this.value ) 
-                                $table.columns(4).search(this.value).draw();
-                        } );
-                  } );
 
-                  $("#ddlExample1Paging").on("change",function(){
-                      $("#example1_wrapper").find(".dataTables_length").find("select").val($(this).val()).change();
-                  })
-           
+    $($.document).ready(function() {
+      var $table = $("#example1").DataTable({
+        columns: [
+          { name: "#", orderable: true },
+          { name: "Name", orderable: true },
+          { name: "Email", orderable: true },
+          { name: "Phone", orderable: true },
+          { name: "Role", orderable: false },
+          { name: "Status", orderable: false }
+        ],
+        scrollY:        '65vh',
+        scrollCollapse: true,
+        "lengthMenu": [[10, 15, 25, -1], [10, 15, 25, "All"]],
+        "pageLength": 15
+        // "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" +
+        // "<'row'<'col-sm-2'l><'col-sm-6'i><'col-sm-4'p>>"
+        // initComplete: function() {
+        //   $("#example1_wrapper")
+        //     .find("#example1_filter,.dataTables_length")
+        //     .hide();
+        // }
+      });
+
+      $table.columns().every(function() {
+        // $("#txtSearch").on("keyup change", function() {
+        //   $table.search(this.value).draw();
+        // });
+        //user filter
+        $("#ddlUserFilter").on("change", function() {
+          var status = $(this).val();
+          if (status == "All") {
+            $table
+              .columns(4)
+              .search("")
+              .draw();
+          }else if ($table.columns(4).search() !== this.value){
+            $table
+              .columns(4)
+              .search(this.value)
+              .draw();
+          }else{};
         });
+        //status filter
+        $("#ddlStatusFilter").on("change", function() {
+          var status = $(this).val();
+          if (status == "All"){
+            $table
+              .columns(5)
+              .search("")
+              .draw();
+          }else if ($table.columns(5).search() !== this.value){
+            $table
+              .columns(5)
+              .search(this.value)
+              .draw();
+          }else{};
+        });
+        
+      });
 
-      //   $("#example1").DataTable({
-      //     initComplete: function() {
-      //       this.api()
-      //         .columns([4,5])
-      //         .every(function() {
-      //           var column = this;
-      //           var select = $('<select><option value=""></option></select>')
-      //             .appendTo($(column.footer()).empty())
-      //             .on("change", function() {
-      //               var val = $.fn.dataTable.util.escapeRegex($(this).val());
-  
-      //               column.search(val ? "^" + val + "$" : "", true, false).draw();
-      //             });
-  
-      //           column
-      //             .data()
-      //             .unique()
-      //             .sort()
-      //             .each(function(d, j) {
-      //               select.append('<option value="' + d + '">' + d + "</option>");
-      //             });
-      //         });
-      //     }
-      //   });
+      // $("#ddlExample1Paging").on("change", function() {
+      //   $("#example1_wrapper")
+      //     .find(".dataTables_length")
+      //     .find("select")
+      //     .val($(this).val())
+      //     .change();
       // });
+    });
 
-        $(".statusFilter").click(function(){
-            $(".statusFilter").removeClass("active2");
-            $(this).addClass("active2");
-       });
+    //   $("#example1").DataTable({
+    //     initComplete: function() {
+    //       this.api()
+    //         .columns([4,5])
+    //         .every(function() {
+    //           var column = this;
+    //           var select = $('<select><option value=""></option></select>')
+    //             .appendTo($(column.footer()).empty())
+    //             .on("change", function() {
+    //               var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-       $(".userFilter").click(function(){
-          $(".userFilter").removeClass("active2");
-          $(this).addClass("active2");
-     });
+    //               column.search(val ? "^" + val + "$" : "", true, false).draw();
+    //             });
 
-      }
+    //           column
+    //             .data()
+    //             .unique()
+    //             .sort()
+    //             .each(function(d, j) {
+    //               select.append('<option value="' + d + '">' + d + "</option>");
+    //             });
+    //         });
+    //     }
+    //   });
+    // });
+
+    $(".statusFilter").click(function() {
+      $(".statusFilter").removeClass("active2");
+      $(this).addClass("active2");
+    });
+
+    $(".userFilter").click(function() {
+      $(".userFilter").removeClass("active2");
+      $(this).addClass("active2");
+    });
+  }
 }

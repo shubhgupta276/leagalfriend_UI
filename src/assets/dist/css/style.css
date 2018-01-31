@@ -124,3 +124,19 @@ margin-bottom: -20px !important;
     background-color:#222d32 !important; 
     color:white !important;
 }
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc:after{
+    bottom: 12px;
+}
+
+
+.padding-bottom{
+    padding-bottom: 12px !important;
+}
+.role, .status{
+    border-radius: 5px;
+    margin-left: 30px;
+    height: 27px !important;
+}
