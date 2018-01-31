@@ -53,7 +53,6 @@ color: white;
 
 .modal-header {
 padding: 15px;
-border-bottom: 3px solid #757272;
 }
 
 .createUserLabel{
@@ -70,4 +69,36 @@ background-color: red;
 .btn:hover { 
     background-color:#222d32;
     color:white;
+}
+
+.btn-modal-addedit {
+    background-color: #222d32 !important;
+    color: white !important;
+    border-color: #ddd !important;
+    margin-right: -15px !important;
+    margin-left: 10px !important;
+    opacity:1 !important;
+}
+.close-addedit{
+    color:white !important;
+}
+.btn-default-add-edit {
+    border-color: #cac6c6 !important;
+}
+
+.modal-footer-addedit{
+border-top: none !important;
+margin-top: -20px !important;
+margin-bottom: -20px !important;
+}
+.modal-header-addedit{
+    background-color: #222d32;
+    color: white;
+    border-color: #ddd;
+    border-radius: 5px;
+    border-bottom: inset;
+}
+
+.modal-body-adedit{
+    padding: 25px!important;
 }
