@@ -84,8 +84,10 @@ export class SignupComponent implements OnInit {
     signUpDetails.firstName = data.firstName;
     signUpDetails.lastName = data.lastName;
     signUpDetails.email = data.email;
+    signUpDetails.organization = data.organisation;
+    signUpDetails.password = data.password;
     signUpDetails.isClient = 1;
-    signUpDetails.login.userLoginId = data.email;
+    // signUpDetails.login.userLoginId = data.email;
     this.authService.signup(signUpDetails).subscribe(
       result => {
         debugger;

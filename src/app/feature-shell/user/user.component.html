@@ -4,92 +4,20 @@
     <h1>
       User Management
     </h1>
+    <input type="text" id="myInput">
+    <button type="button" (click)="destroyTable()" >Destroy</button>
   </section>
 
   <!-- Main content -->
   <section class="content">
-    <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-      style="display: none;">
-
-      <div class="modal-dialog" ng-show="showMe" ng-controller="kk">
-        <div class="modal-content">
-          <div class="panel panel-color panel-primary">
-            <div class="modal-header">
-              <button class="close" aria-hidden="true" ng-click="close()" type="button" data-dismiss="modal">×</button>
-              <h4 class="modal-title">Customer Details</h4>
-              Company Name:
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label" for="field-1">Customer Name</label>
-                    <input class="form-control" value="{{CustomerName}}" id="field-1" type="text" placeholder="John">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label" for="field-2">Organization</label>
-                    <input class="form-control" value="{{Organisation}}" id="field-2" type="text" placeholder="GlobalLogic">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <label class="control-label" for="field-3">Address</label>
-                    <input class="form-control" value="{{address1}}" id="field-3" type="text" placeholder="Address">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="control-label" for="field-4">Email</label>
-                    <input class="form-control" ng-model="email" value="{{email}}" id="field-4" type="text" placeholder="Boston">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="control-label" for="field-5">Mobile</label>
-                    <input class="form-control" ng-model="mobile_number" value="{{mobile_number}}" id="field-5" type="text" placeholder="United States">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="control-label" for="field-6">Status</label>
-                    <input class="form-control" value="{{status_name}}" id="field-6" type="text" placeholder="123456">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group no-margin">
-                    <label class="control-label" for="field-7">Personal Info</label>
-                    <textarea class="form-control autogrow" id="field-7" style="height: 104px; overflow: hidden; -ms-word-wrap: break-word; resize: horizontal;"
-                      placeholder="Write something about yourself">                                                        </textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-white" type="button" data-dismiss="modal">Close</button>
-            <!--<button class="btn btn-info" type="button">Save changes</button>-->
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="col-xs-12">
-
         <!-- /.box -->
-
         <div class="box">
           <!-- <div class="box-header">
             <h3 class="box-title">Users</h3>
           </div> -->
-          <div class="btn-group m-b-6">
+          <!-- <div class="btn-group m-b-6">
             <button class="btn btn-default" (click)="FilterGridData('All')">All</button>
             <button class="btn btn-default" (click)="FilterGridData('Active')">Active</button>
             <button class="btn btn-default" (click)="FilterGridData('Trial')">Trial</button>
@@ -100,20 +28,16 @@
             <button class="btn btn-default" (click)="FilterGridData('Client')">Client</button>
             <button class="btn btn-default" (click)="FilterGridData('Manager')">Manager</button>
             <button class="btn btn-default" (click)="FilterGridData('Employee')">Employee</button>
-          </div>
+          </div> -->
           <!-- /.box-header -->
           <div class="box-body">
             <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
                   <th>#</th>
-
-
                   <th>Name</th>
-                  <!-- <th>Organisation</th> -->
                   <th>Email</th>
                   <th>Phone</th>
-                  <!-- <th>Address</th> -->
                   <th>Role</th>
                   <th>Status</th>
                 </tr>
@@ -130,28 +54,16 @@
                   </td>
                   <td *ngIf="item.Status==='Trial'">
                     <button class="label label-warning" style="width:80px;font-size:small">{{item.Status}}</button>
-
-
                   </td>
                   <td *ngIf="item.Status==='Expired'">
                     <button class="label label-pink" style="width:80px;font-size:small">{{item.Status}}</button>
                   </td>
-
-
-                  <!-- <td>{{item.Organisation}}</td> -->
-
-                  <!-- <td>{{item.Mobile}}</td> -->
-                  <!-- <td>{{item.Address}}</td> -->
-                  <!-- <td>{{item.UserType}}</td> -->
-
                 </tr>
                 <!-- <tr *ngIf="!arr || arr.length==0">
                         <td colspan="5">No Record Found..</td>
                     </tr> -->
               </tbody>
-              <tfoot>
-
-              </tfoot>
+              <tfoot></tfoot>
             </table>
           </div>
           <!-- /.box-body -->

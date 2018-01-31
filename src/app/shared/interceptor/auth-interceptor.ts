@@ -20,9 +20,10 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('signup') >= 0) ){
-        console.log('inside auth interceptor');
+        console.log('inside auth interceptor login');
         return next.handle(req);
     }else{
+        console.log('inside auth interceptor login');
         const authHeader = this.auth.getAuthorizationHeader();
         const authReq = req.clone({
             headers: req.headers
