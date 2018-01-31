@@ -363,8 +363,8 @@ export class UserComponent implements OnInit {
         });
         });
         $(".type").click(function(){
-          $(".type").removeClass("active");
-          $(this).addClass("active");
+          $(".type").removeClass("active2");
+          $(this).addClass("active2");
           
        });
 
