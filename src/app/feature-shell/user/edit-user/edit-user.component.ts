@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue } from '../../../shared/Utility/util-common';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
+declare var $;
 
 @Component({
   selector: 'app-edit-user',
@@ -39,7 +40,7 @@ export class EditUserComponent implements OnInit {
 
   submitEditUser(data) {
     debugger;
-    alert("Submitted data.");
+    $.toaster({ priority : 'success', title : 'Success', message : 'User updated successfully'});
   }
 
   ngOnInit() {

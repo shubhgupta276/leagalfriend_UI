@@ -6,46 +6,31 @@ import { Console } from '@angular/core/src/console';
 
 declare let $;
 @Component({
-  selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.css']
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.css']
 })
 
-export class ForgotPasswordComponent implements OnInit {
-  public forgotPasswordForm: FormGroup;
-  public isMailSent: boolean = false;
+export class ResetPasswordComponent implements OnInit {
+  public resetPasswordForm: FormGroup;
+
   constructor(private router: Router, private fb: FormBuilder) {    
-    this.forgotPasswordForm = fb.group({
-      email: [null, Validators.required]    
+     this.resetPasswordForm = fb.group({
+      newPassword: [null, Validators.required],
+      confirmPassword: [null, Validators.compose([Validators.required, matchValidator("newPassword")])],   
   });
-}
-
+  }
   ngOnInit() {
-    this.forgotPasswordPageLayout();
-
-    this.forgotPasswordForm.get('email').valueChanges.subscribe(
-      (e) => {
-        if (e != "") {
-          this.forgotPasswordForm.get('email').setValidators([Validators.email]);
-         } else {
-          this.forgotPasswordForm.get('email').setValidators([Validators.required]);
-         }
-      }
-    )
+    this.resetPasswordPageLayout();
   }
 
-   forgotPasswordRecovery(data){
-     if(data.email!="")
-      this.isMailSent=true;
-//     this.router.navigate(['resetpassword']);
-   }
-
-   redirectToLogin()
-   {
-    this.router.navigate(['login']);
+   resetPassword(data){
+       
+     if(data.newPassword!="" && data.newPassword ==data.confirmPassword)
+     this.router.navigate(['login']);
    }
    
-  forgotPasswordPageLayout(){
+  resetPasswordPageLayout(){
     $(window.document).ready(function () {
       if($(".login-page")[0]){
       }else{
@@ -78,6 +63,4 @@ export class ForgotPasswordComponent implements OnInit {
       $("#wrapper_id").removeAttr("style");
     });
   }
-
-
 }
