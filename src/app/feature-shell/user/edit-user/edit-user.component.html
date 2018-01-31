@@ -1,14 +1,14 @@
 <div class="modal fade" id="editUserModal">
   <div class="modal-dialog">
     <div class="modal-content" style="border-radius: 5px;">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title">Edit User</h4>
       </div>
       <div style="width:120px;height:10%;background-color:black;"></div>
-      <div class="modal-body">
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
         <!-- Edit User Starts -->
         <div class="row">
           <!-- <div class="col-md-12"> -->
@@ -186,9 +186,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                  <button type="submit" [disabled]="editForm.invalid"  class="btn btn-primary">Submit</button>
+                <div class="modal-footer modal-footer-addedit">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" [disabled]="editForm.invalid"  class="btn btn-modal-addedit">Submit</button>
                 </div>
               </form>
             </div>
