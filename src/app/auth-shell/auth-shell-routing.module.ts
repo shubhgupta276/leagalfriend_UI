@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthShellComponent } from './auth-shell.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignupComponent } from './signup/signup.component';
 
 const authShellRoutes: Routes = [
@@ -15,6 +16,7 @@ const authShellRoutes: Routes = [
     // ]}
       { path: 'login', component: LoginComponent },
       { path: 'forgotpassword', component: ForgotPasswordComponent },
+      { path: 'resetpassword', component: ResetPasswordComponent },
       { path: 'signup', component: SignupComponent },
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ];
