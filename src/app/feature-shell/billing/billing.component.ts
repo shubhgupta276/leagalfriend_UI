@@ -16,14 +16,27 @@ arBillingData:any[]=[];
     this.getBillingData();
    
     $($.document ).ready(function() {
-        $('#example1').DataTable({
-            'paging': true,
-            'lengthChange': false,
-            'searching': false,
-            'ordering': true,
-            'info': true,
-            'autoWidth': false
-        });
+    //   var $table=  $('#example1').DataTable({
+    //         'paging': true,
+    //         'lengthChange': false,
+    //         'searching': false,
+    //         'ordering': true,
+    //         'info': true,
+    //         'autoWidth': false
+            
+    //     });
+
+       
+           var $table = $('#example1').DataTable();
+            
+           $table.columns().every( function () {
+                 $('#txtSearch').on( 'keyup change', function () {
+                    if ( $table.search() !== this.value ) {
+                        $table.search(this.value ).draw();
+                    }
+                } );
+            } );
+
       });
    
 //     $('#example1').DataTable( {
@@ -56,7 +69,7 @@ arBillingData:any[]=[];
             {
                 this.arBillingData.push(
                     { 
-                        Bank:"HDFC BANK Ltd.",
+                        Bank:"HDFC BANK Ltd."+i,
                         CaseID:"O_SEC9_31527",
                         Recourse:"SEC9 RO",
                         Stage:"ARGUMENTS",
