@@ -15,18 +15,31 @@
           <!-- <div class="box-header">
             <h3 class="box-title">Users</h3>
           </div> -->
+          <div class="btn-group m-b-12">
+            <input type="text" placeholder="Search" id="txtSearch" class="form-control">
+
+            <select id="ddlExample1Paging" class="input-sm">
+              <option value="10">10</option><option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            
+          </div><br><br>
           <div class="btn-group m-b-6">
-            <button class="btn btn-default btn1 type active2" (click)="FilterGridData('All')">All</button>
+            <button class="btn btn-default btn1 active2 statusFilter" (click)="FilterGridData('All')">All</button>
           </div>
           <div class="btn-group m-b-6">
-            <button class="btn btn-default btn1 type " (click)="FilterGridData('Active')">Active</button>
-            <button class="btn btn-default btn1 type " (click)="FilterGridData('Trial')">Trial</button>
-            <button class="btn btn-default btn1 type" (click)="FilterGridData('Expired')">Expired</button>
+            <button class="btn btn-default btn1 statusFilter" value="Active">Active</button>
+            <button class="btn btn-default btn1 statusFilter " value="Trial">Trial</button>
+            <button class="btn btn-default btn1 statusFilter" value="Expired">Expired</button>
           </div>
           <div class="btn-group m-b-6">
-            <button class="btn btn-default btn1 type " (click)="FilterGridData('Client')">Client</button>
-            <button class="btn btn-default btn1 type " (click)="FilterGridData('Manager')">Manager</button>
-            <button class="btn btn-default btn1 type " (click)="FilterGridData('Employee')">Employee</button>
+              <button class="btn btn-default btn1 active2 userFilter" (click)="FilterGridData('All')">All</button>
+            </div>
+          <div class="btn-group m-b-6">
+            <button class="btn btn-default btn1 userFilter " value="Client"> Client</button>
+            <button class="btn btn-default btn1 userFilter " value="Manager">Manager</button>
+            <button class="btn btn-default btn1 userFilter " value="Employee">Employee</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -37,8 +50,22 @@
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
-                  <th>Role</th>
-                  <th>Status</th>
+                  <th>Role
+                      <select id="ddlUserFilter" class="input-sm">
+                          <option value="All">All</option>
+                          <option value="Employee">Employee</option>
+                          <option value="Manager">Manager</option>
+                          <option value="Client">Client</option>
+                        </select>
+                  </th>
+                  <th>Status
+                      <select id="ddlStatusFilter" class="input-sm">
+                          <option value="All">All</option>
+                          <option value="Active">Active</option>
+                          <option value="Expired">Expired</option>
+                          <option value="Trial">Trial</option>
+                        </select>
+                  </th>
                 </tr>
               </thead>
               <tbody>

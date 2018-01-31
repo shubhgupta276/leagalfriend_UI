@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue } from '../../shared/Utility/util-common';
 import { matchValidator } from '../../shared/Utility/util-custom.validation';
+import { debug } from 'util';
+import { filter } from 'rxjs/operators/filter';
 declare var $;
 
 @Component({
@@ -12,7 +14,7 @@ declare var $;
 
 export class UserComponent implements OnInit {
   arr: any[];
-  usertype: string;
+  usertype: string  = "All";
   filterby: string = "All";
 
   signupForm: FormGroup;
@@ -99,7 +101,7 @@ export class UserComponent implements OnInit {
       },
       {
         Status: "Active",
-        CustomerName: "Vipin",
+        CustomerName: "Vipin Rawat",
         Organisation: "GlobalLogic",
         Email: "Vipin.singh1@globallogic.com",
         Mobile: "9910398806",
@@ -349,32 +351,71 @@ export class UserComponent implements OnInit {
 
     ];
     
-    this.arr = this.arr.filter(
-      f => (this.filterby == 'All') ? 1 == 1 : f.Status == this.filterby || f.UserType == this.filterby);
+    // this.arr = this.arr.filter(
+    //   f => (this.filterby == 'All') ? 1 == 1 : f.Status == this.filterby || f.UserType == this.filterby);
     
       $( $.document ).ready(function() {
-        $('#example1').DataTable({
-        'paging': true,
-        'lengthChange': true,
-        'searching': true,
-        'ordering': true,
-        'info': true,
-        'autoWidth': false
+           
+                var $table = $('#example1').DataTable(
+                    {
+                      columns: [
+                        {"name": "#", "orderable": true},
+                        {"name": "Name", "orderable": true},
+                        {"name": "Email", "orderable": true},
+                        {"name": "Phone", "orderable": true},
+                        {"name": "Role", "orderable": false},
+                        {"name": "Status", "orderable": false}
+                        ],
+                      initComplete: function () {
+                        $("#example1_wrapper").find("#example1_filter,.dataTables_length").hide();
+                      }
+                    });
+                  
+                  $table.columns().every( function () {
+                        $('#txtSearch').on( 'keyup change', function () {
+                          $table.search(this.value ).draw();
+                          
+                         } );
+                         //status filter
+                         $('#ddlStatusFilter').on( 'change', function () {
+                              
+                              var status=$(this).val();
+                              
+                              if(status=="All")
+                                  $table.search(status).draw();
+                              else{
+                                  if ( $table.search() !== this.value ) 
+                                    $table.search(status).draw();
+                              }
+                             
+                         } );
+                        //user filter
+                         $('#ddlUserFilter').on( 'change', function () {
+                          var status=$(this).val();
+                            if(status=="All")
+                             { $table.draw();}
+                            else
+                              if ( $table.columns(4).search() !== this.value ) 
+                                $table.columns(4).search(this.value).draw();
+                        } );
+                  } );
+
+                  $("#ddlExample1Paging").on("change",function(){
+                      $("#example1_wrapper").find(".dataTables_length").find("select").val($(this).val()).change();
+                  })
+           
         });
-        });
-        $(".type").click(function(){
-          $(".type").removeClass("active2");
-          $(this).addClass("active2");
-          
+
+        $(".statusFilter").click(function(){
+            $(".statusFilter").removeClass("active2");
+            $(this).addClass("active2");
        });
 
-  }
-  FilterGridData(filterby: string) {
-    this.filterby = filterby;
-    $('#example1').DataTable().destroy();
-    this.GetAllCustomer();
-   
-  }
+       $(".userFilter").click(function(){
+          $(".userFilter").removeClass("active2");
+          $(this).addClass("active2");
+     });
 
+      }
 }
 
