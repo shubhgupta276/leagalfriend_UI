@@ -9,7 +9,7 @@ import { BillingComponent } from './billing/billing.component'
 import { InstitutionComponent } from './institution/institution.component'
 import { ResourceComponent } from './resource/resource.component'
 import { ComplianceComponent } from './compliance/compliance.component'
-
+import { BranchComponent } from "./branch/branch.component";
 
 const masterRoutes: Routes = [
     { path: 'state', component: StateComponent},
@@ -21,6 +21,7 @@ const masterRoutes: Routes = [
     { path: 'institution', component: InstitutionComponent},
     { path: 'resource', component: ResourceComponent},
     { path: 'compliance', component: ComplianceComponent},
+    { path: 'branch', component: BranchComponent},
     { path: '', redirectTo:'city', pathMatch: 'full' }
     ];
 

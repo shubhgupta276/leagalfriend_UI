@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth-shell/auth-shell.service';
 declare var $;
 
 @Component({
@@ -8,7 +9,7 @@ declare var $;
 })
 export class FeatureShellComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     $(window.document).ready(function () {
@@ -43,6 +44,10 @@ export class FeatureShellComponent implements OnInit {
       $("body").css({"height":"auto", "min-height":"100%"});
     });
   }
+
+  signOutButton() {
+    this.authService.signOut();
+}
 
 }
 

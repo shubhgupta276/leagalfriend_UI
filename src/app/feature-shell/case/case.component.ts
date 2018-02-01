@@ -35,14 +35,14 @@ jsonCompleted:any;
   {
     $('#example1').DataTable({
       'paging'      : true,
-      'lengthChange': false,
+      'lengthChange': true,
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false
     });
     $('#example2').DataTable({
       'paging'      : true,
-      'lengthChange': false,
+      'lengthChange': true,
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false
