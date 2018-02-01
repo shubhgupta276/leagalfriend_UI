@@ -81,6 +81,7 @@ background-color: red;
 }
 .close-addedit{
     color:white !important;
+    font-weight: 400 !important;
 }
 .btn-default-add-edit {
     border-color: #cac6c6 !important;

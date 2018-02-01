@@ -1,11 +1,11 @@
-<div class="modal fade" id="editCaseModal">
+<div class="modal fade" id="addCaseModal">
     <div class="modal-dialog">
       <div class="modal-content" style="border-radius: 5px;">
         <div class="modal-header modal-header-addedit">
           <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Edit Case</h4>
+          <h4 class="modal-title">Add Case</h4>
         </div>
         <div style="width:120px;height:10%;background-color:black;"></div>
         <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
@@ -15,33 +15,11 @@
             <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
             <div>
               <div class="box-body widget-content">
-                <form [formGroup]="editCaseForm" class="form-horizontal" (ngSubmit)="submitEditCaseUser(editCaseForm.value)">
+                <form [formGroup]="addCaseForm" class="form-horizontal" (ngSubmit)="submitAddCaseUser(addCaseForm.value)">
                   <div class="form-body">
                     <div class="tab-content">
                       <div class="tab-pane active">
-  
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label createUserLabel">Compliance:
-                            <em class="astrick">*</em>
-                          </label>
-                          <div class="col-md-9">
-                            <!-- <input class="form-control" placeholder="Compliance" formControlName="compliance"> -->
-                            <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" onclick="return compliance_single();">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label createUserLabel">Case Id:
-                            <em class="astrick">*</em>
-                          </label>
-                          <div class="col-md-9" [class.has-error]="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
-                            <input class="form-control" placeholder="Case Id" formControlName="caseId">
-                          </div>
-                          <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
-                            <small class="text-danger">
-                              <span>Case Id is required.</span>
-                            </small>
-                          </div>
-                        </div>
+                        
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
                             <!-- <em class="astrick">*</em> -->
@@ -147,31 +125,14 @@
                             <label class="col-sm-3 col-form-label createUserLabel">Remark:
                               <em class="astrick">*</em>
                             </label>
-                            <div class="col-md-9" [class.has-error]="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
+                            <div class="col-md-9" [class.has-error]="addCaseForm.get('remark').invalid &&  addCaseForm.get('remark').touched">
                               <!-- <input class="form-control" placeholder="Remark" formControlName="remark"> -->
                               <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
                             </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
+                            <div class="col-sm-9 valodation-padding" *ngIf="addCaseForm.get('remark').invalid &&  addCaseForm.get('remark').touched">
                               <small class="text-danger">
                                 <span>Remark is required.</span>
                               </small>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
-                              <!-- <em class="astrick">*</em> -->
-                            </label>
-                            <div class="col-md-9">
-                              <!-- <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingfile"> -->
-                              <textarea name="GROUND_OF_CLOSING" tabindex="17" id="GROUND_OF_CLOSING" class="form-control" formControlName="groundforclosingfile"></textarea>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No.:
-                              <!-- <em class="astrick">*</em> -->
-                            </label>
-                            <div class="col-md-9">
-                              <input class="form-control" placeholder="Disposed off File No." formControlName="disposedoffFileNo">
                             </div>
                           </div>
                           <div class="form-group row">
@@ -281,21 +242,6 @@
                               <input type="file" name="upload_document" id="upload_document" class="form-control" formControlName="uploadDocument">
                             </div>
                           </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Completion Date:
-                              <!-- <em class="astrick">*</em> -->
-                            </label>
-                            <div class="col-md-9">
-                              <!-- <input class="form-control" placeholder="Completion Date" formControlName="completionDate"> -->
-                              <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                <input type="text" tabindex="15" id="completionDate" name="completionDate" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                    size="10" value="" formControlName="completionDate">
-                                <div class="input-group-addon">
-                                    <span class="fa fa-calendar"></span>
-                                </div>
-                            </div>
-                            </div>
-                          </div>
 
                         <div class="form-group row">
                           <div class="col-md-4">
@@ -310,7 +256,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="editCaseForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="addCaseForm.invalid"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>
