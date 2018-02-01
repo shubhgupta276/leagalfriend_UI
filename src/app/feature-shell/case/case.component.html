@@ -28,6 +28,7 @@
               <li class="active"><a href="#tab_running" data-toggle="tab">Running</a></li>
               <li><a href="#tab_completed" data-toggle="tab">Completed</a></li>
             </ul>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addCaseModal">Add Case</button>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_running">
                     <div class="box-body">
@@ -55,7 +56,7 @@
                               <td>{{items.NextHearingDate}}</td>
                               <td>{{items.Branch}}</td>
                               <td>{{items.Employee}}</td>
-                              <td><a data-toggle="modal" data-target="#modal-default" href="#"><i class="fa fa-edit"></i></a> / <a href="#"><i class="fa fa-history"></i></a></td>
+                              <td><a data-toggle="modal" data-target="#editCaseModal" href="#"><i class="fa fa-edit"></i></a> / <a href="#"><i class="fa fa-history"></i></a></td>
                             </tr>
                       </tbody>
                     </table>
@@ -97,27 +98,6 @@
           
           <!-- /.box-body -->
         </div>
-       
-        <div class="modal fade" id="modal-default">
-            <div class="modal-dialog">
-              <div class="modal-content" style="width:900px;">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title">Default Modal</h4>
-                </div>
-                <div class="modal-body">
-                 <app-edit-case></app-edit-case>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-             
-            </div>
-            <!-- /.modal-dialog -->
-          </div>
         <!-- /.box -->
       </div>
       <!-- /.col -->
@@ -126,4 +106,6 @@
     <!-- /.row -->
   </section>
   <!-- /.content -->
+  <app-edit-case></app-edit-case>
+  <app-add-case></app-add-case>
 </div>
