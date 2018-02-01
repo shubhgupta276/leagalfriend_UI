@@ -150,3 +150,9 @@ div.dataTables_wrapper div.dataTables_length select{
 div.dataTables_wrapper div.dataTables_filter input{
     border-radius: 5px;
 }
+/* Case History Css Start*/
+.case-timeline li {
+    cursor: pointer;
+    border-radius: 10px;
+  }
+/* Case History Css End*/
