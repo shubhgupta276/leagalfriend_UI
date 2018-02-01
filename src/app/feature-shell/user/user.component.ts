@@ -240,9 +240,6 @@ export class UserComponent implements OnInit {
       }
     ];
 
-    // this.arr = this.arr.filter(
-    //   f => (this.filterby == 'All') ? 1 == 1 : f.Status == this.filterby || f.UserType == this.filterby);
-
     $($.document).ready(function() {
       var $table = $("#example1").DataTable({
         columns: [
@@ -256,7 +253,14 @@ export class UserComponent implements OnInit {
         scrollY:        '65vh',
         scrollCollapse: true,
         "lengthMenu": [[10, 15, 25, -1], [10, 15, 25, "All"]],
-        "pageLength": 15
+        "pageLength": 15,
+        "oLanguage": {
+          "sLengthMenu": "Show _MENU_ rows",
+          "sSearch": '<i class="fa fa-search"></i>',
+          // "sSearch": '<div class="input-group"><span class="glyphicon glyphicon-search"></span>',
+          "sSearchPlaceholder": 'Search...'
+          
+        }
         // "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" +
         // "<'row'<'col-sm-2'l><'col-sm-6'i><'col-sm-4'p>>"
         // initComplete: function() {
@@ -265,6 +269,7 @@ export class UserComponent implements OnInit {
         //     .hide();
         // }
       });
+      // $('.dataTables_filter input').attr("placeholder", 'Search... ');
 
       $table.columns().every(function() {
         // $("#txtSearch").on("keyup change", function() {
@@ -338,14 +343,14 @@ export class UserComponent implements OnInit {
     //   });
     // });
 
-    $(".statusFilter").click(function() {
-      $(".statusFilter").removeClass("active2");
-      $(this).addClass("active2");
-    });
+    // $(".statusFilter").click(function() {
+    //   $(".statusFilter").removeClass("active2");
+    //   $(this).addClass("active2");
+    // });
 
-    $(".userFilter").click(function() {
-      $(".userFilter").removeClass("active2");
-      $(this).addClass("active2");
-    });
+    // $(".userFilter").click(function() {
+    //   $(".userFilter").removeClass("active2");
+    //   $(this).addClass("active2");
+    // });
   }
 }

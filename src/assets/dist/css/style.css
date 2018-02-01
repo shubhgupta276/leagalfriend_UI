@@ -125,13 +125,12 @@ margin-bottom: -20px !important;
     color:white !important;
 }
 
+/* user-management table UI */
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_desc:after,
 table.dataTable thead .sorting_asc:after{
     bottom: 12px;
 }
-
-
 .padding-bottom{
     padding-bottom: 12px !important;
 }
@@ -139,4 +138,14 @@ table.dataTable thead .sorting_asc:after{
     border-radius: 5px;
     margin-left: 30px;
     height: 27px !important;
+}
+div.dataTables_wrapper div.dataTables_length select{
+    width: auto;
+    border-radius: 5px;
+    height: 25px;
+    padding: 0px 5px;
+    margin: 2px 5px;
+}
+div.dataTables_wrapper div.dataTables_filter input{
+    border-radius: 5px;
 }
