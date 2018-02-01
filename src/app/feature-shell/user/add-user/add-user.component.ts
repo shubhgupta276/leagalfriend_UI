@@ -2,22 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue } from '../../../shared/Utility/util-common';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
+import { UserService } from '../user.service';
+import { UserModel } from '../../../shared/models/user/user.model';
 declare var $;
 
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  styleUrls: ['./add-user.component.css'],
+  providers: [UserService]
 })
 export class AddUserComponent implements OnInit {
 
 
   addForm: FormGroup;
-
+  public _user: any;
   Roles: KeyValue[] = UserRoles;
   Status: KeyValue[] = UserStatus;
   emailValidationMessage: string = "Email address is required.";
 
+  constructor(private fb: FormBuilder, private userService: UserService) {
+    this.AddUser();
+  }
 
   AddUser() {
     this.addForm = this.fb.group({
@@ -37,13 +43,27 @@ export class AddUserComponent implements OnInit {
   }
 
 
-  constructor(private fb: FormBuilder) {
-    this.AddUser();
-  }
+  
 
 
   submitAddUser(data) {
     debugger;
+    const userDetails = new UserModel();
+    userDetails.firstName = data.firstName;
+    userDetails.lastName = data.lastName;
+    userDetails.email = data.email;
+    userDetails.organization = data.organisation;
+    userDetails.password = data.password;
+    userDetails.isClient = 1;
+    this.userService.addNewUser(userDetails).subscribe(
+      result => {
+        debugger;
+        console.log(result);
+        this._user = result;
+      },
+      err => {
+        console.log(err);
+      });
     $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
   }
 

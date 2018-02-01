@@ -79,35 +79,26 @@ export class SignupComponent implements OnInit {
 
   registerUser(data) {
     debugger;
-    this.isMailSent=true;
-    // this.router.navigate(['/']);
     const signUpDetails = new UserModel();
     signUpDetails.firstName = data.firstName;
     signUpDetails.lastName = data.lastName;
     signUpDetails.email = data.email;
+    signUpDetails.organization = data.organisation;
+    signUpDetails.password = data.password;
     signUpDetails.isClient = 1;
-    // signUpDetails.login.userLoginId = data.email;
-    // this.authService.signup(signUpDetails).subscribe(
-    //   result => {
-    //     debugger;
-    //     console.log(result);
-    //     this._signup = result;
-    //     // const accessToken = this._login.body.token;
-    //     // const clientId = this._login.body.clientId;
-    //     // if (accessToken) {
-    //     //   localStorage.setItem('access_token', accessToken);
-    //     //   localStorage.setItem('client_id', clientId);
-    //     //   this.router.navigate(['admin']);
-    //     // }
-
-    //     // for show mail sent message
-        
-        
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   });
+    this.authService.signup(signUpDetails).subscribe(
+      result => {
+        debugger;
+        console.log(result);
+        this._signup = result;
+        this.isMailSent=true;
+        this.router.navigate(['/']);
+      },
+      err => {
+        console.log(err);
+      });
   }
+
   redirectToLogin()
   {
     this.router.navigate(['login']);

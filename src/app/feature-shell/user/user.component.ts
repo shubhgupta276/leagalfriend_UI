@@ -1,84 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { UserRoles, UserStatus, KeyValue } from '../../shared/Utility/util-common';
-import { matchValidator } from '../../shared/Utility/util-custom.validation';
+import { Component, OnInit } from "@angular/core";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from "@angular/forms";
+import {
+  UserRoles,
+  UserStatus,
+  KeyValue
+} from "../../shared/Utility/util-common";
+import { matchValidator } from "../../shared/Utility/util-custom.validation";
+import { debug } from "util";
+import { filter } from "rxjs/operators/filter";
 declare var $;
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: "app-user",
+  templateUrl: "./user.component.html",
+  styleUrls: ["./user.component.css"]
 })
-
 export class UserComponent implements OnInit {
   arr: any[];
-  usertype: string;
+  usertype: string = "All";
   filterby: string = "All";
 
-  signupForm: FormGroup;
-
-  Roles: KeyValue[] = UserRoles;
-  Status: KeyValue[] = UserStatus;
-  emailValidationMessage: string = "Email address is required.";
-
-  createSignup() {
-    this.signupForm = this.fb.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
-      organisation: [null, Validators.required],
-      addressLine1: [null, Validators.required],
-      addressLine2: [null, Validators.required],
-      postalCode: [null, Validators.required],
-      email: [null, Validators.required],
-      password: [null, Validators.required],
-      confirmPassword: [null, Validators.compose([Validators.required, matchValidator("password")])],
-      mobileNumber: [null, Validators.required],
-      role: [1],
-      status: [1]
-    });
-  }
-
-  constructor(private fb: FormBuilder) {
-    this.createSignup();
-  }
-
-  registerUser(data) {
-    debugger;
-    alert("Regiter user.");
-  }
+  constructor() {}
 
   ngOnInit() {
-    // setTimeout(function () {
-    //   $('#example1').dataTable();
-    // }, 50);
-    this.bindDataTable();
     this.GetAllCustomer();
-
-    this.signupForm.get('email').valueChanges.subscribe(
-      (e) => {
-        if (e != "") {
-          this.signupForm.get('email').setValidators([Validators.email]);
-          this.emailValidationMessage = "Email format is not correct.";
-        } else {
-          this.signupForm.get('email').setValidators([Validators.required]);
-          this.emailValidationMessage = "Email address is required.";
-        }
-      }
-    )
   }
 
-  bindDataTable(){
-    setTimeout(function () {
-      $('#example1').dataTable();
-    }, 50);
-  }
   GetAllCustomer() {
-
     this.arr = [
-
-
       {
-
         Status: "Active",
         CustomerName: "Puneet Chauhan",
         Organisation: "GlobalLogic",
@@ -86,8 +41,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Sector-15,Noida",
         UserType: "Manager"
-
-
       },
       {
         Status: "Active",
@@ -97,22 +50,15 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Sector-15,Noida",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Active",
-        CustomerName: "Vipin",
+        CustomerName: "Vipin Rawat",
         Organisation: "GlobalLogic",
         Email: "Vipin.singh1@globallogic.com",
         Mobile: "9910398806",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
-
       },
       {
         Status: "Trial",
@@ -122,9 +68,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -135,9 +78,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Agra",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -148,9 +88,6 @@ export class UserComponent implements OnInit {
         Mobile: "8483939202",
         Address: "MP",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -161,9 +98,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Patna",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -174,9 +108,6 @@ export class UserComponent implements OnInit {
         Mobile: "7575484733",
         Address: "Lucknow",
         UserType: "Manager"
-
-
-
       },
 
       {
@@ -187,9 +118,6 @@ export class UserComponent implements OnInit {
         Mobile: "9758460007",
         Address: "Moradabad",
         UserType: "Employee"
-
-
-
       },
 
       {
@@ -200,9 +128,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Agra",
         UserType: "Client"
-
-
-
       },
 
       {
@@ -213,9 +138,6 @@ export class UserComponent implements OnInit {
         Mobile: "9910398806",
         Address: "Agra",
         UserType: "Client"
-
-
-
       },
       {
         Status: "Expired",
@@ -225,9 +147,6 @@ export class UserComponent implements OnInit {
         Mobile: "8474747479",
         Address: "Agra",
         UserType: "Client"
-
-
-
       },
       {
         Status: "Expired",
@@ -237,9 +156,6 @@ export class UserComponent implements OnInit {
         Mobile: "74748389839",
         Address: "Dhampur",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Trial",
@@ -249,9 +165,6 @@ export class UserComponent implements OnInit {
         Mobile: "7484747474",
         Address: "Saharanpur",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -261,9 +174,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Jaipur",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -273,9 +183,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Agra",
         UserType: "Employee"
-
-
-
       },
       {
         Status: "Expired",
@@ -285,9 +192,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Employee"
-
-
-
       },
       {
         Status: "Expired",
@@ -297,9 +201,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -309,9 +210,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -321,9 +219,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Delhi",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -333,9 +228,6 @@ export class UserComponent implements OnInit {
         Mobile: "74874747473",
         Address: "Nepal",
         UserType: "Manager"
-
-
-
       },
       {
         Status: "Expired",
@@ -345,24 +237,120 @@ export class UserComponent implements OnInit {
         Mobile: "87378373798",
         Address: "UP",
         UserType: "Manager"
-
-
-
-      },
-
-
+      }
     ];
-    debugger
-    this.arr = this.arr.filter(
-      f => (this.filterby == 'All') ? 1 == 1 : f.Status == this.filterby || f.UserType == this.filterby);
-    debugger
 
-  }
-  FilterGridData(filterby: string) {
-    this.filterby = filterby;
-    this.GetAllCustomer();
-    // this.bindDataTable();
-  }
+    $($.document).ready(function() {
+      var $table = $("#example1").DataTable({
+        columns: [
+          { name: "#", orderable: true },
+          { name: "Name", orderable: true },
+          { name: "Email", orderable: true },
+          { name: "Phone", orderable: true },
+          { name: "Role", orderable: false },
+          { name: "Status", orderable: false }
+        ],
+        scrollY:        '65vh',
+        scrollCollapse: true,
+        "lengthMenu": [[10, 15, 25, -1], [10, 15, 25, "All"]],
+        "pageLength": 15,
+        "oLanguage": {
+          "sLengthMenu": "Show _MENU_ rows",
+          "sSearch": '<i class="fa fa-search"></i>',
+          // "sSearch": '<div class="input-group"><span class="glyphicon glyphicon-search"></span>',
+          "sSearchPlaceholder": 'Search...'
+          
+        }
+        // "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" +
+        // "<'row'<'col-sm-2'l><'col-sm-6'i><'col-sm-4'p>>"
+        // initComplete: function() {
+        //   $("#example1_wrapper")
+        //     .find("#example1_filter,.dataTables_length")
+        //     .hide();
+        // }
+      });
+      // $('.dataTables_filter input').attr("placeholder", 'Search... ');
 
+      $table.columns().every(function() {
+        // $("#txtSearch").on("keyup change", function() {
+        //   $table.search(this.value).draw();
+        // });
+        //user filter
+        $("#ddlUserFilter").on("change", function() {
+          var status = $(this).val();
+          if (status == "All") {
+            $table
+              .columns(4)
+              .search("")
+              .draw();
+          }else if ($table.columns(4).search() !== this.value){
+            $table
+              .columns(4)
+              .search(this.value)
+              .draw();
+          }else{};
+        });
+        //status filter
+        $("#ddlStatusFilter").on("change", function() {
+          var status = $(this).val();
+          if (status == "All"){
+            $table
+              .columns(5)
+              .search("")
+              .draw();
+          }else if ($table.columns(5).search() !== this.value){
+            $table
+              .columns(5)
+              .search(this.value)
+              .draw();
+          }else{};
+        });
+        
+      });
+
+      // $("#ddlExample1Paging").on("change", function() {
+      //   $("#example1_wrapper")
+      //     .find(".dataTables_length")
+      //     .find("select")
+      //     .val($(this).val())
+      //     .change();
+      // });
+    });
+
+    //   $("#example1").DataTable({
+    //     initComplete: function() {
+    //       this.api()
+    //         .columns([4,5])
+    //         .every(function() {
+    //           var column = this;
+    //           var select = $('<select><option value=""></option></select>')
+    //             .appendTo($(column.footer()).empty())
+    //             .on("change", function() {
+    //               var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+    //               column.search(val ? "^" + val + "$" : "", true, false).draw();
+    //             });
+
+    //           column
+    //             .data()
+    //             .unique()
+    //             .sort()
+    //             .each(function(d, j) {
+    //               select.append('<option value="' + d + '">' + d + "</option>");
+    //             });
+    //         });
+    //     }
+    //   });
+    // });
+
+    // $(".statusFilter").click(function() {
+    //   $(".statusFilter").removeClass("active2");
+    //   $(this).addClass("active2");
+    // });
+
+    // $(".userFilter").click(function() {
+    //   $(".userFilter").removeClass("active2");
+    //   $(this).addClass("active2");
+    // });
+  }
 }
-
