@@ -1,0 +1,122 @@
+<style>
+  .bg-case-li {
+    background-color: #346188 !important;
+  }
+</style>
+<div class="modal fade" id="modal-default1">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Case History</h4>
+      </div>
+      <div style="height:10%;background-color:black;"></div>
+      <div style="margin-top: -15px;" class="modal-body modal-body-adedit">
+        <div  style="min-height: 518px;margin-left:0px;">
+          <section class="content-header">
+            <div class="panel panel-default">
+              <div class="panel-heading">History</div>
+              <div class="panel-body">
+                <form [formGroup]="caseHistoryForm" class="form-horizontal" (ngSubmit)="SubmitRemarks(caseHistoryForm.value)">
+                  <div class="form-wizard">
+                    <div class="form-body">
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Remark:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9" [class.has-error]="caseHistoryForm.get('remarks').invalid && 
+                            caseHistoryForm.get('remarks').touched">
+                              <textarea class="form-control" name="CASE_HISTORY" id="CASE_HISTORY" cols="75" formControlName="remarks"></textarea >
+                            </div>
+                           
+                          </div>
+                          <div class="form-group row">
+                              <label class="col-sm-3 col-form-label createUserLabel">Upload File:
+                              </label>
+                              <div class="col-md-9">
+                                  <input type="file" name="upload_doc" id="upload_doc">
+                              </div>
+                             
+                            </div>
+                
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+                      
+                      <button type="submit" [disabled]="caseHistoryForm.invalid" name="submit" value="submit" class="btn green button-submit" onclick="return historyvalidation();"> Save <i class="m-icon-swapright m-icon-white"></i> </button>&nbsp;
+                                        <a href="" type="button" class="btn btn-info">Back</a>
+                                      <!--button type="button" name="submit" value="submit" class="btn green button-submit" onclick="return window.top.location.reload();" > Close <i class="m-icon-swapright m-icon-white"></i> </button -->
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+      </div>
+    </section>
+    <section class="content skin-blue">
+      <div class="panel panel-default">      
+      <!--a class="btn btn-info" onclick="return window.history.back();">Close</a -->
+      <div class="panel-heading">Case History</div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-12">
+  
+          <ul class="timeline case-timeline" id="accordion">
+            <ng-container *ngFor="let item of jsonHistory;let i=index">
+              <li class="time-label bg-red bg-case-li" data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+i">
+                <span class="bg-red bg-case-li">{{item.Date+" / "+item.Name}}</span>
+              </li>
+              <!-- /.timeline-label -->
+              <!-- timeline item -->
+              <li [attr.id]="'collapse'+i" class="panel-collapse collapse">
+                <i class="fa fa-envelope bg-blue"></i>
+                <div class="timeline-item">
+                  <!--span class="time"><i class="fa fa-clock-o"></i></span -->
+                  <h3 class="timeline-header">
+                    <a href="#">{{item.Name}} </a>: </h3>
+                  <div class="timeline-body">
+                    <b>New Value: {{item.NewValue}}</b>
+                    <br>
+                    <b>Prev Value: {{item.PrevValue}} </b>
+                    <br>
+                    <b>User:</b> {{item.User}}
+                    <br>
+                    <b>Remark:</b>{{item.Remarks}}</div>
+                  <div class="timeline-footer">
+                    <a href="http://legalfriend.infinityfreeapp.com/download.php?download=1517288175_ISMS-Score.png" target="_blank" class="btn btn-primary btn-xs">Download</a>
+                  </div>
+                </div>
+              </li>
+            </ng-container>
+  
+            <!-- END timeline item -->
+          </ul>
+        </div>
+       
+        <!-- /.col -->
+      </div>
+    </div>
+    </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+    <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+    
+  </div> -->
+
+</div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>

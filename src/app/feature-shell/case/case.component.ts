@@ -11,7 +11,6 @@ export class CaseComponent implements OnInit {
 jsonRunning:any;
 jsonCompleted:any;
   constructor() {
-    debugger
     this.jsonRunning= [
       {Id:1,CaseId:'I/DRT/3',CourtCaseID:'',CustomerName:'Anup',RecourceType:'DRT',CaseStage:'FOR VALUATION OF ASSET',NextHearingDate:'22-Dec-2017',Branch:'Delhi',Employee:'Anup'  },
       {Id:2,CaseId:'I/LKAD/4',CourtCaseID:'',CustomerName:'Puneet',RecourceType:'LOK_ADALATH',CaseStage:'FOR SALE PERMISSION OF VEHICLE',NextHearingDate:'17-Jan-2018	',Branch:'Delhi',Employee:'Puneet'  },
