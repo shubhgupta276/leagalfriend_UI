@@ -250,17 +250,14 @@ export class UserComponent implements OnInit {
           { name: "Role", orderable: false },
           { name: "Status", orderable: false }
         ],
-        scrollY:        '65vh',
-        scrollCollapse: true,
+        // scrollY:        '65vh',
+        // scrollCollapse: true,
         "lengthMenu": [[10, 15, 25, -1], [10, 15, 25, "All"]],
         "pageLength": 15,
         "oLanguage": {
           "sLengthMenu": "Show _MENU_ rows",
-          // "sSearch": '<i class="fa fa-search"></i>',
           "sSearch": "",
-          // "sSearch": '<div class="input-group"><span class="glyphicon glyphicon-search"></span>',
           "sSearchPlaceholder": 'Search...'
-          
         }
         // "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" +
         // "<'row'<'col-sm-2'l><'col-sm-6'i><'col-sm-4'p>>"
