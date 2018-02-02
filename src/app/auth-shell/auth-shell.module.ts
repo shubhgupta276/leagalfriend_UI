@@ -8,22 +8,26 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
+import { OnlyNumber } from '../shared/Directives/OnlyNumber';
+import { OnlyString } from '../shared/Directives/OnlyString';
 
 
 @NgModule({
-    imports: [ 
+    imports: [
       HttpClientModule,
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
       AuthShellRoutingModule ],
-  
+
    declarations: [
        AuthShellComponent,
        LoginComponent,
        ForgotPasswordComponent,
        ResetPasswordComponent,
-       SignupComponent
+       SignupComponent,
+       OnlyNumber,
+       OnlyString
     ]
   })
   export class AuthShellModule {}
