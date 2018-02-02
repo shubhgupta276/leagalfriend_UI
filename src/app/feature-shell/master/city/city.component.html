@@ -55,7 +55,7 @@
               
               <tr *ngFor="let item of arCityData" data-toggle="modal" data-target="#modal-default">
                 <td>{{item.BankCity}}</td>
-                <td><a data-target="#modal-default" data-toggle="modal" href="#">
+                <td><a data-target="#editCityMasterModal" data-toggle="modal" href="#">
                   <i class="fa fa-edit"></i></a>  </td>
               </tr>
               </tbody>
@@ -71,4 +71,8 @@
     <!-- /.row -->
   </section>
   <!-- /.content -->
+  
+  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addCityMasterModal">Add City</button>
+  <app-add-city></app-add-city>
+  <app-edit-city></app-edit-city>
 </div>

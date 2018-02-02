@@ -60,7 +60,7 @@ export class AddCaseComponent implements OnInit
 
   submitAddCaseUser(data) {
     debugger;
-    $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
+    $.toaster({ priority : 'success', title : 'Success', message : 'Case added successfully'});
   }
 
 
