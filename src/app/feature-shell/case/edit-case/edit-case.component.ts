@@ -63,7 +63,7 @@ export class EditCaseComponent implements OnInit
 
   submitEditCaseUser(data) {
     debugger;
-    $.toaster({ priority : 'success', title : 'Success', message : 'User updated successfully'});
+    $.toaster({ priority : 'success', title : 'Success', message : 'Case updated successfully'});
   }
 
 

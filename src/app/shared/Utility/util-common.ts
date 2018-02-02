@@ -16,3 +16,5 @@ export const CaseBranch: KeyValue[] = [{ id: 1, name: "Delhi" }, { id: 2, name: 
 export const CaseStage: KeyValue[] = [{ id: 1, name: "Bail" }, { id: 2, name: "Auction" }, { id: 3, name: "Award" }]
 export const CaseEmployee: KeyValue[] = [{ id: 1, name: "Manjul Sood" }, { id: 2, name: "Kelly" }, { id: 3, name: "Manoj" }]
 export const CaseCourtPlace: KeyValue[] = [{ id: 1, name: "Delhi" }, { id: 2, name: "Jaipur" }, { id: 3, name: "Chennai" }]
+
+
