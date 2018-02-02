@@ -6,11 +6,16 @@ declare let $;
   styleUrls: ['./compliance.component.css']
 })
 export class ComplianceComponent implements OnInit {
-
+arr:[any];
   constructor() { }
 
   ngOnInit() {
-    $('#example1').DataTable();
+    this.GetAllCompliance();
+    $($.document).ready(function(){
+     
+      $('#example1').DataTable();
+    }
+  );
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': false,
@@ -20,5 +25,13 @@ export class ComplianceComponent implements OnInit {
       'autoWidth'   : false
     });
   }
+  GetAllCompliance()
+  {
+    this.arr=[
+      {Recourse:"RODA",Stage:"ARGUMENTS",Compliance:"Compliance 1",Status:"Active"}
+
+    ]
+  }
+  
 
 }
