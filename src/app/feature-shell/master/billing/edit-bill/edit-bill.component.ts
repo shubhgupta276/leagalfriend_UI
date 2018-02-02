@@ -19,7 +19,6 @@ export class EditBillingComponent implements OnInit {
        
     }
     ngOnInit() {
-        debugger
         this.addBillForm();
       }
 

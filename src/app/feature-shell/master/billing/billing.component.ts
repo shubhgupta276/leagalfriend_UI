@@ -15,7 +15,6 @@ export class BillingComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
     this.getBillingData();
     this.setDropdownUniqueValues();
 
