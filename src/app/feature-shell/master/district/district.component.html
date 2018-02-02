@@ -11,26 +11,6 @@
       <li class="active">Data tables</li>
     </ol> -->
   </section>
-  <div class="modal fade in" id="modal-default" style="display: none; padding-right: 17px;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span></button>
-          <h4 class="modal-title">Default Modal</h4>
-        </div>
-        <div class="modal-body">
-          <p>One fine body…</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
   <!-- Main content -->
   <section class="content">
     <div class="row">
@@ -53,7 +33,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr; let i=index" data-toggle="modal" data-target="#modal-default">
+              <tr *ngFor="let item of arr; let i=index" data-toggle="modal" data-target="#editDistrictMasterModal">
                 <td>{{item.District}}</td>
                 <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
               
@@ -79,8 +59,14 @@
     <!-- /.row -->
   </section>
   <!-- /.content -->
-  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addDistrictMasterModal">Add District</button>
-  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editDistrictMasterModal">Edit District</button>
+  <div class="favicon">
+      <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+        <span class="tooltip-text">Add District</span>
+      </div>
+      <a>
+        <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addDistrictMasterModal"></i>
+      </a>
+    </div>
   <app-add-district></app-add-district>
   <app-edit-district></app-edit-district>
 </div>

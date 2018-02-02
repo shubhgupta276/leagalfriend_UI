@@ -26,8 +26,14 @@ export class AddStateMasterComponent implements OnInit
   }
 
   submitAddStateMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'State added successfully'});
+    this.AddStateMaster();
+    this.closeModal();
+  }
+  
+  closeModal()
+  {
+    $("#closebtn").click();
   }
 
 ngOnInit()

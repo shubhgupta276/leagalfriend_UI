@@ -42,8 +42,14 @@ export class AddComplianceMasterComponent implements OnInit
   }
 
   submitAddComplianceMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'Compliance added successfully'});
+    this.AddComplianceMaster();
+    this.closeModal();
+  }
+  
+  closeModal()
+  {
+    $("#closebtn1").click();
   }
 
 ngOnInit()

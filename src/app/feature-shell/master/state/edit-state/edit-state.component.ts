@@ -26,8 +26,14 @@ export class EditStateMasterComponent implements OnInit
   }
 
   submitEditStateMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'State updated successfully'});
+    this.EditStateMaster();
+    this.closeModal();
+  }
+  
+  closeModal()
+  {
+    $("#closebtn1").click();
   }
 
 ngOnInit()
