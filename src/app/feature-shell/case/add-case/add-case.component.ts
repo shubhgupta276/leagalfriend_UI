@@ -59,8 +59,8 @@ fillignDateValue:string;
   }
 
   submitAddCaseUser(data) {
-    console.log(data);
-    $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
+    debugger;
+    $.toaster({ priority : 'success', title : 'Success', message : 'Case added successfully'});
   }
  
 ngOnInit()

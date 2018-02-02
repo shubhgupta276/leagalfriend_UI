@@ -163,10 +163,10 @@
             <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                <a routerLink="profile" class="btn btn-default btn-flat">Profile</a>
               </div>
               <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
               </div>
             </li>
           </ul>
@@ -238,7 +238,7 @@
               <i class="fa fa-circle-o"></i> Compliance</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a routerLink="master/city">
+            <a routerLink="master/branch">
               <i class="fa fa-circle-o"></i> Branch</a>
           </li>
           <li [routerLinkActive]="['active']">

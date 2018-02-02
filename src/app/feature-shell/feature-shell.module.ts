@@ -8,6 +8,7 @@ import { FeatureShellComponent } from './feature-shell.component';
 // import { InstitutionModule } from './institution/institution.module';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthService } from '../auth-shell/auth-shell.service';
 
 @NgModule({
     imports: [ 
@@ -18,7 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
       // InstitutionModule, 
       FeatureShellRoutingModule
     ],
-  
-   declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent]
+   declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent],
+   providers: [AuthService]
   })
   export class FeatureShellModule {}

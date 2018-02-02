@@ -256,7 +256,8 @@ export class UserComponent implements OnInit {
         "pageLength": 15,
         "oLanguage": {
           "sLengthMenu": "Show _MENU_ rows",
-          "sSearch": '<i class="fa fa-search"></i>',
+          // "sSearch": '<i class="fa fa-search"></i>',
+          "sSearch": "",
           // "sSearch": '<div class="input-group"><span class="glyphicon glyphicon-search"></span>',
           "sSearchPlaceholder": 'Search...'
           
