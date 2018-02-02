@@ -27,8 +27,14 @@ export class AddResourceMasterComponent implements OnInit
   }
 
   submitAddResourceMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'Resource added successfully'});
+    this.AddResourceMaster();
+    this.closeModal();
+  }
+
+  closeModal()
+  {
+    $("#closebtn").click();
   }
 
 ngOnInit()

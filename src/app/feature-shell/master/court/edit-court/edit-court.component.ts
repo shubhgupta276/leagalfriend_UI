@@ -26,8 +26,13 @@ export class EditCourtMasterComponent implements OnInit
   }
 
   submitEditCourtMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'Court updated successfully'});
+    this.EditCourtMaster();
+    this.closeModal();
+  }
+  closeModal()
+  {
+    $("#closebtn").click();
   }
 
 ngOnInit()
