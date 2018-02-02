@@ -28,7 +28,7 @@ export class AddCaseComponent implements OnInit
   Employee: KeyValue[] = CaseEmployee;
   CourtPlace: KeyValue[] = CaseCourtPlace;
   // emailValidationMessage: string = "Email address is required.";
-
+fillignDateValue:string;
   AddCaseUser() {
     this.addCaseForm = this.fb.group({
      
@@ -43,7 +43,7 @@ export class AddCaseComponent implements OnInit
       customerName: [1],
       remark: [null, Validators.required],
       branch: [1],
-      filingdate: [],
+      filingdate: [null, Validators.required],
       stage: [1],
       employee: [1],
       courtplace: [1],
@@ -60,10 +60,9 @@ export class AddCaseComponent implements OnInit
 
   submitAddCaseUser(data) {
     debugger;
-    $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
+    $.toaster({ priority : 'success', title : 'Success', message : 'Case added successfully'});
   }
-
-
+ 
 ngOnInit()
   {
     // this.editCaseForm.get('email').valueChanges.subscribe(
@@ -77,6 +76,11 @@ ngOnInit()
     //     }
     //   }
     // )
-
+    // var $this=this;
+    // $("body").on('change', '#FILING_DATE', function(e){
+    //   debugger
+    //   $this.addCaseForm.value.filingdate=$(this).val();
+    // })
+   
   }
 }

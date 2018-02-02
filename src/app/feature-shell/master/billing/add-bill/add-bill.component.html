@@ -1,0 +1,130 @@
+<div class="modal fade" id="addBillModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 5px;">
+            <div class="modal-header modal-header-addedit">
+                <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add Bill</h4>
+            </div>
+            <div style="width:120px;height:10%;background-color:black;"></div>
+            <div style="margin-top: -15px;" class="modal-body modal-body-adedit">
+                <!-- Create User Starts -->
+                <div class="row">
+                    <!-- <div class="col-md-12"> -->
+                    <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+                    <div>
+                        <div class="box-body widget-content">
+                            <form [formGroup]="addForm"  class="form-horizontal" (ngSubmit)="submitAddBill(addForm.value)">
+                                <div class="form-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active">
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label createUserLabel">Bank:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-9" [class.has-error]="addForm.get('bank').invalid 
+                                              &&  addForm.get('bank').touched">
+                                                    <!-- <input class="form-control" placeholder="Bank" formControlName="bank"> -->
+                                                    <select class="form-control" formControlName="bank">
+                                                        <option  value="">Select Bank</option>
+                                                        <option *ngFor="let item of arListBanks" value="{{item.name}}">
+                                                            {{item.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('bank').invalid &&  addForm.get('bank').touched">
+                                                    <small class="text-danger">
+                                                        <span>Bank name is required.</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-9" [class.has-error]="addForm.get('recourse').invalid 
+                                                    &&  addForm.get('recourse').touched">
+                                                    <select class="form-control" formControlName="recourse">
+                                                            <option value="">Select Recourse</option>
+                                                            <option *ngFor="let item of arListRecourse" value="{{item.name}}">
+                                                                {{item.name}}
+                                                            </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('recourse').invalid
+                                                     &&  addForm.get('recourse').touched">
+                                                    <small class="text-danger">
+                                                        <span>Recourse is required.</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label createUserLabel">Stage:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-9" [class.has-error]="addForm.get('stage').invalid 
+                                                        &&  addForm.get('stage').touched">
+                                                        <select class="form-control" formControlName="stage">
+                                                                <option value="">Select Stage</option>
+                                                                <option *ngFor="let item of arListStage" value="{{item.name}}">
+                                                                    {{item.name}}
+                                                                </option>
+                                                        </select>
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('stage').invalid &&
+                                                          addForm.get('stage').touched">
+                                                    <small class="text-danger">
+                                                        <span>Stage is required.</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label createUserLabel">Amount:
+                                                        <em class="astrick">*</em>
+                                                    </label>
+                                                    <div class="col-md-9" [class.has-error]="addForm.get('amount').invalid 
+                                                            &&  addForm.get('amount').touched">
+                                                        <input class="form-control" placeholder="Amount" formControlName="amount">
+                                                    </div>
+                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('amount').invalid &&
+                                                              addForm.get('amount').touched">
+                                                        <small class="text-danger">
+                                                            <span>Amount is required.</span>
+                                                        </small>
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer modal-footer-addedit">
+                                    <button type="button" class="btn btn-default btn-default-add-edit" data-dismiss="modal">Close</button>
+                                    <button type="submit" [disabled]="addForm.invalid" class="btn btn-modal-addedit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <!-- Create User ends -->
+            </div>
+            <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+                        
+                      </div> -->
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script>
+
+</script>

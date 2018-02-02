@@ -39,6 +39,8 @@
         <!-- /.box -->
 
         <div class="box">
+          <div>&nbsp;
+            <button class="btn btn-default" data-toggle="modal" data-target="#addBillModal">Add</button></div>
           <div class="box-header">
             <h3 class="box-title">Data Table With Full Features</h3>
           </div>
@@ -46,27 +48,61 @@
           <div class="box-body">
             <table id="example1" class="table table-bordered table-hover">
               <thead>
-              <tr>
-                <th>Bank</th>
-                <th>Recourse</th>
-                <th>Stage(s)</th>
-                <th>Amount</th>
-                <th>Action</th>
-              </tr>
+             
+                  <tr>
+                    <th>#</th>
+                      <th>Bank
+                        <select class="role input-sm" id="ddlBank"> 
+                          <option value="All">All</option>
+                          <option *ngFor="let item of arListBanks" value="{{item}}">{{item}}</option>
+                         </select>
+                      </th>
+                      <th>Recourse
+                          <select class="role input-sm" id="ddlRecourse">
+                              <option value="All">All</option>
+                              <option *ngFor="let item of arListRecourse" value="{{item}}">{{item}}</option>
+                          </select>
+                      </th>
+                      <th>Stage
+                          <select class="role input-sm" id="ddlStage">
+                              <option value="All">All</option>
+                              <option *ngFor="let item of arListStage" value="{{item}}">{{item}}</option>
+                          </select>
+                      </th>
+                      <th>Amount
+                          <select class="role input-sm" id="ddlAmount">
+                              <option value="All">All</option>
+                              <option *ngFor="let item of arListAmount" value="{{item}}">{{item}}</option>
+                          </select>
+                      </th>
+                      <th>Action</th>
+                    </tr>
+             
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr" data-toggle="modal" data-target="#modal-default" >
-                <td>{{item.Bank}}</td>
-                <td>{{item.Recourse}}
-                 
-                </td>
-                <td>{{item.Stage}}</td>
-                <td>{{item.Amount}}</td>
-                <td><a   title="Edit"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a title="delete"><i class="fa fa-trash"></i></a></td>
-              </tr>
-             
+                  <tr *ngFor="let item of arBillingData; let i=index">
+                      <td>{{i+1}}</td>
+                      <td>{{item.Bank}}</td>
+                      <td>{{item.Recourse}}</td>
+                      <td>{{item.Stage}}</td>
+                      <td>{{item.Amount}}</td>
+                      <td>
+                          <a href="javascript:void()" title="Edit;" data-toggle="modal" data-target="#editBillModal"><i class="fa fa-edit"></i></a>
+                      </td>
+                    </tr>
               </tbody>
-              
+              <tfoot>
+             
+                  <tr>
+                      <td>#</td>
+                      <th>Bank</th>
+                      <th>Recourse</th>
+                      <th>Stage</th>
+                      <th>Amount</th>
+                      <th>Action</th>
+                    </tr>
+             
+              </tfoot>
             </table>
           </div>
           <!-- /.box-body -->
@@ -79,3 +115,6 @@
   </section>
   <!-- /.content -->
 </div>
+
+<add-bill-modal></add-bill-modal>
+<edit-bill-modal></edit-bill-modal>
