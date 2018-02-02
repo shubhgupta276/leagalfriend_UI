@@ -1,374 +1,332 @@
-<div class="row">
-    <div class="col-md-12">
-        <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-        <div class="box">
-            <div class="box-body widget-content">
-                <form action="http://legalfriend.infinityfreeapp.com/Admin/Add_Edit_Case" class="form-horizontal" id="submit_form" enctype="multipart/form-data"
-                    method="POST" onsubmit="return submitcase();">
-                    <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-                    <input type="hidden" name="OLD_CASE_ID" id="OLD_CASE_ID" value="I/DRT/3">
-                    <fieldset id="firstdiv">
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Compliance: </label>
-                            <div class="col-md-4">
-                                <input type="checkbox" name="Compliance" id="Compliance" placeholder="Recourse" value="1" onclick="return compliance_single();">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Case ID:
-                                <em>*</em>
-                            </label>
-                            <div class="col-md-3">
-                                <input type="text" tabindex="1" class="form-control" name="CASE_ID" id="CASE_ID" placeholder="CASE ID" value="I/DRT/3" maxlength="100"
-                                    readonly="">
-                                <div class="error" style="display:none;" id="ERROR_CASE_ID">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <label for="enterprise" class="col-md-2">Branch: </label>
-                            <div class="col-md-3">
-                                <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id">
-
-                                    <option value="1" selected="">Delhi</option>
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_Branch_Id">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Court Case ID: </label>
-                            <div class="col-md-3">
-                                <input type="text" tabindex="1" class="form-control" name="COURT_CASE_ID" id="COURT_CASE_ID" placeholder="COURT_CASE_ID"
-                                    value="" maxlength="100">
-                                <div class="error" style="display:none;" id="ERROR_COURT_CASE_ID">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <label for="enterprise" class="col-md-2">Filing Date: </label>
-                            <div class="col-md-3">
-                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                    <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                        size="10" value="2017-11-07">
-                                    <div class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </div>
-                                </div>
-                                <div class="error" style="display:none;" id="ERROR_FILING_DATE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Recourse:
-                                <em>*</em>
-                            </label>
-                            <div class="col-md-3">
-                                <select name="RECOURSE_ID" tabindex="2" class="form-control select2me" id="RECOURSE_ID" onchange="return stagelist(this.value)">
-                                    <option value="">Select Recourse</option>
-
-                                    <option value="3">CRIMINAL CASE</option>
-
-
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_RECOURSE_ID">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <label for="enterprise" class="col-md-2">Stage:
-                                <em>*</em>
-                            </label>
-                            <div class="col-md-3">
-                                <select name="STAGE" tabindex="5" class="form-control select2me" id="STAGE" required="">
-                                    <option value="">Select Stage</option>
-
-                                    <option value="1">FOR SALE PERMISSION OF VEHICLE</option>
-
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_STAGE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="form-group">
-
-                            <label for="enterprise" class="col-md-2">Manager: </label>
-                            <div class="col-md-3">
-                                <select name="MANAGER" tabindex="3" class="form-control select2me" id="MANAGER">
-                                    <option value="">Select Manager</option>
-
-                                    <option value="13">Amrita Jaiswal</option>
-
-                                    <option value="14" selected="">Neha Arora</option>
-
-                                    <option value="24">test test</option>
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_MANAGER">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <label for="enterprise" class="col-md-2">Employee:
-                                <em>*</em>
-                            </label>
-                            <div class="col-md-3">
-                                <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE">
-                                    <option value="">Select Employee</option>
-
-                                    <option value="12" selected="">Manjul Sood (srcslawfirm@gmail.com)</option>
-
-
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_EMPLOYEE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Court: </label>
-                            <div class="col-md-3">
-                                <select name="COURT_ID" tabindex="5" class="form-control select2me" id="COURT_ID">
-                                    <option value="">Select Court</option>
-
-                                    <option value="1">7TH BHOIWADA COURT, DADAR</option>
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_COURT_ID">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <label for="enterprise" class="col-md-2">Court Place: </label>
-                            <div class="col-md-3">
-                                <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE">
-                                    <option value="">Select Place</option>
-
-                                    <option value="1">SEONI</option>
-
-
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_COURT_PLACE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">State: </label>
-                            <div class="col-md-3">
-                                <select name="STATE" tabindex="5" class="form-control select2me" id="STATE">
-                                    <option value="">Select State</option>
-
-                                    <option value="1">Andaman and Nicobar Islands</option>
-
-
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_STATE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <label for="enterprise" class="col-md-2">Opp Lawyer: </label>
-                            <div class="col-md-3">
-                                <input type="text" tabindex="13" class="form-control" name="OPP_LAYER" id="OPP_LAYER" placeholder="OPP_LAYER" value="" maxlength="100">
-                                <div class="error" style="display:none;" id="ERROR_OPP_LAYER">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Parent Case: </label>
-                            <div class="col-md-3">
-                                <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE">
-                                    <option value="">Select Parent Case</option>
-
-                                    <option value="1">I/RODA/1</option>
-
-                                    <option value="2">I/RODA/2</option>
-
-                                    <option value="3">I/DRT/3</option>
-
-                                    <option value="4">I/LKAD/4</option>
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_PARENT_CASE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <label for="enterprise" class="col-md-2">Child Case: </label>
-                            <div class="col-md-3">
-                                <input type="text" tabindex="13" class="form-control" name="CHILD_CASE_ID" id="CHILD_CASE_ID" placeholder="CHILD CASE" value=""
-                                    maxlength="100">
-                                <div class="error" style="display:none;" id="ERROR_CHILD_CASE_ID">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Next Hearing Date: </label>
-                            <div class="col-md-3">
-                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                    <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                        size="10" value="2017-12-22">
-                                    <div class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </div>
-                                </div>
-                                <div class="error" style="display:none;" id="ERROR_NEXT_HEARING_DATE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <label for="enterprise" class="col-md-2">Last Hearing Date: </label>
-                            <div class="col-md-3">
-                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                    <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                        size="10" value="2017-12-04">
-                                    <div class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </div>
-                                </div>
-                                <div class="error" style="display:none;" id="ERROR_LAST_HEARING_DATE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Customer Name:
-                                <em>*</em>
-                            </label>
-                            <div class="col-md-3">
-                                <!--input type="text" tabindex="6" class="form-control" name="CUSTOMER_NAME" id="CUSTOMER_NAME" value="23" maxlength="100" -->
-                                <select name="CUSTOMER_NAME" tabindex="7" class="form-control select2me" id="CUSTOMER_NAME">
-                                    <option value="">Select User</option>
-
-                                    <option value="23" selected="">Govind singh (gpsraj.govind@gmail.com)</option>
-                                </select>
-                                <div class="error" style="display:none;" id="ERROR_CUSTOMER_NAME">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-
-
-                            <label for="enterprise" class="col-md-2">Upload Document: </label>
-                            <div class="col-md-3">
-                                <input type="file" name="upload_document" id="upload_document" class="form-control">
-                                <div class="error" style="display:none;" id="ERROR_upload_document">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Remark:
-                                <em>*</em>
-                            </label>
-                            <div class="col-md-8">
-                                <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control">case filed12</textarea>
-                                <div class="error" style="display:none;" id="ERROR_REMARK">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Ground for closing file: </label>
-                            <div class="col-md-3">
-                                <textarea name="GROUND_OF_CLOSING" tabindex="17" id="GROUND_OF_CLOSING" class="form-control"></textarea>
-                                <div class="error" style="display:none;" id="ERROR_GROUND_OF_CLOSING">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <label for="enterprise" class="col-md-2">Completion Date: </label>
-                            <div class="col-md-3">
-                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                    <input type="text" tabindex="15" id="COMPLETION_DATE" name="COMPLETION_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                        size="10" value="">
-                                    <div class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </div>
-                                </div>
-                                <div class="error" style="display:none;" id="ERROR_COMPLETION_DATE">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterprise" class="col-md-2">Disposed off File No: </label>
-                            <div class="col-md-3">
-                                <input type="text" tabindex="13" class="form-control" name="DISPOSED_OFF_FILE_NO" id="DISPOSED_OFF_FILE_NO" placeholder="DISPOSED OFF FILE NO"
-                                    value="" maxlength="100">
-                                <div class="error" style="display:none;" id="ERROR_DISPOSED_OFF_FILE_NO">
-                                    <p class="error-block">
-                                        <span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2"></label>
-                            <div class="col-md-7">
-                                <input type="hidden" name="Id" id="Id" value="3">
-                                <input type="hidden" name="OLD_LAST_HEARING_DATE" id="OLD_LAST_HEARING_DATE" value="2017-12-04">
-                                <input type="hidden" name="OLD_NEXT_HEARING_DATE" id="OLD_NEXT_HEARING_DATE" value="2017-12-22">
-                                <input type="hidden" name="OLD_STAGE" id="OLD_STAGE" value="3">
-                                <input type="hidden" name="OLD_COURT_ID" id="OLD_COURT_ID" value="2120">
-
-                                <input type="hidden" name="tablename" id="tablename" value="tbl_CASE_MANAGEMENT">
-                                <input type="hidden" name="branchid" id="branchid" value="">
-                                <input type="hidden" name="baseurl" id="baseurl" value="http://legalfriend.infinityfreeapp.com/">
-                                <input type="hidden" name="caseID" id="caseID" value="I/DRT/3">
-
-                                <button type="submit" name="submit" value="submit" class="btn btn-primary">Save</button>
-                                <button type="submit" name="apply" value="apply" class="btn btn-primary">Apply</button>
-                                <!--button type="button" name="Back" value="Back" class="btn
-                                                green button-submit" onclick="return history.back();"> Back <i class="m-icon-swapright m-icon-white"></i> </button -->
-                                <a href="http://legalfriend.infinityfreeapp.com/Admin/ManageCase" role="button" class="btn btn-primary" data-toggle="modal">
-                                Back</a>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+<div class="modal fade" id="editCaseModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border-radius: 5px;">
+        <div class="modal-header modal-header-addedit">
+          <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Edit Case</h4>
         </div>
+        <div style="width:120px;height:10%;background-color:black;"></div>
+        <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+          <!-- Edit Case Starts -->
+          <div class="row">
+            <!-- <div class="col-md-12"> -->
+            <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+            <div>
+              <div class="box-body widget-content">
+                <form [formGroup]="editCaseForm" class="form-horizontal" (ngSubmit)="submitEditCaseUser(editCaseForm.value)">
+                  <div class="form-body">
+                    <div class="tab-content">
+                      <div class="tab-pane active">
+  
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Compliance:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Compliance" formControlName="compliance"> -->
+                            <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" onclick="return compliance_single();">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Case Id:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9" [class.has-error]="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
+                            <input class="form-control" placeholder="Case Id" formControlName="caseId">
+                          </div>
+                          <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
+                            <small class="text-danger">
+                              <span>Case Id is required.</span>
+                            </small>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
+                            <!-- <em class="astrick">*</em> -->
+                          </label>
+                          <div class="col-md-9">
+                            <input class="form-control" placeholder="Court Case Id" formControlName="courtCaseId">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Recourse" formControlName="recourse"> -->
+                            <select tabindex="2" formControlName="recourse" class="form-control select2me">
+                                <option *ngFor="let option of Resource" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Manager:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
+                            <select name="MANAGER" tabindex="3" class="form-control select2me" id="MANAGER" formControlName="manager">
+                                <option *ngFor="let option of Manager" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Court:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Court" formControlName="court"> -->
+                            <select name="COURT_ID" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="court">
+                                <option *ngFor="let option of Court" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">State:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="State" formControlName="state"> -->
+                            <select name="STATE" tabindex="5" class="form-control select2me" id="STATE" formControlName="state">
+                                <option *ngFor="let option of State" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Parent Case" formControlName="parentCase"> -->
+                            <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE" formControlName="parentCase">
+                                <option *ngFor="let option of ParentCases" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Next Hearing Date:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Next Hearing Date" formControlName="nextHearingDate"> -->
+                            <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                                    size="10" value="2017-12-22" formControlName="nextHearingDate">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Customer Name" formControlName="customerName"> -->
+                            <select name="CUSTOMER_NAME" tabindex="7" class="form-control select2me" id="CUSTOMER_NAME" formControlName="customerName">
+                                <option *ngFor="let option of CustomerName" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Remark:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9" [class.has-error]="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
+                              <!-- <input class="form-control" placeholder="Remark" formControlName="remark"> -->
+                              <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
+                            </div>
+                            <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
+                              <small class="text-danger">
+                                <span>Remark is required.</span>
+                              </small>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingfile"> -->
+                              <textarea name="GROUND_OF_CLOSING" tabindex="17" id="GROUND_OF_CLOSING" class="form-control" formControlName="groundforclosingfile"></textarea>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No.:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <input class="form-control" placeholder="Disposed off File No." formControlName="disposedoffFileNo">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Branch:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Branch" formControlName="branch"> -->
+                              <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id" formControlName="branch">
+                                <option *ngFor="let option of Branch" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Filing date:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Filing date" formControlName="filingdate"> -->
+                              <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                                    size="10" value="2017-11-07" formControlName="filingdate">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Stage:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Stage" formControlName="stage"> -->
+                              <select name="STAGE" tabindex="5" class="form-control select2me" id="STAGE" required="" formControlName="stage">
+                                <option *ngFor="let option of Stage" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Employee:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Employee" formControlName="employee"> -->
+                              <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE" formControlName="employee">
+                                <option *ngFor="let option of Employee" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Court place:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Court place" formControlName="courtplace"> -->
+                              <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE" formControlName="courtplace">
+                                <option *ngFor="let option of CourtPlace" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Opp Lawyer:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <input class="form-control" placeholder="Opp Lawyer" formControlName="oppLawyer">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Child Case:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <input class="form-control" placeholder="Child Case" formControlName="childCase">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Last Hearing Date" formControlName="lastHearingDate"> -->
+                              <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                                    size="10" value="2017-12-04" formControlName="lastHearingDate">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Upload Document" formControlName="uploadDocument"> -->
+                              <input type="file" name="upload_document" id="upload_document" class="form-control" formControlName="uploadDocument">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Completion Date:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Completion Date" formControlName="completionDate"> -->
+                              <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" tabindex="15" id="completionDate" name="completionDate" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                                    size="10" value="" formControlName="completionDate">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+
+                        <div class="form-group row">
+                          <div class="col-md-4">
+                            <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+                        Submit
+                        <i class="m-icon-swapright m-icon-white"></i>
+                      </button> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer modal-footer-addedit">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" [disabled]="editCaseForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+          <!-- Create User ends -->
+        </div>
+        <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+            
+          </div> -->
+  
+      </div>
+      <!-- /.modal-content -->
     </div>
-</div>
+    <!-- /.modal-dialog -->
+  </div>

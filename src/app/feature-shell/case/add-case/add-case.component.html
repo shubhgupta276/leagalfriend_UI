@@ -1,0 +1,278 @@
+<div class="modal fade" id="addCaseModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border-radius: 5px;">
+        <div class="modal-header modal-header-addedit">
+          <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Add Case</h4>
+        </div>
+        <div style="width:120px;height:10%;background-color:black;"></div>
+        <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+          <!-- Edit Case Starts -->
+          <div class="row">
+            <!-- <div class="col-md-12"> -->
+            <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+            <div>
+              <div class="box-body widget-content">
+                <form [formGroup]="addCaseForm" class="form-horizontal" (ngSubmit)="submitAddCaseUser(addCaseForm.value)">
+                  <div class="form-body">
+                    <div class="tab-content">
+                      <div class="tab-pane active">
+                        
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
+                            <!-- <em class="astrick">*</em> -->
+                          </label>
+                          <div class="col-md-9">
+                            <input class="form-control" placeholder="Court Case Id" formControlName="courtCaseId">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Recourse" formControlName="recourse"> -->
+                            <select tabindex="2" formControlName="recourse" class="form-control select2me">
+                                <option *ngFor="let option of Resource" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Manager:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
+                            <select name="MANAGER" tabindex="3" class="form-control select2me" id="MANAGER" formControlName="manager">
+                                <option *ngFor="let option of Manager" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Court:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Court" formControlName="court"> -->
+                            <select name="COURT_ID" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="court">
+                                <option *ngFor="let option of Court" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">State:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="State" formControlName="state"> -->
+                            <select name="STATE" tabindex="5" class="form-control select2me" id="STATE" formControlName="state">
+                                <option *ngFor="let option of State" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Parent Case" formControlName="parentCase"> -->
+                            <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE" formControlName="parentCase">
+                                <option *ngFor="let option of ParentCases" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Next Hearing Date:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Next Hearing Date" formControlName="nextHearingDate"> -->
+                            <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                                    size="10" value="2017-12-22" formControlName="nextHearingDate">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9">
+                            <!-- <input class="form-control" placeholder="Customer Name" formControlName="customerName"> -->
+                            <select name="CUSTOMER_NAME" tabindex="7" class="form-control select2me" id="CUSTOMER_NAME" formControlName="customerName">
+                                <option *ngFor="let option of CustomerName" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Remark:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9" [class.has-error]="addCaseForm.get('remark').invalid &&  addCaseForm.get('remark').touched">
+                              <!-- <input class="form-control" placeholder="Remark" formControlName="remark"> -->
+                              <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
+                            </div>
+                            <div class="col-sm-9 valodation-padding" *ngIf="addCaseForm.get('remark').invalid &&  addCaseForm.get('remark').touched">
+                              <small class="text-danger">
+                                <span>Remark is required.</span>
+                              </small>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Branch:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Branch" formControlName="branch"> -->
+                              <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id" formControlName="branch">
+                                <option *ngFor="let option of Branch" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Filing date:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Filing date" formControlName="filingdate"> -->
+                              <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                                    size="10" value="2017-11-07" formControlName="filingdate">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Stage:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Stage" formControlName="stage"> -->
+                              <select name="STAGE" tabindex="5" class="form-control select2me" id="STAGE" required="" formControlName="stage">
+                                <option *ngFor="let option of Stage" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Employee:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Employee" formControlName="employee"> -->
+                              <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE" formControlName="employee">
+                                <option *ngFor="let option of Employee" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Court place:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Court place" formControlName="courtplace"> -->
+                              <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE" formControlName="courtplace">
+                                <option *ngFor="let option of CourtPlace" [ngValue]="option.id">
+                                    {{ option.name }}
+                                  </option>
+                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Opp Lawyer:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <input class="form-control" placeholder="Opp Lawyer" formControlName="oppLawyer">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Child Case:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <input class="form-control" placeholder="Child Case" formControlName="childCase">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Last Hearing Date" formControlName="lastHearingDate"> -->
+                              <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                                    size="10" value="2017-12-04" formControlName="lastHearingDate">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
+                              <!-- <em class="astrick">*</em> -->
+                            </label>
+                            <div class="col-md-9">
+                              <!-- <input class="form-control" placeholder="Upload Document" formControlName="uploadDocument"> -->
+                              <input type="file" name="upload_document" id="upload_document" class="form-control" formControlName="uploadDocument">
+                            </div>
+                          </div>
+
+                        <div class="form-group row">
+                          <div class="col-md-4">
+                            <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+                        Submit
+                        <i class="m-icon-swapright m-icon-white"></i>
+                      </button> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer modal-footer-addedit">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" [disabled]="addCaseForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+          <!-- Create User ends -->
+        </div>
+        <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+            
+          </div> -->
+  
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
