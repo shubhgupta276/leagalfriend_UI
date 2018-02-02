@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const featureShellRoutes: Routes = [
     { path: 'admin', component: FeatureShellComponent, children:[
@@ -13,6 +14,7 @@ const featureShellRoutes: Routes = [
         { path: 'institution', loadChildren:'app/feature-shell/institution/institution.module#InstitutionModule' },
         { path: 'calendar', component: CalendarComponent  },
         { path: 'dashboard', component: DashboardComponent },
+        { path: 'profile', component: ProfileComponent },
         { path: '', redirectTo: 'user', pathMatch: 'full' }
     ]}
     ];

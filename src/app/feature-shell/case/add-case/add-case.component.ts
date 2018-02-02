@@ -8,14 +8,14 @@ declare var $;
 
 
 @Component({
-  selector: 'app-edit-case',
-  templateUrl:'../edit-case/edit-case.component.html'
+  selector: 'app-add-case',
+  templateUrl:'../add-case/add-case.component.html'
  //template:`<h1>test popup</h1>`
 })
-export class EditCaseComponent implements OnInit
+export class AddCaseComponent implements OnInit
 {
 
-  editCaseForm: FormGroup;
+  addCaseForm: FormGroup;
 
   Resource: KeyValue[] = CaseResource;
   Manager: KeyValue[] = CaseManager;
@@ -29,10 +29,10 @@ export class EditCaseComponent implements OnInit
   CourtPlace: KeyValue[] = CaseCourtPlace;
   // emailValidationMessage: string = "Email address is required.";
 
-  EditCaseUser() {
-    this.editCaseForm = this.fb.group({
-      compliance: [],
-      caseId: [null, Validators.required],
+  AddCaseUser() {
+    this.addCaseForm = this.fb.group({
+     
+    
       courtCaseId: [],
       recourse: [1],
       manager: [1],
@@ -42,8 +42,6 @@ export class EditCaseComponent implements OnInit
       nextHearingDate: [],
       customerName: [1],
       remark: [null, Validators.required],
-      groundforclosingfile: [],
-      disposedoffFileNo: [],
       branch: [1],
       filingdate: [],
       stage: [1],
@@ -53,17 +51,16 @@ export class EditCaseComponent implements OnInit
       childCase: [],
       lastHearingDate: [],
       uploadDocument: [],
-      completionDate: []
     });
   }
 
   constructor(private fb: FormBuilder) {
-    this.EditCaseUser();
+    this.AddCaseUser();
   }
 
-  submitEditCaseUser(data) {
+  submitAddCaseUser(data) {
     debugger;
-    $.toaster({ priority : 'success', title : 'Success', message : 'User updated successfully'});
+    $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
   }
 
 
