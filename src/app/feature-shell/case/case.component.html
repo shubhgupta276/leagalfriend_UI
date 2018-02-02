@@ -16,7 +16,7 @@
   <section class="content">
     <div class="row">
       <div class="col-xs-12">
-        
+
         <!-- /.box -->
 
         <div class="box">
@@ -25,15 +25,19 @@
           </div> -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_running" data-toggle="tab">Running</a></li>
-              <li><a href="#tab_completed" data-toggle="tab">Completed</a></li>
+              <li class="active">
+                <a href="#tab_running" data-toggle="tab">Running</a>
+              </li>
+              <li>
+                <a href="#tab_completed" data-toggle="tab">Completed</a>
+              </li>
             </ul>
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addCaseModal">Add Case</button>
+            <!-- <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addCaseModal">Add Case</button> -->
             <div class="tab-content">
-                <div class="tab-pane active" id="tab_running">
-                    <div class="box-body">
-                    <table id="example1" class="table table-bordered table-hover">
-                      <thead>
+              <div class="tab-pane active" id="tab_running">
+                <div class="box-body">
+                  <table id="example1" class="table table-bordered table-hover">
+                    <thead>
                       <tr>
                         <th>Case ID</th>
                         <th>Court Case ID</th>
@@ -45,67 +49,90 @@
                         <th>Employee</th>
                         <th>Action</th>
                       </tr>
-                      </thead>
-                      <tbody>
-                          <tr *ngFor="let items of jsonRunning">
-                              <td>{{items.CaseId}}</td>
-                              <td>{{items.CourtCaseID}}</td>
-                              <td>{{items.CustomerName}}</td>
-                              <td>{{items.RecourceType}}</td>
-                              <td>{{items.CaseStage}}</td>
-                              <td>{{items.NextHearingDate}}</td>
-                              <td>{{items.Branch}}</td>
-                              <td>{{items.Employee}}</td>
-                              <td><a data-toggle="modal" data-target="#editCaseModal" href="#"><i class="fa fa-edit"></i></a> / <a href="#"><i class="fa fa-history"></i></a></td>
-                            </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  </div>
-                  <div class="tab-pane" id="tab_completed">
-                      <div class="box-body">
-                          <table id="example2" class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                              <th>Court Case ID</th>
-                              <th>Case ID</th>
-                              <th>Filling Date</th>
-                              <th>Completion Date</th>
-                              <th>Branch Name</th>
-                              <th>Court</th>
-                              <th>Manager</th>
-                              <td>Action</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let items of jsonCompleted">                                    
-                                    <td>{{items.CourtCaseID}}</td>
-                                    <td>{{items.CaseId}}</td>
-                                    <td>{{items.FillingDate}}</td>
-                                    <td>{{items.CompletionDate}}</td>
-                                    <td>{{items.Branch}}</td>
-                                    <td>{{items.Court}}</td>
-                                    <td>{{items.Manager}}</td>
-                                    <td><a href="#"><i class="fa fa-gg"></i></a> / <a href="#"><i class="fa fa-history"></i></a></td>
-                                  </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                    </div>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let items of jsonRunning">
+                        <td>{{items.CaseId}}</td>
+                        <td>{{items.CourtCaseID}}</td>
+                        <td>{{items.CustomerName}}</td>
+                        <td>{{items.RecourceType}}</td>
+                        <td>{{items.CaseStage}}</td>
+                        <td>{{items.NextHearingDate}}</td>
+                        <td>{{items.Branch}}</td>
+                        <td>{{items.Employee}}</td>
+                        <td>
+                          <a data-toggle="modal" data-target="#editCaseModal" href="#">
+                            <i class="fa fa-edit"></i>
+                          </a> /
+                          <a data-toggle="modal" data-target="#modal-default1" href="#">
+                            <i class="fa fa-history"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="tab-pane" id="tab_completed">
+                <div class="box-body">
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Court Case ID</th>
+                        <th>Case ID</th>
+                        <th>Filling Date</th>
+                        <th>Completion Date</th>
+                        <th>Branch Name</th>
+                        <th>Court</th>
+                        <th>Manager</th>
+                        <td>Action</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let items of jsonCompleted">
+                        <td>{{items.CourtCaseID}}</td>
+                        <td>{{items.CaseId}}</td>
+                        <td>{{items.FillingDate}}</td>
+                        <td>{{items.CompletionDate}}</td>
+                        <td>{{items.Branch}}</td>
+                        <td>{{items.Court}}</td>
+                        <td>{{items.Manager}}</td>
+                        <td>
+                          <a href="#">
+                            <i class="fa fa-gg"></i>
+                          </a> /
+                          <a href="#">
+                            <i class="fa fa-history"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
           <!-- /.box-header -->
-          
+
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
       </div>
       <!-- /.col -->
-      
+
     </div>
     <!-- /.row -->
   </section>
   <!-- /.content -->
+  <div class="favicon">
+    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+      <span class="tooltip-text">Add User</span>
+    </div>
+    <a>
+      <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addCaseModal"></i>
+    </a>
+  </div>
   <app-edit-case></app-edit-case>
   <app-add-case></app-add-case>
+  <app-history-case></app-history-case>
 </div>

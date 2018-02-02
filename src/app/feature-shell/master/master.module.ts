@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MasterRoutingModule } from './master-routing.module';
-import { StateComponent } from './state/state.component'
-import { StageComponent } from './stage/stage.component'
-import { CityComponent } from './city/city.component'
-import { DistrictComponent } from './district/district.component'
-import { CourtComponent } from './court/court.component'
-import { BillingComponent } from './billing/billing.component'
-import { InstitutionComponent } from './institution/institution.component'
-import { ResourceComponent } from './resource/resource.component'
-import { ComplianceComponent } from './compliance/compliance.component'
+import { StateComponent } from './state/state.component';
+import { StageComponent } from './stage/stage.component';
+import { CityComponent } from './city/city.component';
+import { DistrictComponent } from './district/district.component';
+import { CourtComponent } from './court/court.component';
+import { BillingComponent } from './billing/billing.component';
+import { InstitutionComponent } from './institution/institution.component';
+import { BranchComponent } from './branch/branch.component';
+import { ResourceComponent } from './resource/resource.component';
+import { ComplianceComponent } from './compliance/compliance.component';
 import { AddCityMasterComponent} from './city/add-city/add-city.component';
 import { EditCityMasterComponent} from './city/edit-city/edit-city.component';
 import { AddDistrictMasterComponent} from './district/add-district/add-district.component';
@@ -30,7 +31,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         imports: [ MasterRoutingModule , CommonModule,FormsModule,ReactiveFormsModule],
         declarations: [ StateComponent, StageComponent, CityComponent,
             DistrictComponent, CourtComponent, BillingComponent, InstitutionComponent,
-            ResourceComponent, ComplianceComponent,AddCityMasterComponent,EditCityMasterComponent,
+            ResourceComponent, ComplianceComponent,BranchComponent,AddCityMasterComponent,EditCityMasterComponent,
             AddDistrictMasterComponent,EditDistrictMasterComponent,AddStateMasterComponent,
             EditStateMasterComponent,AddCourtMasterComponent,EditCourtMasterComponent,
             EditResourceMasterComponent,AddResourceMasterComponent,AddStageMasterComponent,
