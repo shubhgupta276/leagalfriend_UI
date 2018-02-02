@@ -171,7 +171,6 @@ export class CalendarComponent implements OnInit {
         $('#new-event').val('')
       })
       function BindUpcomingEvents(data) {
-debugger
         $('#divUpcomingEvents').empty();
         $.each(data, function (i, d) {
           if (d.start._d > new Date()) {
