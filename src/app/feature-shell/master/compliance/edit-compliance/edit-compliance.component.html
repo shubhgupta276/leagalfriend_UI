@@ -1,0 +1,108 @@
+<div class="modal fade" id="editComplianceMasterModal">
+        <div class="modal-dialog">
+          <div class="modal-content" style="border-radius: 5px;">
+            <div class="modal-header modal-header-addedit">
+              <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Edit Compliance</h4>
+            </div>
+            <div style="width:120px;height:10%;background-color:black;"></div>
+            <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+              <!-- Edit Case Starts -->
+              <div class="row">
+                <!-- <div class="col-md-12"> -->
+                <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+                <div>
+                  <div class="box-body widget-content">
+                    <form [formGroup]="editComplianceMasterForm" class="form-horizontal" (ngSubmit)="submitEditComplianceMaster(editComplianceMasterForm.value)">
+                      <div class="form-body">
+                        <div class="tab-content">
+                          <div class="tab-pane active">
+                              <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label createUserLabel">Resource:
+                                    <em class="astrick">*</em>
+                                  </label>
+                                  <div class="col-md-9">
+                                    <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
+                                    <select name="Resource" tabindex="3" class="form-control select2me" id="Resource" formControlName="resource">
+                                        <option *ngFor="let option of Resource" [ngValue]="option.id">
+                                            {{ option.name }}
+                                          </option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label createUserLabel">Stage:
+                                          <em class="astrick">*</em>
+                                        </label>
+                                        <div class="col-md-9">
+                                          <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
+                                          <select name="stage" tabindex="3" class="form-control select2me" id="stage" formControlName="stage">
+                                              <option *ngFor="let option of Stage" [ngValue]="option.id">
+                                                  {{ option.name }}
+                                                </option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label createUserLabel">Complaince:
+                                    <em class="astrick">*</em>
+                                    </label>
+                                    <div class="col-md-9" [class.has-error]="editComplianceMasterForm.get('complaince').invalid &&  editComplianceMasterForm.get('complaince').touched">
+                                    <input class="form-control" placeholder="Complaince" formControlName="complaince">
+                                    </div>
+                                    <div class="col-sm-9 valodation-padding" *ngIf="editComplianceMasterForm.get('complaince').invalid &&  editComplianceMasterForm.get('complaince').touched">
+                                    <small class="text-danger">
+                                        <span>Complaince is required.</span>
+                                    </small>
+                                    </div>
+                                </div>
+                              <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label createUserLabel">Status:
+                                    <em class="astrick">*</em>
+                                  </label>
+                                  <div class="col-md-9">
+                                    <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
+                                    <select name="Status" tabindex="3" class="form-control select2me" id="Status" formControlName="status">
+                                        <option *ngFor="let option of Status1" [ngValue]="option.id">
+                                            {{ option.name }}
+                                          </option>
+                                    </select>
+                                  </div>
+                                </div>
+                            <div class="form-group row">
+                              <div class="col-md-4">
+                                <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+                            Submit
+                            <i class="m-icon-swapright m-icon-white"></i>
+                          </button> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer modal-footer-addedit">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" [disabled]="editComplianceMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- </div> -->
+              </div>
+              <!-- Create User ends -->
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+                
+              </div> -->
+      
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+        
+      </div>
+      

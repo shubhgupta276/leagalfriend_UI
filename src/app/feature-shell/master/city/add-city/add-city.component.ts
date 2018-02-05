@@ -28,9 +28,15 @@ export class AddCityMasterComponent implements OnInit
   }
 
   submitAddCityMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'City added successfully'});
+    this.AddCityMaster();
+    this.closeModal();
   }
+  
+  closeModal()
+  {
+    $("#closebtn").click();
+  }  
 
 ngOnInit()
   {

@@ -6,19 +6,7 @@
       Billing Management
       <!-- <small>advanced tables</small> -->
     </h1>
-     
-    <input type="text" id="txtSearch">
-    <select name='length_change' id='length_change'>
-      <option value='10'>10</option>
-      <option value='5'>5</option>
-      <option value='15'>15</option>
-      <option value='20'>20</option>
-    </select>
-    <!-- <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="#">Tables</a></li>
-      <li class="active">Data tables</li>
-    </ol> -->
+   
   </section>
 
   <!-- Main content -->
@@ -29,25 +17,50 @@
         <!-- /.box -->
 
         <div class="box">
-          <div class="box-header">
-            <h3 class="box-title">Data Table With Full Features</h3>
-          </div>
+         
           <!-- /.box-header -->
           <div class="box-body">
             <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th>Bank</th>
-                  <th>Case ID</th>
-                  <th>Recourse</th>
-                  <th>Stage</th>
-                  <th>Amount</th>
+                  <th>#</th>
+                  <th>Bank
+                <select class="role input-sm" id="ddlBank"> 
+                    <option value="All">All</option>
+                    <option *ngFor="let item of arListBanks" value="{{item}}">{{item}}</option>
+                    </select>
+                  </th>
+                  <th>Case ID
+                      <select class="role input-sm" id="ddlCaseID">
+                          <option value="All">All</option>
+                          <option *ngFor="let item of arListCaseID" value="{{item}}">{{item}}</option>
+                      </select>
+                  </th>
+                  <th>Recourse
+                      <select class="role input-sm" id="ddlRecourse">
+                          <option value="All">All</option>
+                          <option *ngFor="let item of arListRecourse" value="{{item}}">{{item}}</option>
+                      </select>
+                  </th>
+                  <th>Stage
+                      <select class="role input-sm" id="ddlStage">
+                          <option value="All">All</option>
+                          <option *ngFor="let item of arListStage" value="{{item}}">{{item}}</option>
+                      </select>
+                  </th>
+                  <th>Amount
+                      <select class="role input-sm" id="ddlAmount">
+                          <option value="All">All</option>
+                          <option *ngFor="let item of arListAmount" value="{{item}}">{{item}}</option>
+                      </select>
+                  </th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 
-                <tr *ngFor="let item of arBillingData">
+                <tr *ngFor="let item of arBillingData; let i=index">
+                  <td>{{i}}</td>
                   <td>{{item.Bank}}</td>
                   <td>{{item.CaseID}}</td>
                   <td>{{item.Recourse}}</td>
@@ -61,6 +74,7 @@
               </tbody>
               <tfoot>
                   <tr>
+                     <td>#</td>
                       <th>Bank</th>
                       <th>Case ID</th>
                       <th>Recourse</th>

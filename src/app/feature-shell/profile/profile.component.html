@@ -1,11 +1,275 @@
+<style>
+  .content-left-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: #222d32;
+    color: #fff;
+    padding: 10px 15px;
+    display: block;
+    margin-bottom: 0px;
+  }
+
+  .panel-heading {
+    background-color: #222d32;
+  }
+
+  .panel-primary {
+    border-color: #222d32;
+  }
+
+  .btn-black {
+    background-color: #222d32;
+  }
+
+  .profile-pic-box {
+    border: 1px solid #222d32;
+    border-radius: 3px;
+  }
+</style>
 <div class="content-wrapper">
+  <!-- Content Header (Page header) -->
   <section class="content-header">
-    <h1>Profile</h1>
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <h1>
+           Profile
+        </h1>
+      </div>
+      <div class="col-md-8" style="margin-top:30px;">
+        <a style="float:right" *ngIf="!isEditMode" (click)="EditProfileData()" class="btn btn-primary btn-black">Edit Profile</a>
+      </div>
+    </div>
+
+
   </section>
 
+  <!-- Main content -->
   <section class="content">
+
     <div class="row">
-      
+      <div class="col-xs-12">
+        <!-- /.box -->
+        <div class="box">
+          <div class="box-body">
+
+            <div class="col-md-4 col-lg-3">
+              <div class="profile-pic-box">
+                <label class="content-left-label">Your Profile Photo</label>
+                <figure class="edit-profile-photo" style="height:300px">
+
+                  <img width="100%" height="100%" src="{{photoUrl}}" class="img-fluid" alt="">
+
+
+                </figure>
+                <!-- <figcaption style="background-color: #337ab7;">                  
+                  <a *ngIf="!isEditMode" (click)="EditProfileData()" class="btn btn-primary">Edit Profile</a>
+                    </figcaption> -->
+              </div>
+            </div>
+            <div *ngIf="!isEditMode" class="col-md-8 col-lg-9 mg-t-30 mg-md-t-0">
+              <form class="form-horizontal">
+                <div class="form-body">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">Login Information</div>
+                    <div class="panel-body">
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Username:
+                        </label>
+                        <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.UserName}}
+                        </label>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Email:
+                        </label>
+                        <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Email}}
+                        </label>
+                      </div>
+                      <div class="form-group row mg-b-0">
+                        <label class="col-sm-3 form-control-label">Password:</label>
+                        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
+                          <a href="">Change Password</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">Personal Information</div>
+                    <div class="panel-body">
+                      <div class="edit-profile-form">
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Firstname:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.FirstName}}
+                          </label>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Lastname:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.LastName}}
+                          </label>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Organisation:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Organisation}}
+                          </label>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Address Line 1:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.AddressLine1}}
+                          </label>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Address Line 2:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.AddressLine2}}
+                          </label>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Postal Code:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.PostalCode}}
+                          </label>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Mobile:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Mobile}}
+                          </label>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div *ngIf="isEditMode" class="col-md-8 col-lg-9 mg-t-30 mg-md-t-0">
+              <form [formGroup]="profileForm" class="form-horizontal" (ngSubmit)="SaveProfileData(profileForm.value)">
+                <div class="form-body">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">Login Information</div>
+                    <div class="panel-body">
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Username:
+                        </label>
+                        <div class="col-sm-8 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('UserName').invalid &&  profileForm.get('UserName').touched">
+                          <input class="form-control" formControlName="UserName" name="Save_UserName" placeholder="Enter username" type="text" [(ngModel)]="arrSaveProfileInfo.Save_UserName"
+                            required>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Email:
+                        </label>
+                        <div class="col-sm-8 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('Email').invalid &&  profileForm.get('Email').touched">
+                          <input class="form-control" name="Save_Email" formControlName="Email" placeholder="Enter email" type="email" [(ngModel)]="arrSaveProfileInfo.Save_Email">
+                        </div>
+                        <label class="col-sm-3 form-control-label">
+                        </label>
+                        <div class="col-sm-8" *ngIf="profileForm.get('Email').invalid &&  profileForm.get('Email').touched">
+                          <small class="text-danger">
+                            <span>{{emailValidationMessage}}</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row mg-b-0">
+                        <label class="col-sm-3 form-control-label">Password:</label>
+                        <div class="col-sm-8 mg-t-10 mg-sm-t-0">
+                          <a href="">Change Password</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">Personal Information</div>
+                    <div class="panel-body">
+                      <div class="edit-profile-form">
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Firstname:</label>
+                          <div class="col-sm-8 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('FirstName').invalid &&  profileForm.get('FirstName').touched">
+                            <input class="form-control" name="Save_FirstName" formControlName="FirstName" placeholder="Enter firstname" type="text" [(ngModel)]="arrSaveProfileInfo.Save_FirstName">
+                          </div>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Lastname:</label>
+                          <div class="col-sm-8 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('LastName').invalid &&  profileForm.get('LastName').touched">
+                            <input class="form-control" name="Save_LastName" formControlName="LastName" placeholder="Enter lastname" type="text" [(ngModel)]="arrSaveProfileInfo.Save_LastName">
+                          </div>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Organisation:</label>
+                          <div class="col-sm-8 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('Organisation').invalid &&  profileForm.get('Organisation').touched">
+                            <input class="form-control" name="Save_Organisation" formControlName="Organisation" placeholder="Enter location" type="text"
+                              [(ngModel)]="arrSaveProfileInfo.Save_Organisation">
+                          </div>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Address Line 1:</label>
+                          <div class="col-sm-8 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('AddressLine1').invalid &&  profileForm.get('AddressLine1').touched">
+                            <textarea class="form-control" name="Save_AddressLine1" formControlName="AddressLine1" placeholder="Enter some description of yourself"
+                              rows="3" [(ngModel)]="arrSaveProfileInfo.Save_AddressLine1"></textarea>
+                          </div>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row mg-b-0">
+                          <label class="col-sm-3 form-control-label">Address Line 2:</label>
+                          <div class="col-sm-9 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('AddressLine2').invalid &&  profileForm.get('AddressLine2').touched">
+                            <textarea class="form-control" name="Save_AddressLine2" formControlName="AddressLine2" placeholder="Enter some description of yourself"
+                              rows="3" [(ngModel)]="arrSaveProfileInfo.Save_AddressLine2"></textarea>
+                          </div>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group row mg-b-0">
+                          <label class="col-sm-3 form-control-label">Postal Code:</label>
+                          <div class="col-sm-9 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('PostalCode').invalid &&  profileForm.get('PostalCode').touched">
+                            <input class="form-control" name="Save_PostalCode" formControlName="PostalCode" placeholder="Enter location" type="text"
+                              [(ngModel)]="arrSaveProfileInfo.Save_PostalCode">
+                          </div>
+                        </div>
+                        <div class="form-group row mg-b-0">
+                          <label class="col-sm-3 form-control-label">Mobile:</label>
+                          <div class="col-sm-9 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('Mobile').invalid &&  profileForm.get('Mobile').touched">
+                            <input class="form-control" name="Save_Mobile" formControlName="Mobile" placeholder="Enter location" type="text" [(ngModel)]="arrSaveProfileInfo.Save_Mobile">
+                          </div>
+                        </div>
+                        <div class="form-group row mg-b-0">
+                          <label class="col-sm-3 form-control-label">Upload Photo:</label>
+                          <div class="col-sm-9 col-xl-8 mg-t-10 mg-sm-t-0">
+                            <input type="file" (change)="readPhotoUrl($event)">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-4">
+                            <button type="button" (click)="CancelEditProfile()" class="btn btn-default">
+                              Cancel
+                            </button>
+                            <button type="submit" [disabled]="profileForm.invalid" class="btn btn-primary btn-black">
+                              Save
+                            </button>
+                          </div>
+                        </div>
+                        <!-- form-group -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
     </div>
+    <!-- /.row -->
   </section>
+  <!-- /.content -->
 </div>

@@ -26,8 +26,14 @@ export class AddCourtMasterComponent implements OnInit
   }
 
   submitAddCourtMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'Court added successfully'});
+    this.AddCourtMaster();
+    this.closeModal();
+  }
+
+  closeModal()
+  {
+    $("#closebtn").click();
   }
 
 ngOnInit()

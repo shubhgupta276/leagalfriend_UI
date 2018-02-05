@@ -26,8 +26,14 @@ export class EditDistrictMasterComponent implements OnInit
   }
 
   submitEditDistrictMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'District updated successfully'});
+    this.EditDistrictMaster();
+    this.closeModal();
+  }
+
+  closeModal()
+  {
+    $("#closebtn1").click();
   }
 
 ngOnInit()

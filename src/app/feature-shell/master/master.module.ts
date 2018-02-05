@@ -7,6 +7,8 @@ import { CityComponent } from './city/city.component';
 import { DistrictComponent } from './district/district.component';
 import { CourtComponent } from './court/court.component';
 import { BillingComponent } from './billing/billing.component';
+import { AddBillingComponent } from './billing/add-bill/add-bill.component'
+import { EditBillingComponent } from './billing/edit-bill/edit-bill.component'
 import { InstitutionComponent } from './institution/institution.component';
 import { BranchComponent } from './branch/branch.component';
 import { ResourceComponent } from './resource/resource.component';
@@ -23,6 +25,12 @@ import { EditResourceMasterComponent} from './resource/edit-resource/edit-resour
 import { AddResourceMasterComponent} from './resource/add-resource/add-resource.component';
 import { AddStageMasterComponent} from './stage/add-stage/add-stage.component';
 import { EditStageMasterComponent} from './stage/edit-stage/edit-stage.component';
+import{ AddComplianceMasterComponent } from './compliance/add-compliance/add-compliance.component';
+import { EditComplianceMasterComponent } from './compliance/edit-compliance/edit-compliance.component';
+import { AddBranchMasterComponent } from './branch/add-branch/add-branch.component';
+import { EditBranchMasterComponent } from './branch/edit-branch/edit-branch.component';
+import { AddInstitutionMasterComponent} from './institution/add-institution/add-institution.component';
+import { EditInstitutionMasterComponent } from './institution/edit-institution/edit-institution.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -30,12 +38,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     {
         imports: [ MasterRoutingModule , CommonModule,FormsModule,ReactiveFormsModule],
         declarations: [ StateComponent, StageComponent, CityComponent,
-            DistrictComponent, CourtComponent, BillingComponent, InstitutionComponent,
+            DistrictComponent, CourtComponent, BillingComponent, AddBillingComponent,EditBillingComponent, InstitutionComponent,
             ResourceComponent, ComplianceComponent,BranchComponent,AddCityMasterComponent,EditCityMasterComponent,
             AddDistrictMasterComponent,EditDistrictMasterComponent,AddStateMasterComponent,
             EditStateMasterComponent,AddCourtMasterComponent,EditCourtMasterComponent,
             EditResourceMasterComponent,AddResourceMasterComponent,AddStageMasterComponent,
-            EditStageMasterComponent ]
+            EditStageMasterComponent,AddComplianceMasterComponent,EditComplianceMasterComponent,
+            AddBranchMasterComponent,EditBranchMasterComponent,AddInstitutionMasterComponent,EditInstitutionMasterComponent]
     }
 )    
 export class MasterModule {}

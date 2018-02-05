@@ -12,20 +12,23 @@ arr:[any];
   ngOnInit() {
     this.GetAllStage();
     $($.document).ready(function(){
-    
-      $('#example1').DataTable();
+      $("#example1").DataTable({
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
+        pageLength: 15,
+        oLanguage: {
+          sLengthMenu: "Show _MENU_ rows",
+          sSearch: "",
+          sSearchPlaceholder: "Search..."
+        }
+      });
     }
   );
-   
-    
-    $('#example2').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    });
   }
   GetAllStage()
   {
@@ -44,5 +47,9 @@ arr:[any];
 
      ]
   }
+
+  showEditModal(){
+    $('#editStageMasterModal').modal('show');
+    }
 
 }

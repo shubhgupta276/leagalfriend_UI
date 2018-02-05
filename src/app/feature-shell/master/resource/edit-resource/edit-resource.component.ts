@@ -27,8 +27,14 @@ export class EditResourceMasterComponent implements OnInit
   }
 
   submitEditResourceMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'Resource updated successfully'});
+    this.EditResourceMaster();
+    this.closeModal();
+  }
+
+  closeModal()
+  {
+    $("#closebtn1").click();
   }
 
 ngOnInit()
