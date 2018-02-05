@@ -1,17 +1,6 @@
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
-      City
-      <!-- <small>advanced tables</small> -->
-    </h1>
-    <!-- <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="#">Tables</a></li>
-      <li class="active">Data tables</li>
-    </ol> -->
-  </section>
-  <!-- Main content -->
+ <!-- Main content -->
   <section class="content">
     <div class="row">
       <div class="col-xs-12">
@@ -24,7 +13,25 @@
           </div> -->
           <!-- /.box-header -->
           <div class="box-body">
+            <div>
+              <div class="row">
+                <div class="col-sm-8" style="font-size:20px; font-weight: bold;">City</div>
+                <div class="col-sm-4" style="text-align: right">
+
+                  <label>Show
+                    <select class="input-sm" id="ddlLengthMenu">
+                    </select> rows
+                     &nbsp;&nbsp;
+                    <input type="text" id="txtSearch" class="input-sm" placeholder="Search...">
+                  </label>
+
+                </div>
+              
+              </div>
+            </div>
+            <!-- <section class="content-header">Table Header</section> -->
             <table id="example1" class="table table-bordered table-hover">
+
               <thead>
                 <tr>
                   <th>Bank City</th>
