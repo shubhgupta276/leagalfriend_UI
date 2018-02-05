@@ -217,3 +217,39 @@ tfoot {
 .profile-box{
     padding-top: 25px;
 }
+
+.box-body tr{
+    cursor: pointer;
+}
+.custom-search{
+    font: -webkit-mini-control;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 170px;
+    float: right;
+}
+.custom-label{
+    font-weight: normal;
+    /* float: right; */
+}
+.custom-label .input-sm{
+    width: auto;
+    border-radius: 5px;
+    height: 25px;
+    padding: 0px 5px;
+    margin: 2px 5px;
+    cursor: pointer;
+}
+.table-toolbar{
+    background-color: #ecf0f5;
+    padding-bottom: 8px;
+}
+.heading{
+    font-size: 24px;
+}
+.box{
+    border-top: none;
+}
+.box .box-body{
+    padding-top: 0px;
+}
