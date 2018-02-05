@@ -48,4 +48,8 @@ arr:[any];
      ]
   }
 
+  showEditModal(){
+    $('#editStageMasterModal').modal('show');
+    }
+
 }

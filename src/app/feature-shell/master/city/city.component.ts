@@ -57,6 +57,9 @@ export class CityComponent implements OnInit {
 
     });
   }
+  showEditModal(){
+    $('#editCityMasterModal').modal('show');
+    }
 
   getCityData() {
     this.arCityData.push(

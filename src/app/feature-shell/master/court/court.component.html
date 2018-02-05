@@ -33,7 +33,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr;let i=index"  data-toggle="modal" data-target="#editCourtMasterModal">
+              <tr *ngFor="let item of arr;let i=index"  (dblclick)="showEditModal()" data-target="#editCourtMasterModal">
                 <td>{{item.CourtName}}</td>
                 <td>{{item.CourtDesc}}
                 </td>
