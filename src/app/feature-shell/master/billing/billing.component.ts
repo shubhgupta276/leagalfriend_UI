@@ -21,7 +21,14 @@ export class BillingComponent implements OnInit {
     $($.document).ready(function () {
 
       var $table = $("#example1").DataTable({
-        "bSort" : false
+        "bSort": false,
+        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
+        pageLength: 15,
+        oLanguage: {
+          sLengthMenu: "Show _MENU_ rows",
+          sSearch: "",
+          sSearchPlaceholder: "Search..."
+        }
       });
       // {
       //   columns: [
@@ -98,7 +105,7 @@ export class BillingComponent implements OnInit {
 
       if ($.inArray(obj.Bank, this.arListBanks) < 0)
         this.arListBanks.push(obj.Bank);
-      
+
       if ($.inArray(obj.Recourse, this.arListRecourse) < 0)
         this.arListRecourse.push(obj.Recourse);
 
