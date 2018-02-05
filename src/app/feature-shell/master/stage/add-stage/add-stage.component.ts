@@ -38,8 +38,14 @@ export class AddStageMasterComponent implements OnInit
   }
 
   submitAddStageMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'Stage added successfully'});
+    this.AddStageMaster();
+    this.closeModal();
+  }
+
+  closeModal()
+  {
+    $("#closebtn").click();
   }
 
 ngOnInit()

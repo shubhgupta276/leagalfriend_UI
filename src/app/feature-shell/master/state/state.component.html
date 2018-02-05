@@ -11,26 +11,6 @@
       <li class="active">Data tables</li>
     </ol> -->
   </section>
-  <div class="modal fade in" id="modal-default" style="display: none; padding-right: 17px;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span></button>
-          <h4 class="modal-title">Default Modal</h4>
-        </div>
-        <div class="modal-body">
-          <p>One fine body…</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
   <!-- Main content -->
   <section class="content">
     <div class="row">
@@ -39,9 +19,9 @@
         <!-- /.box -->
 
         <div class="box">
-          <div class="box-header">
+          <!-- <div class="box-header">
             <h3 class="box-title">Data Table With Full Features</h3>
-          </div>
+          </div> -->
           <!-- /.box-header -->
           <div class="box-body">
             <table id="example1" class="table table-bordered table-hover">
@@ -53,7 +33,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr" data-toggle="modal" data-target="#modal-default">
+              <tr *ngFor="let item of arr" (dblclick)="showEditModal()" data-target="#editStateMasterModal">
                 <td>{{item.State}}</td>
                 <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
                 
@@ -72,8 +52,14 @@
     <!-- /.row -->
   </section>
   <!-- /.content -->
-  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addStateMasterModal">Add State</button>
-  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editStateMasterModal">Edit State</button>
+  <div class="favicon">
+      <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+        <span class="tooltip-text">Add State</span>
+      </div>
+      <a>
+        <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addStateMasterModal"></i>
+      </a>
+    </div>
   <app-add-state></app-add-state>
   <app-edit-state></app-edit-state>
 </div>

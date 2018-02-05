@@ -14,12 +14,23 @@ export class StateComponent implements OnInit {
     this.GetAllState();
     $($.document).ready(function(){
      
-      $('#example1').DataTable();
+      $("#example1").DataTable({
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
+        pageLength: 15,
+        oLanguage: {
+          sLengthMenu: "Show _MENU_ rows",
+          sSearch: "",
+          sSearchPlaceholder: "Search..."
+        }
+      });
     }
   );
-    this.ngOnInit();
-    
-    
   }
   GetAllState()
   {
@@ -60,5 +71,8 @@ export class StateComponent implements OnInit {
     ];
   }
   
+showEditModal(){
+  $('#editStateMasterModal').modal('show');
+  }
 
 }

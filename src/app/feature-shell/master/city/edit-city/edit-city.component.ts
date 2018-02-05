@@ -28,8 +28,14 @@ export class EditCityMasterComponent implements OnInit
   }
 
   submitEditCityMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'City updated successfully'});
+    this.EditCityMaster();
+    this.closeModal();
+  }
+
+  closeModal()
+  {
+    $("#closebtn1").click();
   }
 
 ngOnInit()

@@ -11,20 +11,28 @@ arr:[any];
 
   ngOnInit() {
     this.GetAllCourt();
-    $($.document).ready(function(){
-     
-      $('#example1').DataTable();
-    }
-  );
-    $('#example2').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
+    $($.document).ready(function() {
+      $("#example1").DataTable({
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
+        pageLength: 15,
+        oLanguage: {
+          sLengthMenu: "Show _MENU_ rows",
+          sSearch: "",
+          sSearchPlaceholder: "Search..."
+        }
+      });
     });
   }
+
+  showEditModal(){
+    $('#editCourtMasterModal').modal('show');
+    }
   GetAllCourt()
   {
        this.arr=[

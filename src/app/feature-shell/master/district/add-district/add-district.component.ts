@@ -28,8 +28,14 @@ export class AddDistrictMasterComponent implements OnInit
   }
 
   submitAddDistrictMaster(data) {
-    debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'District added successfully'});
+    this.AddDistrictMaster();
+    this.closeModal();
+  }
+  
+  closeModal()
+  {
+    $("#closebtn").click();
   }
 
 ngOnInit()
