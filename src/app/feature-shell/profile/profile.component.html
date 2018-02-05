@@ -1,70 +1,24 @@
-<style>
-  .content-left-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background-color: #222d32;
-    color: #fff;
-    padding: 10px 15px;
-    display: block;
-    margin-bottom: 0px;
-  }
-
-  .panel-heading {
-    background-color: #222d32;
-  }
-
-  .panel-primary {
-    border-color: #222d32;
-  }
-
-  .btn-black {
-    background-color: #222d32;
-  }
-
-  .profile-pic-box {
-    border: 1px solid #222d32;
-    border-radius: 3px;
-  }
-</style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
-    <div class="col-md-12">
-      <div class="col-md-4">
-        <h1>
-           Profile
-        </h1>
-      </div>
-      <div class="col-md-8" style="margin-top:30px;">
-        <a style="float:right" *ngIf="!isEditMode" (click)="EditProfileData()" class="btn btn-primary btn-black">Edit Profile</a>
-      </div>
-    </div>
-
-
+    <h1 style="float:left">
+      Profile
+    </h1>
+    <a style="float:right" *ngIf="!isEditMode" (click)="EditProfileData()" class="btn btn-primary btn-black">Edit Profile</a>
   </section>
-
   <!-- Main content -->
   <section class="content">
-
     <div class="row">
       <div class="col-xs-12">
         <!-- /.box -->
         <div class="box">
-          <div class="box-body">
-
+          <div class="box-body profile-box">
             <div class="col-md-4 col-lg-3">
               <div class="profile-pic-box">
                 <label class="content-left-label">Your Profile Photo</label>
                 <figure class="edit-profile-photo" style="height:300px">
-
                   <img width="100%" height="100%" src="{{photoUrl}}" class="img-fluid" alt="">
-
-
                 </figure>
-                <!-- <figcaption style="background-color: #337ab7;">                  
-                  <a *ngIf="!isEditMode" (click)="EditProfileData()" class="btn btn-primary">Edit Profile</a>
-                    </figcaption> -->
               </div>
             </div>
             <div *ngIf="!isEditMode" class="col-md-8 col-lg-9 mg-t-30 mg-md-t-0">
@@ -93,7 +47,6 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="panel panel-primary">
                     <div class="panel-heading">Personal Information</div>
                     <div class="panel-body">
@@ -139,14 +92,12 @@
                           <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Mobile}}
                           </label>
                         </div>
-
                       </div>
                     </div>
                   </div>
                 </div>
               </form>
             </div>
-
             <div *ngIf="isEditMode" class="col-md-8 col-lg-9 mg-t-30 mg-md-t-0">
               <form [formGroup]="profileForm" class="form-horizontal" (ngSubmit)="SaveProfileData(profileForm.value)">
                 <div class="form-body">
