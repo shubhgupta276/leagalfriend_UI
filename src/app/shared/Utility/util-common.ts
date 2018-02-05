@@ -5,7 +5,7 @@ export interface KeyValue {
 }
 
 export const UserRoles: KeyValue[] = [{ id: 1, name: "Manager" }, { id: 2, name: "Employee" }, { id: 3, name: "Client" }];
-export const UserStatus: KeyValue[] = [{ id: 1, name: "Active" }, { id: 2, name: "Suspended" }, { id: 3, name: "Deactive" }]
+export const UserStatus: KeyValue[] = [{ id: 1, name: "Active" }, { id: 2, name: "Suspended" }, { id: 3, name: "Deactive" }];
 
 export const CaseResource: KeyValue[] = [{ id: 1, name: "Criminal Case" }, { id: 2, name: "RODA" }, { id: 3, name: "RRC" }]
 export const CaseManager: KeyValue[] = [{ id: 1, name: "Neha Arora" }, { id: 2, name: "Amrita Jaiswal" }, { id: 3, name: "Test" }]

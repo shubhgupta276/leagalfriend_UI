@@ -25,7 +25,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="editForm.get('firstName').invalid &&  editForm.get('firstName').touched">
-                          <input class="form-control" placeholder="First Name" formControlName="firstName">
+                          <input class="form-control" OnlyString="true" placeholder="First Name" formControlName="firstName">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('firstName').invalid &&  editForm.get('firstName').touched">
                           <small class="text-danger">
@@ -38,7 +38,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="editForm.get('lastName').invalid &&  editForm.get('lastName').touched">
-                          <input class="form-control" placeholder="Last Name" formControlName="lastName">
+                          <input class="form-control" OnlyString="true" placeholder="Last Name" formControlName="lastName">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('lastName').invalid &&  editForm.get('lastName').touched">
                           <small class="text-danger">
@@ -90,7 +90,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="editForm.get('postalCode').invalid &&  editForm.get('postalCode').touched">
-                          <input class="form-control" placeholder="Postalcode/Zip" formControlName="postalCode">
+                          <input class="form-control" OnlyNumber="true" placeholder="Postalcode/Zip" formControlName="postalCode">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('postalCode').invalid &&  editForm.get('postalCode').touched">
                           <small class="text-danger">
@@ -112,37 +112,11 @@
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Password:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" [class.has-error]="editForm.get('password').invalid &&  editForm.get('password').touched">
-                          <input class="form-control" placeholder="Password" formControlName="password">
-                        </div>
-                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('password').invalid &&  editForm.get('password').touched">
-                          <small class="text-danger">
-                            <span>Password is required.</span>
-                          </small>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Confirm Password:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" [class.has-error]="editForm.get('confirmPassword').invalid &&  editForm.get('confirmPassword').touched">
-                          <input class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
-                        </div>
-                        <div class="col-sm-9" style="padding-left:15px" *ngIf="editForm.get('confirmPassword').invalid &&  editForm.get('confirmPassword').touched">
-                          <small class="text-danger">
-                            <span>Confirm password is required.</span>
-                          </small>
-                        </div>
-                      </div>
-                      <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Mobile No:
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="editForm.get('mobileNumber').invalid &&  editForm.get('mobileNumber').touched">
-                          <input class="form-control" placeholder="Mobile No" formControlName="mobileNumber">
+                          <input class="form-control" OnlyNumber="true" placeholder="Mobile No" formControlName="mobileNumber">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('mobileNumber').invalid &&  editForm.get('mobileNumber').touched">
                           <small class="text-danger">
