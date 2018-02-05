@@ -26,7 +26,6 @@ export class ProfileComponent implements OnInit {
         Save_AddressLine1: 'Delhi', Save_AddressLine2: 'Noida', Save_PostalCode: '110091', Save_Mobile: '9540084026'
       };
       this.AddUser();
-      debugger
   }
 
   AddUser() {
