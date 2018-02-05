@@ -47,4 +47,8 @@ export class InstitutionComponent implements OnInit {
       { InstituteName: "VIJAYA BANK" }
     ];
   }
+
+  showEditModal(){
+    $('#editInstitutionMasterModal').modal('show');
+    }
 }

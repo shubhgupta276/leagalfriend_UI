@@ -32,7 +32,7 @@ export class EditInstitutionMasterComponent implements OnInit
   }
 
   closeModal(){
-    $('#closeBtn').click();
+    $('#closeBtn1').click();
   }
 
 ngOnInit()

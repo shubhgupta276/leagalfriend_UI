@@ -30,6 +30,9 @@ arr:[any];
     }
   );
   }
+  showEditModal(){
+    $('#editComplianceMasterModal').modal('show');
+    }
   GetAllCompliance()
   {
     this.arr=[

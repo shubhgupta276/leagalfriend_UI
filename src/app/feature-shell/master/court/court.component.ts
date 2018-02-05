@@ -29,6 +29,10 @@ arr:[any];
       });
     });
   }
+
+  showEditModal(){
+    $('#editCourtMasterModal').modal('show');
+    }
   GetAllCourt()
   {
        this.arr=[

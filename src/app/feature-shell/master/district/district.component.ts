@@ -61,4 +61,8 @@ export class DistrictComponent implements OnInit {
       { District: "Amritsar" }
     ];
   }
+
+  showEditModal(){
+    $('#editDistrictMasterModal').modal('show');
+    }
 }

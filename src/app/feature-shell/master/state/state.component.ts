@@ -71,5 +71,8 @@ export class StateComponent implements OnInit {
     ];
   }
   
+showEditModal(){
+  $('#editStateMasterModal').modal('show');
+  }
 
 }
