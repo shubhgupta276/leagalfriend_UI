@@ -134,4 +134,8 @@ export class BillingComponent implements OnInit {
       { Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
     );
   }
+
+  showEditModal(){
+    $('#editBillModal').modal('show');
+    }
 }

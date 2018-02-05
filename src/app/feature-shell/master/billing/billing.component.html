@@ -60,7 +60,7 @@
              
               </thead>
               <tbody>
-                  <tr *ngFor="let item of arBillingData; let i=index" data-toggle="modal" data-target="#editBillModal">
+                  <tr *ngFor="let item of arBillingData; let i=index" (dblclick)="showEditModal()" data-target="#editBillModal">
                       <td>{{i+1}}</td>
                       <td>{{item.Bank}}</td>
                       <td>{{item.Recourse}}</td>
@@ -71,18 +71,6 @@
                       </td>
                     </tr>
               </tbody>
-              <tfoot>
-             
-                  <tr>
-                      <td>#</td>
-                      <th>Bank</th>
-                      <th>Recourse</th>
-                      <th>Stage</th>
-                      <th>Amount</th>
-                      <th>Action</th>
-                    </tr>
-             
-              </tfoot>
             </table>
           </div>
           <!-- /.box-body -->
@@ -95,7 +83,7 @@
   </section>
   <div class="favicon">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
-      <span class="tooltip-text">Add Branch</span>
+      <span class="tooltip-text">Add Bill</span>
     </div>
     <a>
       <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addBillModal"></i>
