@@ -32,6 +32,8 @@ export class SignupComponent implements OnInit {
   Status: KeyValue[] = UserStatus;
   emailValidationMessage = 'Email address is required.';
   passwordValidationMessage = 'Password is required.';
+  zipValidationMessage = 'Postal/Zip Code is required.';
+  mobileNoValidationMessage = 'Mobile number is required.';
   public isMailSent = false;
 
   constructor(private router: Router, private fb: FormBuilder, private _httpClient: HttpClient,
@@ -44,10 +46,8 @@ export class SignupComponent implements OnInit {
     this.signupForm.get('email').valueChanges.subscribe(
       (e) => {
         if (e !== '') {
-          this.signupForm.get('email').setValidators([Validators.email]);
           this.emailValidationMessage = 'Email format is not correct.';
         } else {
-          this.signupForm.get('email').setValidators([Validators.required]);
           this.emailValidationMessage = 'Email address is required.';
         }
       }
@@ -56,17 +56,34 @@ export class SignupComponent implements OnInit {
     this.signupForm.get('password').valueChanges.subscribe(
       (e) => {
         if (e !== '') {
-          this.signupForm.get('password')
-            .setValidators([Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)]);
           this.passwordValidationMessage = 'Password must use a combination' +
             ' of these: Atleast 1 upper case letters (A – Z),' +
             ' one lower case letters (a – z)' +
             ' one number (0 – 9)' +
             ' one special symbol (e.g. ‘!@#\$%\^&\’)' +
-            ' and minimum length should be 8 charector.';
+            ' and minimum length should be 8 characters.';
         } else {
-          this.signupForm.get('password').setValidators([Validators.required]);
           this.passwordValidationMessage = 'Password is required.';
+        }
+      }
+    );
+
+    this.signupForm.get('postalCode').valueChanges.subscribe(
+      (e) => {
+        if (e !== '') {
+          this.zipValidationMessage = 'Postal/Zip Code length is less then 4';
+        } else {
+          this.zipValidationMessage = 'Postal/Zip Code is required';
+        }
+      }
+    );
+
+    this.signupForm.get('mobileNumber').valueChanges.subscribe(
+      (e) => {
+        if (e !== '') {
+          this.mobileNoValidationMessage = 'Mobile number length is less then 10';
+        } else {
+          this.mobileNoValidationMessage = 'Mobile number is required.';
         }
       }
     );
@@ -93,8 +110,9 @@ export class SignupComponent implements OnInit {
       addressLine1: [null, Validators.required],
       addressLine2: [null, Validators.required],
       postalCode: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
-      email: [null, Validators.required],
-      password: [null, Validators.required],
+      email: [null, Validators.compose([Validators.required, Validators.email])],
+      password: [null, Validators.compose([Validators.required,
+        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
       confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [1],

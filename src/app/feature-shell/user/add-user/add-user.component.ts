@@ -19,7 +19,10 @@ export class AddUserComponent implements OnInit {
   public _user: any;
   Roles: KeyValue[] = UserRoles;
   Status: KeyValue[] = UserStatus;
-  emailValidationMessage: string = "Email address is required.";
+  emailValidationMessage = 'Email address is required.';
+  passwordValidationMessage = 'Password is required.';
+  zipValidationMessage = 'Postal/Zip Code is required.';
+  mobileNoValidationMessage = 'Mobile number is required.';
 
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.AddUser();
@@ -32,22 +35,18 @@ export class AddUserComponent implements OnInit {
       organisation: [null, Validators.required],
       addressLine1: [null, Validators.required],
       addressLine2: [null, Validators.required],
-      postalCode: [null, Validators.required],
-      email: [null, Validators.required],
-      password: [null, Validators.required],
-      confirmPassword: [null, Validators.compose([Validators.required, matchValidator("password")])],
-      mobileNumber: [null, Validators.required],
+      postalCode: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
+      email: [null, Validators.compose([Validators.required, Validators.email])],
+      password: [null, Validators.compose([Validators.required,
+        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
+      confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
+      mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [1],
       status: [1]
     });
   }
 
-
-  
-
-
   submitAddUser(data) {
-    debugger;
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;
@@ -57,7 +56,6 @@ export class AddUserComponent implements OnInit {
     userDetails.isClient = 1;
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        debugger;
         console.log(result);
         this._user = result;
       },
@@ -67,19 +65,50 @@ export class AddUserComponent implements OnInit {
     $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
   }
 
-  
   ngOnInit() {
     this.addForm.get('email').valueChanges.subscribe(
       (e) => {
-        if (e != "") {
-          this.addForm.get('email').setValidators([Validators.email]);
-          this.emailValidationMessage = "Email format is not correct.";
+        if (e !== '') {
+          this.emailValidationMessage = 'Email format is not correct.';
         } else {
-          this.addForm.get('email').setValidators([Validators.required]);
-          this.emailValidationMessage = "Email address is required.";
+          this.emailValidationMessage = 'Email address is required.';
         }
       }
-    )
-  }
+    );
 
+    this.addForm.get('password').valueChanges.subscribe(
+      (e) => {
+        if (e !== '') {
+          this.passwordValidationMessage = 'Password must use a combination' +
+            ' of these: Atleast 1 upper case letters (A – Z),' +
+            ' one lower case letters (a – z)' +
+            ' one number (0 – 9)' +
+            ' one special symbol (e.g. ‘!@#\$%\^&\’)' +
+            ' and minimum length should be 8 characters.';
+        } else {
+          this.passwordValidationMessage = 'Password is required.';
+        }
+      }
+    );
+
+    this.addForm.get('postalCode').valueChanges.subscribe(
+      (e) => {
+        if (e !== '') {
+          this.zipValidationMessage = 'Postal/Zip Code length is less then 4';
+        } else {
+          this.zipValidationMessage = 'Postal/Zip Code is required';
+        }
+      }
+    );
+
+    this.addForm.get('mobileNumber').valueChanges.subscribe(
+      (e) => {
+        if (e !== '') {
+          this.mobileNoValidationMessage = 'Mobile number length is less then 10';
+        } else {
+          this.mobileNoValidationMessage = 'Mobile number is required.';
+        }
+      }
+    );
+  }
 }

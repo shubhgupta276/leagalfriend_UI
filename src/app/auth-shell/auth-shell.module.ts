@@ -8,8 +8,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
-import { OnlyNumber } from '../shared/Directives/OnlyNumber';
-import { OnlyString } from '../shared/Directives/OnlyString';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -18,16 +17,16 @@ import { OnlyString } from '../shared/Directives/OnlyString';
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-      AuthShellRoutingModule ],
+      AuthShellRoutingModule,
+      SharedModule
+     ],
 
    declarations: [
        AuthShellComponent,
        LoginComponent,
        ForgotPasswordComponent,
        ResetPasswordComponent,
-       SignupComponent,
-       OnlyNumber,
-       OnlyString
+       SignupComponent
     ]
   })
   export class AuthShellModule {}
