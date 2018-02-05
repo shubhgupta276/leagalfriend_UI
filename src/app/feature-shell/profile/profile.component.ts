@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForm } from '@angular/forms';
+import {NgForm,FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserModel } from '../../shared/models/user/user.model';
 declare var $;
 @Component({
@@ -8,10 +8,14 @@ declare var $;
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  profileForm: FormGroup;
   arrEditProfileInfo: any;
   arrSaveProfileInfo:any;
   isEditMode:boolean=false;
-  constructor() {
+  emailValidationMessage: string = "Email address is required.";
+  photoUrl:string="assets/dist/img/user2-160x160.jpg";
+  prevPhotoUrl:string="assets/dist/img/user2-160x160.jpg";
+  constructor(private fb: FormBuilder) {
     this.arrEditProfileInfo =
       {
         UserName: 'Anup.Dubey1', Email: 'anup.dubey1@globallogic.com', FirstName: 'Anup', LastName: 'Dubey', Organisation: 'GlobalLogic',
@@ -21,10 +25,36 @@ export class ProfileComponent implements OnInit {
         Save_UserName: 'Anup.Dubey1', Save_Email: 'anup.dubey1@globallogic.com', Save_FirstName: 'Anup', Save_LastName: 'Dubey', Save_Organisation: 'GlobalLogic',
         Save_AddressLine1: 'Delhi', Save_AddressLine2: 'Noida', Save_PostalCode: '110091', Save_Mobile: '9540084026'
       };
+      this.AddUser();
       debugger
   }
 
+  AddUser() {
+    this.profileForm = this.fb.group({
+      UserName: [null, Validators.required],
+      Email:[null,Validators.required],
+      FirstName: [null, Validators.required],
+      LastName:[null,Validators.required],
+      Organisation: [null, Validators.required],
+      AddressLine1:[null,Validators.required],
+      AddressLine2:[null,Validators.required],
+      PostalCode:[null,Validators.required],
+      Mobile:[null,Validators.required],
+    });
+  }
+
   ngOnInit() {
+    this.profileForm.get('Email').valueChanges.subscribe(
+      (e) => {
+        if (e != "") {
+          this.profileForm.get('Email').setValidators([Validators.email]);
+          this.emailValidationMessage = "Email format is not correct.";
+        } else {
+          this.profileForm.get('Email').setValidators([Validators.required]);
+          this.emailValidationMessage = "Email address is required.";
+        }
+      }
+    )
   }
   EditProfileData()
   {
@@ -41,6 +71,7 @@ export class ProfileComponent implements OnInit {
     this.arrSaveProfileInfo.Save_AddressLine2 = this.arrEditProfileInfo.AddressLine2;
     this.arrSaveProfileInfo.Save_PostalCode = this.arrEditProfileInfo.PostalCode;
     this.arrSaveProfileInfo.Save_Mobile = this.arrEditProfileInfo.Mobile;
+    this.photoUrl = this.prevPhotoUrl;
     this.isEditMode=false;
   }
   SaveProfileData(form:NgForm)
@@ -55,8 +86,19 @@ export class ProfileComponent implements OnInit {
     this.arrEditProfileInfo.PostalCode = this.arrSaveProfileInfo.Save_PostalCode;
     this.arrEditProfileInfo.Mobile = this.arrSaveProfileInfo.Save_Mobile;
     this.isEditMode=false;
+    this.prevPhotoUrl = this.photoUrl;
     
   $.toaster({ priority : 'success', title : 'Success', message : 'Profile updated successfully'});
 
+  }
+  readPhotoUrl(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+  
+      reader.onload = (event:any) => {
+        this.photoUrl = event.target.result;
+      }  
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 }
