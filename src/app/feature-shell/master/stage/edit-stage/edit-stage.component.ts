@@ -45,7 +45,7 @@ export class EditStageMasterComponent implements OnInit
 
   closeModal()
   {
-    $("#closebtn").click();
+    $("#closebtn1").click();
   }
 
 ngOnInit()

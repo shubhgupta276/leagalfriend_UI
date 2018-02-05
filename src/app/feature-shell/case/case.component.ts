@@ -28,17 +28,14 @@ jsonCompleted:any;
     
     ];
    }
+   
+   showEditModal(){
+    $('#editCaseModal').modal('show');
+    }
 
   ngOnInit() {   
     setTimeout(function()
   {
-    $('#example1').DataTable({
-      'paging'      : true,
-      'lengthChange': true,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    });
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': true,
@@ -47,6 +44,24 @@ jsonCompleted:any;
       'autoWidth'   : false
     });
   },50);
+
+  $($.document).ready(function() {
+    $("#example1").DataTable({
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
+      pageLength: 15,
+      oLanguage: {
+        sLengthMenu: "Show _MENU_ rows",
+        sSearch: "",
+        sSearchPlaceholder: "Search..."
+      }
+    });
+  });
    
   }
 

@@ -51,6 +51,10 @@ arr:[any];
      
     ];
   }
+
+  showEditModal(){
+    $('#editResourceMasterModal').modal('show');
+    }
   
 
 }

@@ -31,6 +31,10 @@ export class UserComponent implements OnInit {
     this.GetAllCustomer();
   }
 
+  showEditModal(){
+    $('#editUserModal').modal('show');
+    }
+
   GetAllCustomer() {
     this.arr = [
       {
