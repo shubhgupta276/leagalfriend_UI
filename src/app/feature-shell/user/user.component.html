@@ -54,22 +54,22 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of arr; let i=index" (dblclick)="showEditModal()" data-target="#editUserModal">
+                <tr *ngFor="let user of arr; let i=index" (dblclick)="editUser(user)">
                   <td>{{i+1}}</td>
-                  <td>{{item.CustomerName}}</td>
-                  <td>{{item.Email}}</td>
-                  <td>{{item.Mobile}}</td>
-                  <td>{{item.UserType}}</td>
-                  <td *ngIf="item.Status==='Active'">
-                    <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                  <td>{{user.FirstName + ' ' + user.LastName}}</td>
+                  <td>{{user.Email}}</td>
+                  <td>{{user.MobileNumber}}</td>
+                  <td>{{user.UserType}}</td>
+                  <td *ngIf="user.Status==='Active'">
+                    <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{user.Status}}</button>
                   </td>
-                  <td *ngIf="item.Status==='Trial'">
-                    <button class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                  <td *ngIf="user.Status==='Trial'">
+                    <button class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{user.Status}}</button>
 
 
                   </td>
-                  <td *ngIf="item.Status==='Expired'">
-                    <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{item.Status}}</button>
+                  <td *ngIf="user.Status==='Expired'">
+                    <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{user.Status}}</button>
                   </td>
                 </tr>
               </tbody>
@@ -90,11 +90,11 @@
       <span class="tooltip-text">Add User</span>
     </div>
     <a>
-      <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#modal-default"></i>
+      <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addUserModal"></i>
     </a>
   </div>
   <app-add-user></app-add-user>
 
-  <app-edit-user></app-edit-user>
+  <app-edit-user [editForm]="editForm"></app-edit-user>
   <!-- /.content -->
 </div>

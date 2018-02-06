@@ -17,6 +17,7 @@
 .skin-black .main-header>.logo{
     background-color: #222d32;
     color: white;
+    border-right: none;
 }
 .skin-black .main-header>.logo:hover{
     background-color: #222d32;
@@ -213,3 +214,6 @@ tfoot {
     border-radius: 10px;
   }
 /* Case History Css End*/
+.profile-box{
+    padding-top: 25px;
+}

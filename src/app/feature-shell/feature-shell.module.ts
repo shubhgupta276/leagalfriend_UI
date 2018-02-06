@@ -11,15 +11,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthService } from '../auth-shell/auth-shell.service';
 
 @NgModule({
-    imports: [ 
-      // UserModule,
-      // BillingModule, 
-      // CaseModule, 
-      // MasterModule, 
-      // InstitutionModule, 
-      FeatureShellRoutingModule
-    ],
-   declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent],
-   providers: [AuthService]
-  })
-  export class FeatureShellModule {}
+  imports: [
+    // UserModule,
+    // BillingModule,
+    // CaseModule,
+    // MasterModule,
+    // InstitutionModule,
+    FeatureShellRoutingModule
+  ],
+  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent,
+  ],
+  providers: [AuthService]
+})
+export class FeatureShellModule { }
