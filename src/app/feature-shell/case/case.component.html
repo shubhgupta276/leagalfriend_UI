@@ -87,7 +87,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let items of jsonCompleted">
+                      <tr *ngFor="let items of jsonCompleted" (dblclick)="showEditModal()" data-target="#editCaseModal">
                         <td>{{items.CourtCaseID}}</td>
                         <td>{{items.CaseId}}</td>
                         <td>{{items.FillingDate}}</td>
@@ -96,10 +96,8 @@
                         <td>{{items.Court}}</td>
                         <td>{{items.Manager}}</td>
                         <td>
-                          <a href="#">
-                            <i class="fa fa-gg"></i>
-                          </a> /
-                          <a href="#">
+                          <a title="Edit"><i class="fa fa-edit"></i></a> /
+                          <a data-toggle="modal" data-target="#modal-default1" href="#">
                             <i class="fa fa-history"></i>
                           </a>
                         </td>

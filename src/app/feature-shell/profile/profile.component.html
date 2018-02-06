@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
   .content-left-label {
     font-size: 11px;
     text-transform: uppercase;
@@ -84,7 +84,7 @@
     cursor: pointer;
     float: right;
   }
-</style>
+</style> -->
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
@@ -93,13 +93,11 @@
   </section>
   <!-- Main content -->
   <section class="content">
-
     <div class="row">
       <div class="col-xs-12">
         <!-- /.box -->
         <div class="box">
-          <div class="box-body">
-
+          <div class="box-body profile-box">
             <div class="col-md-4 col-lg-3">
               <div class="profile-pic-box">
                 <label class="content-left-label">Your Profile Photo
@@ -111,7 +109,6 @@
                         </a>
                 </label>
                 <figure class="edit-profile-photo" style="height:300px">
-
                   <img width="100%" height="100%" src="{{photoUrl}}" class="img-fluid" alt="">
                   <figcaption class="show-upload" *ngIf="isShowUpload">
                     <div class="upload-btn-wrapper">
@@ -144,7 +141,6 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="panel panel-primary">
                     <div class="panel-heading">
                       Personal Information
@@ -195,7 +191,6 @@
                           <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Mobile}}
                           </label>
                         </div>
-
                       </div>
                     </div>
                     <div *ngIf="isEditMode" class="panel-body">

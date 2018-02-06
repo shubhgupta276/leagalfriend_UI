@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { UserModel } from '../../shared/models/user/user.model';
 declare var $;
 @Component({
   selector: 'app-profile',
@@ -27,20 +26,8 @@ export class ProfileComponent implements OnInit {
       Save_AddressLine1: 'Delhi', Save_AddressLine2: 'Noida', Save_PostalCode: '110091', Save_Mobile: '9540084026'
     };
     this.ProfileDetails();
-    debugger
   }
   ngOnInit() {
-    this.profileForm.get('Email').valueChanges.subscribe(
-      (e) => {
-        if (e != "") {
-          this.profileForm.get('Email').setValidators([Validators.email]);
-          this.emailValidationMessage = "Email format is not correct.";
-        } else {
-          this.profileForm.get('Email').setValidators([Validators.required]);
-          this.emailValidationMessage = "Email address is required.";
-        }
-      }
-    )
   }
   ProfileDetails() {
     this.profileForm = this.fb.group({
