@@ -217,16 +217,19 @@ tfoot {
 .profile-box{
     padding-top: 25px;
 }
-
 .box-body tr{
     cursor: pointer;
 }
 .custom-search{
     font: -webkit-mini-control;
-    border: 1px solid #ccc;
+    border: 1px solid darkgrey;
     border-radius: 5px;
     width: 170px;
     float: right;
+}
+.custom-search:focus, .custom-label select:focus, .custom-label select option:focus{
+    outline: aliceblue;
+    border-color: #222d32;
 }
 .custom-label{
     font-weight: normal;
@@ -241,15 +244,40 @@ tfoot {
     cursor: pointer;
 }
 .table-toolbar{
-    background-color: #ecf0f5;
-    padding-bottom: 8px;
+    /* margin-left: 0;
+    margin-right: 0;
+    border: 1px solid #f4f4f4;
+    padding-top: 5px;
+    padding-bottom: 1px; */
 }
 .heading{
-    font-size: 24px;
+    font-size: 22px;
+    padding-left: 26px;
+    color: #2c3b41;
+    font-size: 20px;
+}
+th, td{
+    padding-left: 12px !important;
+}
+.content{
+    padding-top: 25px;
 }
 .box{
     border-top: none;
+    margin-left: 2px;
 }
 .box .box-body{
-    padding-top: 0px;
+    padding: 17px;
+    padding-top: 10px;
+}
+.main-header .sidebar-toggle{
+    padding: 15px 11px;
+}
+.page-heading{
+    z-index: 2000;
+    position: relative;
+    margin-top: -42px;
+    font-size: 22px;
+    margin-left: 44px;
+    color: #2c3b41;
 }

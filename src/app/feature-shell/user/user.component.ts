@@ -12,6 +12,7 @@ declare var $;
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
+
 export class UserComponent implements OnInit {
   arr: User[];
   usertype = 'All';
@@ -32,8 +33,9 @@ export class UserComponent implements OnInit {
 
   GetAllCustomer() {
     this.arr = Users;
-
     $($.document).ready(function () {
+      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+      var selectedPageLength = 15;
       const $table = $('#example1').DataTable({
         columns: [
           { name: '#', orderable: true },
@@ -43,29 +45,38 @@ export class UserComponent implements OnInit {
           { name: 'Role', orderable: false },
           { name: 'Status', orderable: false }
         ],
-        // scrollY:        '65vh',
-        // scrollCollapse: true,
-        'lengthMenu': [[10, 15, 25, -1], [10, 15, 25, 'All']],
-        'pageLength': 15,
+        'lengthMenu': arLengthMenu,
+        'pageLength': selectedPageLength,
         'oLanguage': {
           'sLengthMenu': 'Show _MENU_ rows',
           'sSearch': '',
           'sSearchPlaceholder': 'Search...'
+        },
+        initComplete: function () {
+          var tableid = "example1";
+          var $rowSearching = $("#" + tableid + "_wrapper");
+          $rowSearching.find(".row:eq(0)").hide();
+
+          for (var i = 0; i < arLengthMenu[0].length; i++) {
+            $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+          }
+          $("#ddlLengthMenu").val(selectedPageLength);
+
+          $("#ddlLengthMenu").on("change", function () {
+            $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+          });
         }
-        // 'dom': '<'row'<'col-sm-12'f>>' + '<'row'<'col-sm-12'tr>>' +
-        // '<'row'<'col-sm-2'l><'col-sm-6'i><'col-sm-4'p>>'
-        // initComplete: function() {
-        //   $('#example1_wrapper')
-        //     .find('#example1_filter,.dataTables_length')
-        //     .hide();
-        // }
       });
-      // $('.dataTables_filter input').attr('placeholder', 'Search... ');
 
       $table.columns().every(function () {
-        // $('#txtSearch').on('keyup change', function() {
-        //   $table.search(this.value).draw();
-        // });
+        $('#txtSearch').on('keyup change', function () {
+          if ($table.search() !== this.value) {
+            $table.search(this.value).draw();
+          }
+        });
+      });
+
+      $table.columns().every(function () {
         // user filter
         $('#ddlUserFilter').on('change', function () {
            const status = $(this).val();
@@ -96,55 +107,10 @@ export class UserComponent implements OnInit {
               .draw();
           } else { }
         });
-
       });
-
-      // $('#ddlExample1Paging').on('change', function() {
-      //   $('#example1_wrapper')
-      //     .find('.dataTables_length')
-      //     .find('select')
-      //     .val($(this).val())
-      //     .change();
-      // });
     });
-
-    //   $('#example1').DataTable({
-    //     initComplete: function() {
-    //       this.api()
-    //         .columns([4,5])
-    //         .every(function() {
-    //           var column = this;
-    //           var select = $('<select><option value=''></option></select>')
-    //             .appendTo($(column.footer()).empty())
-    //             .on('change', function() {
-    //               var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-    //               column.search(val ? '^' + val + '$' : '', true, false).draw();
-    //             });
-
-    //           column
-    //             .data()
-    //             .unique()
-    //             .sort()
-    //             .each(function(d, j) {
-    //               select.append('<option value='' + d + ''>' + d + '</option>');
-    //             });
-    //         });
-    //     }
-    //   });
-    // });
-
-    // $('.statusFilter').click(function() {
-    //   $('.statusFilter').removeClass('active2');
-    //   $(this).addClass('active2');
-    // });
-
-    // $('.userFilter').click(function() {
-    //   $('.userFilter').removeClass('active2');
-    //   $(this).addClass('active2');
-    // });
   }
-
+  
   editUser(user) {
     this.createForm(user);
     $('#editUserModal').modal('show');
