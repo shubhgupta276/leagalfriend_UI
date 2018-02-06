@@ -1,3 +1,10 @@
+a{
+    color: #444;
+}
+a:hover{
+    color: #444;
+    cursor: pointer;
+}
 .skin-blue .main-header .navbar{
     background-color: #222d32;
 }
@@ -169,7 +176,7 @@ div.dataTables_wrapper div.dataTables_filter input{
     height: 47px;
     width: 51px;
     line-height: 49px;
-    background: #cc0000;
+    background: #d78329;
     display: block;
     border-radius: 50%;
     color: #fff;
@@ -245,10 +252,10 @@ tfoot {
 }
 .table-toolbar{
     /* margin-left: 0;
-    margin-right: 0;
     border: 1px solid #f4f4f4;
     padding-top: 5px;
     padding-bottom: 1px; */
+    margin-right: 0;
 }
 .heading{
     font-size: 22px;
@@ -260,7 +267,7 @@ th, td{
     padding-left: 12px !important;
 }
 .content{
-    padding-top: 25px;
+    padding-top: 28px;
 }
 .box{
     border-top: none;
@@ -280,4 +287,37 @@ th, td{
     font-size: 22px;
     margin-left: 44px;
     color: #2c3b41;
+    max-width: 300px;
+}
+.case-pagelength{
+    padding-left: 0;
+    /* padding-right: 0; */
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 7px;
+}
+.case-search{
+    padding-left: 0;
+    padding-right: 0;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 11px;
+}
+.pr-zero{
+    padding-right: 0px;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    color: white;
+    background-color: #222d32;
+}
+.pagination>.active>a, 
+.pagination>.active>a:focus, 
+.pagination>.active>a:hover, 
+.pagination>.active>span, 
+.pagination>.active>span:focus, 
+.pagination>.active>span:hover{
+    color: white;
+    background-color: #222d32;
+    border: #222d32;
+}
+.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover{
+    color: #222d32;
 }
