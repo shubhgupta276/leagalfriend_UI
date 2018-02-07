@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { CaseResource, CaseManager,CaseCourt,CaseState,ParentCase,CaseCustomerName,CaseBranch,CaseStage,CaseEmployee,CaseCourtPlace, KeyValue } from '../../../shared/Utility/util-common';
+import {
+  CaseResource, CaseManager, CaseCourt, CaseState, ParentCase, CaseCustomerName,
+  CaseBranch, CaseStage, CaseEmployee, CaseCourtPlace, KeyValue
+} from '../../../shared/Utility/util-common';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
 
 declare var $;
@@ -9,11 +12,9 @@ declare var $;
 
 @Component({
   selector: 'app-add-case',
-  templateUrl:'../add-case/add-case.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-case/add-case.component.html'
 })
-export class AddCaseComponent implements OnInit
-{
+export class AddCaseComponent implements OnInit {
 
   addCaseForm: FormGroup;
 
@@ -27,12 +28,11 @@ export class AddCaseComponent implements OnInit
   Stage: KeyValue[] = CaseStage;
   Employee: KeyValue[] = CaseEmployee;
   CourtPlace: KeyValue[] = CaseCourtPlace;
-  // emailValidationMessage: string = "Email address is required.";
-fillignDateValue:string;
+  fillignDateValue: string;
   AddCaseUser() {
     this.addCaseForm = this.fb.group({
-     
-    
+
+
       courtCaseId: [],
       recourse: [1],
       manager: [1],
@@ -59,28 +59,17 @@ fillignDateValue:string;
   }
 
   submitAddCaseUser(data) {
-    debugger;
-    $.toaster({ priority : 'success', title : 'Success', message : 'Case added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'Case added successfully' });
   }
- 
-ngOnInit()
-  {
-    // this.editCaseForm.get('email').valueChanges.subscribe(
-    //   (e) => {
-    //     if (e != "") {
-    //       this.editCaseForm.get('email').setValidators([Validators.email]);
-    //       this.emailValidationMessage = "Email format is not correct.";
-    //     } else {
-    //       this.editCaseForm.get('email').setValidators([Validators.required]);
-    //       this.emailValidationMessage = "Email address is required.";
-    //     }
-    //   }
-    // )
-    // var $this=this;
-    // $("body").on('change', '#FILING_DATE', function(e){
-    //   debugger
-    //   $this.addCaseForm.value.filingdate=$(this).val();
-    // })
-   
+
+  ngOnInit() {
+    const self = this;
+    $(document).ready(function () {
+      $('.input-group.date').datepicker().on('changeDate', function (ev) {
+        const attrName = $(this).find('input').attr('formControlName');
+        const attrValue = $(this).find('input').val();
+        self.addCaseForm.controls[attrName].setValue(attrValue);
+      });
+    });
   }
 }
