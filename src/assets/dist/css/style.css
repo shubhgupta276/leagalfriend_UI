@@ -87,6 +87,34 @@ background-color: red;
     margin-left: 10px !important;
     opacity:1 !important;
 }
+.timeline:before{
+    position: relative;
+}
+.panel-body {
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-bottom: 2px;
+    padding-left: 9px;
+}
+				
+.panel-headingCaseHistory {
+    color: #fff;
+    background-color: #aad061;
+    border-bottom: 1px solid transparent;
+	padding: 10px 15px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+	}
+
+.btn-signup {
+    background-color: #222d32 !important;
+    color: white !important;
+    border-color: #ddd !important;
+    margin-right: -15px !important;
+    margin-left: 10px !important;
+    opacity:1 !important;
+    margin-left: 64px !important;
+}
 .close-addedit{
     color:white !important;
     font-weight: 400 !important;
@@ -211,9 +239,13 @@ tfoot {
 /* Case History Css Start*/
 .case-timeline li {
     cursor: pointer;
-    border-radius: 10px;
+    /* border-radius: 4px; */
   }
 /* Case History Css End*/
 .profile-box{
     padding-top: 25px;
+}
+.forget-btn
+{
+    margin-bottom: 0px;
 }
