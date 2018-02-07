@@ -1,55 +1,52 @@
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
-      User Management
-    </h1>
-  </section>
-
+  <div class="page-heading">
+    User Management
+  </div>
   <!-- Main content -->
   <section class="content">
     <div class="row">
       <div class="col-xs-12">
         <!-- /.box -->
         <div class="box">
-          <!-- <div class="box-header">
-            <h3 class="box-title">Users</h3>
-          </div> -->
-          <!-- <div class="btn-group m-b-12">
-            <input type="text" placeholder="Search" id="txtSearch" class="form-control">
-
-            <select id="ddlExample1Paging" class="input-sm">
-              <option value="10">10</option><option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-            
-          </div> -->
-          
-          <!-- /.box-header -->
           <div class="box-body">
+            <div>
+              <div class="row table-toolbar">
+                <div class="col-sm-4 heading">Users</div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                  <label class="custom-label">Show
+                    <select class="input-sm" id="ddlLengthMenu">
+                    </select> rows
+                  </label>
+                </div>
+                <div class="col-sm-2">
+                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
+                </div>
+              </div>
+            </div>
             <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th class="padding-bottom">#</th>
+                  <th class="padding-bottom">Id</th>
                   <th class="padding-bottom">Name</th>
                   <th class="padding-bottom">Email</th>
                   <th class="padding-bottom">Phone</th>
-                  <th >Role
-                      <select id="ddlUserFilter" class="role input-sm">
-                          <option value="All">All</option>
-                          <option value="Employee">Employee</option>
-                          <option value="Manager">Manager</option>
-                          <option value="Client">Client</option>
-                        </select>
+                  <th>Role
+                    <select id="ddlUserFilter" class="role input-sm">
+                      <option value="All">All</option>
+                      <option value="Employee">Employee</option>
+                      <option value="Manager">Manager</option>
+                      <option value="Client">Client</option>
+                    </select>
                   </th>
                   <th>Status
-                      <select id="ddlStatusFilter" class="status input-sm">
-                          <option value="All">All</option>
-                          <option value="Active">Active</option>
-                          <option value="Expired">Expired</option>
-                          <option value="Trial">Trial</option>
-                        </select>
+                    <select id="ddlStatusFilter" class="status input-sm">
+                      <option value="All">All</option>
+                      <option value="Active">Active</option>
+                      <option value="Expired">Expired</option>
+                      <option value="Trial">Trial</option>
+                    </select>
                   </th>
                 </tr>
               </thead>

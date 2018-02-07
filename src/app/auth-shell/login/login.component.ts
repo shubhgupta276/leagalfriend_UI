@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('access_token', accessToken);
             localStorage.setItem('client_id', clientId);
             localStorage.setItem('user_id', data.email);
-            this.router.navigate(['admin']);
+            this.router.navigate(['admin/user']);
           }
         },
         err => {
@@ -114,37 +114,5 @@ export class LoginComponent implements OnInit {
     forgotPassword():void{      
       this.router.navigate(['forgotpassword']);
     }
-
-    // getToken(){
-    //   const _url: string = "http://13.126.129.8:7777/login";
-    //   const body = {
-    //     "username":"kaushal.ng12",
-    //     "password":"kaushal@1234"
-    //     }
-    //   this._httpClient.post(_url,body, { observe: 'response' }).subscribe(result => {
-    //     // Read the result field from the JSON response.
-    //     this._login = result;
-    //     console.log(result);
-    //   });
-    //   // const _url: string = "http://13.126.129.8:7777/users/user";
-    //   // const body = 
-    //   //   {
-    //   //     "email": "kaushal.ng17",
-    //   //     "organization": "gl",
-    //   //     "password": "kaushal@1234",
-    //   //     "firstName": "kaushalNand",
-    //   //     "lastName": "Gairola",
-    //   //     "login" : {
-    //   //      "userLoginId" : "kaushal.ng17",
-    //   //      "password" : "kaushal@1234"
-    //   //     },
-    //   //     "isClient" : 1
-    //   //     };
-        
-    //   // this._httpClient.post(_url,body, { observe: 'response' }).subscribe(result => {
-    //   //   // Read the result field from the JSON response.
-    //   //   this._login = result;
-    //   //   console.log(result);
-    //   // });
-    // }
+    
 }
