@@ -1,0 +1,85 @@
+.content-left-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: #222d32;
+  color: #fff;
+  padding: 10px 15px;
+  display: block;
+  margin-bottom: 0px;
+}
+
+.panel-heading {
+  background-color: #222d32;
+}
+
+.panel-primary {
+  border-color: #222d32;
+}
+
+.btn-black {
+  background-color: #222d32;
+  border-color: #222d32;
+}
+
+.profile-pic-box {
+  border: 1px solid #222d32;
+  border-radius: 3px;
+}
+
+.edit-profile-photo {
+  position: relative;
+}
+
+.edit-profile-photo figcaption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+}
+
+/* .edit-profile-photo:hover figcaption,
+.edit-profile-photo:focus figcaption {
+  opacity: 1;
+} */
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn-edit {
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  float: right;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.show-upload
+{
+  opacity: 1 !important;
+}
+.btn-close{
+  color:#e86767;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  float: right;
+}
