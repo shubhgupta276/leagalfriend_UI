@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-default">
+<div class="modal fade" id="addUserModal">
   <div class="modal-dialog">
     <div class="modal-content" style="border-radius: 5px;">
       <div class="modal-header modal-header-addedit">
@@ -25,7 +25,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addForm.get('firstName').invalid &&  addForm.get('firstName').touched">
-                          <input class="form-control" placeholder="First Name" formControlName="firstName">
+                          <input class="form-control" OnlyString="true" placeholder="First Name" formControlName="firstName">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('firstName').invalid &&  addForm.get('firstName').touched">
                           <small class="text-danger">
@@ -38,7 +38,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addForm.get('lastName').invalid &&  addForm.get('lastName').touched">
-                          <input class="form-control" placeholder="Last Name" formControlName="lastName">
+                          <input class="form-control" OnlyString="true" placeholder="Last Name" formControlName="lastName">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('lastName').invalid &&  addForm.get('lastName').touched">
                           <small class="text-danger">
@@ -90,7 +90,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addForm.get('postalCode').invalid &&  addForm.get('postalCode').touched">
-                          <input class="form-control" placeholder="Postalcode/Zip" formControlName="postalCode">
+                          <input class="form-control" OnlyNumber="true" placeholder="Postalcode/Zip" formControlName="postalCode">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('postalCode').invalid &&  addForm.get('postalCode').touched">
                           <small class="text-danger">
@@ -142,7 +142,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addForm.get('mobileNumber').invalid &&  addForm.get('mobileNumber').touched">
-                          <input class="form-control" placeholder="Mobile No" formControlName="mobileNumber">
+                          <input class="form-control" OnlyNumber="true" placeholder="Mobile No" formControlName="mobileNumber">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('mobileNumber').invalid &&  addForm.get('mobileNumber').touched">
                           <small class="text-danger">

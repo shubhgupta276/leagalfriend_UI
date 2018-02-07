@@ -8,16 +8,19 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-    imports: [ 
+    imports: [
       HttpClientModule,
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-      AuthShellRoutingModule ],
-  
+      AuthShellRoutingModule,
+      SharedModule
+     ],
+
    declarations: [
        AuthShellComponent,
        LoginComponent,

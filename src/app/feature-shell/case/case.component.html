@@ -51,15 +51,15 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let items of jsonRunning" (dblclick)="showEditModal()" data-target="#editCaseModal">
+                      <tr *ngFor="let items of caseRunning" (dblclick)="showEditModal(items)">
                         <td>{{items.CaseId}}</td>
-                        <td>{{items.CourtCaseID}}</td>
-                        <td>{{items.CustomerName}}</td>
-                        <td>{{items.RecourceType}}</td>
-                        <td>{{items.CaseStage}}</td>
+                        <td>{{items.CourtCaseId}}</td>
+                        <td>{{items.CustomerName.name}}</td>
+                        <td>{{items.Resource.name}}</td>
+                        <td>{{items.CaseStage.name}}</td>
                         <td>{{items.NextHearingDate}}</td>
-                        <td>{{items.Branch}}</td>
-                        <td>{{items.Employee}}</td>
+                        <td>{{items.Branch.name}}</td>
+                        <td>{{items.Employee.name}}</td>
                         <td>
                           <a title="Edit"><i class="fa fa-edit"></i></a> /
                           <a data-toggle="modal" data-target="#modal-default1" href="#">
@@ -87,19 +87,17 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let items of jsonCompleted">
-                        <td>{{items.CourtCaseID}}</td>
+                      <tr *ngFor="let items of caseCompleted" (dblclick)="showEditModal(items)">
+                        <td>{{items.CourtCaseId}}</td>
                         <td>{{items.CaseId}}</td>
                         <td>{{items.FillingDate}}</td>
                         <td>{{items.CompletionDate}}</td>
-                        <td>{{items.Branch}}</td>
-                        <td>{{items.Court}}</td>
-                        <td>{{items.Manager}}</td>
+                        <td>{{items.Branch.name}}</td>
+                        <td>{{items.Court.name}}</td>
+                        <td>{{items.Manager.name}}</td>
                         <td>
-                          <a href="#">
-                            <i class="fa fa-gg"></i>
-                          </a> /
-                          <a href="#">
+                          <a title="Edit"><i class="fa fa-edit"></i></a> /
+                          <a data-toggle="modal" data-target="#modal-default1" href="#">
                             <i class="fa fa-history"></i>
                           </a>
                         </td>
@@ -130,7 +128,7 @@
       <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addCaseModal"></i>
     </a>
   </div>
-  <app-edit-case></app-edit-case>
+  <app-edit-case [editCaseForm]="editCaseForm"></app-edit-case>
   <app-add-case></app-add-case>
   <app-history-case></app-history-case>
 </div>

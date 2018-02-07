@@ -1,447 +1,134 @@
-<!-- <div class="row">
-  <div class="col-md-12">
-    <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-    <div class="box">
-      <div class="alert alert-danger display-none" id="alertclass"></div>
-      <div class="box-body widget-content">
-        <form [formGroup]="signupForm" class="form-horizontal" (ngSubmit)="registerUser(signupForm.value)">
-          <div class="form-body">
-            <div class="tab-content">
-              <div class="tab-pane active">
-                <div class="form-group">
-                  <label class="col-md-2 control-label">First Name:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="First Name" formControlName="firstName">
-                    <div class="error" *ngIf="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
-                      <p class="error-block">
-                        <span>First name is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Last Name:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Last Name" formControlName="lastName">
-                    <div class="error" *ngIf="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
-                      <p class="error-block">
-                        <span>Last name is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Organisation:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Organisation" formControlName="organisation">
-                    <div class="error" *ngIf="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
-                      <p class="error-block">
-                        <span>Organisation is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Address Line1:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Address Line1" formControlName="addressLine1">
-                    <div class="error" *ngIf="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
-                      <p class="error-block">
-                        <span>Address line1 is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Address Line2:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Address Line2" formControlName="addressLine2">
-                    <div class="error" *ngIf="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
-                      <p class="error-block">
-                        <span>Address line2 is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Postalcode/Zip:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Postalcode/Zip" formControlName="postalCode">
-                    <div class="error" *ngIf="signupForm.get('postalCode').invalid && signupForm.get('postalCode').touched">
-                      <p class="error-block">
-                        <span>postal code is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Email:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Email Address" formControlName="email">
-                    <div class="error" *ngIf="signupForm.get('email').invalid && signupForm.get('email').touched">
-                      <p class="error-block">
-                        <span>{{emailValidationMessage}}</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Password:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" type="password" placeholder="Password" formControlName="password">
-                    <div class="error" *ngIf="signupForm.get('password').invalid && signupForm.get('password').touched">
-                      <p class="error-block">
-                        <span>Password is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Confirm Password:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" type="password" placeholder="Confirm Password" formControlName="confirmPassword">
-                    <div class="error" *ngIf="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
-                      <p class="error-block">
-                        <span>Confirm password is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Mobile No:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Mobile Number" formControlName="mobileNumber">
-                    <div class="error" *ngIf="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
-                      <p class="error-block">
-                        <span>Mobile Number is required.</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Role:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <select formControlName="role">
-                      <option *ngFor="let option of Roles" [ngValue]="option.id">
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 control-label">Status:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <select formControlName="status">
-                      <option *ngFor="let option of Status" [ngValue]="option.id">
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-md-2 control-label"></label>
-                  <div class="col-md-4">
-                    <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
-                      Submit
-                      <i class="m-icon-swapright m-icon-white"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div> -->
-<!-- <div class="row">
-  <div class="col-md-12">
-    <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-    <div class="box">
-      <div class="alert alert-danger display-none" id="alertclass"></div>
-      <div class="box-body widget-content">
-        <form [formGroup]="signupForm" class="form-horizontal" (ngSubmit)="registerUser(signupForm.value)">
-          <div class="form-body">
-            <div class="tab-content">
-              <div class="tab-pane active">
-
-                <div class="form-group row" [class.has-error]="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">First Name:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="First Name" formControlName="firstName">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
-                    <small class="text-danger">
-                      <span>First name is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">Last Name:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Last Name" formControlName="lastName">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
-                    <small class="text-danger">
-                      <span>Last name is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">Organisation:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Organisation" formControlName="organisation">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
-                    <small class="text-danger">
-                      <span>Organisation is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">Address Line1:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Address Line1" formControlName="addressLine1">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
-                    <small class="text-danger">
-                      <span>Address Line1 is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">Address Line2:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Address Line2" formControlName="addressLine2">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
-                    <small class="text-danger">
-                      <span>Address Line2 is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">Postalcode/Zip:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Postalcode/Zip" formControlName="postalCode">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
-                    <small class="text-danger">
-                      <span>Postal/Zip code is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('email').invalid &&  signupForm.get('email').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('email').invalid &&  signupForm.get('email').touched">Email:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Email Address" formControlName="email">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('email').invalid &&  signupForm.get('email').touched">
-                    <small class="text-danger">
-                      <span>{{emailValidationMessage}}</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('password').invalid &&  signupForm.get('password').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('password').invalid &&  signupForm.get('password').touched">Password:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Password" formControlName="password">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('password').invalid &&  signupForm.get('password').touched">
-                    <small class="text-danger">
-                      <span>Password is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">Confirm Password:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
-                    <small class="text-danger">
-                      <span>Confirm password is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row" [class.has-error]="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
-                  <label class="col-sm-2 col-form-label" [class.text-danger]="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">Mobile No:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <input class="form-control" placeholder="Mobile No" formControlName="mobileNumber">
-                  </div>
-                  <div class="col-sm-3" *ngIf="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
-                    <small class="text-danger">
-                      <span>Mobile number is required.</span>
-                    </small>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Role:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <select formControlName="role">
-                      <option *ngFor="let option of Roles" [ngValue]="option.id">
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Status:
-                    <em>*</em>
-                  </label>
-                  <div class="col-md-4">
-                    <select formControlName="status">
-                      <option *ngFor="let option of Status" [ngValue]="option.id">
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-md-4">
-                    <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
-                      Submit
-                      <i class="m-icon-swapright m-icon-white"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div> -->
 <div class="register-logo">
   <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
   <span style="vertical-align: middle;">
-    <b>Legal</b>Friend</span>
+      <b>Legal</b>Friend</span>
 </div>
 
 <div class="register-box-body">
   <p class="login-box-msg">Register a new membership</p>
- <!-- form container start -->
- <ng-container *ngIf="!isMailSent">
-  <form [formGroup]="signupForm" (ngSubmit)="registerUser(signupForm.value)">
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
-      <input type="text" class="form-control" placeholder="First name" formControlName="firstName">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      <!-- <div class="col-sm-3" *ngIf="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
-        <small class="text-danger">
-          <span>First name is required.</span>
-        </small>
-      </div> -->
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
-      <input type="text" class="form-control" placeholder="Last name" formControlName="lastName">
-      <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
-      <input type="text" class="form-control" placeholder="Organisation" formControlName="organisation">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
-      <input type="text" class="form-control" placeholder="Address Line 1" formControlName="addressLine1">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
-      <input type="text" class="form-control" placeholder="Address Line 2" formControlName="addressLine2">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
-      <input type="text" class="form-control" placeholder="Postal Code" formControlName="postalCode">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('email').invalid &&  signupForm.get('email').touched">
-      <input type="email" class="form-control" placeholder="Email" formControlName="email">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
-      <input type="text" class="form-control" placeholder="Mobile Number" formControlName="mobileNumber">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('password').invalid &&  signupForm.get('password').touched">
-      <input type="password" class="form-control" placeholder="Password" formControlName="password">
-      <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback" [class.has-error]="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
-      <input type="password" class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
-      <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback">
-      <input type="text" class="form-control" placeholder="Role" formControlName="role">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback">
-      <input type="text" class="form-control" placeholder="Status" formControlName="status">
-      <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="row">
-      <div class="col-xs-8">
-        <div class="checkbox icheck">
-          <label>
-            <input type="checkbox"> I agree to the
-            <a href="#">terms</a>
-          </label>
+  <!-- form container start -->
+  <ng-container *ngIf="!isMailSent">
+    <form [formGroup]="signupForm" (ngSubmit)="registerUser(signupForm.value)">
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
+        <input type="text" OnlyString="true" class="form-control" placeholder="First name" formControlName="firstName">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <div *ngIf="signupForm.get('firstName').invalid &&  signupForm.get('firstName').touched">
+          <small class="text-error">
+            <span>First name is required.</span>
+          </small>
         </div>
       </div>
-      <!-- <div class="col-xs-4"> -->
-        <button type="submit" [disabled]="signupForm.invalid" class="btn btn-signup">Signup</button>
-      <!-- </div> -->
-    </div>
-  </form>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
+        <input type="text" OnlyString="true" class="form-control" placeholder="Last name" formControlName="lastName">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <div *ngIf="signupForm.get('lastName').invalid &&  signupForm.get('lastName').touched">
+          <small class="text-error">
+            <span>Last name is required.</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
+        <input type="text" class="form-control" placeholder="Organisation" formControlName="organisation">
+        <span class="glyphicon glyphicon-home form-control-feedback"></span>
+        <div *ngIf="signupForm.get('organisation').invalid &&  signupForm.get('organisation').touched">
+          <small class="text-error">
+            <span>Organisation name is required.</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
+        <input type="text" class="form-control" placeholder="Address Line 1" formControlName="addressLine1">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <div *ngIf="signupForm.get('addressLine1').invalid &&  signupForm.get('addressLine1').touched">
+          <small class="text-error">
+            <span>Address line1 is required.</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
+        <input type="text" class="form-control" placeholder="Address Line 2" formControlName="addressLine2">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <div *ngIf="signupForm.get('addressLine2').invalid &&  signupForm.get('addressLine2').touched">
+          <small class="text-error">
+            <span>Address line2 is required.</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" OnlyNumber="true" [class.control-error]="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
+        <input type="text" class="form-control" placeholder="Postal Code" formControlName="postalCode">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <div *ngIf="signupForm.get('postalCode').invalid &&  signupForm.get('postalCode').touched">
+          <small class="text-error">
+            <span>{{zipValidationMessage}}</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('email').invalid &&  signupForm.get('email').touched">
+        <input type="email" class="form-control" placeholder="Email" formControlName="email">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <div *ngIf="signupForm.get('email').invalid &&  signupForm.get('email').touched">
+          <small class="text-error">
+            <span>{{emailValidationMessage}}</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
+        <input type="text" class="form-control" OnlyNumber="true" placeholder="Mobile Number" formControlName="mobileNumber">
+        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+        <div *ngIf="signupForm.get('mobileNumber').invalid &&  signupForm.get('mobileNumber').touched">
+          <small class="text-error">
+            <span>{{mobileNoValidationMessage}}</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('password').invalid &&  signupForm.get('password').touched">
+        <input type="password" class="form-control" placeholder="Password" formControlName="password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <div *ngIf="signupForm.get('password').invalid &&  signupForm.get('password').touched">
+          <small class="text-error">
+            <span>{{passwordValidationMessage}}</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback" [class.control-error]="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
+        <input type="password" class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <div *ngIf="signupForm.get('confirmPassword').invalid &&  signupForm.get('confirmPassword').touched">
+          <small class="text-error">
+            <span>Do not match with password.</span>
+          </small>
+        </div>
+      </div>
+      <div class="form-group has-feedback">
+        <select class="form-control" formControlName="role">
+          <option *ngFor="let option of Roles" [ngValue]="option.id">
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <select class="form-control" formControlName="status">
+          <option *ngFor="let option of Status" [ngValue]="option.id">
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox" formControlName="termsAndCondition"> I agree to the
+              <a href="#">terms</a>
+            </label>
+          </div>
+        </div>
+        <!-- <div class="col-xs-4"> -->
+          <button type="submit" [disabled]="signupForm.invalid" class="btn btn-signup">Signup</button>
+        <!-- </div> -->
+      </div>
+    </form>
 
-  <!-- <div class="social-auth-links text-center">
+    <!-- <div class="social-auth-links text-center">
     <p>- OR -</p>
     <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
       <i class="fa fa-facebook"></i> Sign up using Facebook
@@ -451,17 +138,17 @@
     </a>
   </div> -->
 
-  <a href="login.html" class="text-center">I already have a membership</a>
-</ng-container>
-<!-- end form container -->
+    <a routerLink="/login" class="text-center">I already have a membership</a>
+  </ng-container>
+  <!-- end form container -->
   <ng-container *ngIf="isMailSent">
     <div class="center text-success divMailSentMsg">
-        <p >Thank You..!!</p>
-        <p >We have sent a verification mail in you email. Please check you inbox and confirm.</p>
+      <p>Thank You..!!</p>
+      <p>We have sent a verification mail in you email. Please check you inbox and confirm.</p>
     </div>
-    <div class="center" >
-           
-        <button type="submit" class="btn btn-primary btn-flat" (click)="redirectToLogin()">Login</button>
+    <div class="center">
+
+      <button type="submit" class="btn btn-primary btn-flat" (click)="redirectToLogin()">Login</button>
     </div>
-</ng-container>
+  </ng-container>
 </div>
