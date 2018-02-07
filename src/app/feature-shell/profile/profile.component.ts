@@ -14,7 +14,8 @@ export class ProfileComponent implements OnInit {
   emailValidationMessage: string = "Email address is required.";
   photoUrl: string = "assets/dist/img/user2-160x160.jpg";
   isShowUpload: boolean = false;
-  // prevPhotoUrl:string="assets/dist/img/user2-160x160.jpg";
+  isPhotoChange: boolean = false;
+  prevPhotoUrl: string = "assets/dist/img/user2-160x160.jpg";
   constructor(private fb: FormBuilder) {
     this.arrEditProfileInfo =
       {
@@ -82,13 +83,24 @@ export class ProfileComponent implements OnInit {
   HideProfileUpload() {
     this.isShowUpload = false;
   }
+  SaveProfileUpload() {
+    this.isShowUpload = false;
+    this.isPhotoChange=false;
+    this.prevPhotoUrl = this.photoUrl;
+    $.toaster({ priority: 'success', title: 'Success', message: 'Profile updated successfully' });
+  }
+  CancelProfileUpload() {
+    this.isPhotoChange=false;
+    this.photoUrl = this.prevPhotoUrl;
+  }
   readPhotoUrl(event: any) {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
       reader.onload = (event: any) => {
         this.photoUrl = event.target.result;
-        this.isShowUpload=false;
+        this.isShowUpload = false;
+        this.isPhotoChange = true;
       }
       reader.readAsDataURL(event.target.files[0]);
     }
