@@ -66,15 +66,18 @@ export class UserComponent implements OnInit {
           $rowSearching.find(".row:eq(0)").hide();
 
           for (var i = 0; i < arLengthMenu[0].length; i++) {
+            var selectText=(arLengthMenu[0][i]==selectedPageLength)?'selected':'';
             $("#ddlLengthMenu").append(
-              "<option value=" +
+             
+
+              "<option "+ selectText  +" value=" +
                 arLengthMenu[0][i] +
                 ">" +
                 arLengthMenu[1][i] +
                 "</option>"
             );
           }
-          $("#ddlLengthMenu").val(selectedPageLength);
+          // $("#ddlLengthMenu").val(selectedPageLength);
 
           $("#ddlLengthMenu").on("change", function() {
             $rowSearching

@@ -11,42 +11,39 @@
           <div class="box-body">
             <div class="nav-tabs-custom">
               <div>
-                <div class="row table-toolbar">
+                <div class="row case-table-toolbar">
                   <div class="col-sm-8 pr-zero">
                     <ul class="nav nav-tabs">
                       <li class="active">
-                        <a href="#tab_running" data-toggle="tab">Running Cases</a>
+                        <a href="#tab_running" (click)="runningTools()" data-toggle="tab">Running Cases</a>
                       </li>
                       <li>
-                        <a href="#tab_completed" data-toggle="tab">Completed Cases</a>
+                        <a href="#tab_completed" (click)="completedTools()" data-toggle="tab">Completed Cases</a>
                       </li>
                     </ul>
                   </div>
-                  <div class="col-sm-2 case-pagelength">
+                  <div id="pageLength1" class="col-sm-2 case-pagelength">
                     <label class="custom-label">Show
                       <select class="input-sm" id="ddlLengthMenu">
                       </select> rows
                     </label>
                   </div>
-                  <div class="col-sm-2 case-search">
+                  <div id="searchBox1" class="col-sm-2 case-search">
                     <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
                   </div>
-                  <div class="col-sm-2 case-pagelength" style="display:none">
+                  <div id="pageLength2" class="col-sm-2 case-pagelength" style="display:none">
                     <label class="custom-label">Show
                       <select class="input-sm" id="ddlLengthMenu2">
                       </select> rows
                     </label>
                   </div>
-                  <div class="col-sm-2 case-search" style="display:none">
+                  <div id="searchBox2" class="col-sm-2 case-search" style="display:none">
                     <input type="text" id="txtSearch2" class="input-sm custom-search" placeholder="Search...">
                   </div>
                 </div>
               </div>
-              <!-- <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addCaseModal">Add Case</button> -->
               <div class="tab-content">
                 <div class="tab-pane active" id="tab_running">
-                  <!-- <div class="box-body"> -->
-
                   <table id="example1" class="table table-bordered table-hover">
                     <thead>
                       <tr>
@@ -82,10 +79,8 @@
                       </tr>
                     </tbody>
                   </table>
-                  <!-- </div> -->
                 </div>
                 <div class="tab-pane" id="tab_completed">
-                  <!-- <div class="box-body"> -->
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
@@ -96,7 +91,7 @@
                         <th>Branch Name</th>
                         <th>Court</th>
                         <th>Manager</th>
-                        <td>Action</td>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -119,21 +114,14 @@
                       </tr>
                     </tbody>
                   </table>
-                  <!-- </div> -->
                 </div>
               </div>
             </div>
           </div>
-          <!-- /.box-header -->
-
-          <!-- /.box-body -->
         </div>
         <!-- /.box -->
       </div>
-      <!-- /.col -->
-
     </div>
-    <!-- /.row -->
   </section>
   <!-- /.content -->
   <div class="favicon">

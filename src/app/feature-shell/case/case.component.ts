@@ -144,15 +144,16 @@ export class CaseComponent implements OnInit {
           $rowSearching.find(".row:eq(0)").hide();
 
           for (var i = 0; i < arLengthMenu[0].length; i++) {
+            var selectText=(arLengthMenu[0][i]==selectedPageLength)?'selected':'';
             $("#ddlLengthMenu").append(
-              "<option value=" +
+              "<option " + selectText + " value=" +
                 arLengthMenu[0][i] +
                 ">" +
                 arLengthMenu[1][i] +
                 "</option>"
             );
           }
-          $("#ddlLengthMenu").val(selectedPageLength);
+          // $("#ddlLengthMenu").val(selectedPageLength);
 
           $("#ddlLengthMenu").on("change", function() {
             $rowSearching
@@ -216,5 +217,19 @@ export class CaseComponent implements OnInit {
         });
       });
     });
+  }
+
+  runningTools(){
+    document.getElementById("pageLength1").style.display = "block";
+    document.getElementById("pageLength2").style.display = "none";
+    document.getElementById("searchBox1").style.display = "block";
+    document.getElementById("searchBox2").style.display = "none";
+  }
+
+  completedTools(){
+    document.getElementById("pageLength2").style.display = "block";
+    document.getElementById("pageLength1").style.display = "none";
+    document.getElementById("searchBox2").style.display = "block";
+    document.getElementById("searchBox1").style.display = "none";
   }
 }

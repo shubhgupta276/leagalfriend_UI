@@ -250,12 +250,12 @@ tfoot {
     margin: 2px 5px;
     cursor: pointer;
 }
-.table-toolbar{
+.case-table-toolbar{
     /* margin-left: 0;
     border: 1px solid #f4f4f4;
     padding-top: 5px;
     padding-bottom: 1px; */
-    margin-right: 0;
+    margin-right: 0px;
 }
 .heading{
     font-size: 22px;
@@ -275,7 +275,7 @@ th, td{
 }
 .box .box-body{
     padding: 17px;
-    padding-top: 10px;
+    padding-top: 17px;
 }
 .main-header .sidebar-toggle{
     padding: 15px 11px;
@@ -290,16 +290,18 @@ th, td{
     max-width: 300px;
 }
 .case-pagelength{
-    padding-left: 0;
+    padding-left: 25px;
+    /* margin-top: 12px; */
     /* padding-right: 0; */
-    border-bottom: 1px solid #dddddd;
-    padding-bottom: 7px;
+    /* border-bottom: 1px solid #dddddd; */
+    /* padding-bottom: 7px; */
 }
 .case-search{
-    padding-left: 0;
+    /* padding-left: 0; */
     padding-right: 0;
-    border-bottom: 1px solid #dddddd;
-    padding-bottom: 11px;
+    /* border-bottom: 1px solid #dddddd; */
+    /* padding-bottom: 11px; */
+    /* margin-top: 11px; */
 }
 .pr-zero{
     padding-right: 0px;
@@ -321,3 +323,18 @@ th, td{
 .pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover{
     color: #222d32;
 }
+.nav-tabs-custom{
+    box-shadow: 0 0px 0px rgba(0,0,0,0);
+}
+.nav-tabs>li>a{
+    border-color: #eee #eee #ddd;
+}
+.nav-tabs{
+    border-bottom: none;
+}
+.nav-tabs-custom>.tab-content{
+    padding: 0px;
+}
+/* #tab_completed table{
+    width: inherit !important;
+} */

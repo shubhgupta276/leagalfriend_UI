@@ -8,17 +8,17 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { SignupComponent } from './signup/signup.component';
 
 const authShellRoutes: Routes = [
-    // { path: '', component: AuthShellComponent, children:[
-    //     { path: 'login', component: LoginComponent },
-    //     { path: 'forgotpassword', component: ForgotPasswordComponent },
-    //     { path: 'signup', component: SignupComponent },
-    //     { path: '', redirectTo: 'login', pathMatch: 'full' }
-    // ]}
-      { path: 'login', component: LoginComponent },
-      { path: 'forgotpassword', component: ForgotPasswordComponent },
-      { path: 'resetpassword', component: ResetPasswordComponent },
-      { path: 'signup', component: SignupComponent },
-      { path: '', redirectTo: 'login', pathMatch: 'full' }
+    { path: '', component: AuthShellComponent, children:[
+        { path: 'login', component: LoginComponent },
+        { path: 'forgotpassword', component: ForgotPasswordComponent },
+        { path: 'signup', component: SignupComponent },
+        { path: '', redirectTo: 'login', pathMatch: 'full' }
+    ]}
+      // { path: 'login', component: LoginComponent },
+      // { path: 'forgotpassword', component: ForgotPasswordComponent },
+      // { path: 'resetpassword', component: ResetPasswordComponent },
+      // { path: 'signup', component: SignupComponent },
+      // { path: '', redirectTo: 'login', pathMatch: 'full' }
     ];
 
 @NgModule({
