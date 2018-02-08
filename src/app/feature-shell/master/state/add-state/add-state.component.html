@@ -24,7 +24,7 @@
                               <em class="astrick">*</em>
                             </label>
                             <div class="col-md-9" [class.has-error]="addStateMasterForm.get('state').invalid &&  addStateMasterForm.get('state').touched">
-                              <input class="form-control" placeholder="State" formControlName="state">
+                              <input class="form-control" OnlyString="true" placeholder="State" formControlName="state">
                             </div>
                             <div class="col-sm-9 valodation-padding" *ngIf="addStateMasterForm.get('state').invalid &&  addStateMasterForm.get('state').touched">
                               <small class="text-danger">
