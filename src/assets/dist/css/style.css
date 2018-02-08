@@ -367,8 +367,8 @@ td {
 .nav-tabs-custom {
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
 }
-.nav-tabs > li > a {
-  border-color: #eee #eee #ddd;
+.nav-tabs > li > a, .nav-tabs>li>a:hover {
+  border-color: #ddd;
 }
 .nav-tabs {
   border-bottom: none;

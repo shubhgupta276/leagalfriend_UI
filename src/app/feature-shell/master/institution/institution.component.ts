@@ -1,5 +1,22 @@
 import { Component, OnInit } from "@angular/core";
+import { AddInstitutionMasterComponent } from "./add-institution/add-institution.component";
+import { EditInstitutionMasterComponent } from "./edit-institution/edit-institution.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      InstitutionComponent,
+      AddInstitutionMasterComponent,
+      EditInstitutionMasterComponent
+    ]
+  }
+)
 @Component({
   selector: "app-institution",
   templateUrl: "./institution.component.html",

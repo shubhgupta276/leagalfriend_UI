@@ -1,12 +1,22 @@
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl
-} from "@angular/forms";
+import { AddDistrictMasterComponent } from './add-district/add-district.component';
+import { EditDistrictMasterComponent } from './edit-district/edit-district.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      DistrictComponent,
+      AddDistrictMasterComponent,
+      EditDistrictMasterComponent
+    ]
+  }
+)
 @Component({
   selector: "app-district",
   templateUrl: "./district.component.html",

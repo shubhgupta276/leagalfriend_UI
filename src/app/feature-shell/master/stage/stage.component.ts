@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { AddStageMasterComponent } from "./add-stage/add-stage.component";
+import { EditStageMasterComponent } from "./edit-stage/edit-stage.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      StageComponent,
+      AddStageMasterComponent,
+      EditStageMasterComponent,
+    ]
+  }
+)
 @Component({
   selector: 'app-stage',
   templateUrl: './stage.component.html',
