@@ -63,6 +63,12 @@ export class AddUserComponent implements OnInit {
         console.log(err);
       });
     $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
+    this.AddUser();
+    this.closeModal();
+  }
+  closeModal()
+  {
+    $("#closebtn").click();
   }
 
   ngOnInit() {

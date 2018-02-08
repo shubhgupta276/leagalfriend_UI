@@ -55,6 +55,10 @@
   width:78px;
   height: 73px
 }
+#spnplusminus{
+  font-size: 13px;
+  padding-left: 506px;
+}
 </style>
 <div class="modal fade" id="modal-default1">
   <div class="modal-dialog" style="width:700px;">
@@ -70,7 +74,7 @@
         <div  style="margin-left:0px;margin-bottom:-50px;">
           <section class="content-header">
             <div class="panel panel-default">
-              <div class="panel-headingCaseHistory" style="font-size:16px;"  id="dvHistory">History</div>
+              <div class="panel-headingCaseHistory" style="font-size:16px;"  id="dvHistory">Add Remark <span style="font-size:13px;" id="spnplusminus" class="glyphicon glyphicon-plus clssign"></span></div>
               <div class="panel-body" id="dvHistoryRemark" style="display:none;">
                 <form [formGroup]="caseHistoryForm" class="form-horizontal" (ngSubmit)="SubmitRemarks(caseHistoryForm.value)">
                   <div class="form-wizard">
@@ -125,7 +129,7 @@
             <ul class="timeline case-timeline" id="accordion">
               <ng-container *ngFor="let item of jsonHistory;let i=index">
                 <li class="time-label bg-red bg-case-li toggleCaseHistory" data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+i">
-                  {{item.Date}} &nbsp;&nbsp;|<span  class="casehistorySpan">{{item.Name}}</span ><span style="font-size:13px;" id="spnplusminus" class="glyphicon glyphicon-plus clssign"></span>
+                  {{item.Date}} &nbsp;&nbsp;|<span  class="casehistorySpan">{{item.Name}}</span ><span style="font-size:13px;" class="glyphicon glyphicon-plus clssign"></span>
                 </li>
                 <!-- /.timeline-label -->
                 <!-- timeline item -->
