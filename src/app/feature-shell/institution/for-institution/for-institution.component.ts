@@ -26,7 +26,9 @@ arr:[any]
       'autoWidth'   : false
     });
   }
-
+ showEditInstitutionModal(){
+    $('#editForInstitutionModal').modal('show');
+    }
   GetForInstitution()
   {
     this.arr=[

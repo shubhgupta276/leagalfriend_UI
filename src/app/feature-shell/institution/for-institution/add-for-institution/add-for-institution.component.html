@@ -21,9 +21,12 @@
                                             <div class="tab-pane active">
      
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label createUserLabel">Institution:
+                                                    <label class="col-sm-4 col-form-label createUserLabel">Institution:
                                                         <em class="astrick">*</em>
                                                     </label>
+                                                    <div class="col-md-3 createUserLabel">
+                                                       HDFC BANK Ltd.
+                                                   </div>
                                                     <div class="col-md-9" [class.has-error]="addForm1.get('institution').invalid 
                                                   &&  addForm1.get('institution').touched">
                                                        
@@ -34,10 +37,91 @@
                                                             <span>Institution name is required.</span>
                                                         </small>
                                                     </div>
+                                                   
                                                 </div>
-    
-    
-                                              
+
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4 col-form-label createUserLabel">Branch:
+                                                        <em class="astrick">*</em>
+                                                    </label>
+                                                   <div class="col-md-3 createUserLabel">
+                                                      Delhi
+                                                   </div>
+                                                    <div class="col-md-9" [class.has-error]="addForm1.get('branch').invalid 
+                                                  &&  addForm1.get('branch').touched">
+                                                       
+                                                    </div>
+                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('branch').invalid
+                                                     &&  addForm1.get('branch').touched">
+                                                        <small class="text-danger">
+                                                            <span>Branch name is required.</span>
+                                                        </small>
+                                                    </div>
+                                                    
+                                                   
+                                                </div>
+
+                                               <div class="form-group row">
+                                                    <label class="col-sm-4 col-form-label createUserLabel">Report Type:
+                                                        <em class="astrick">*</em>
+                                                    </label>
+                                                    <div class="col-md-3 createUserLabel">
+                                                     For Organization
+                                                   </div>
+                                                    <div class="col-md-9" [class.has-error]="addForm1.get('reportType').invalid 
+                                                  &&  addForm1.get('reportType').touched">
+                                                       
+                                                    </div>
+                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('reportType').invalid
+                                                     &&  addForm1.get('reportType').touched">
+                                                        <small class="text-danger">
+                                                            <span>Report Type name is required.</span>
+                                                        </small>
+                                                    </div>
+                                                   
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4 col-form-label createUserLabel">Upload Cases:
+                                                        <em class="astrick">*</em>
+                                                    </label>
+                                                    <div class="col-md-3 createUserLabel">
+                                                        <input type="file" name="casefile" id="casefile" value="">
+									                <div class="error" style="display:none;" id="ERROR_casefile">
+                                                        </div>
+                                                        </div>
+                                                    <div class="col-md-9" [class.has-error]="addForm1.get('uploadCases').invalid 
+                                                  &&  addForm1.get('uploadCases').touched">
+                                                       
+                                                    </div>
+                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('uploadCases').invalid
+                                                     &&  addForm1.get('uploadCases').touched">
+                                                        <small class="text-danger">
+                                                            <span>Upload Cases name is required.</span>
+                                                        </small>
+                                                    </div>
+                                                   
+                                                </div>
+                                              <div class="form-group row">
+                                                    <label class="col-sm-4 col-form-label createUserLabel">Upload Case Files:
+                                                        <em class="astrick">*</em>
+                                                    </label>
+                                                      <div class="col-md-3 createUserLabel">
+                                                        <input type="file" name="uploadcasefile" id="uploadcasefile" value="">
+									                <div class="error" style="display:none;" id="ERROR_uploadcasefile">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9" [class.has-error]="addForm1.get('uploadCaseFiles').invalid 
+                                                  &&  addForm1.get('uploadCaseFiles').touched">
+                                                       
+                                                    </div>
+                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('uploadCaseFiles').invalid
+                                                     &&  addForm1.get('uploadCaseFiles').touched">
+                                                        <small class="text-danger">
+                                                            <span>Upload Case Files name is required.</span>
+                                                        </small>
+                                                    </div>
+                                                   
+                                                </div>
     
                                             </div>
                                         </div>
@@ -64,6 +148,3 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <script>
-    
-    </script>
