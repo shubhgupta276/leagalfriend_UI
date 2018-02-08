@@ -12,8 +12,8 @@ import { TokenService } from './shared/services/token-service';
 @NgModule({
   imports: [
     BrowserModule,
-    AuthShellModule,
     FeatureShellModule,
+    AuthShellModule,
     AppRoutingModule
   ],
   declarations: [
