@@ -3,7 +3,7 @@ import { EditResourceMasterComponent } from "./edit-resource/edit-resource.compo
 import { AddResourceMasterComponent } from "./add-resource/add-resource.component";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from "@angular/forms";
 
 declare let $;
 
@@ -22,8 +22,10 @@ declare let $;
 })
 export class ResourceComponent implements OnInit {
   arr: [any];
-  constructor() {}
-
+  constructor(private fb: FormBuilder) {
+    this.EditResourceMaster(null);
+  }
+  editResourceMasterForm: FormGroup;
   ngOnInit() {
     this.GetAllResource();
     $($.document).ready(function() {
@@ -112,7 +114,15 @@ export class ResourceComponent implements OnInit {
     ];
   }
 
-  showEditModal() {
+  showEditModal(data) {
     $("#editResourceMasterModal").modal("show");
+    this.EditResourceMaster(data);
+  }
+  EditResourceMaster(data) {
+    this.editResourceMasterForm = this.fb.group({
+      resourcecode: [data==null?null:data.ResourceCode, Validators.required],
+      resourcename: [data==null?null:data.ResourceName, Validators.required],
+      resourcedesc: [data==null?null:data.ResourceDesc, Validators.required]
+    });
   }
 }

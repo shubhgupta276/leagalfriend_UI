@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -20,26 +20,14 @@ declare var $;
 })
 export class EditStageMasterComponent implements OnInit
 {
-    editStageMasterForm: FormGroup;
+   @Input() editStageMasterForm: FormGroup;
     Resource: KeyValue[] = Resources;
     Status1: KeyValue[] = Status;
-
-  EditStageMaster() {
-    this.editStageMasterForm = this.fb.group({
-      resource: [1],
-      stagecode: [null, Validators.required],
-      stagename: [null, Validators.required],
-      status: [1]
-    });
-  }
-
-  constructor(private fb: FormBuilder) {
-    this.EditStageMaster();
+  constructor() {
   }
 
   submitEditStageMaster(data) {
     $.toaster({ priority : 'success', title : 'Success', message : 'Stage updated successfully'});
-    this.EditStageMaster();
     this.closeModal();
   }
 

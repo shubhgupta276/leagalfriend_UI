@@ -34,7 +34,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr;let i=index" (dblclick)="showEditModal()" data-target="#editResourceMasterModal" >
+              <tr *ngFor="let item of arr;let i=index" (dblclick)="showEditModal(item)" data-target="#editResourceMasterModal" >
                 <td>{{item.ResourceCode}}</td>
                 <td>{{item.ResourceName}}
                 </td>
@@ -64,5 +64,5 @@
       </a>
     </div>
   <app-add-resource></app-add-resource>
-  <app-edit-resource></app-edit-resource>
+  <app-edit-resource [editResourceMasterForm]="editResourceMasterForm"></app-edit-resource>
 </div>

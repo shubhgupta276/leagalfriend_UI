@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -20,26 +20,13 @@ declare var $;
 })
 export class EditBranchMasterComponent implements OnInit
 {
-    editBranchMasterForm: FormGroup;
+   @Input() editBranchMasterForm: FormGroup;
     City: KeyValue[] = Cities;
-
-  EditBranchMaster() {
-    this.editBranchMasterForm = this.fb.group({
-        branchname: [null, Validators.required],
-        branchcode: [null, Validators.required],
-        address: [null, Validators.required],
-        city: [1],
-        contact: [null, Validators.required],
-    });
-  }
-
-  constructor(private fb: FormBuilder) {
-    this.EditBranchMaster();
+  constructor() {
   }
 
   submitEditBranchMaster(data) {
     $.toaster({ priority : 'success', title : 'Success', message : 'Branch Updated successfully'});
-    this.EditBranchMaster();
     this.closeModal();
   }
 
