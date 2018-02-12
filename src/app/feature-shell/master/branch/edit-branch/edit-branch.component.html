@@ -24,7 +24,7 @@
                                     <em class="astrick">*</em>
                                   </label>
                                   <div class="col-md-9" [class.has-error]="editBranchMasterForm.get('branchname').invalid &&  editBranchMasterForm.get('branchname').touched">
-                                    <input class="form-control" placeholder="Branch Name" formControlName="branchname">
+                                    <input class="form-control" OnlyString="true" placeholder="Branch Name" formControlName="branchname">
                                   </div>
                                   <div class="col-sm-9 valodation-padding" *ngIf="editBranchMasterForm.get('branchname').invalid &&  editBranchMasterForm.get('branchname').touched">
                                     <small class="text-danger">
@@ -76,7 +76,7 @@
                                           <em class="astrick">*</em>
                                         </label>
                                         <div class="col-md-9" [class.has-error]="editBranchMasterForm.get('contact').invalid &&  editBranchMasterForm.get('contact').touched">
-                                          <input class="form-control" placeholder="Contact" formControlName="contact">
+                                          <input class="form-control" OnlyNumber="true" placeholder="Contact" formControlName="contact">
                                         </div>
                                         <div class="col-sm-9 valodation-padding" *ngIf="editBranchMasterForm.get('contact').invalid &&  editBranchMasterForm.get('contact').touched">
                                           <small class="text-danger">

@@ -1,5 +1,23 @@
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
+import { AddCityMasterComponent } from './add-city/add-city.component';
+import { EditCityMasterComponent } from './edit-city/edit-city.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      CityComponent,
+      AddCityMasterComponent,
+      EditCityMasterComponent
+    ]
+  }
+)
+
 @Component({
   selector: "app-city",
   templateUrl: "./city.component.html",
@@ -47,7 +65,6 @@ export class CityComponent implements OnInit {
       });
 
       $table.columns().every(function () {
-
         $('#txtSearch').on('keyup change', function () {
           if ($table.search() !== this.value) {
             $table.search(this.value).draw();

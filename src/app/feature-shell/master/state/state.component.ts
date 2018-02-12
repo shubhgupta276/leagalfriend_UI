@@ -1,6 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { AddStateMasterComponent } from './add-state/add-state.component';
+import { EditStateMasterComponent } from './edit-state/edit-state.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      StateComponent,
+      AddStateMasterComponent,
+      EditStateMasterComponent
+    ]
+  }
+)
 @Component({
   selector: 'app-state',
   templateUrl: './state.component.html',
@@ -65,9 +81,6 @@ export class StateComponent implements OnInit {
       {State:"Rajasthan"},
       {State:"Sikkim"},
       {State:"Tripura"},
-
-      
-      
     ];
   }
   

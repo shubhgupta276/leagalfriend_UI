@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { AddBranchMasterComponent } from "./add-branch/add-branch.component";
+import { EditBranchMasterComponent } from "./edit-branch/edit-branch.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      BranchComponent,
+      AddBranchMasterComponent,
+      EditBranchMasterComponent,
+    ]
+  }
+)
 @Component({
   selector: 'app-branch',
   templateUrl: './branch.component.html',

@@ -90,7 +90,7 @@
                                                         </label>
                                                         <div class="col-md-9" [class.has-error]="editForm.get('amount').invalid 
                                                                 &&  editForm.get('amount').touched">
-                                                            <input class="form-control" placeholder="Amount" formControlName="amount">
+                                                            <input class="form-control" OnlyNumber="true" placeholder="Amount" formControlName="amount">
                                                         </div>
                                                         <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('amount').invalid &&
                                                                   editForm.get('amount').touched">

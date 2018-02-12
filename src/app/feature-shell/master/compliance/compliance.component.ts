@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { AddComplianceMasterComponent } from "./add-compliance/add-compliance.component";
+import { EditComplianceMasterComponent } from "./edit-compliance/edit-compliance.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      ComplianceComponent,
+      AddComplianceMasterComponent,
+      EditComplianceMasterComponent,
+    ]
+  }
+)
 @Component({
   selector: 'app-compliance',
   templateUrl: './compliance.component.html',

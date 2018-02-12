@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { AddCourtMasterComponent } from "./add-court/add-court.component";
+import { EditCourtMasterComponent } from "./edit-court/edit-court.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      CourtComponent,
+      AddCourtMasterComponent,
+      EditCourtMasterComponent,
+    ]
+  }
+)
 @Component({
   selector: 'app-court',
   templateUrl: './court.component.html',
