@@ -60,7 +60,7 @@
              
               </thead>
               <tbody>
-                  <tr *ngFor="let item of arBillingData; let i=index" (dblclick)="showEditModal()" data-target="#editBillModal">
+                  <tr *ngFor="let item of arBillingData; let i=index" (dblclick)="showEditModal(item)" data-target="#editBillModal">
                       <td>{{i+1}}</td>
                       <td>{{item.Bank}}</td>
                       <td>{{item.Recourse}}</td>
@@ -93,4 +93,4 @@
 </div>
 
 <add-bill-modal></add-bill-modal>
-<edit-bill-modal></edit-bill-modal>
+<edit-bill-modal [editForm]="editForm"></edit-bill-modal>

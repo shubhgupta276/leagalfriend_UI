@@ -3,13 +3,13 @@ import { AddBillingComponent } from "./add-bill/add-bill.component";
 import { EditBillingComponent } from "./edit-bill/edit-bill.component";
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare let $;
 
 @NgModule(
   {
-    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
     declarations: [
       BillingComponent,
       AddBillingComponent,
@@ -29,7 +29,10 @@ export class BillingComponent implements OnInit {
   arListRecourse: any[] = [];
   arListStage: any[] = [];
   arListAmount: any[] = [];
-  constructor() { }
+  editForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.addBillForm(null);
+  }
 
   ngOnInit() {
     this.getBillingData();
@@ -152,7 +155,17 @@ export class BillingComponent implements OnInit {
     );
   }
 
-  showEditModal(){
+  showEditModal(data) {
     $('#editBillModal').modal('show');
-    }
+    this.addBillForm(data);
+  }
+  addBillForm(data) {
+    this.editForm = this.fb.group({
+      bank: [data == null ? null : data.Bank, Validators.required],
+      recourse: [data == null ? null : data.Recourse, Validators.required],
+      stage: [data == null ? null : data.Stage, Validators.required],
+      amount: [data == null ? null : data.Amount, Validators.required]
+    });
+
+  }
 }

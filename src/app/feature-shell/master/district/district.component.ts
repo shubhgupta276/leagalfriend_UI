@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
 import { AddDistrictMasterComponent } from './add-district/add-district.component';
 import { EditDistrictMasterComponent } from './edit-district/edit-district.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare let $;
 
 @NgModule(
   {
-    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
     declarations: [
       DistrictComponent,
       AddDistrictMasterComponent,
@@ -24,11 +24,13 @@ declare let $;
 })
 export class DistrictComponent implements OnInit {
   arr: any[];
-  constructor() {}
-
+  constructor(private fb: FormBuilder) {
+    this.EditDistrictMaster(null);
+   }
+  editDistrictMasterForm: FormGroup;
   ngOnInit() {
     this.GetAllDistrict();
-    $($.document).ready(function() {
+    $($.document).ready(function () {
       $("#example2").DataTable({
         paging: true,
         lengthChange: true,
@@ -72,7 +74,13 @@ export class DistrictComponent implements OnInit {
     ];
   }
 
-  showEditModal(){
+  showEditModal(data) {
     $('#editDistrictMasterModal').modal('show');
-    }
+    this.EditDistrictMaster(data);
+  }
+  EditDistrictMaster(data) {
+    this.editDistrictMasterForm = this.fb.group({
+      district: [data == null ? null : data.District, Validators.required]
+    });
+  }
 }
