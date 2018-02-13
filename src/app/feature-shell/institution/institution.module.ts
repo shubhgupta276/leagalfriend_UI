@@ -5,12 +5,14 @@ import { InstitutionRoutingModule } from './institution-routing.module';
 import { ForInstitutionComponent } from './for-institution/for-institution.component'
 import { AddForInstitutionComponent  } from './for-institution/add-for-institution/add-for-institution.component'
 import { AgainstInstitutionComponent } from './against-institution/against-institution.component'
+import { EditForInstitutionComponent  } from './for-institution/Edit-for-institution/Edit-for-institution.component'
 
 
 @NgModule(
     {
         imports: [ InstitutionRoutingModule ,CommonModule, FormsModule, ReactiveFormsModule],
-        declarations: [ ForInstitutionComponent, AgainstInstitutionComponent, AddForInstitutionComponent ]
+        declarations: [ ForInstitutionComponent, AgainstInstitutionComponent, AddForInstitutionComponent,EditForInstitutionComponent]
     }
 )    
+
 export class InstitutionModule {}
