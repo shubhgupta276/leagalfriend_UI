@@ -42,13 +42,13 @@
                                                 </div>
     
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                                                    <label class="col-sm-3 col-form-label createUserLabel">Resource:
                                                         <em class="astrick">*</em>
                                                     </label>
                                                     <div class="col-md-9" [class.has-error]="editForm.get('recourse').invalid 
                                                         &&  editForm.get('recourse').touched">
                                                         <select class="form-control" formControlName="recourse">
-                                                                <option value="">Select Recourse</option>
+                                                                <option value="">Select Resource</option>
                                                                 <option *ngFor="let item of arListRecourse" value="{{item.name}}">
                                                                     {{item.name}}
                                                                 </option>
