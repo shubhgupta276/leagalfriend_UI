@@ -36,6 +36,15 @@ export class CaseHistoryComponent implements OnInit {
     $(document).ready(function(){
       $("#dvHistory").click(function(){
           $("#dvHistoryRemark").toggle("Slow");
+          if ($("#dvHistory").find("span").hasClass("glyphicon-plus")) {
+           
+            $("#dvHistory").find("span.clssign").addClass("glyphicon-minus");
+            $("#dvHistory").find("span.clssign").removeClass("glyphicon-plus");
+          }
+          else {
+            $("#dvHistory").find("span.clssign").addClass("glyphicon-plus");
+            $("#dvHistory").find("span.clssign").removeClass("glyphicon-minus");
+          }
       });
       $("#closebtn").click(function(){
        
