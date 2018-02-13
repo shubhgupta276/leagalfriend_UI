@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -13,21 +13,12 @@ declare var $;
 })
 export class EditInstitutionMasterComponent implements OnInit
 {
-    editInstitutionMasterForm: FormGroup;
-
-    EditInstitutionMaster() {
-    this.editInstitutionMasterForm = this.fb.group({
-        institution: [null, Validators.required],
-    });
-  }
-
-  constructor(private fb: FormBuilder) {
-    this.EditInstitutionMaster();
+   @Input() editInstitutionMasterForm: FormGroup;
+  constructor() {
   }
 
   submitEditInstitutionMaster(data) {
     $.toaster({ priority : 'success', title : 'Success', message : 'Institution updated successfully'});
-    this.EditInstitutionMaster();
     this.closeModal();
   }
 

@@ -10,7 +10,6 @@ export class OnlyString {
     @Input() OnlyString: boolean;
 
     @HostListener('keydown', ['$event']) onKeyDown(event) {
-        debugger;
         const evt = <KeyboardEvent>event;
         const alphaExp = /^[a-zA-Z]+$/;
         if (evt.key.match(alphaExp)) {

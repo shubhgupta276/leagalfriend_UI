@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -14,22 +14,13 @@ declare var $;
 export class EditCityMasterComponent implements OnInit
 {
 
-    editCityMasterForm: FormGroup;
+    @Input() editCityMasterForm: FormGroup; 
 
-
-    EditCityMaster() {
-    this.editCityMasterForm = this.fb.group({
-        city: [null, Validators.required]
-    });
-  }
-
-  constructor(private fb: FormBuilder) {
-    this.EditCityMaster();
+  constructor() {
   }
 
   submitEditCityMaster(data) {
     $.toaster({ priority : 'success', title : 'Success', message : 'City updated successfully'});
-    this.EditCityMaster();
     this.closeModal();
   }
 

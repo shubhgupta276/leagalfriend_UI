@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { AddCourtMasterComponent } from "./add-court/add-court.component";
+import { EditCourtMasterComponent } from "./edit-court/edit-court.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      CourtComponent,
+      AddCourtMasterComponent,
+      EditCourtMasterComponent,
+    ]
+  }
+)
 @Component({
   selector: 'app-court',
   templateUrl: './court.component.html',
@@ -7,31 +24,62 @@ declare let $;
 })
 export class CourtComponent implements OnInit {
 arr:[any];
-  constructor() { }
-
+  constructor(private fb: FormBuilder) { 
+    this.EditCourtMaster(null);
+  }
+  editCourtMasterForm: FormGroup;
   ngOnInit() {
     this.GetAllCourt();
-    $($.document).ready(function() {
-      $("#example1").DataTable({
+    $($.document).ready(function () {
+
+      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+      var selectedPageLength = 15;
+
+      var $table = $("#example1").DataTable({
         paging: true,
         lengthChange: true,
         searching: true,
         ordering: true,
         info: true,
         autoWidth: false,
-        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
-        pageLength: 15,
+        lengthMenu: arLengthMenu,
+        pageLength: selectedPageLength,
         oLanguage: {
           sLengthMenu: "Show _MENU_ rows",
           sSearch: "",
           sSearchPlaceholder: "Search..."
+        },
+        initComplete: function () {
+          var tableid = "example1";
+          var $rowSearching = $("#" + tableid + "_wrapper");
+          $rowSearching.find(".row:eq(0)").hide();
+
+          for (var i = 0; i < arLengthMenu[0].length; i++) {
+            $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+          }
+          $("#ddlLengthMenu").val(selectedPageLength);
+
+          $("#ddlLengthMenu").on("change", function () {
+            $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+          });
         }
       });
+
+      $table.columns().every(function () {
+
+        $('#txtSearch').on('keyup change', function () {
+          if ($table.search() !== this.value) {
+            $table.search(this.value).draw();
+          }
+        });
+      });
+
     });
   }
 
-  showEditModal(){
+  showEditModal(data){
     $('#editCourtMasterModal').modal('show');
+    this.EditCourtMaster(data);
     }
   GetAllCourt()
   {
@@ -54,6 +102,11 @@ arr:[any];
         {CourtName:"10TH_JDG_CCC",CourtDesc:"10TH JUDGE, CITY CIVIL COURT"},
       ];
   }
-  
+  EditCourtMaster(data) {
+    this.editCourtMasterForm = this.fb.group({
+      court: [data==null?null:data.CourtName, Validators.required],
+      courtdesc: [data==null?null:data.CourtDesc, Validators.required]
+    });
+  }
 
 }

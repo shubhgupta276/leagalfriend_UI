@@ -1,6 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { AddStateMasterComponent } from './add-state/add-state.component';
+import { EditStateMasterComponent } from './edit-state/edit-state.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      StateComponent,
+      AddStateMasterComponent,
+      EditStateMasterComponent
+    ]
+  }
+)
 @Component({
   selector: 'app-state',
   templateUrl: './state.component.html',
@@ -8,29 +24,58 @@ declare let $;
 })
 export class StateComponent implements OnInit {
   arr:[any];
-  constructor() { }
+  editStateMasterForm: FormGroup;
+  constructor(private fb: FormBuilder) { 
+    this.EditStateMaster(null);
+  }
 
   ngOnInit() {
     this.GetAllState();
-    $($.document).ready(function(){
-     
-      $("#example1").DataTable({
+    $($.document).ready(function () {
+
+      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+      var selectedPageLength = 15;
+
+      var $table = $("#example1").DataTable({
         paging: true,
         lengthChange: true,
         searching: true,
         ordering: true,
         info: true,
         autoWidth: false,
-        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
-        pageLength: 15,
+        lengthMenu: arLengthMenu,
+        pageLength: selectedPageLength,
         oLanguage: {
           sLengthMenu: "Show _MENU_ rows",
           sSearch: "",
           sSearchPlaceholder: "Search..."
+        },
+        initComplete: function () {
+          var tableid = "example1";
+          var $rowSearching = $("#" + tableid + "_wrapper");
+          $rowSearching.find(".row:eq(0)").hide();
+
+          for (var i = 0; i < arLengthMenu[0].length; i++) {
+            $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+          }
+          $("#ddlLengthMenu").val(selectedPageLength);
+
+          $("#ddlLengthMenu").on("change", function () {
+            $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+          });
         }
       });
-    }
-  );
+
+      $table.columns().every(function () {
+
+        $('#txtSearch').on('keyup change', function () {
+          if ($table.search() !== this.value) {
+            $table.search(this.value).draw();
+          }
+        });
+      });
+
+    });
   }
   GetAllState()
   {
@@ -65,14 +110,17 @@ export class StateComponent implements OnInit {
       {State:"Rajasthan"},
       {State:"Sikkim"},
       {State:"Tripura"},
-
-      
-      
     ];
   }
   
-showEditModal(){
+showEditModal(data){
   $('#editStateMasterModal').modal('show');
+this.EditStateMaster(data);
+  }
+  EditStateMaster(data) {
+    this.editStateMasterForm = this.fb.group({
+      state: [data == null ? null : data.State, Validators.required]
+    });
   }
 
 }

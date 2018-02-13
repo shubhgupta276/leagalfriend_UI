@@ -1,29 +1,37 @@
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
-      Courts
-      <!-- <small>advanced tables</small> -->
-    </h1>
-    <!-- <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="#">Tables</a></li>
-      <li class="active">Data tables</li>
-    </ol> -->
-  </section>
-  <!-- Main content -->
-  <section class="content">
-    <div class="row">
-      <div class="col-xs-12">
-        
-        <!-- /.box -->
-
-        <div class="box">
-          <!-- <div class="box-header">
-            <h3 class="box-title">Data Table With Full Features</h3>
-          </div> -->
-          <!-- /.box-header -->
-          <div class="box-body">
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <div class="page-heading" >
+      Master Management
+    </div>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+  
+          <!-- /.box -->
+  
+          <div class="box">
+            <!-- <div class="box-header">
+              <h3 class="box-title">Data Table With Full Features</h3>
+            </div> -->
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div>
+                <div class="row table-toolbar">
+                  <div class="col-sm-4 heading">Courts</div>
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-2">
+                    <label class="custom-label">Show
+                      <select class="input-sm" id="ddlLengthMenu">
+                      </select> rows
+                    </label>
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
+                  </div>
+                </div>
+              </div>
             <table id="example1" class="table table-bordered table-hover">
               <thead>
               <tr>
@@ -33,7 +41,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr;let i=index"  (dblclick)="showEditModal()" data-target="#editCourtMasterModal">
+              <tr *ngFor="let item of arr;let i=index"  (dblclick)="showEditModal(item)" data-target="#editCourtMasterModal">
                 <td>{{item.CourtName}}</td>
                 <td>{{item.CourtDesc}}
                 </td>
@@ -54,14 +62,14 @@
     <!-- /.row -->
   </section>
   <!-- /.content -->
-  <div class="favicon">
+  <div class="favicon" data-toggle="modal" data-target="#addCourtMasterModal">
       <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
         <span class="tooltip-text">Add Court</span>
       </div>
       <a>
-        <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addCourtMasterModal"></i>
+        <i class="fa fa-plus" type="button"></i>
       </a>
     </div>
   <app-add-court></app-add-court>
-  <app-edit-court></app-edit-court>
+  <app-edit-court [editCourtMasterForm]="editCourtMasterForm"></app-edit-court>
 </div>

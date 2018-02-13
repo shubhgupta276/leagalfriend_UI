@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { AddBillingComponent } from "./add-bill/add-bill.component";
+import { EditBillingComponent } from "./edit-bill/edit-bill.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      BillingComponent,
+      AddBillingComponent,
+      EditBillingComponent,
+    ]
+  }
+)
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
@@ -12,7 +29,10 @@ export class BillingComponent implements OnInit {
   arListRecourse: any[] = [];
   arListStage: any[] = [];
   arListAmount: any[] = [];
-  constructor() { }
+  editForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.addBillForm(null);
+  }
 
   ngOnInit() {
     this.getBillingData();
@@ -20,26 +40,38 @@ export class BillingComponent implements OnInit {
 
     $($.document).ready(function () {
 
+      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+      var selectedPageLength = 15;
+
       var $table = $("#example1").DataTable({
-        "bSort": false,
-        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
-        pageLength: 15,
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        lengthMenu: arLengthMenu,
+        pageLength: selectedPageLength,
         oLanguage: {
           sLengthMenu: "Show _MENU_ rows",
           sSearch: "",
           sSearchPlaceholder: "Search..."
+        },
+        initComplete: function () {
+          var tableid = "example1";
+          var $rowSearching = $("#" + tableid + "_wrapper");
+          $rowSearching.find(".row:eq(0)").hide();
+
+          for (var i = 0; i < arLengthMenu[0].length; i++) {
+            $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+          }
+          $("#ddlLengthMenu").val(selectedPageLength);
+
+          $("#ddlLengthMenu").on("change", function () {
+            $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+          });
         }
       });
-      // {
-      //   columns: [
-      //     { name: "#", orderable: false },
-      //     { name: "Bank", orderable: false },
-      //     { name: "Recourse", orderable: false },
-      //     { name: "Stage", orderable: false },
-      //     { name: "Amount", orderable: false }
-      //   ],
-      // }
-
       $table.columns().every(function () {
 
         $('#txtSearch').on('keyup change', function () {
@@ -135,7 +167,17 @@ export class BillingComponent implements OnInit {
     );
   }
 
-  showEditModal(){
+  showEditModal(data) {
     $('#editBillModal').modal('show');
-    }
+    this.addBillForm(data);
+  }
+  addBillForm(data) {
+    this.editForm = this.fb.group({
+      bank: [data == null ? null : data.Bank, Validators.required],
+      recourse: [data == null ? null : data.Recourse, Validators.required],
+      stage: [data == null ? null : data.Stage, Validators.required],
+      amount: [data == null ? null : data.Amount, Validators.required]
+    });
+
+  }
 }
