@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { AddComplianceMasterComponent } from "./add-compliance/add-compliance.component";
+import { EditComplianceMasterComponent } from "./edit-compliance/edit-compliance.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      ComplianceComponent,
+      AddComplianceMasterComponent,
+      EditComplianceMasterComponent,
+    ]
+  }
+)
 @Component({
   selector: 'app-compliance',
   templateUrl: './compliance.component.html',
@@ -7,8 +24,11 @@ declare let $;
 })
 export class ComplianceComponent implements OnInit {
 arr:[any];
-  constructor() { }
+editComplianceMasterForm: FormGroup;
 
+constructor(private fb: FormBuilder) {
+  this.EditComplianceMaster(null);
+}
   ngOnInit() {
     this.GetAllCompliance();
     $($.document).ready(function () {
@@ -57,8 +77,9 @@ arr:[any];
 
     });
   }
-  showEditModal(){
+  showEditModal(data){
     $('#editComplianceMasterModal').modal('show');
+    this.EditComplianceMaster(data);
     }
   GetAllCompliance()
   {
@@ -66,6 +87,14 @@ arr:[any];
       {Recourse:"RODA",Stage:"ARGUMENTS",Compliance:"Compliance 1",Status:"Active"}
 
     ]
+  }
+  EditComplianceMaster(data) {
+    this.editComplianceMasterForm = this.fb.group({        
+        resource: [1],
+        stage: [1],
+        complaince: [data==null?null:data.Compliance, Validators.required],
+        status: [1]
+    });
   }
   
 

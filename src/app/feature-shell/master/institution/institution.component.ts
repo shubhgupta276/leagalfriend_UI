@@ -1,5 +1,22 @@
 import { Component, OnInit } from "@angular/core";
+import { AddInstitutionMasterComponent } from "./add-institution/add-institution.component";
+import { EditInstitutionMasterComponent } from "./edit-institution/edit-institution.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      InstitutionComponent,
+      AddInstitutionMasterComponent,
+      EditInstitutionMasterComponent
+    ]
+  }
+)
 @Component({
   selector: "app-institution",
   templateUrl: "./institution.component.html",
@@ -7,7 +24,10 @@ declare let $;
 })
 export class InstitutionComponent implements OnInit {
   arr: [any];
-  constructor() {}
+  editInstitutionMasterForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.EditInstitutionMaster(null);
+  }
 
   ngOnInit() {
     this.GetAllInstitute();
@@ -76,7 +96,13 @@ export class InstitutionComponent implements OnInit {
     ];
   }
 
-  showEditModal(){
+  showEditModal(data) {
     $('#editInstitutionMasterModal').modal('show');
-    }
+    this.EditInstitutionMaster(data);
+  }
+  EditInstitutionMaster(data) {
+    this.editInstitutionMasterForm = this.fb.group({
+      institution: [data == null ? null : data.InstituteName, Validators.required],
+    });
+  }
 }

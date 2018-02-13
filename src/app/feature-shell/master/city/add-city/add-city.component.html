@@ -24,7 +24,7 @@
                               <em class="astrick">*</em>
                             </label>
                             <div class="col-md-9" [class.has-error]="addCityMasterForm.get('city').invalid &&  addCityMasterForm.get('city').touched">
-                              <input class="form-control" placeholder="City" formControlName="city">
+                              <input class="form-control" OnlyString="true" placeholder="City" formControlName="city">
                             </div>
                             <div class="col-sm-9 valodation-padding" *ngIf="addCityMasterForm.get('city').invalid &&  addCityMasterForm.get('city').touched">
                               <small class="text-danger">

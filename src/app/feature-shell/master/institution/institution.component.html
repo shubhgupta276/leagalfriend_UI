@@ -41,7 +41,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of arr" (dblclick)="showEditModal()" data-target="#editInstitutionMasterModal">
+                <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editInstitutionMasterModal">
                   <td>{{item.InstituteName}}</td>
                   <td>
                     <a title="Edit">
@@ -73,5 +73,5 @@
     </a>
   </div>
   <app-add-institution></app-add-institution>
-  <app-edit-institution></app-edit-institution>
+  <app-edit-institution [editInstitutionMasterForm]="editInstitutionMasterForm"></app-edit-institution>
 </div>

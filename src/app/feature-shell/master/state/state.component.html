@@ -41,7 +41,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr" (dblclick)="showEditModal()" data-target="#editStateMasterModal">
+              <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editStateMasterModal">
                 <td>{{item.State}}</td>
                 <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
                 
@@ -69,5 +69,5 @@
       </a>
     </div>
   <app-add-state></app-add-state>
-  <app-edit-state></app-edit-state>
+  <app-edit-state [editStateMasterForm]="editStateMasterForm"></app-edit-state>
 </div>

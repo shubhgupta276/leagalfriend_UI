@@ -1,6 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { AddStateMasterComponent } from './add-state/add-state.component';
+import { EditStateMasterComponent } from './edit-state/edit-state.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
+
 declare let $;
+
+@NgModule(
+  {
+    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    declarations: [
+      StateComponent,
+      AddStateMasterComponent,
+      EditStateMasterComponent
+    ]
+  }
+)
 @Component({
   selector: 'app-state',
   templateUrl: './state.component.html',
@@ -8,7 +24,10 @@ declare let $;
 })
 export class StateComponent implements OnInit {
   arr:[any];
-  constructor() { }
+  editStateMasterForm: FormGroup;
+  constructor(private fb: FormBuilder) { 
+    this.EditStateMaster(null);
+  }
 
   ngOnInit() {
     this.GetAllState();
@@ -91,14 +110,17 @@ export class StateComponent implements OnInit {
       {State:"Rajasthan"},
       {State:"Sikkim"},
       {State:"Tripura"},
-
-      
-      
     ];
   }
   
-showEditModal(){
+showEditModal(data){
   $('#editStateMasterModal').modal('show');
+this.EditStateMaster(data);
+  }
+  EditStateMaster(data) {
+    this.editStateMasterForm = this.fb.group({
+      state: [data == null ? null : data.State, Validators.required]
+    });
   }
 
 }
