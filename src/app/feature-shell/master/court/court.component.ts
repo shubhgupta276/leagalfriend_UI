@@ -3,7 +3,7 @@ import { AddCourtMasterComponent } from "./add-court/add-court.component";
 import { EditCourtMasterComponent } from "./edit-court/edit-court.component";
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
 
 declare let $;
 
@@ -24,8 +24,10 @@ declare let $;
 })
 export class CourtComponent implements OnInit {
 arr:[any];
-  constructor() { }
-
+  constructor(private fb: FormBuilder) { 
+    this.EditCourtMaster(null);
+  }
+  editCourtMasterForm: FormGroup;
   ngOnInit() {
     this.GetAllCourt();
     $($.document).ready(function() {
@@ -47,8 +49,9 @@ arr:[any];
     });
   }
 
-  showEditModal(){
+  showEditModal(data){
     $('#editCourtMasterModal').modal('show');
+    this.EditCourtMaster(data);
     }
   GetAllCourt()
   {
@@ -71,6 +74,11 @@ arr:[any];
         {CourtName:"10TH_JDG_CCC",CourtDesc:"10TH JUDGE, CITY CIVIL COURT"},
       ];
   }
-  
+  EditCourtMaster(data) {
+    this.editCourtMasterForm = this.fb.group({
+      court: [data==null?null:data.CourtName, Validators.required],
+      courtdesc: [data==null?null:data.CourtDesc, Validators.required]
+    });
+  }
 
 }

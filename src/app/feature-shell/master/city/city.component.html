@@ -43,7 +43,7 @@
               </thead>
               <tbody>
 
-                <tr *ngFor="let item of arCityData" (dblclick)="showEditModal()" data-target="#editCityMasterModal">
+                <tr *ngFor="let item of arCityData" (dblclick)="showEditModal(item)" data-target="#editCityMasterModal">
                   <td>{{item.BankCity}}</td>
                   <td>
                     <a title="Edit">
@@ -73,5 +73,5 @@
     </a>
   </div>
   <app-add-city></app-add-city>
-  <app-edit-city></app-edit-city>
+  <app-edit-city [editCityMasterForm]="editCityMasterForm"></app-edit-city>
 </div>

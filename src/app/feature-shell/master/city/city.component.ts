@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
 import { AddCityMasterComponent } from './add-city/add-city.component';
 import { EditCityMasterComponent } from './edit-city/edit-city.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
 
 declare let $;
 
@@ -25,8 +25,10 @@ declare let $;
 })
 export class CityComponent implements OnInit {
   arCityData: any[] = [];
-  constructor() { }
-
+  constructor(private fb: FormBuilder) { 
+    this.createForm(null);
+  }
+  editCityMasterForm: FormGroup;
   ngOnInit() {
     this.getCityData();
     $($.document).ready(function () {
@@ -74,8 +76,9 @@ export class CityComponent implements OnInit {
 
     });
   }
-  showEditModal(){
+  showEditModal(data){
     $('#editCityMasterModal').modal('show');
+    this.createForm(data);
     }
 
   getCityData() {
@@ -92,5 +95,10 @@ export class CityComponent implements OnInit {
       { BankCity: "ACHAMPET" },
       { BankCity: "ADDANKI" }
     );
+  }
+  createForm(data) {
+    this.editCityMasterForm = this.fb.group({
+      city: [data == null ? null : data.BankCity, Validators.required],      
+    });
   }
 }

@@ -35,7 +35,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr" (dblclick)="showEditModal()" data-target="#editStageMasterModal" >
+              <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editStageMasterModal" >
                 <td>{{item.Recource}}</td>
                 <td>{{item.StageCode}}
                 </td>
@@ -65,5 +65,5 @@
       </a>
     </div>
   <app-add-stage></app-add-stage>
-  <app-edit-stage></app-edit-stage>
+  <app-edit-stage [editStageMasterForm]="editStageMasterForm"></app-edit-stage>
 </div>

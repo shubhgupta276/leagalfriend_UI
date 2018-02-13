@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -13,21 +13,13 @@ declare var $;
 })
 export class EditDistrictMasterComponent implements OnInit
 {
-    editDistrictMasterForm: FormGroup;
-    
-  EditDistrictMaster() {
-    this.editDistrictMasterForm = this.fb.group({
-        district: [null, Validators.required]
-    });
-  }
-
-  constructor(private fb: FormBuilder) {
-    this.EditDistrictMaster();
+   @Input() editDistrictMasterForm: FormGroup;
+     constructor() {
+   
   }
 
   submitEditDistrictMaster(data) {
     $.toaster({ priority : 'success', title : 'Success', message : 'District updated successfully'});
-    this.EditDistrictMaster();
     this.closeModal();
   }
 

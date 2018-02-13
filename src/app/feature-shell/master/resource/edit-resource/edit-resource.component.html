@@ -39,7 +39,7 @@
                                 <div class="col-md-9" [class.has-error]="editResourceMasterForm.get('resourcename').invalid &&  editResourceMasterForm.get('resourcename').touched">
                                   <input class="form-control" placeholder="Resource Name" formControlName="resourcename">
                                 </div>
-                                <div class="col-sm-9" style="padding-left: 25px;" *ngIf="editResourceMasterForm.get('resourcename').invalid &&  editResourceMasterForm.get('resourcename').touched">
+                                <div class="col-sm-9 valodation-padding"  *ngIf="editResourceMasterForm.get('resourcename').invalid &&  editResourceMasterForm.get('resourcename').touched">
                                   <small class="text-danger">
                                     <span>Resource Name is required.</span>
                                   </small>

@@ -37,7 +37,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of arr" (dblclick)="showEditModal()" data-target="#editBranchMasterModal" >
+                <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editBranchMasterModal" >
                   <td>{{item.BranchName}}</td>
                   <td>{{item.BranchCode}}</td>
                   <td>{{item.Address}}</td>
@@ -69,5 +69,5 @@
   </div>
 
   <app-add-branch></app-add-branch>
-  <app-edit-branch></app-edit-branch>
+  <app-edit-branch [editBranchMasterForm]="editBranchMasterForm"></app-edit-branch>
 </div>

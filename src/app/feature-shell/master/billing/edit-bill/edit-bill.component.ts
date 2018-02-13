@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue, ListBillingBank, ListBillingRecourse, ListBillingStage } from '../../../../shared/Utility/util-common';
 declare let $;
@@ -11,7 +11,7 @@ declare let $;
 export class EditBillingComponent implements OnInit {
 
 
-    editForm: FormGroup;
+   @Input() editForm: FormGroup;
     arListBanks: KeyValue[] = ListBillingBank;
     arListRecourse: KeyValue[] = ListBillingRecourse;
     arListStage: KeyValue[] = ListBillingStage;
