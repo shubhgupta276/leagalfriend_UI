@@ -1,6 +1,6 @@
 
 
- <div class="modal fade in" id="editForInstitutionModal" style="display: none; padding-right: 17px;">
+ <div class="modal fade in" id="editForInstitutionModal">
       <div class="modal-dialog">
         <div class="modal-content" style="border-radius: 5px;">
           <div class="modal-header modal-header-addedit">
@@ -21,7 +21,7 @@
 
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Compliance:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9">
                             <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1">
@@ -29,16 +29,12 @@
                         </div>
                          <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Recourse:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('recourse').invalid &&  editForInstitutionForm.get('recourse').touched">
                             <input class="form-control" placeholder="recourse" formControlName="recourse">
                           </div>
-                          <div class="col-sm-9 valodation-padding" *ngIf="editForInstitutionForm.get('recourse').invalid &&  editForInstitutionForm.get('recourse').touched">
-                            <small class="text-danger">
-                              <span>Recourse is required.</span>
-                            </small>
-                          </div>
+                         
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Legal Case ID:
@@ -55,7 +51,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Region:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('region').invalid &&  editForInstitutionForm.get('region').touched">
                             <input class="form-control" placeholder="Region" formControlName="region">
@@ -81,7 +77,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Location:
-                            <em class="astrick">*</em>
+                           <em class="astrick">*</em>
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('location').invalid &&  editForInstitutionForm.get('location').touched">
                             <input class="form-control" placeholder="Location" formControlName="location">
@@ -94,7 +90,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Product:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('product').invalid &&  editForInstitutionForm.get('product').touched">
                             <input class="form-control" placeholder="Product" formControlName="product">
@@ -107,7 +103,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Product Group:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('productgroup').invalid &&  editForInstitutionForm.get('productgroup').touched">
                             <input class="form-control" placeholder="Product Group" formControlName="productgroup">
@@ -120,7 +116,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Loan Account Number:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('loanaccountnumber').invalid &&  editForInstitutionForm.get('loanaccountnumber').touched">
                             <input class="form-control" placeholder="Loan Account Number" formControlName="loanaccountnumber">
@@ -133,7 +129,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
-                            <em class="astrick">*</em>
+                           <em class="astrick">*</em>
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('customername').invalid &&  editForInstitutionForm.get('customername').touched">
                             <input class="form-control" placeholder="Customer Name" formControlName="customername">
@@ -146,7 +142,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">POS as on filing date:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('posasofillingdate').invalid &&  editForInstitutionForm.get('posasofillingdate').touched">
                             <input class="form-control" placeholder="POS as on filing date" formControlName="posasofillingdate">
@@ -159,7 +155,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">DPD as on filing date:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('dpdasonfillingdate').invalid &&  editForInstitutionForm.get('dpdasonfillingdate').touched">
                             <input class="form-control" placeholder="DPD as on filing date" formControlName="dpdasonfillingdate">
@@ -172,7 +168,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">NPA Stage as on filing date:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('npastageasonfillingdate').invalid &&  editForInstitutionForm.get('npastageasonfillingdate').touched">
                             <input class="form-control" placeholder="NPA Stage as on filing date" formControlName="npastageasonfillingdate">
@@ -199,7 +195,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Case Type:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('casetype').invalid &&  editForInstitutionForm.get('casetype').touched">
                             <input class="form-control" placeholder="Case Type" formControlName="casetype">
@@ -212,7 +208,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('courtcaseid').invalid &&  editForInstitutionForm.get('courtcaseid').touched">
                             <input class="form-control" placeholder="Court Case Id" formControlName="courtcaseid">
@@ -251,7 +247,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Amount involved:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('amountinvolved').invalid &&  editForInstitutionForm.get('amountinvolved').touched">
                             <input class="form-control" placeholder="Amount involved" formControlName="amountinvolved">
@@ -264,7 +260,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Lawyer Name:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('lawyername').invalid &&  editForInstitutionForm.get('lawyername').touched">
                             <input class="form-control" placeholder="Lawyer Name" formControlName="lawyername">
@@ -277,7 +273,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Case Stage:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('casestage').invalid &&  editForInstitutionForm.get('casestage').touched">
                             <input class="form-control" placeholder="Case Stage" formControlName="casestage">
@@ -290,7 +286,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Stage in Court:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('stageincourt').invalid &&  editForInstitutionForm.get('stageincourt').touched">
                             <input class="form-control" placeholder="Stage in Court" formControlName="stageincourt">
@@ -303,7 +299,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Previous Hearing Date:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('previoushearingdate').invalid &&  editForInstitutionForm.get('previoushearingdate').touched">
                             <input class="form-control" placeholder="Previous Hearing Date" formControlName="previoushearingdate">
@@ -321,7 +317,7 @@
                          <div class="col-md-9">
                             <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                                 <input type="text" tabindex="14" id="next_hearing_date" name="dateof_filling_case" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                    size="10" value="2017-12-22" formControlName="nextHearingDate">
+                                    size="10" value="2017-12-22" formControlName="nexthearingdate">
                                 <div class="input-group-addon">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -335,7 +331,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">NDOH Null Reason:
-                            <em class="astrick">*</em>
+                         
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('ndohnullreasong').invalid &&  editForInstitutionForm.get('ndohnullreasong').touched">
                             <input class="form-control" placeholder="NDOH Null Reason" formControlName="ndohnullreasong">
@@ -367,12 +363,12 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Receiver Name:
-                            <em class="astrick">*</em>
+                           
                           </label>
-                          <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('receivername').invalid &&  editForInstitutionForm.get('receivername').touched">
-                            <input class="form-control" placeholder="Receiver Name" formControlName="receivername">
+                          <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('orderreceiveddate').invalid &&  editForInstitutionForm.get('orderreceiveddate').touched">
+                            <input class="form-control" placeholder="Receiver Name" formControlName="orderreceiveddate">
                           </div>
-                          <div class="col-sm-9 valodation-padding" *ngIf="editForInstitutionForm.get('receivername').invalid &&  editForInstitutionForm.get('receivername').touched">
+                          <div class="col-sm-9 valodation-padding" *ngIf="editForInstitutionForm.get('orderreceiveddate').invalid &&  editForInstitutionForm.get('orderreceiveddate').touched">
                             <small class="text-danger">
                               <span>Receiver Name is required.</span>
                             </small>
@@ -380,7 +376,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">RO Status:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('rostatus').invalid &&  editForInstitutionForm.get('rostatus').touched">
                             <input class="form-control" placeholder="RO Status" formControlName="rostatus">
@@ -393,7 +389,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">RO Execution date:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('roexecutiondate').invalid &&  editForInstitutionForm.get('roexecutiondate').touched">
                             <input class="form-control" placeholder="RO Execution date" formControlName="roexecutiondate">
@@ -406,7 +402,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Arbitration Initiated:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('arbitrationinitiated').invalid &&  editForInstitutionForm.get('arbitrationinitiated').touched">
                             <input class="form-control" placeholder="Arbitration Initiated" formControlName="arbitrationinitiated">
@@ -419,7 +415,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Arbitration Case ID:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('arbitrationcaseid').invalid &&  editForInstitutionForm.get('arbitrationcaseid').touched">
                             <input class="form-control" placeholder="Arbitration Case ID" formControlName="arbitrationcaseid">
@@ -432,7 +428,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Repo Flag:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('repoflag').invalid &&  editForInstitutionForm.get('repoflag').touched">
                             <input class="form-control" placeholder="Repo Flag" formControlName="repoflag">
@@ -458,7 +454,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Legal Manager:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('legalmanager').invalid &&  editForInstitutionForm.get('legalmanager').touched">
                             <input class="form-control" placeholder="Legal Manager" formControlName="legalmanager">
@@ -484,7 +480,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Closure Date:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9">
                             <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
@@ -502,7 +498,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Closure Reporting Date:
-                            <em class="astrick">*</em>
+                            
                           </label>
                          <div class="col-md-9">
                             <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
@@ -521,7 +517,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Total Amt Recovered:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('totalamountrecovered').invalid &&  editForInstitutionForm.get('totalamountrecovered').touched">
                             <input class="form-control" placeholder="Total Amt Recovered" formControlName="totalamountrecovered">
@@ -534,7 +530,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Account Status:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('accountstatus').invalid &&  editForInstitutionForm.get('accountstatus').touched">
                             <input class="form-control" placeholder="Account Status" formControlName="accountstatus">
@@ -547,7 +543,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Case Filed Against:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('casefiledagainst').invalid &&  editForInstitutionForm.get('casefiledagainst').touched">
                             <input class="form-control" placeholder="Case Filed Against" formControlName="casefiledagainst">
@@ -560,7 +556,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">POS as on current system Date:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('posoncurrentdate').invalid &&  editForInstitutionForm.get('posoncurrentdate').touched">
                             <input class="form-control" placeholder="POS as on current system Date" formControlName="posoncurrentdate">
@@ -573,7 +569,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">DPD as on current system date:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('dpdoncurrentdate').invalid &&  editForInstitutionForm.get('dpdoncurrentdate').touched">
                             <input class="form-control" placeholder="DPD as on current system date" formControlName="dpdoncurrentdate">
@@ -586,7 +582,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">NPA Stage as on current system date:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('apastagedate').invalid &&  editForInstitutionForm.get('apastagedate').touched">
                             <input class="form-control" placeholder="NPA Stage as on current system date" formControlName="apastagedate">
@@ -599,7 +595,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Case Criticality Level:
-                            <em class="astrick">*</em>
+                            
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('casecriticalitylevel').invalid &&  editForInstitutionForm.get('casecriticalitylevel').touched">
                             <input class="form-control" placeholder="Case Criticality Level" formControlName="casecriticalitylevel">
@@ -612,7 +608,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Type:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('type').invalid &&  editForInstitutionForm.get('type').touched">
                             <input class="form-control" placeholder="Type" formControlName="type">
@@ -625,7 +621,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">ParentID:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('parentid').invalid &&  editForInstitutionForm.get('parentid').touched">
                             <input class="form-control" placeholder="ParentID" formControlName="parentid">
@@ -638,7 +634,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Child Case:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('childcase').invalid &&  editForInstitutionForm.get('childcase').touched">
                             <input class="form-control" placeholder="Child Case" formControlName="childcase">
@@ -651,7 +647,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Generated By:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('generatedby').invalid &&  editForInstitutionForm.get('generatedby').touched">
                             <input class="form-control" placeholder="Generated By" formControlName="generatedby">
@@ -664,7 +660,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
-                            <em class="astrick">*</em>
+                          
                           </label>
                           <div class="col-md-9">
                               <input type="file" name="upload_document" id="upload_document" class="form-control" formControlName="uploaddocument">
@@ -677,7 +673,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('groundforclosingdate').invalid &&  editForInstitutionForm.get('groundforclosingdate').touched">
                             <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingdate">
@@ -690,7 +686,7 @@
                         </div>
                           <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Completion Date:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('disposedfileno').invalid &&  editForInstitutionForm.get('completiondate').touched">
                             <input class="form-control" placeholder="Completion Date" formControlName="completiondate">
@@ -703,7 +699,7 @@
                         </div>
                          <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No:
-                            <em class="astrick">*</em>
+                           
                           </label>
                           <div class="col-md-9" [class.has-error]="editForInstitutionForm.get('disposedfileno').invalid &&  editForInstitutionForm.get('disposedfileno').touched">
                             <input class="form-control" placeholder="Disposed off File No" formControlName="disposedfileno">
@@ -715,7 +711,8 @@
                           </div>
                         </div>
                     <div class="modal-footer">
-                    <input type="submit" class="btn btn-modal-addedit" value="Save Changes">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                    <input type="submit" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit" value="Save Changes">
                     </div>
                       </div>
                     </div>

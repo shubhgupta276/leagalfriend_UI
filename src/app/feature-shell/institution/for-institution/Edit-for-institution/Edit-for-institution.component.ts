@@ -16,51 +16,51 @@ export class EditForInstitutionComponent implements OnInit{
     
     EditForInstitutionComponent(){
      this.editForInstitutionForm = this.fb.group({
-     compliance: [],
-      legalcaseId: [],
+     compliance: [null],
+      legalcaseId: [null, Validators.required],
       courtCaseId: [],
       recourse: [1],
-      manager: [1],
-      court: [1],
-      state: [1],
+      manager: [null],
+      court: [null],
+      state: [null, Validators.required],
       parentCase: [1],
       nextHearingDate: [],
       customerName: [],
-      remark: [null],
+      remark: [null, Validators.required],
       groundforclosingfile: [],
       disposedoffFileNo: [],
       branch: [1],
-      filingdate: [],
+      filingdate: [null],
       stage: [1],
       employee: [1],
-      courtplace: [1],
+      courtplace: [null, Validators.required],
       oppLawyer: [],
       childCase: [],
       lastHearingDate: [],
       uploadDocument: [],
       completionDate: [],
       region:[],
-      location:[],
+      location:[null, Validators.required],
       product:[],
       productgroup:[],
       loanaccountnumber:[],
-      customername:[],
+      customername:[null, Validators.required],
       posasofillingdate:[],
       dpdasonfillingdate:[],
       npastageasonfillingdate:[],
-      dateoffillingcase:[],
+      dateoffillingcase:[null, Validators.required],
       casetype:[],
       courtcaseid:[],
-      courtname:[],
-      OrderreceivedDate:[],
+      courtname:[null, Validators.required],
+      OrderreceivedDate:[null],
       amountinvolved:[],
       lawyername:[],
       casestage:[],
       stageincourt:[],
-      previoushearingdate:[],
-      nexthearingdate:[],
+      previoushearingdate:[null],
+      nexthearingdate:[null, Validators.required],
       ndohnullreasong:[],
-      orderreceiveddate:[],
+      orderreceiveddate:[null],
       receivername:[],
       rostatus:[],
       roexecutiondate:[],
@@ -68,7 +68,7 @@ export class EditForInstitutionComponent implements OnInit{
       arbitrationcaseid:[],
       repoflag:[],
       legalmanager:[],
-      casestatus:[],
+      casestatus:[null, Validators.required],
       closuredate:[],
       closurereportingdate:[],
       totalamountrecovered:[],
@@ -95,7 +95,14 @@ constructor(private fb: FormBuilder) {
   
 }
 ngOnInit(){
-    //     this.EditForInstitutionComponent();
+     const self = this;
+    $(document).ready(function () {
+      $('.input-group.date').datepicker().on('changeDate', function (ev) {
+        const attrName = $(this).find('input').attr('formControlName');
+        const attrValue = $(this).find('input').val();
+        self.editForInstitutionForm.controls[attrName].setValue(attrValue);
+      });
+    });
 }
 
   submitEditinstitutionUser(data) {
