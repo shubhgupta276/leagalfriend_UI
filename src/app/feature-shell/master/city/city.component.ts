@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
 import { AddCityMasterComponent } from './add-city/add-city.component';
 import { EditCityMasterComponent } from './edit-city/edit-city.component';
-import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare let $;
 
 @NgModule(
   {
-    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
     declarations: [
       CityComponent,
       AddCityMasterComponent,
@@ -25,8 +25,9 @@ declare let $;
 })
 export class CityComponent implements OnInit {
   arCityData: any[] = [];
-  constructor(private fb: FormBuilder) { 
-    this.createForm(null);
+  editDetails: any;
+  constructor(private fb: FormBuilder) {
+
   }
   editCityMasterForm: FormGroup;
   ngOnInit() {
@@ -76,10 +77,11 @@ export class CityComponent implements OnInit {
 
     });
   }
-  showEditModal(data){
+  showEditModal(data) {
+    this.editDetails = data;
     $('#editCityMasterModal').modal('show');
-    this.createForm(data);
-    }
+
+  }
 
   getCityData() {
     this.arCityData.push(
@@ -96,9 +98,5 @@ export class CityComponent implements OnInit {
       { BankCity: "ADDANKI" }
     );
   }
-  createForm(data) {
-    this.editCityMasterForm = this.fb.group({
-      city: [data == null ? null : data.BankCity, Validators.required],      
-    });
-  }
+
 }

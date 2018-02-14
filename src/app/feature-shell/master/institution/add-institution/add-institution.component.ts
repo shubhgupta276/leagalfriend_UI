@@ -8,16 +8,15 @@ declare var $;
 
 @Component({
   selector: 'app-add-institution',
-  templateUrl:'../add-institution/add-institution.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-institution/add-institution.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class AddInstitutionMasterComponent implements OnInit
-{
-    addInstitutionMasterForm: FormGroup;
-
+export class AddInstitutionMasterComponent implements OnInit {
+  addInstitutionMasterForm: FormGroup;
+  isInstitutionAlreadyExists: boolean = false;
   AddInstitutionMaster() {
     this.addInstitutionMasterForm = this.fb.group({
-        institution: [null, Validators.required],
+      institution: [null, Validators.required],
     });
   }
 
@@ -26,18 +25,27 @@ export class AddInstitutionMasterComponent implements OnInit
   }
 
   submitAddInstitutionMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'Institution added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'Institution added successfully' });
     this.AddInstitutionMaster();
     this.closeModal();
+    this.subscriberFields();
   }
 
-  closeModal()
-  {
+  closeModal() {
     $('#closebtn').click();
   }
 
-ngOnInit()
-  {
-
+  ngOnInit() {
+    this.subscriberFields();
+  }
+  subscriberFields() {
+    this.addInstitutionMasterForm.get('institution').valueChanges.subscribe(
+      (e) => {
+        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+          this.isInstitutionAlreadyExists = true;
+        else
+          this.isInstitutionAlreadyExists = false;
+      }
+    );
   }
 }

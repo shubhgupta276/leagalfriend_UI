@@ -22,8 +22,8 @@ declare let $;
 })
 export class ResourceComponent implements OnInit {
   arr: [any];
+  editDetails:any;
   constructor(private fb: FormBuilder) {
-    this.EditResourceMaster(null);
   }
   editResourceMasterForm: FormGroup;
   ngOnInit() {
@@ -143,14 +143,8 @@ export class ResourceComponent implements OnInit {
   }
 
   showEditModal(data) {
+    this.editDetails=data;
     $("#editResourceMasterModal").modal("show");
-    this.EditResourceMaster(data);
-  }
-  EditResourceMaster(data) {
-    this.editResourceMasterForm = this.fb.group({
-      resourcecode: [data==null?null:data.ResourceCode, Validators.required],
-      resourcename: [data==null?null:data.ResourceName, Validators.required],
-      resourcedesc: [data==null?null:data.ResourceDesc, Validators.required]
-    });
-  }
+   }
+  
 }

@@ -25,8 +25,9 @@ declare let $;
 export class InstitutionComponent implements OnInit {
   arr: [any];
   editInstitutionMasterForm: FormGroup;
+  editDetails:any;
   constructor(private fb: FormBuilder) {
-    this.EditInstitutionMaster(null);
+    
   }
 
   ngOnInit() {
@@ -97,12 +98,9 @@ export class InstitutionComponent implements OnInit {
   }
 
   showEditModal(data) {
+    this.editDetails=data;
     $('#editInstitutionMasterModal').modal('show');
-    this.EditInstitutionMaster(data);
+    
   }
-  EditInstitutionMaster(data) {
-    this.editInstitutionMasterForm = this.fb.group({
-      institution: [data == null ? null : data.InstituteName, Validators.required],
-    });
-  }
+  
 }
