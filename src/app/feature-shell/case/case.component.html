@@ -23,6 +23,7 @@
                     </ul>
                   </div>
                   <div id="pageLength1" class="col-sm-2 case-pagelength">
+                    <button style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
                     <label class="custom-label">Show
                       <select class="input-sm" id="ddlLengthMenu">
                       </select> rows
@@ -124,6 +125,78 @@
     </div>
   </section>
   <!-- /.content -->
+  <!-- Filter Case Starts -->
+  <div class="modal fade" id="filterCaseModal">
+      <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 5px;">
+          <div class="modal-header modal-header-addedit">
+            <button type="button" id="closebtnFilter" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Filter</h4>
+          </div>
+          <div style="width:120px;height:10%;background-color:black;"></div>
+          <div style="margin-top: -15px;" class="modal-body modal-body-adedit">
+          <div class="row">
+         
+           <div class="casemarFilter">
+              <div class="dvCaseSearchPad">
+                  <label class="col-sm-3 col-form-label caseSearchLabel">Recourse Type:</label>
+                    <select id="ddlCaseRecource" class="form-control caseForm-ControlSearch">
+                     <option value="All">All</option>
+                     <option *ngFor="let item of arrListCaseRecource" value="{{item}}">{{item}}</option>
+                    </select>
+              </div>
+              <div class="dvCaseSearchPad">
+                  <label class="col-sm-3 col-form-label caseSearchLabel">Case Stage:</label>
+                    <select id="ddlCaseStage" class="form-control caseForm-ControlSearch">
+                      <option value="All">All</option>
+                      <option *ngFor="let item of arrListCaseStage" value="{{item}}">{{item}}</option>
+                    </select>
+              </div>
+              <div class="dvCaseSearchPad">
+                  <label class="col-sm-3 col-form-label caseSearchLabel">Branch:</label>
+                    <select id="ddlCaseBranch" class="form-control caseForm-ControlSearch">
+                      <option value="All">All</option>
+                      <option *ngFor="let item of arrListCaseBranch" value="{{item}}">{{item}}</option>
+                    </select>
+              </div>
+              <div class="dvCaseSearchPad">
+                  <label class="col-sm-3 col-form-label caseSearchLabel">Start Date:</label>
+                  <div class="input-group caseFilterCalender date clsdate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input id="txtstartDate" type="text" tabindex="14"  readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                          size="10" value="" name="startDate">
+                      <div class="input-group-addon">
+                          <span class="fa fa-calendar"></span>
+                      </div>
+                  </div>
+              </div>
+              <div class="dvCaseSearchPad">
+                  <label class="col-sm-3 col-form-label caseSearchLabel">End Date:</label>
+                  <div class="input-group caseFilterCalender date clsdate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input id="txtEndDate" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                          size="10" value="" name="endDate" >
+                      <div class="input-group-addon">
+                          <span class="fa fa-calendar"></span>
+                      </div>
+                  </div> 
+              </div>
+           </div>
+          
+          </div>
+          </div>
+          <div class="modal-footer FilterSearch">
+              <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Reset</button>
+              <button type="submit" id="btnSearch" (click)="Serach" class="btn btn-default caseSearch">Search</button>
+              
+          </div>
+       
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- Filter case ends -->
   <div class="favicon" data-toggle="modal" data-target="#addCaseModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
       <span class="tooltip-text">Add Case</span>

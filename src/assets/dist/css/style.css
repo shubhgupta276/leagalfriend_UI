@@ -382,3 +382,30 @@ td {
 .forget-btn {
   margin-bottom: 0px;
 }
+.caseSearch{
+  background-color: #222d32;
+  color: white !important;
+}
+.form-control.caseForm-ControlSearch{
+  width: 445px;
+}
+.dvCaseSearchPad{
+  padding-bottom: 30px;
+}
+.modal-footer.FilterSearch{
+  border-top: none;
+}
+.caseSearchLabel{
+  font-weight: 400;
+  padding-left: 10px;
+  padding-top: 7px;
+  width: 125px;
+}
+.input-group.caseFilterCalender{
+  width: 445px;
+}
+.casemarFilter{
+  margin-top:10px;
+  margin-bottom: -32px;
+}
+
