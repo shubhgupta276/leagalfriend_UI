@@ -45,6 +45,7 @@
               <thead>
              
                   <tr>
+                     
                     <th>#</th>
                       <th>Bank
                         <select class="role input-sm" id="ddlBank"> 
@@ -71,6 +72,7 @@
                           </select>
                       </th>
                       <th>Action</th>
+                      <th  style="display: none;">Branch</th>
                     </tr>
              
               </thead>
@@ -84,6 +86,7 @@
                       <td>
                           <a href="javascript:void()" title="Edit;" data-toggle="modal" data-target="#editBillModal"><i class="fa fa-edit"></i></a>
                       </td>
+                      <td style="display: none;">{{item.Branch}}</td>
                     </tr>
               </tbody>
             </table>

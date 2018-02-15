@@ -43,20 +43,6 @@ export class BillingComponent implements OnInit {
     $($.document).ready(function () {
       $this.bindBillingGridPaging();
     });
-
-    //  //start Branch filter
-    $("#ddlBranch").on("change", function () {
-      var branch = $(this).val();
-      $this.getBillingData();
-      if (branch != "All") {
-        $this.arBillingData = $this.arBillingData.filter(x => x.Branch == branch);
-      }
-      //$("#example1").clear();
-      debugger
-      $this.bindBillingGridPaging();
-      $this.setDropdownUniqueValues();
-    });
-    // //end Branch filter
   }
   bindBillingGridPaging() {
 
@@ -70,7 +56,6 @@ export class BillingComponent implements OnInit {
       ordering: true,
       info: true,
       autoWidth: false,
-      'bDestroy': true,
       lengthMenu: arLengthMenu,
       pageLength: selectedPageLength,
       oLanguage: {
@@ -99,6 +84,18 @@ export class BillingComponent implements OnInit {
         if ($table.search() !== this.value) {
           $table.search(this.value).draw();
         }
+      });
+
+
+      //  //start Branch filter
+      $("#ddlBranch").on("change", function () {
+        //able.draw();
+        var branch = $(this).val();
+        if (branch == "All") { //hidden row
+          $table.columns(6).search("").draw();
+        }
+        else
+          $table.columns(6).search(this.value).draw();
       });
 
       //start bank filter
