@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { SharedService, UpcomingEvents } from '../../shared/services/shared.service'
 declare let $;
 @Component({
   selector: 'app-calendar',
@@ -6,10 +7,11 @@ declare let $;
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
-
-  constructor() { }
+  constructor(private sharedService: SharedService) {
+  }
 
   ngOnInit() {
+    var $this = this;
     $(function () {
 
       /* initialize the external events
@@ -89,8 +91,8 @@ export class CalendarComponent implements OnInit {
           },
           {
             title: 'Birthday Party',
-            start: new Date(y, m, d + 1, 19, 0),
-            end: new Date(y, m, d + 1, 22, 30),
+            start: new Date(y, m, 28),
+            end: new Date(y, m, 29),
             allDay: false,
             backgroundColor: '#00a65a', //Success (green)
             borderColor: '#00a65a' //Success (green)
@@ -104,6 +106,9 @@ export class CalendarComponent implements OnInit {
             borderColor: '#3c8dbc' //Primary (light-blue)
           }
         ],
+        //timezone: 'local',
+        //ignoreTimezone: false,
+        //allDay: false,
         editable: true,
         droppable: true, // this allows things to be dropped onto the calendar !!!
         drop: function (date, allDay) { // this function is called when something is dropped
@@ -132,7 +137,11 @@ export class CalendarComponent implements OnInit {
             $(this).remove()
           }
           BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-        }
+        },
+        eventDrop: function (event, delta, revertFunc) {
+
+          BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
+        },
       })
       BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
       /* ADDING EVENTS */
@@ -172,11 +181,26 @@ export class CalendarComponent implements OnInit {
       })
       function BindUpcomingEvents(data) {
         $('#divUpcomingEvents').empty();
+        $this.sharedService.arrTodayCalendarEvents = [];
+        debugger
         $.each(data, function (i, d) {
+          this.totalUpcommingEvents = 0;
           if (d.start._d > new Date()) {
+            this.totalUpcommingEvents++;
             $('#divUpcomingEvents').append('<div class="external-event" style="background-color:' + d.backgroundColor + ';border-color:' + d.borderColor + ';color:#fff;">' + d.title + '</div>')
           }
+          // if (d.start._isUTC && d.start._d!=new Date())
+          //   d.start._d = new Date(d.start._d.setDate(d.start._d.getDate() - 1) );
+          if (d.end != null) {
+            if (d.end._isUTC)
+              d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1) );
+          }
+
+          //  $this.sharedService.emitChange(15);
+          $this.sharedService.arrTodayCalendarEvents.push({ startdate: new Date(d.start._d.setHours(0, 0, 0, 0)), endDate: new Date((d.end == null ? d.start : d.end)._d.setHours(0, 0, 0, 0)), cssClass: d.backgroundColor, totalUpcomingEvents: 0 })
         });
+        $this.sharedService.GetEventsGroup();
+
       }
     })
   }

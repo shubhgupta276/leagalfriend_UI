@@ -280,6 +280,17 @@
         <a routerLink="calendar">
           <i class="fa fa-calendar"></i>
           <span>Calendar</span>
+          <span class="pull-right-container">
+            <ng-container *ngFor="let item of arrTodayEvents">
+                <small class="label pull-right" [style.backgroundColor]="item.cssClass">{{item.totalEventCount}}</small>
+            </ng-container>
+            <!-- <small class="label pull-right bg-blue">1</small>
+            <small class="label pull-right bg-red">1</small>
+            <small class="label pull-right bg-green">1</small>
+            <small class="label pull-right bg-blue">1</small>
+            <small class="label pull-right bg-blue">1</small> -->
+            <!-- <small class="label pull-right bg-blue">1</small> -->
+          </span>
         </a>
       </li>
     </ul>
