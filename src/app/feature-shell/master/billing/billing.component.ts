@@ -53,7 +53,7 @@ export class BillingComponent implements OnInit {
       paging: true,
       lengthChange: true,
       searching: true,
-      ordering: true,
+      ordering: false,
       info: true,
       autoWidth: false,
       lengthMenu: arLengthMenu,
