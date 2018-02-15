@@ -11,10 +11,10 @@ export class SharedService {
     changeEmitted$ = this.emitChangeSource.asObservable();
     constructor() {
         this.arrTodayCalendarEvents = [
-            { startdate: this.dateFormat(new Date(2018, 1, 14)),endDate: this.dateFormat(new Date(2018, 1, 14)), cssClass: '#dd4b39', totalUpcomingEvents: 0 },
-            { startdate: this.dateFormat(new Date(2018, 1, 14)),endDate: this.dateFormat(new Date(2018, 1, 14)), cssClass: '#dd4b39', totalUpcomingEvents: 0 },
+            { startdate: this.dateFormat(new Date()),endDate: this.dateFormat(new Date()), cssClass: '#00c0ef', totalUpcomingEvents: 0 },
+            { startdate: this.dateFormat(new Date()),endDate: this.dateFormat(new Date()), cssClass: '#0073b7', totalUpcomingEvents: 0 },
             { startdate: new Date(2018, 1, 1),endDate: this.dateFormat(new Date(2018, 1, 14)), cssClass: '#dd4b39', totalUpcomingEvents: 0 },
-            { startdate: this.dateFormat(new Date(2018, 1, 14)),endDate: this.dateFormat(new Date(2018, 1, 14)), cssClass: '#3c8dbc', totalUpcomingEvents: 0 }
+            { startdate: this.dateFormat(new Date(2018, 1, 1)),endDate: this.dateFormat(new Date(2018, 1, 1)), cssClass: '#3c8dbc', totalUpcomingEvents: 0 }
         ];
         this.GetEventsGroup();
     }

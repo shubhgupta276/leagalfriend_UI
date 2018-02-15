@@ -182,7 +182,6 @@ export class CalendarComponent implements OnInit {
       function BindUpcomingEvents(data) {
         $('#divUpcomingEvents').empty();
         $this.sharedService.arrTodayCalendarEvents = [];
-        debugger
         $.each(data, function (i, d) {
           this.totalUpcommingEvents = 0;
           if (d.start._d > new Date()) {
