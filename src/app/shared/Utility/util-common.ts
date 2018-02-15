@@ -24,3 +24,4 @@ export const ListBillingStage: KeyValue[] = [{ id: 1, name: 'ARGUMENTS' }, { id:
 { id: 3, name: 'CASE FILED' }, { id: 4, name: '1ST NOTICE BY ARBITRATOR' }];
 export const ListBillingRecourse: KeyValue[] = [{ id: 1, name: 'RODA' }, { id: 2, name: 'CRI_CASE' }, { id: 3, name: 'SEC_25C' },
 { id: 4, name: 'SEC9 RO' }, { id: 5, name: 'ARB' }];
+export const ListBranch: KeyValue[] = [{ id: 1, name: 'Delhi' }, { id: 2, name: 'Mumbai' }];
