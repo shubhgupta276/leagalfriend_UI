@@ -8,18 +8,17 @@ declare var $;
 
 @Component({
   selector: 'app-add-city',
-  templateUrl:'../add-city/add-city.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-city/add-city.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class AddCityMasterComponent implements OnInit
-{
+export class AddCityMasterComponent implements OnInit {
 
-    addCityMasterForm: FormGroup;
+  addCityMasterForm: FormGroup;
 
-
+  isCityAlreadyExists: Boolean = false;
   AddCityMaster() {
     this.addCityMasterForm = this.fb.group({
-        city: [null, Validators.required]
+      city: [null, Validators.required]
     });
   }
 
@@ -28,18 +27,27 @@ export class AddCityMasterComponent implements OnInit
   }
 
   submitAddCityMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'City added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'City added successfully' });
     this.AddCityMaster();
     this.closeModal();
+    this.subscriberFields();
   }
-  
-  closeModal()
-  {
+
+  closeModal() {
     $("#closebtn").click();
-  }  
+  }
 
-ngOnInit()
-  {
-
+  ngOnInit() {
+    this.subscriberFields();
+  }
+  subscriberFields() {
+    this.addCityMasterForm.get('city').valueChanges.subscribe(
+      (e) => {
+        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+          this.isCityAlreadyExists = true;
+        else
+          this.isCityAlreadyExists = false;
+      }
+    );
   }
 }

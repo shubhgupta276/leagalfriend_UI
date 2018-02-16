@@ -31,6 +31,11 @@
                                 <span>District is required.</span>
                               </small>
                             </div>
+                            <div class="col-sm-9 valodation-padding" *ngIf="isDistrictAlreadyExists">
+                              <small class="text-danger">
+                                <span>District already exists.</span>
+                              </small>
+                            </div>
                           </div>
                         <div class="form-group row">
                           <div class="col-md-4">
@@ -45,7 +50,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="editDistrictMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="editDistrictMasterForm.invalid || isDistrictAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>
