@@ -126,21 +126,66 @@
   </section>
   <!-- /.content -->
   <!-- Filter Case Starts -->
-  <div class="modal fade" id="filterCaseModal">
-      <div class="modal-dialog">
+  <div class="modal fade"  id="filterCaseModal">
+      <div class="modal-dialog caseModalSearch">
         <div class="modal-content" style="border-radius: 5px;">
-          <div class="modal-header modal-header-addedit">
-            <button type="button" id="closebtnFilter" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <div class="modal-header">
+            
+            <button type="button" id="closebtnFilter" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             <h4 class="modal-title">Filter</h4>
+             <div class="caseBranch">
+                <label style="width:85px" class="caseSearchLabel">Branch:</label>
+                <select id="ddlCaseBranch" class="caseFilterDropDown">
+                  <option value="All">All</option>
+                  <option *ngFor="let item of arrListCaseBranch" value="{{item}}">{{item}}</option>
+                </select>
+             </div>
           </div>
           <div style="width:120px;height:10%;background-color:black;"></div>
-          <div style="margin-top: -15px;" class="modal-body modal-body-adedit">
-          <div class="row">
+          <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
+          <div class="row caseModalRow">
+              <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
+                  <label class="caseSearchLabel">Recourse Type:</label>
+                  <select id="ddlCaseRecource" class="caseFilterDropDown">
+                   <option value="All">All</option>
+                   <option *ngFor="let item of arrListCaseRecource" value="{{item}}">{{item}}</option>
+                  </select>
+                  <label style="width:102px" class="caseSearchLabel">Case Stage:</label>
+                  <select id="ddlCaseStage" class="caseFilterDropDown">
+                    <option value="All">All</option>
+                    <option *ngFor="let item of arrListCaseStage" value="{{item}}">{{item}}</option>
+                  </select>
+                 
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
+                  <label class="caseSearchLabel">Start Date:</label>
+                  <div class="input-group caseFilterCalender date clsdate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input style="height:50px;background-color:white;" id="txtstartDate" type="text" tabindex="14"  readonly="" placeholder="yyyy-mm-dd" 
+                      class="form-control" size="10" value="" name="startDate">
+                      <div class="input-group-addon">
+                          <span class="fa fa-calendar"></span>
+                      </div>
+                  </div>
+                  <label class="caseSearchLabel">End Date:</label>
+                  <div class="input-group caseFilterCalender date clsdate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input style="height:50px;background-color:white;" id="txtEndDate" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd" 
+                      class="form-control" size="10" value="" name="endDate" >
+                      <div class="input-group-addon">
+                          <span class="fa fa-calendar"></span>
+                      </div>
+                  </div> 
+                   
+ <div class="inputM inputHlp inputDateFilter visited">
+    <input class="checkSpecialCharacters" tabindex="1" required="" type="text" id="hp-widget__return" mt-id="returnDate" readonly="readonly"> 
+    <span class="inputM__highlight"></span> <span class="inputM__bar"></span> <span class="inputM__closeIcon inputHlp__close o-i-cross" style="display:inline-block">
+    </span><label>Return</label><div hidden="" class="ch-error-widgit ch-clearfix" id="hp-widget__sReturnDate_invalid_error"><p class="o-i-error-icon"></p>
+    <span class="ch-flL"><span class="o-i-error-symbol"></span> </span><span class="ch-flL ch-error-innertxt">Select a 'Return Date' or select ONE WAY journey type.</span></div></div>
+              </div>
          
            <div class="casemarFilter">
-              <div class="dvCaseSearchPad">
+              <!-- <div class="dvCaseSearchPad">
                   <label class="col-sm-3 col-form-label caseSearchLabel">Recourse Type:</label>
                     <select id="ddlCaseRecource" class="form-control caseForm-ControlSearch">
                      <option value="All">All</option>
@@ -160,35 +205,21 @@
                       <option value="All">All</option>
                       <option *ngFor="let item of arrListCaseBranch" value="{{item}}">{{item}}</option>
                     </select>
+              </div> -->
+              <div class="dvCaseSearchPad">
+                  
               </div>
               <div class="dvCaseSearchPad">
-                  <label class="col-sm-3 col-form-label caseSearchLabel">Start Date:</label>
-                  <div class="input-group caseFilterCalender date clsdate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                      <input id="txtstartDate" type="text" tabindex="14"  readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                          size="10" value="" name="startDate">
-                      <div class="input-group-addon">
-                          <span class="fa fa-calendar"></span>
-                      </div>
-                  </div>
-              </div>
-              <div class="dvCaseSearchPad">
-                  <label class="col-sm-3 col-form-label caseSearchLabel">End Date:</label>
-                  <div class="input-group caseFilterCalender date clsdate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                      <input id="txtEndDate" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                          size="10" value="" name="endDate" >
-                      <div class="input-group-addon">
-                          <span class="fa fa-calendar"></span>
-                      </div>
-                  </div> 
+                  
               </div>
            </div>
           
           </div>
+        
           </div>
           <div class="modal-footer FilterSearch">
               <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Reset</button>
               <button type="submit" id="btnSearch" (click)="Serach" class="btn btn-default caseSearch">Search</button>
-              
           </div>
        
         </div>

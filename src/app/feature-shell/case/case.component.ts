@@ -228,42 +228,6 @@ export class CaseComponent implements OnInit {
 
   }
 
-  //Filter by date starts
-  //  getDataFilteredByDate(startDate, endDate) {
-  //     var  $startDate = new Date(startDate),
-  //         $endDate = new Date(endDate),
-  //         result = [];
-  //         if($startDate < $endDate)
-  //         {
-  //         return result = this.caseRunning.filter(x => new Date(x.NextHearingDate)  > $startDate 
-  //         && new Date(x.NextHearingDate) <= $endDate);
-  //         }
-  //         else{
-
-  //           return result = this.caseRunning; 
-  //         }
-  //      }
-
-  // filterByDate = function (column, startDate, endDate) {
-  //   // Custom filter syntax requires pushing the new filter to the global filter array
-  //   $.fn.dataTableExt.afnFiltering.push(
-  //     function (oSettings, data, iDataIndex) {
-  //       //var rowDate = this.caseRunning.nextHearingDate;
-  //       startDate = new Date(startDate);
-  //       endDate = new Date(endDate);
-  //       var rowDate = new Date(data[column]);
-  //       debugger
-
-  //       if (rowDate >= startDate && rowDate <= endDate) {
-  //         return true;
-  //       }
-  //       return false;
-
-
-  //     }
-  //   );
-  // };
-
   //Filter by date ends
   initCaseForm() {
     this.createForm(null);
