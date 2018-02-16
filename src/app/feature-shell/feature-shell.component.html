@@ -150,9 +150,9 @@
             <img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
             <span class="hidden-xs">Alexander Pierce</span>
           </a>
-          <ul class="dropdown-menu width-250">
+          <ul class="dropdown-menu" style="width:200px;">
             <!-- User image -->
-            <li class="user-header height-200">
+            <!-- <li class="user-header height-200">
               <img src="assets/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
               <p>
@@ -169,23 +169,21 @@
                 <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
               </div>
               
-            </li>
+            </li> -->
             <!-- Menu Footer-->
-            <!-- <li class="user-footer">
+            <li class="user-footer">
               <div class="pull-left">
                 <a routerLink="profile" class="btn btn-default btn-flat">Profile</a>
               </div>
 
-              <div class="pull-right">
-                <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
-              </div>
-            </li> -->
+            </li>
+            
             <li class="user-footer">
 
               <div class="pull-left">
                 <a routerLink="../admin/wallet" class="btn btn-default btn-flat">Wallet $250.00</a>
               </div>
-            
+
             </li>
             <li class="user-footer">
               <div class="pull-left">
@@ -193,6 +191,12 @@
               </div>
 
             </li>
+            <li class="user-footer">
+
+                <div class="pull-left">
+                  <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
           </ul>
         </li>
       </ul>
