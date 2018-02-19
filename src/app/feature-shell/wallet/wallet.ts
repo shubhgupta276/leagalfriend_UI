@@ -1,7 +1,7 @@
 export interface Wallet {
     date: Date;
-    creditAmount: number;
-    debitAmount: number;
+    amount: number;
     description: string;
+    referenceID: string;
     balance: number;
 }

@@ -48,7 +48,6 @@ export class WalletComponent implements OnInit {
                 $("#ddlLengthMenu").val(selectedPageLength);
 
                 $("#ddlLengthMenu").on("change", function () {
-                    debugger
                     $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
                 });
 
@@ -71,9 +70,9 @@ export class WalletComponent implements OnInit {
 
             this.arListWalletData.push({
                 date: new Date(2018, ((i > 11) ? 1 : i), i),
-                creditAmount: (i % 2 == 0) ? 51.2 * i : 0,
-                debitAmount: (i % 2 != 0) ? 10 * i : 0,
+                amount: (i % 2 == 0) ? 51.2 * i : -51.2 * i,
                 description: (i % 2 == 0) ? "Credit in your account" : "Debit from your account",
+                referenceID: "RID523243" + i,
                 balance: 55
             });
 
