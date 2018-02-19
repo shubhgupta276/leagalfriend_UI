@@ -35,6 +35,7 @@ export class SharedService {
             function (obs) {
                 $this.arrCalendarEvents.push({ cssClass: obs.cssClass, totalEventCount: obs.totalUpcomingEvents })
             })
+            this.arrCalendarEvents.splice(4)
         this.emitChange(this.arrCalendarEvents);
     }
     dateFormat(date) {
