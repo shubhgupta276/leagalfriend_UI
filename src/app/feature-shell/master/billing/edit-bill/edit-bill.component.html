@@ -2,7 +2,7 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border-radius: 5px;">
                 <div class="modal-header modal-header-addedit">
-                    <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close close-addedit closebtn" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">Edit Bill</h4>
@@ -19,7 +19,27 @@
                                     <div class="form-body">
                                         <div class="tab-content">
                                             <div class="tab-pane active">
-    
+                                                    <div class="form-group row">
+                                                            <label class="col-sm-3 col-form-label createUserLabel">Branch:
+                                                                <em class="astrick">*</em>
+                                                            </label>
+                                                            <div class="col-md-9" [class.has-error]="editForm.get('branch').invalid 
+                                                          &&  editForm.get('branch').touched">
+                                                                <!-- <input class="form-control" placeholder="Bank" formControlName="bank"> -->
+                                                                <select class="form-control" formControlName="branch" (change)="changeCombinations()">
+                                                                    <option  value="">Select Branch</option>
+                                                                    <option *ngFor="let item of arListBranch" value="{{item.name}}">
+                                                                        {{item.name}}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-9 valodation-padding" 
+                                                            *ngIf="editForm.get('branch').invalid &&  editForm.get('branch').touched">
+                                                                <small class="text-danger">
+                                                                    <span>Branch is required.</span>
+                                                                </small>
+                                                            </div>
+                                                        </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label createUserLabel">Bank:
                                                         <em class="astrick">*</em>
@@ -27,7 +47,7 @@
                                                     <div class="col-md-9" [class.has-error]="editForm.get('bank').invalid 
                                                   &&  editForm.get('bank').touched">
                                                         <!-- <input class="form-control" placeholder="Bank" formControlName="bank"> -->
-                                                        <select class="form-control" formControlName="bank">
+                                                        <select class="form-control" formControlName="bank" (change)="changeCombinations()">
                                                             <option  value="">Select Bank</option>
                                                             <option *ngFor="let item of arListBanks" value="{{item.name}}">
                                                                 {{item.name}}
@@ -42,13 +62,13 @@
                                                 </div>
     
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                                                    <label class="col-sm-3 col-form-label createUserLabel">Resource:
                                                         <em class="astrick">*</em>
                                                     </label>
                                                     <div class="col-md-9" [class.has-error]="editForm.get('recourse').invalid 
                                                         &&  editForm.get('recourse').touched">
-                                                        <select class="form-control" formControlName="recourse">
-                                                                <option value="">Select Recourse</option>
+                                                        <select class="form-control" formControlName="recourse" (change)="changeCombinations()">
+                                                                <option value="">Select Resource</option>
                                                                 <option *ngFor="let item of arListRecourse" value="{{item.name}}">
                                                                     {{item.name}}
                                                                 </option>
@@ -69,7 +89,7 @@
                                                     </label>
                                                     <div class="col-md-9" [class.has-error]="editForm.get('stage').invalid 
                                                             &&  editForm.get('stage').touched">
-                                                            <select class="form-control" formControlName="stage">
+                                                            <select class="form-control" formControlName="stage" (change)="changeCombinations()">
                                                                     <option value="">Select Stage</option>
                                                                     <option *ngFor="let item of arListStage" value="{{item.name}}">
                                                                         {{item.name}}
@@ -82,6 +102,11 @@
                                                             <span>Stage is required.</span>
                                                         </small>
                                                     </div>
+                                                    <div class="col-sm-9 valodation-padding" *ngIf="isCombinationAlreadyExits">
+                                                            <small class="text-danger">
+                                                                <span>This combinatin already exists.</span>
+                                                            </small>
+                                                        </div>
                                                 </div>
     
                                                 <div class="form-group row">
@@ -90,7 +115,7 @@
                                                         </label>
                                                         <div class="col-md-9" [class.has-error]="editForm.get('amount').invalid 
                                                                 &&  editForm.get('amount').touched">
-                                                            <input class="form-control" OnlyNumber="true" placeholder="Amount" formControlName="amount">
+                                                            <input class="form-control"  AllowNumber placeholder="Amount" formControlName="amount">
                                                         </div>
                                                         <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('amount').invalid &&
                                                                   editForm.get('amount').touched">
@@ -105,7 +130,7 @@
                                     </div>
                                     <div class="modal-footer modal-footer-addedit">
                                         <button type="button" class="btn btn-default btn-default-add-edit" data-dismiss="modal">Close</button>
-                                        <button type="submit" [disabled]="editForm.invalid" class="btn btn-modal-addedit">Submit</button>
+                                        <button type="submit" [disabled]="editForm.invalid || isCombinationAlreadyExits" class="btn btn-modal-addedit">Submit</button>
                                     </div>
                                 </form>
                             </div>

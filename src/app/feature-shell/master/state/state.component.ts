@@ -3,13 +3,13 @@ import { EditStateMasterComponent } from './edit-state/edit-state.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
-import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare let $;
 
 @NgModule(
   {
-    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
     declarations: [
       StateComponent,
       AddStateMasterComponent,
@@ -23,78 +23,100 @@ declare let $;
   styleUrls: ['./state.component.css']
 })
 export class StateComponent implements OnInit {
-  arr:[any];
+  arr: [any];
   editStateMasterForm: FormGroup;
-  constructor(private fb: FormBuilder) { 
-    this.EditStateMaster(null);
+  editDetails: any;
+  constructor(private fb: FormBuilder) {
+
   }
 
   ngOnInit() {
     this.GetAllState();
-    $($.document).ready(function(){
-     
-      $("#example1").DataTable({
+    $($.document).ready(function () {
+
+      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+      var selectedPageLength = 15;
+
+      var $table = $("#example1").DataTable({
         paging: true,
         lengthChange: true,
         searching: true,
         ordering: true,
         info: true,
         autoWidth: false,
-        lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
-        pageLength: 15,
+        lengthMenu: arLengthMenu,
+        pageLength: selectedPageLength,
         oLanguage: {
           sLengthMenu: "Show _MENU_ rows",
           sSearch: "",
           sSearchPlaceholder: "Search..."
+        },
+        initComplete: function () {
+          var tableid = "example1";
+          var $rowSearching = $("#" + tableid + "_wrapper");
+          $rowSearching.find(".row:eq(0)").hide();
+
+          for (var i = 0; i < arLengthMenu[0].length; i++) {
+            $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+          }
+          $("#ddlLengthMenu").val(selectedPageLength);
+
+          $("#ddlLengthMenu").on("change", function () {
+            $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+          });
         }
       });
-    }
-  );
-  }
-  GetAllState()
-  {
-    this.arr=[
-      {State:"Uttar Pradesh"},
-      {State:"Andhra Pradesh"},
-      {State:"Arunachal Pradesh"},
-      {State:"Assam"},
-      {State:"Bihar"},
-      {State:"Chandigarh "},
-      {State:"Chhattisgarh"},
-      {State:"Goa"},
-      {State:"Dadra and Nagar Haveli "},
-      {State:"Gujarat"},
-      {State:"Haryana"},
-      {State:"Himachal Pradesh"},
-      {State:"Jammu & Kashmir"},
-      {State:"Jharkhand"},
-      {State:"Karnataka"},
-      {State:"Kerala"},
-      {State:"Lakshadweep "},
-      {State:"Madhya Pradesh"},
-      {State:"Maharashtra"},
-      {State:"Manipur"},
-      {State:"Meghalaya"},
-      {State:"Mizoram"},
-      {State:"Nagaland"},
-      {State:"National Capital Territory of Delhi "},
-      {State:"Odisha"},
-      {State:"Puducherry "},
-      {State:"Punjab"},
-      {State:"Rajasthan"},
-      {State:"Sikkim"},
-      {State:"Tripura"},
-    ];
-  }
-  
-showEditModal(data){
-  $('#editStateMasterModal').modal('show');
-this.EditStateMaster(data);
-  }
-  EditStateMaster(data) {
-    this.editStateMasterForm = this.fb.group({
-      state: [data == null ? null : data.State, Validators.required]
+
+      $table.columns().every(function () {
+
+        $('#txtSearch').on('keyup change', function () {
+          if ($table.search() !== this.value) {
+            $table.search(this.value).draw();
+          }
+        });
+      });
+
     });
   }
+  GetAllState() {
+    this.arr = [
+      { State: "Uttar Pradesh" },
+      { State: "Andhra Pradesh" },
+      { State: "Arunachal Pradesh" },
+      { State: "Assam" },
+      { State: "Bihar" },
+      { State: "Chandigarh " },
+      { State: "Chhattisgarh" },
+      { State: "Goa" },
+      { State: "Dadra and Nagar Haveli " },
+      { State: "Gujarat" },
+      { State: "Haryana" },
+      { State: "Himachal Pradesh" },
+      { State: "Jammu & Kashmir" },
+      { State: "Jharkhand" },
+      { State: "Karnataka" },
+      { State: "Kerala" },
+      { State: "Lakshadweep " },
+      { State: "Madhya Pradesh" },
+      { State: "Maharashtra" },
+      { State: "Manipur" },
+      { State: "Meghalaya" },
+      { State: "Mizoram" },
+      { State: "Nagaland" },
+      { State: "National Capital Territory of Delhi " },
+      { State: "Odisha" },
+      { State: "Puducherry " },
+      { State: "Punjab" },
+      { State: "Rajasthan" },
+      { State: "Sikkim" },
+      { State: "Tripura" },
+    ];
+  }
+
+  showEditModal(data) {
+    this.editDetails = data;
+    $('#editStateMasterModal').modal('show');
+  }
+
 
 }

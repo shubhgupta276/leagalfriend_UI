@@ -7,18 +7,17 @@ declare var $;
 
 @Component({
   selector: 'app-add-resource',
-  templateUrl:'../add-resource/add-resource.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-resource/add-resource.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class AddResourceMasterComponent implements OnInit
-{
-    addResourceMasterForm: FormGroup;
-
+export class AddResourceMasterComponent implements OnInit {
+  addResourceMasterForm: FormGroup;
+  isResourcecodeAlreadyExists: boolean = false;
   AddResourceMaster() {
     this.addResourceMasterForm = this.fb.group({
-        resourcecode: [null, Validators.required],
-        resourcename: [null, Validators.required],
-        resourcedesc: [null, Validators.required]
+      resourcecode: [null, Validators.required],
+      resourcename: [null, Validators.required],
+      resourcedesc: [null, Validators.required]
     });
   }
 
@@ -27,18 +26,27 @@ export class AddResourceMasterComponent implements OnInit
   }
 
   submitAddResourceMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'Resource added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'Resource added successfully' });
     this.AddResourceMaster();
     this.closeModal();
+    this.subscriberFields()
   }
 
-  closeModal()
-  {
+  closeModal() {
     $("#closebtn").click();
   }
 
-ngOnInit()
-  {
-
+  ngOnInit() {
+    this.subscriberFields()
+  }
+  subscriberFields() {
+    this.addResourceMasterForm.get('resourcecode').valueChanges.subscribe(
+      (e) => {
+        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+          this.isResourcecodeAlreadyExists = true;
+        else
+          this.isResourcecodeAlreadyExists = false;
+      }
+    );
   }
 }

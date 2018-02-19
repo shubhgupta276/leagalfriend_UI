@@ -8,16 +8,15 @@ declare var $;
 
 @Component({
   selector: 'app-add-state',
-  templateUrl:'../add-state/add-state.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-state/add-state.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class AddStateMasterComponent implements OnInit
-{
-    addStateMasterForm: FormGroup;
-
+export class AddStateMasterComponent implements OnInit {
+  addStateMasterForm: FormGroup;
+  isStateAlreadyExists: boolean = false;
   AddStateMaster() {
     this.addStateMasterForm = this.fb.group({
-        state: [null, Validators.required]
+      state: [null, Validators.required]
     });
   }
 
@@ -26,18 +25,27 @@ export class AddStateMasterComponent implements OnInit
   }
 
   submitAddStateMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'State added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'State added successfully' });
     this.AddStateMaster();
     this.closeModal();
+    this.subscriberFields();
   }
-  
-  closeModal()
-  {
+
+  closeModal() {
     $("#closebtn").click();
   }
 
-ngOnInit()
-  {
-
+  ngOnInit() {
+    this.subscriberFields();
+  }
+  subscriberFields() {
+    this.addStateMasterForm.get('state').valueChanges.subscribe(
+      (e) => {
+        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+          this.isStateAlreadyExists = true;
+        else
+          this.isStateAlreadyExists = false;
+      }
+    );
   }
 }

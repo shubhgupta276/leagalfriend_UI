@@ -4,6 +4,7 @@ import { UserRoles, UserStatus, KeyValue } from '../../../shared/Utility/util-co
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
 import { UserService } from '../user.service';
 import { UserModel } from '../../../shared/models/user/user.model';
+import { retry } from 'rxjs/operators/retry';
 declare var $;
 
 @Component({
@@ -23,7 +24,7 @@ export class AddUserComponent implements OnInit {
   passwordValidationMessage = 'Password is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
-
+  isEmailAlreadyExists: boolean = false;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.AddUser();
   }
@@ -36,15 +37,19 @@ export class AddUserComponent implements OnInit {
       addressLine1: [null, Validators.required],
       addressLine2: [null, Validators.required],
       postalCode: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
-      email: [null, Validators.compose([Validators.required, Validators.email])],
+      email: new FormControl(
+        '', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")
+        ]),
       password: [null, Validators.compose([Validators.required,
-        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
+      Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
       confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [1],
       status: [1]
     });
+
   }
+
 
   submitAddUser(data) {
     const userDetails = new UserModel();
@@ -62,13 +67,23 @@ export class AddUserComponent implements OnInit {
       err => {
         console.log(err);
       });
-    $.toaster({ priority : 'success', title : 'Success', message : 'User added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
+    this.AddUser();
+    this.closeModal();
+  }
+  closeModal() {
+    $("#closebtn").click();
   }
 
   ngOnInit() {
     this.addForm.get('email').valueChanges.subscribe(
       (e) => {
-        if (e !== '') {
+        if (e == "test@123.in") // right now this is hardcode later it will be checked from service(database)
+          this.isEmailAlreadyExists = true;
+        else
+          this.isEmailAlreadyExists = false;
+       
+          if (e !== '') {
           this.emailValidationMessage = 'Email format is not correct.';
         } else {
           this.emailValidationMessage = 'Email address is required.';
