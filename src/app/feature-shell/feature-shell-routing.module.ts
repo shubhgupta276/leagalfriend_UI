@@ -12,6 +12,7 @@ const featureShellRoutes: Routes = [
         { path: 'master', loadChildren:'app/feature-shell/master/master.module#MasterModule' },
         { path: 'institution', loadChildren:'app/feature-shell/institution/institution.module#InstitutionModule' },
         { path: 'profile', loadChildren:'app/feature-shell/profile/profile.module#ProfileModule' },
+        { path: 'wallet', loadChildren:'app/feature-shell/wallet/wallet.module#WalletModule' },
         { path: 'calendar', component: CalendarComponent  },
         { path: 'dashboard', component: DashboardComponent},
         { path: '', redirectTo: 'user', pathMatch: 'full' }
