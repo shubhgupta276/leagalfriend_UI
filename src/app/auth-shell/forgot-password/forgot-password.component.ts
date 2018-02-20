@@ -3,18 +3,22 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../shared/Utility/util-custom.validation';
 import { Console } from '@angular/core/src/console';
+import { SignUpModel } from '../../shared/models/auth/signup.model';
+import { AuthService } from '../auth-shell.service';
 
 declare let $;
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.css']
+  styleUrls: ['./forgot-password.component.css'],
+  providers: [AuthService]
 })
 
 export class ForgotPasswordComponent implements OnInit {
+  public _signup: any;
   public forgotPasswordForm: FormGroup;
   public isMailSent: boolean = false;
-  constructor(private router: Router, private fb: FormBuilder) {    
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService ) {    
     this.forgotPasswordForm = fb.group({
       email: [null, Validators.required]    
   });
@@ -35,9 +39,22 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
    forgotPasswordRecovery(data){
-     if(data.email!="")
-      this.isMailSent=true;
-//     this.router.navigate(['resetpassword']);
+ 
+ var email=data.email;
+     const signUpDetails = new SignUpModel();
+     signUpDetails.email=data.email;
+
+     this.authService.forgot_password(email).subscribe(
+     result => {
+       
+       console.log(result);
+       this._signup = result;
+       this.isMailSent = true;
+       // this.router.navigate(['/']);
+     },
+     err => {
+       console.log(err);
+     });
    }
 
    redirectToLogin()
@@ -78,6 +95,8 @@ export class ForgotPasswordComponent implements OnInit {
       $("#wrapper_id").removeAttr("style");
     });
   }
+
+ 
 
 
 }

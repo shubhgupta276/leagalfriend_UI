@@ -19,12 +19,16 @@ import {
 // const featureConfig = require('./auth-shell.config');
 import { login } from "./auth-shell.config";
 import { signup } from "./auth-shell.config";
+import { forgot_password  } from "./auth-shell.config";
+import { verifyEmail } from "./auth-shell.config";
 import { LoginModel } from "../shared/models/auth/login.model";
 import { UserModel } from "../shared/models/user/user.model";
+import { SignUpModel } from "../shared/models/auth/signup.model";
+import { TokenModel } from "../shared/models/auth/token.model";
 
 @Injectable()
 export class AuthService {
-  constructor(public apiGateWay: ApiGateway) {}
+  constructor(public apiGateWay: ApiGateway) { }
 
   login(customerData: LoginModel): Observable<LoginModel> {
     return this.apiGateWay.post<LoginModel>(
@@ -38,12 +42,27 @@ export class AuthService {
   //     localStorage.setItem('remberedMe.user', JSON.stringify(remberedUser));
   // }
 
-  signup(customerData: UserModel): Observable<UserModel> {
-    return this.apiGateWay.post<UserModel>(
+  signup(customerData: SignUpModel): Observable<SignUpModel> {
+    return this.apiGateWay.post<SignUpModel>(
       signup,
       JSON.stringify(customerData)
     );
   }
+
+  verifyemail(token): Observable<any> {
+    return this.apiGateWay.post<any>(
+      verifyEmail + '?token=' + token, null
+    );
+  }
+  forgot_password(email): Observable<SignUpModel> {
+    return this.apiGateWay.get<any>(
+      forgot_password + '?email=' + email, null
+    );
+  }
+
+  
+
+
 
   signOut(): void {
     // clear token remove user from local storage to log user out
@@ -54,4 +73,6 @@ export class AuthService {
       localStorage.removeItem("refresh_token");
     }
   }
+
+
 }
