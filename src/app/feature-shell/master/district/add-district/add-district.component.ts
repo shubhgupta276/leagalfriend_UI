@@ -8,18 +8,17 @@ declare var $;
 
 @Component({
   selector: 'app-add-district',
-  templateUrl:'../add-district/add-district.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-district/add-district.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class AddDistrictMasterComponent implements OnInit
-{
+export class AddDistrictMasterComponent implements OnInit {
 
-    addDistrictMasterForm: FormGroup;
-
+  addDistrictMasterForm: FormGroup;
+  isDistrictAlreadyExists: boolean = false;
 
   AddDistrictMaster() {
     this.addDistrictMasterForm = this.fb.group({
-        district: [null, Validators.required]
+      district: [null, Validators.required]
     });
   }
 
@@ -28,18 +27,28 @@ export class AddDistrictMasterComponent implements OnInit
   }
 
   submitAddDistrictMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'District added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'District added successfully' });
     this.AddDistrictMaster();
     this.closeModal();
+    this.subscriberFields();
   }
-  
-  closeModal()
-  {
+
+  closeModal() {
     $("#closebtn").click();
   }
 
-ngOnInit()
-  {
+  ngOnInit() {
+    this.subscriberFields();
+  }
+  subscriberFields() {
+    this.addDistrictMasterForm.get('district').valueChanges.subscribe(
+      (e) => {
 
+        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+          this.isDistrictAlreadyExists = true;
+        else
+          this.isDistrictAlreadyExists = false;
+      }
+    );
   }
 }
