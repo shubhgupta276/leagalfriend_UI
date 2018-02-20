@@ -11,6 +11,7 @@ import {
   CasesRunning,
   CasesCompleted
 } from "../../shared/models/case/case";
+import { ALPN_ENABLED } from "constants";
 declare var $;
 
 @Component({
@@ -25,6 +26,7 @@ export class CaseComponent implements OnInit {
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
+  arrListCaseBranch1: any[] = [];
 
   constructor(private fb: FormBuilder) {
     this.caseRunning = CasesRunning
@@ -34,11 +36,32 @@ export class CaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
     const self = this;
     // Running Case DataTable
     $($.document).ready(function () {
 
+      $("#ddlCaseRecource").change(function () {
+        debugger;
+        if($("#ddlCaseRecource").val() !== "All")
+        {
+          for (var i = 0; i < self.caseRunning.length; i++) {
+            var obj = self.caseRunning[i];
+            if ($.inArray(obj.CaseStage.name, self.arrListCaseStage) < 0) {
+              self.arrListCaseStage.push(obj.CaseStage.name);
+            }
+          }
+        }
+        else
+        {
+          self.arrListCaseStage =[];
+        }
+        
+      });
+
       $('#btnReset').click(function () {
+       debugger;
+       
         $('#ddlCaseRecource').val("All");
         $table.columns(3).search("").draw();
 
@@ -46,19 +69,48 @@ export class CaseComponent implements OnInit {
         $table.columns(4).search("").draw();
 
         $('#ddlCaseBranch').val("All");
+        $('#ddlCaseBranch1').val("All");
         $table.columns(6).search("").draw();
-        $('#txtstartDate').val("");
-        $('#txtEndDate').val("");
-        $table.draw();
+        // $('#reservation').val('');
+        // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
+        // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+        $('#reservation').data('daterangepicker').setStartDate(new Date());
+        $('#reservation').data('daterangepicker').setEndDate(new Date());
+      
+        $.fn.dataTableExt.afnFiltering.length = 0;
+        $table.columns(5).search("").draw();
+        });
+     
+        $('#reservation').daterangepicker({
+          autoApply:true,
+          locale: {
+            format: 'MM-DD-YYYY'
+          }
+          // startDate:new Date('01/01/1999'),
+          // endDate:new Date('01/01/2099')
+        });
+        // $('#reservation').val('');
+     
+       //start Branch1 filter
+       $("#ddlCaseBranch1").on("change", function () {
+        var status = $(this).val();
+        if (status == "All") {
+            $('#ddlCaseBranch').val("All");
+            $table.columns(6).search("").draw();
+        }
+        else if ($table.columns(6).search() !== this.value) {
+            $('#ddlCaseBranch').val($("#ddlCaseBranch1").val());
+            $table.columns(6).search(this.value).draw();
+        }
       });
-
+      //end Branch1 filter
       $('#btnSearch').click(function () {
         debugger;
         var recourseVal = $('#ddlCaseRecource').val();
         var caseStageVal = $('#ddlCaseStage').val();
         var caseBranchVal = $('#ddlCaseBranch').val();
-        var startDate = $('#txtstartDate').val();
-        var endDate = $('#txtEndDate').val();
+        
+        
 
         // start recourse filter
         if (recourseVal == "All") {
@@ -80,21 +132,31 @@ export class CaseComponent implements OnInit {
 
         // start caseBranchVal filter
         if (caseBranchVal == "All") {
+          $('#ddlCaseBranch1').val("All");
           $table.columns(6).search("").draw();
         }
         else if ($table.columns(6).search() !== caseBranchVal) {
+          $('#ddlCaseBranch1').val(caseBranchVal);
           $table.columns(6).search(caseBranchVal).draw();
         }
-        //end caseBranchVal filter
-        //filter by date 
-
-        if (startDate != "" && endDate != "") {
-          //alert(startDate);
-          //self.filterByDate(5, startDate, endDate);
-          $table.draw();
-
-
-        }
+       
+          $.fn.dataTableExt.afnFiltering.push(
+            function (oSettings, data, iDataIndex) {
+                var startDate =new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY')) ;
+                var endDate =new Date( $('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
+                var rowDate = new Date(data[5]);
+                debugger
+                if (rowDate >= startDate && rowDate <= endDate) {
+                  return true;
+                }
+                else{
+                  return false;
+                }
+            
+            }
+          );
+      
+        $table.draw();
         $("#closebtnFilter").click();
 
       });
@@ -191,25 +253,8 @@ export class CaseComponent implements OnInit {
       });
     });
 
-    $.fn.dataTableExt.afnFiltering.push(
-      function (oSettings, data, iDataIndex) {
-        //var rowDate = this.caseRunning.nextHearingDate;
-        var sDate = $('#txtstartDate').val();
-        var eDate = $('#txtEndDate').val();
-        if (sDate != "" && eDate != "") {
-          var startDate = new Date($('#txtstartDate').val());
-          var endDate = new Date($('#txtEndDate').val());
-          var rowDate = new Date(data[5]);
+   
 
-          if (rowDate >= startDate && rowDate <= endDate) {
-            return true;
-          }
-          return false;
-
-        }
-        return true;
-      }
-    );
   }
   setDropdownUniqueValues() {
 
@@ -218,11 +263,11 @@ export class CaseComponent implements OnInit {
       if ($.inArray(obj.Resource.name, this.arrListCaseRecource) < 0) {
         this.arrListCaseRecource.push(obj.Resource.name);
       }
-      if ($.inArray(obj.CaseStage.name, this.arrListCaseStage) < 0) {
-        this.arrListCaseStage.push(obj.CaseStage.name);
-      }
       if ($.inArray(obj.Branch.name, this.arrListCaseBranch) < 0) {
         this.arrListCaseBranch.push(obj.Branch.name);
+      }
+      if ($.inArray(obj.Branch.name, this.arrListCaseBranch1) < 0) {
+        this.arrListCaseBranch1.push(obj.Branch.name);
       }
     }
 
