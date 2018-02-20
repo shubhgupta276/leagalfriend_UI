@@ -116,7 +116,9 @@ arr:[any]
 
   });
   }
-
+ showEditInstitutionModal(){
+    $('#editForInstitutionModal').modal('show');
+    }
   GetForInstitution()
   {
     this.arr=[
