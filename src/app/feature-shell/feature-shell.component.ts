@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { AuthService } from '../auth-shell/auth-shell.service';
+import { SharedService } from '../shared/services/shared.service'
 declare var $;
-
+declare let Zone: any;
 @Component({
   selector: 'app-feature-shell',
   templateUrl: './feature-shell.component.html',
-  styleUrls: ['./feature-shell.component.css']
+  styleUrls: ['./feature-shell.component.css'],
+  providers: [SharedService]
 })
 export class FeatureShellComponent implements OnInit {
-
-  constructor(private authService: AuthService) { }
+  totalUpcomingEvents = 4;
+  arrTodayEvents=[];
+  constructor(private authService: AuthService, private sharedService: SharedService) { 
+    sharedService.changeEmitted$.subscribe(Zone.current.wrap(
+      text => {
+          this.totalUpcomingEvents = text;
+          this.arrTodayEvents = text;
+      }));
+      sharedService.GetEventsGroup();
+   }
 
   ngOnInit() {
     $(window.document).ready(function () {
