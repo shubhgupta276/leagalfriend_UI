@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
-import { ProfileRoutingModule } from './profile-routing.module';
-import { ProfileComponent } from './profile.component';
+import { WalletRoutingModule } from './wallet-routing.module';
+import { WalletComponent } from './wallet.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 @NgModule(
     {
         imports: [ 
-            ProfileRoutingModule,
+            WalletRoutingModule,
             FormsModule,
             ReactiveFormsModule,
             CommonModule
         ],
-        declarations: [ ProfileComponent ]
+        declarations: [ WalletComponent ]
     }
 )    
-export class ProfileModule {}
+export class WalletModule {}

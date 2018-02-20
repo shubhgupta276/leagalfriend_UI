@@ -176,6 +176,7 @@ export class CaseComponent implements OnInit {
           $rowSearching.find(".row:eq(0)").hide();
 
           for (var i = 0; i < arLengthMenu[0].length; i++) {
+            debugger
             var selectText =
               arLengthMenu[0][i] == selectedPageLength ? "selected" : "";
             $("#ddlLengthMenu").append(

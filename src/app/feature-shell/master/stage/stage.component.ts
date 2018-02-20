@@ -25,9 +25,9 @@ declare let $;
 export class StageComponent implements OnInit {
   arr: [any];
   editStageMasterForm: FormGroup;
+  editDetails:any;
   constructor(private fb: FormBuilder) {
-    this.EditStageMaster(null);
-  }
+   }
 
   ngOnInit() {
     this.GetAllStage();
@@ -95,16 +95,8 @@ export class StageComponent implements OnInit {
   }
 
   showEditModal(data) {
+    this.editDetails=data;
     $('#editStageMasterModal').modal('show');
-    this.EditStageMaster(data);
   }
-  EditStageMaster(data) {
-    this.editStageMasterForm = this.fb.group({
-      resource: [1],
-      stagecode: [data == null ? null : data.StageCode, Validators.required],
-      stagename: [data == null ? null : data.StageName, Validators.required],
-      status: [1]
-    });
-  }
-
+  
 }

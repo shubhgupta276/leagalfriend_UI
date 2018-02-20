@@ -25,9 +25,10 @@ declare let $;
 export class DistrictComponent implements OnInit {
   arr: any[];
   constructor(private fb: FormBuilder) {
-    this.EditDistrictMaster(null);
-   }
+   
+  }
   editDistrictMasterForm: FormGroup;
+  editDetails: any;
   ngOnInit() {
     this.GetAllDistrict();
     $($.document).ready(function () {
@@ -103,12 +104,8 @@ export class DistrictComponent implements OnInit {
   }
 
   showEditModal(data) {
+    this.editDetails = data;
     $('#editDistrictMasterModal').modal('show');
-    this.EditDistrictMaster(data);
   }
-  EditDistrictMaster(data) {
-    this.editDistrictMasterForm = this.fb.group({
-      district: [data == null ? null : data.District, Validators.required]
-    });
-  }
+
 }
