@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
-
+import { DistrictService } from '../district.service';
+import { StorageService } from '../../../../shared/services/storage.service';
 declare var $;
 
 
@@ -18,19 +19,37 @@ export class AddDistrictMasterComponent implements OnInit {
 
   AddDistrictMaster() {
     this.addDistrictMasterForm = this.fb.group({
-      district: [null, Validators.required]
+      districtName: [null, Validators.required]
     });
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _districtService: DistrictService, private _storageService: StorageService) {
     this.AddDistrictMaster();
   }
 
   submitAddDistrictMaster(data) {
-    $.toaster({ priority: 'success', title: 'Success', message: 'District added successfully' });
-    this.AddDistrictMaster();
-    this.closeModal();
-    this.subscriberFields();
+    var reqData = {
+      districtName: data.districtName,
+      user: { id: this._storageService.getClientId() }
+    };
+    debugger
+    this._districtService.addDistrict(reqData).subscribe(
+      result => {
+        var _result = result.body;
+        
+        if (_result.httpCode == 200) { //success
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.AddDistrictMaster();
+          this.closeModal();
+          this.subscriberFields();
+        }
+        else
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+      },
+      err => {
+        debugger
+        console.log(err);
+      });
   }
 
   closeModal() {
@@ -41,7 +60,7 @@ export class AddDistrictMasterComponent implements OnInit {
     this.subscriberFields();
   }
   subscriberFields() {
-    this.addDistrictMasterForm.get('district').valueChanges.subscribe(
+    this.addDistrictMasterForm.get('districtName').valueChanges.subscribe(
       (e) => {
 
         if (e == "test") // right now this is hardcode later it will be checked from service(database)

@@ -4,7 +4,7 @@ import { Component, OnInit } from "@angular/core";
 import { AddDistrictMasterComponent } from './add-district/add-district.component';
 import { EditDistrictMasterComponent } from './edit-district/edit-district.component';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { DistrictService } from './district.service'
 declare let $;
 
 @NgModule(
@@ -14,7 +14,8 @@ declare let $;
       DistrictComponent,
       AddDistrictMasterComponent,
       EditDistrictMasterComponent
-    ]
+    ],
+    providers: [DistrictService]
   }
 )
 @Component({
@@ -25,7 +26,7 @@ declare let $;
 export class DistrictComponent implements OnInit {
   arr: any[];
   constructor(private fb: FormBuilder) {
-   
+
   }
   editDistrictMasterForm: FormGroup;
   editDetails: any;
@@ -80,26 +81,12 @@ export class DistrictComponent implements OnInit {
 
   GetAllDistrict() {
     this.arr = [
-      { District: "Bijnor" },
-      { District: "Moradabad" },
-      { District: "Gaziabaad" },
-      { District: "Adilabad" },
-      { District: "Agra" },
-      { District: "Ahmed Nagar" },
-      { District: "Ahmedabad" },
-      { District: "Aizawl" },
-      { District: "Ajmer" },
-      { District: "Akola" },
-      { District: "Alappuzha" },
-      { District: "Aligarh" },
-      { District: "Alirajpur" },
-      { District: "Allahabad" },
-      { District: "Almora" },
-      { District: "Alwar" },
-      { District: "Ambala" },
-      { District: "Amravati" },
-      { District: "Amreli" },
-      { District: "Amritsar" }
+      { districtName: "Bijnor" },
+      { districtName: "Moradabad" },
+      { districtName: "Gaziabaad" },
+      { districtName: "Adilabad" },
+      { districtName: "Agra" },
+      { districtName: "Ahmed Nagar" }
     ];
   }
 

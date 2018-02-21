@@ -50,7 +50,8 @@ export class EditStateMasterComponent implements OnInit, OnChanges {
   }
   createForm(data) {
     this.editStateMasterForm = this.fb.group({
-      state: [data == null ? null : data.State, Validators.required]
+      state: [data == null ? null : data.State, Validators.required],
+      id: [data == null ? null : data.id]
     });
   }
 

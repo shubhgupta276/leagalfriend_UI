@@ -4,7 +4,9 @@ import { Component, OnInit } from "@angular/core";
 import { AddCityMasterComponent } from './add-city/add-city.component';
 import { EditCityMasterComponent } from './edit-city/edit-city.component';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { CityService } from './city.service'
+import { City } from './city'
+import { StorageService } from '../../../shared/services/storage.service';
 declare let $;
 
 @NgModule(
@@ -14,7 +16,8 @@ declare let $;
       CityComponent,
       AddCityMasterComponent,
       EditCityMasterComponent
-    ]
+    ],
+    providers: [CityService, StorageService]
   }
 )
 
@@ -24,9 +27,9 @@ declare let $;
   styleUrls: ["./city.component.css"]
 })
 export class CityComponent implements OnInit {
-  arCityData: any[] = [];
-  editDetails: any;
-  constructor(private fb: FormBuilder) {
+  arCityData: City[] = [];
+  editDetails: City;
+  constructor(private fb: FormBuilder, private _cityService: CityService, private _storageService: StorageService) {
 
   }
   editCityMasterForm: FormGroup;
@@ -84,19 +87,31 @@ export class CityComponent implements OnInit {
   }
 
   getCityData() {
-    this.arCityData.push(
-      { BankCity: "24_PARGANAS_NORTH" },
-      { BankCity: "AADIPUR" },
-      { BankCity: "AARA" },
-      { BankCity: "AASIND" },
-      { BankCity: "AASPURE" },
-      { BankCity: "ABDASA" },
-      { BankCity: "ABOHAR" },
-      { BankCity: "ABU_ROAD" },
-      { BankCity: "ACHALPUR_CITY" },
-      { BankCity: "ACHAMPET" },
-      { BankCity: "ADDANKI" }
-    );
+    var reqObj = {
+      email: this._storageService.getUserEmail(),
+    };
+
+    this._cityService.getCities(reqObj).subscribe(
+      result => {
+        result = result.body;
+        if (result.httpCode == 200) {
+          for (var i = 0; i < result.cities.length; i++) {
+            const obj = result.cities[i];
+
+            this.arCityData.push({
+              cityName: obj.cityName,
+              id: obj.id
+            });
+          }
+        }
+
+      },
+      err => {
+        console.log(err);
+        this.arCityData = [];
+
+      });
+
   }
 
 }

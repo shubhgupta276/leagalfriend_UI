@@ -41,7 +41,7 @@ export class EditDistrictMasterComponent implements OnInit, OnChanges {
   }
 
   subscriberFields() {
-    this.editDistrictMasterForm.get('district').valueChanges.subscribe(
+    this.editDistrictMasterForm.get('districtName').valueChanges.subscribe(
       (e) => {
         
         if (e == "test") // right now this is hardcode later it will be checked from service(database)
@@ -54,7 +54,8 @@ export class EditDistrictMasterComponent implements OnInit, OnChanges {
 
   createForm(data) {
     this.editDistrictMasterForm = this.fb.group({
-      district: [data == null ? null : data.District, Validators.required]
+      districtName: [data == null ? null : data.districtName, Validators.required],
+      id: [data == null ? null : data.id, Validators.required]
     });
   }
 }

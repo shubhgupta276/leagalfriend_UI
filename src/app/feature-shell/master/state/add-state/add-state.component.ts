@@ -16,7 +16,7 @@ export class AddStateMasterComponent implements OnInit {
   isStateAlreadyExists: boolean = false;
   AddStateMaster() {
     this.addStateMasterForm = this.fb.group({
-      state: [null, Validators.required]
+      stateName: [null, Validators.required]
     });
   }
 
@@ -39,7 +39,7 @@ export class AddStateMasterComponent implements OnInit {
     this.subscriberFields();
   }
   subscriberFields() {
-    this.addStateMasterForm.get('state').valueChanges.subscribe(
+    this.addStateMasterForm.get('stateName').valueChanges.subscribe(
       (e) => {
         if (e == "test") // right now this is hardcode later it will be checked from service(database)
           this.isStateAlreadyExists = true;
