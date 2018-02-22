@@ -35,17 +35,17 @@
                   <th>Role
                     <select id="ddlUserFilter" class="role input-sm">
                       <option value="All">All</option>
-                      <option value="Employee">Employee</option>
-                      <option value="Manager">Manager</option>
-                      <option value="Client">Client</option>
+                      <option *ngFor="let option of userRoles" [ngValue]="option.id">
+                        {{ option.roleName }}
+                      </option>
                     </select>
                   </th>
                   <th>Status
                     <select id="ddlStatusFilter" class="status input-sm">
                       <option value="All">All</option>
-                      <option value="Active">Active</option>
-                      <option value="Expired">Expired</option>
-                      <option value="Trial">Trial</option>
+                      <option *ngFor="let option of userStatus" [ngValue]="option.statusId">
+                        {{ option.statusName }}
+                      </option>
                     </select>
                   </th>
                 </tr>
@@ -53,21 +53,16 @@
               <tbody>
                 <tr *ngFor="let user of arr; let i=index" (dblclick)="editUser(user)">
                   <td>{{i+1}}</td>
-                  <td>{{user.FirstName + ' ' + user.LastName}}</td>
-                  <td>{{user.Email}}</td>
-                  <td>{{user.MobileNumber}}</td>
-                  <td>{{user.UserType}}</td>
-                  <td *ngIf="user.Status==='Active'">
-                    <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{user.Status}}</button>
+                  <td>{{user.firstName + ' ' + user.lastName}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.mobileNumber}}</td>
+                  <td>{{user.roles[0].roleName}}</td>
+                  <td >
+                    <button *ngIf="user.status==='Active'" class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{user.status}}</button>
+                    <button *ngIf="user.status==='Trial'" class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{user.status}}</button>
+                    <button  *ngIf="user.status==='Expired'" class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{user.status}}</button>
                   </td>
-                  <td *ngIf="user.Status==='Trial'">
-                    <button class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{user.Status}}</button>
-
-
-                  </td>
-                  <td *ngIf="user.Status==='Expired'">
-                    <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{user.Status}}</button>
-                  </td>
+                
                 </tr>
               </tbody>
 
@@ -90,8 +85,8 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-user></app-add-user>
+  <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles"></app-add-user>
 
-  <app-edit-user [selectedUser]="selectedUser"></app-edit-user>
+  <app-edit-user [editForm]="editForm" [Roles]="userRoles" [Status]="userStatus"></app-edit-user>
   <!-- /.content -->
 </div>
