@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule} from '@angular/core';
 import { AddBillingComponent } from "./add-bill/add-bill.component";
 import { EditBillingComponent } from "./edit-bill/edit-bill.component";
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare let $;

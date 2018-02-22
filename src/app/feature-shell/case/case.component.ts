@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { debuglog } from "util";
+
 import {
   FormGroup,
   FormBuilder,
@@ -12,6 +13,8 @@ import {
   CasesCompleted
 } from "../../shared/models/case/case";
 declare var $;
+import {MasterTemplateComponentService} from "../master/masterTemplates/masterTemplate.component.service";
+import { FileInfo } from "../../shared/models/master/FileInfo";
 
 @Component({
   selector: "app-case",
@@ -23,9 +26,13 @@ export class CaseComponent implements OnInit {
   caseCompleted: Case[];
   editCaseForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private masterTemplateService :MasterTemplateComponentService) {
     this.caseRunning = CasesRunning;
     this.caseCompleted = CasesCompleted;
+    this.updateCheckedOptions( this.caseRunning);
+    if(!this.IsPrintable){
+    this.updateCheckedOptions(this.caseCompleted)
+    }
     this.initCaseForm();
   }
 
@@ -176,4 +183,67 @@ export class CaseComponent implements OnInit {
     document.getElementById("searchBox2").style.display = "block";
     document.getElementById("searchBox1").style.display = "none";
   }
+  IsPrintable = false;
+  updateCheckedOptions(items){
+    var flagPrint = false;
+    for(var i=0;i<items.length;i++)
+    {
+     if(items[i].IsChecked == true)
+     {
+      flagPrint = true;
+      this.IsPrintable = true;
+     }
+    }
+    if(flagPrint == false)
+    {
+      this.IsPrintable = false;
+    }
+ }
+lstUploadedDocuments : FileInfo[];
+ getUploadedDocuments(){
+    this.masterTemplateService.getuploadedFile().subscribe(x=>this.lstUploadedDocuments = x);
+ }
+
+ SelectedFileIds = [];
+ getSelectedDocument(IsChecked,FileId)
+ {
+    if(IsChecked.srcElement.checked)
+      {
+        this.SelectedFileIds.push(FileId);
+      }
+    else
+    {
+      this.SelectedFileIds = this.SelectedFileIds.filter(function(i) {
+      return i != FileId;
+      });
+    }
+  
+ }
+
+ getMappingFilesTodownload()
+ {
+   
+   for(var i=0;i<this.SelectedFileIds.length;i++){
+        var data = this.lstUploadedDocuments.find(x => x.Id ===  this.SelectedFileIds[i]);
+        var selectedCases = this.caseRunning.filter(function(x) {
+          return x.IsChecked == true;})
+          var selectedCasescompelted = this.caseCompleted.filter(function(x) {
+            return x.IsChecked == true;});
+            selectedCases = selectedCases.concat(selectedCasescompelted);
+
+            for(var j= 0;j<selectedCases.length;j++)
+            {
+              data.Value= data.Value.replace('@CourtCaseId', selectedCases[j].CourtCaseId.toString());
+              data.Value= data.Value.replace('@CustomerName',' '+ selectedCases[j].CustomerName.name);
+
+            }
+        var blob = new Blob([data.Value], { type: data.FileType });
+        var url= window.URL.createObjectURL(blob);
+        window.open(url);
+   }
+}
+// Example use:
+
+
+
 }

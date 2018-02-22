@@ -11,5 +11,4 @@ export class AuthShellComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

@@ -23,7 +23,7 @@ declare let $;
   styleUrls: ['./court.component.css']
 })
 export class CourtComponent implements OnInit {
-arr:[any];
+arr=[];
   constructor(private fb: FormBuilder) { 
     this.EditCourtMaster(null);
   }

@@ -21,7 +21,7 @@ declare let $;
   styleUrls: ["./resource.component.css"]
 })
 export class ResourceComponent implements OnInit {
-  arr: [any];
+  arr= [];
   constructor(private fb: FormBuilder) {
     this.EditResourceMaster(null);
   }

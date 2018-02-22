@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,NgModule} from "@angular/core";
 import { AddInstitutionMasterComponent } from "./add-institution/add-institution.component";
 import { EditInstitutionMasterComponent } from "./edit-institution/edit-institution.component";
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare let $;
@@ -23,11 +23,12 @@ declare let $;
   styleUrls: ["./institution.component.css"]
 })
 export class InstitutionComponent implements OnInit {
-  arr: [any];
+  arr = [];
   editInstitutionMasterForm: FormGroup;
   constructor(private fb: FormBuilder) {
     this.EditInstitutionMaster(null);
   }
+
 
   ngOnInit() {
     this.GetAllInstitute();

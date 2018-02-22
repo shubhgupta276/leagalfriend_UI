@@ -8,6 +8,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
+import {MasterTemplateComponentService} from "../app/feature-shell/master/masterTemplates/masterTemplate.component.service"
 
 @NgModule({
   imports: [
@@ -22,7 +23,9 @@ import { TokenService } from './shared/services/token-service';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     ApiGateway,
-    TokenService
+    TokenService,
+    ,MasterTemplateComponentService
+  
   ],
   bootstrap: [AppComponent]
 })
