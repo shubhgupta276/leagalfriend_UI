@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
 import { SignUpModel } from '../shared/models/auth/signup.model';
 import {TokenModel} from '../shared/models/auth/token.model';
+import { changepasswordComponent } from './changepassword/changepassword.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import {TokenModel} from '../shared/models/auth/token.model';
        LoginComponent,
        ForgotPasswordComponent,
        ResetPasswordComponent,
-       SignupComponent
+       SignupComponent,
+       changepasswordComponent
       
     ]
   })

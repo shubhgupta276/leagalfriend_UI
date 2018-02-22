@@ -50,11 +50,11 @@ this.verifyEmailPageLayout();
     const tokenDetails = new TokenModel();
     tokenDetails.token = token;
 
-
+debugger
     this.authService.verifyemail(token).subscribe(
 
       result => {
-
+       debugger
         if (result.body.successMessage === null) {
           this.message = result.body.failureReason;
           this.isSuccess = false;

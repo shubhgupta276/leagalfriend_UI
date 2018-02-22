@@ -20,6 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('signup') >= 0)) {
+            debugger
             console.log('inside auth interceptor login');
             return next.handle(req);
         } 
@@ -30,15 +31,37 @@ export class AuthInterceptor implements HttpInterceptor {
                 headers: req.headers.set('Content-Type', 'application/json')
             });
             return next.handle(verifyEmailReq);
-        } else {
+        } 
+
+         else if (req.url.indexOf('forgotpwd') >= 0) {
+            debugger
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+            return next.handle(verifyEmailReq);
+        } 
+
+        else if (req.url.indexOf('updatePassword') >= 0) {
+            
+            const authHeader = this.auth.getAuthorizationHeader();
+            const changepwdReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+            return next.handle(changepwdReq);
+        } 
+        
+        else {
+            debugger
             console.log('inside auth interceptor login');
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
                 headers: req.headers
-                    .set('access_token', authHeader.access_token)
+                    .set('Authorization', authHeader.access_token.toString())
                     .set('customer-id', authHeader.client_id.toString())
-                    .set('content-type', 'application/json')
+                    .set('Content-Type', 'application/json')
+                    
             });
+            debugger
             return next.handle(authReq);
         }
     }

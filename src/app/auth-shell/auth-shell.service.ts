@@ -17,14 +17,17 @@ import {
   HttpParams
 } from "@angular/common/http";
 // const featureConfig = require('./auth-shell.config');
-import { login } from "./auth-shell.config";
+import { login, resetPassword } from "./auth-shell.config";
 import { signup } from "./auth-shell.config";
+import { changepassword } from "./auth-shell.config";
 import { forgot_password  } from "./auth-shell.config";
 import { verifyEmail } from "./auth-shell.config";
 import { LoginModel } from "../shared/models/auth/login.model";
 import { UserModel } from "../shared/models/user/user.model";
 import { SignUpModel } from "../shared/models/auth/signup.model";
 import { TokenModel } from "../shared/models/auth/token.model";
+import { ResetPassword } from "../shared/models/auth/resetpassword.model";
+import { ChangePassword } from "../shared/models/auth/changepassword.model";
 
 @Injectable()
 export class AuthService {
@@ -60,9 +63,23 @@ export class AuthService {
       verifyEmail + '?token=' + token, null
     );
   }
-  forgot_password(email): Observable<SignUpModel> {
-    return this.apiGateWay.get<any>(
+  forgot_password(email): Observable<any> {
+    
+   return  this.apiGateWay.get<any>(
       forgot_password + '?email=' + email, null
+    );
+  
+  }
+  resetPassword(customerData: ResetPassword): Observable<ResetPassword> {
+    return this.apiGateWay.post<ResetPassword>(
+      resetPassword,
+      JSON.stringify(customerData)
+    );
+  }
+  changepassword(customerData: ChangePassword): Observable<ChangePassword> {
+    return this.apiGateWay.post<ChangePassword>(
+      changepassword,
+      JSON.stringify(customerData)
     );
   }
 

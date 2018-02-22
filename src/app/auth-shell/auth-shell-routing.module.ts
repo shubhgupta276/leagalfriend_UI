@@ -7,6 +7,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { VerifyEmailComponent } from './VerifyEmail/VerifyEmail.component';
+import { changepasswordComponent } from './changepassword/changepassword.component';
 const authShellRoutes: Routes = [
     { path: '', component: AuthShellComponent, children:[
         { path: 'login', component: LoginComponent },
@@ -16,7 +17,11 @@ const authShellRoutes: Routes = [
         { path: '', redirectTo: 'login', pathMatch: 'full' },
         { path: 'verifyemail', component: VerifyEmailComponent },
         { path: 'resetpwd', component: VerifyEmailComponent },
+        { path: 'updatePassword/:id', component: ResetPasswordComponent },
+        { path: 'changepassword', component: changepasswordComponent },
         { path: '**', component: VerifyEmailComponent },
+        
+       
        
     ]}
       // { path: 'login', component: LoginComponent },
