@@ -77,8 +77,9 @@ export class AuthService {
     );
   }
   changepassword(customerData: ChangePassword): Observable<ChangePassword> {
+    debugger
     return this.apiGateWay.post<ChangePassword>(
-      changepassword,
+      'usermanagement/updatePassword',
       JSON.stringify(customerData)
     );
   }

@@ -78,6 +78,7 @@ export class CityComponent implements OnInit {
     });
   }
   showEditModal(data) {
+    debugger
     this.editDetails = data;
     $('#editCityMasterModal').modal('show');
 

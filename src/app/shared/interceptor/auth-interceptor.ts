@@ -41,7 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(verifyEmailReq);
         } 
 
-        else if (req.url.indexOf('updatePassword') >= 0) {
+        else if (req.url.indexOf('users/updatePassword') >= 0) {
             
             const authHeader = this.auth.getAuthorizationHeader();
             const changepwdReq = req.clone({
@@ -51,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor {
         } 
         
         else {
-            debugger
+            
             console.log('inside auth interceptor login');
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
@@ -61,6 +61,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     .set('Content-Type', 'application/json')
                     
             });
+            
             debugger
             return next.handle(authReq);
         }
