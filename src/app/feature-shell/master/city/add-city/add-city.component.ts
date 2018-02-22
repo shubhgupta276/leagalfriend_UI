@@ -33,8 +33,9 @@ export class AddCityMasterComponent implements OnInit {
 
     var reqData = {
       cityName: data.cityName,
-      user: { id: this._storageService.getClientId() }
+      userId: this._storageService.getUserId()
     };
+    
     this._cityService.addCity(reqData).subscribe(
       result => {
         var _result = result.body;

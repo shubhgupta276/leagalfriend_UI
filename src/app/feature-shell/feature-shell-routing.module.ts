@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { LFAuthantication } from '../shared/services/lfAuthantication-service'
 const featureShellRoutes: Routes = [
-    { path: 'admin', component: FeatureShellComponent, children:[
+    { path: 'admin', component: FeatureShellComponent, canActivate:[LFAuthantication], children:[
         { path: 'user', loadChildren:'app/feature-shell/user/user.module#UserModule' },
         { path: 'billing', loadChildren:'app/feature-shell/billing/billing.module#BillingModule' },
         { path: 'case', loadChildren:'app/feature-shell/case/case.module#CaseModule' },
@@ -14,7 +14,7 @@ const featureShellRoutes: Routes = [
         { path: 'profile', loadChildren:'app/feature-shell/profile/profile.module#ProfileModule' },
         { path: 'wallet', loadChildren:'app/feature-shell/wallet/wallet.module#WalletModule' },
         { path: 'calendar', component: CalendarComponent  },
-        { path: 'dashboard', component: DashboardComponent },
+        { path: 'dashboard', component: DashboardComponent},
         { path: '', redirectTo: 'user', pathMatch: 'full' }
     ]}
     ];

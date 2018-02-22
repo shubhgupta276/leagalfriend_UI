@@ -1,4 +1,4 @@
 export class State {
-    statename: string;
+    stateName: string;
     id: number;
 }

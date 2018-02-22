@@ -31,9 +31,10 @@ export class EditCityMasterComponent implements OnInit, OnChanges {
     var reqData = {
       cityName: data.cityName,
       id: data.id,
-      user: { id: this._storageService.getClientId() }
-    };
+      userId: this._storageService.getUserId()
 
+    };
+    
     this._cityService.updateCity(reqData).subscribe(
 
       result => {
@@ -70,8 +71,8 @@ export class EditCityMasterComponent implements OnInit, OnChanges {
   subscriberFields() {
     this.editCityMasterForm.get('cityName').valueChanges.subscribe(
       (e) => {
-        var city = e.toUpperCase();
-        if (this.editDetails.cityName.toUpperCase() != city && this.arCityData.filter(x => x.cityName.toUpperCase() == city).length > 0)
+        var fieldValue = e.toUpperCase();
+        if (this.editDetails.cityName.toUpperCase() != fieldValue && this.arCityData.filter(x => x.cityName.toUpperCase() == fieldValue).length > 0)
           this.isCityAlreadyExists = true;
         else {
           this.isCityAlreadyExists = false;

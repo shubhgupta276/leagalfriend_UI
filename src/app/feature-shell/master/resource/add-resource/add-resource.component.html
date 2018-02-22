@@ -23,10 +23,10 @@
                             <label class="col-sm-3 col-form-label createUserLabel">Resource Code:
                               <em class="astrick">*</em>
                             </label>
-                            <div class="col-md-9" [class.has-error]="addResourceMasterForm.get('resourcecode').invalid &&  addResourceMasterForm.get('resourcecode').touched">
-                              <input class="form-control" placeholder="Resource Code" formControlName="resourcecode">
+                            <div class="col-md-9" [class.has-error]="addResourceMasterForm.get('recourseCode').invalid &&  addResourceMasterForm.get('recourseCode').touched">
+                              <input class="form-control" placeholder="Resource Code" formControlName="recourseCode">
                             </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="addResourceMasterForm.get('resourcecode').invalid &&  addResourceMasterForm.get('resourcecode').touched">
+                            <div class="col-sm-9 valodation-padding" *ngIf="addResourceMasterForm.get('recourseCode').invalid &&  addResourceMasterForm.get('recourseCode').touched">
                               <small class="text-danger">
                                 <span>Resource Code is required.</span>
                               </small>
@@ -41,10 +41,10 @@
                               <label class="col-sm-3 col-form-label createUserLabel">Resource Name:
                                 <em class="astrick">*</em>
                               </label>
-                              <div class="col-md-9" [class.has-error]="addResourceMasterForm.get('resourcename').invalid &&  addResourceMasterForm.get('resourcename').touched">
-                                <input class="form-control" placeholder="Resource Name" formControlName="resourcename">
+                              <div class="col-md-9" [class.has-error]="addResourceMasterForm.get('recourseName').invalid &&  addResourceMasterForm.get('recourseName').touched">
+                                <input class="form-control" placeholder="Resource Name" formControlName="recourseName">
                               </div>
-                              <div class="col-sm-9 valodation-padding" *ngIf="addResourceMasterForm.get('resourcename').invalid &&  addResourceMasterForm.get('resourcename').touched">
+                              <div class="col-sm-9 valodation-padding" *ngIf="addResourceMasterForm.get('recourseName').invalid &&  addResourceMasterForm.get('recourseName').touched">
                                 <small class="text-danger">
                                   <span>Resource Name is required.</span>
                                 </small>
@@ -54,11 +54,11 @@
                                 <label class="col-sm-3 col-form-label createUserLabel">Resource Desc:
                                   <em class="astrick">*</em>
                                 </label>
-                                <div class="col-md-9" [class.has-error]="addResourceMasterForm.get('resourcedesc').invalid &&  addResourceMasterForm.get('resourcedesc').touched">
-                                  <!-- <input class="form-control" placeholder="Resource Desc" formControlName="resourcedesc"> -->
-                                  <textarea type="text" class="form-control" placeholder="Resource Desc" formControlName="resourcedesc"></textarea>
+                                <div class="col-md-9" [class.has-error]="addResourceMasterForm.get('recourseDesc').invalid &&  addResourceMasterForm.get('recourseDesc').touched">
+                                  <!-- <input class="form-control" placeholder="Resource Desc" formControlName="recourseDesc"> -->
+                                  <textarea type="text" class="form-control" placeholder="Resource Desc" formControlName="recourseDesc"></textarea>
                                 </div>
-                                <div class="col-sm-9 valodation-padding" *ngIf="addResourceMasterForm.get('resourcedesc').invalid &&  addResourceMasterForm.get('resourcedesc').touched">
+                                <div class="col-sm-9 valodation-padding" *ngIf="addResourceMasterForm.get('recourseDesc').invalid &&  addResourceMasterForm.get('recourseDesc').touched">
                                   <small class="text-danger">
                                     <span>Resource Desc is required.</span>
                                   </small>

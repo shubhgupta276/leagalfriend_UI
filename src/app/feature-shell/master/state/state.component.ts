@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { StateService } from './state.service';
+import { StorageService } from '../../../shared/services/storage.service';
+import { State } from './state';
 
 declare let $;
 
@@ -14,7 +17,8 @@ declare let $;
       StateComponent,
       AddStateMasterComponent,
       EditStateMasterComponent
-    ]
+    ],
+    providers: [StateService, StorageService]
   }
 )
 @Component({
@@ -23,18 +27,55 @@ declare let $;
   styleUrls: ['./state.component.css']
 })
 export class StateComponent implements OnInit {
-  arr: [any];
+  arr: State[]=[];
   editStateMasterForm: FormGroup;
   editDetails: any;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _stateService: StateService, private _storageService: StorageService) {
 
   }
 
   ngOnInit() {
     this.GetAllState();
-    $($.document).ready(function () {
+  }
+  GetAllState() {
+    var reqObj = {
+      email: this._storageService.getUserEmail(),
+    };
 
-      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+    this._stateService.getStates(reqObj).subscribe(
+      result => {
+        result = result.body;
+        
+        if (result.httpCode == 200) {
+          
+          for (var i = 0; i < result.states.length; i++) {
+            const obj = result.states[i];
+
+            this.arr.push({
+              stateName: obj.stateName,
+              id: obj.id
+            });
+            
+          }
+          setTimeout(() => {
+            this.bindDatatable();
+          }, 1);
+
+        }
+        else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+        this.arr = [];
+
+      });
+      
+  }
+
+  bindDatatable(){
+    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
       var selectedPageLength = 15;
 
       var $table = $("#example1").DataTable({
@@ -75,44 +116,7 @@ export class StateComponent implements OnInit {
           }
         });
       });
-
-    });
   }
-  GetAllState() {
-    this.arr = [
-      { stateName: "Uttar Pradesh" },
-      { stateName: "Andhra Pradesh" },
-      { stateName: "Arunachal Pradesh" },
-      { stateName: "Assam" },
-      { stateName: "Bihar" },
-      { stateName: "Chandigarh " },
-      { stateName: "Chhattisgarh" },
-      { stateName: "Goa" },
-      { stateName: "Dadra and Nagar Haveli " },
-      { stateName: "Gujarat" },
-      { stateName: "Haryana" },
-      { stateName: "Himachal Pradesh" },
-      { stateName: "Jammu & Kashmir" },
-      { stateName: "Jharkhand" },
-      { stateName: "Karnataka" },
-      { stateName: "Kerala" },
-      { stateName: "Lakshadweep " },
-      { stateName: "Madhya Pradesh" },
-      { stateName: "Maharashtra" },
-      { stateName: "Manipur" },
-      { stateName: "Meghalaya" },
-      { stateName: "Mizoram" },
-      { stateName: "Nagaland" },
-      { stateName: "National Capital Territory of Delhi " },
-      { stateName: "Odisha" },
-      { stateName: "Puducherry " },
-      { stateName: "Punjab" },
-      { stateName: "Rajasthan" },
-      { stateName: "Sikkim" },
-      { stateName: "Tripura" },
-    ];
-  }
-
   showEditModal(data) {
     this.editDetails = data;
     $('#editStateMasterModal').modal('show');

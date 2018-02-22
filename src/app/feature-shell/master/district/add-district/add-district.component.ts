@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { DistrictService } from '../district.service';
 import { StorageService } from '../../../../shared/services/storage.service';
+import { District } from '../district';
 declare var $;
 
 
@@ -16,6 +17,7 @@ export class AddDistrictMasterComponent implements OnInit {
 
   addDistrictMasterForm: FormGroup;
   isDistrictAlreadyExists: boolean = false;
+  @Input() arDisrict: District[];
 
   AddDistrictMaster() {
     this.addDistrictMasterForm = this.fb.group({
@@ -30,13 +32,13 @@ export class AddDistrictMasterComponent implements OnInit {
   submitAddDistrictMaster(data) {
     var reqData = {
       districtName: data.districtName,
-      user: { id: this._storageService.getClientId() }
+      userId: this._storageService.getUserId()
     };
-    debugger
+
     this._districtService.addDistrict(reqData).subscribe(
       result => {
         var _result = result.body;
-        
+
         if (_result.httpCode == 200) { //success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddDistrictMaster();
@@ -47,7 +49,6 @@ export class AddDistrictMasterComponent implements OnInit {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
       },
       err => {
-        debugger
         console.log(err);
       });
   }

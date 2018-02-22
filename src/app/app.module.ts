@@ -8,7 +8,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
-
+import { LFAuthantication } from './shared/services/lfAuthantication-service';
 @NgModule({
   imports: [
     BrowserModule,
@@ -22,7 +22,8 @@ import { TokenService } from './shared/services/token-service';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     ApiGateway,
-    TokenService
+    TokenService,
+    LFAuthantication 
   ],
   bootstrap: [AppComponent]
 })

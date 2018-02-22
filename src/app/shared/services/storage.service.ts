@@ -2,7 +2,7 @@ export class StorageService {
     getValue(key: string): string {
         return localStorage.getItem(key);
     }
-    getClientId(): string {
+    getUserId(): string {
         return this.getValue("client_id");
     }
     getUserEmail(): string {

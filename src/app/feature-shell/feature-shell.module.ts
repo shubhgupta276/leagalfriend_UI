@@ -9,7 +9,7 @@ import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthService } from '../auth-shell/auth-shell.service';
-
+import {CommonModule} from '@angular/common';
 @NgModule({
   imports: [
     // UserModule,
@@ -17,7 +17,8 @@ import { AuthService } from '../auth-shell/auth-shell.service';
     // CaseModule,
     // MasterModule,
     // InstitutionModule,
-    FeatureShellRoutingModule
+    FeatureShellRoutingModule,
+    CommonModule 
   ],
   declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent,
   ],
