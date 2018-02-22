@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
+import { StorageService } from '../../../../shared/services/storage.service';
+import { CourtService } from '../court.service';
+import { Court } from '../court';
 
 declare var $;
 
@@ -11,24 +14,43 @@ declare var $;
   //template:`<h1>test popup</h1>`
 })
 export class AddCourtMasterComponent implements OnInit {
+  @Input() arCourt: Court[];
   addCourtMasterForm: FormGroup;
   isCourtNameAlreadyExists: boolean = false;
   AddCourtMaster() {
     this.addCourtMasterForm = this.fb.group({
-      court: [null, Validators.required],
-      courtdesc: [null, Validators.required]
+      courtName: [null, Validators.required],
+      courtDesc: [null, Validators.required]
     });
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _courtService: CourtService, private _storageService: StorageService) {
     this.AddCourtMaster();
   }
 
-  submitAddCourtMaster(data) {
-    $.toaster({ priority: 'success', title: 'Success', message: 'Court added successfully' });
-    this.AddCourtMaster();
-    this.closeModal();
-    this.subscriberFields();
+  submitAddCourtMaster(data: Court) {
+    var reqData = {
+      courtName: data.courtName,
+      courtDesc: data.courtDesc,
+      userId: this._storageService.getUserId()
+    };
+
+    this._courtService.addCourt(reqData).subscribe(
+      result => {
+        var _result = result.body;
+
+        if (_result.httpCode == 200) { //success
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.AddCourtMaster();
+          this.closeModal();
+          this.subscriberFields();
+        }
+        else
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+      },
+      err => {
+        console.log(err);
+      });
   }
 
   closeModal() {
@@ -39,12 +61,13 @@ export class AddCourtMasterComponent implements OnInit {
     this.subscriberFields();
   }
   subscriberFields() {
-    this.addCourtMasterForm.get('court').valueChanges.subscribe(
+    this.addCourtMasterForm.get('courtName').valueChanges.subscribe(
       (e) => {
-        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+        if (this.arCourt.filter(x => x.courtName.toUpperCase() == e.toUpperCase()).length > 0)
           this.isCourtNameAlreadyExists = true;
-        else
+        else {
           this.isCourtNameAlreadyExists = false;
+        }
       }
     );
   }
