@@ -57,7 +57,7 @@ export const CasesRunning: Case[] = [
     {
         Id: 5, CaseId: 'I/LKAD/7', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
-        NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
+        NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 2, name: 'Gujrat' },
         FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 1, name: 'Delhi' },
         OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
     }
