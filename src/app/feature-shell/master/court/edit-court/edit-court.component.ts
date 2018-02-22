@@ -2,6 +2,9 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
+import { Court } from '../court';
+import { CourtService } from '../court.service';
+import { StorageService } from '../../../../shared/services/storage.service';
 
 declare var $;
 
@@ -11,16 +14,39 @@ declare var $;
   //template:`<h1>test popup</h1>`
 })
 export class EditCourtMasterComponent implements OnInit, OnChanges {
-  @Input() editDetails: any;
+  @Input() editDetails: Court;
+  @Input() arCourt: Court[];
   editCourtMasterForm: FormGroup;
   isCourtNameAlreadyExists: boolean = false;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _courtService: CourtService, private _storageService: StorageService) {
     this.createForm(null);
   }
 
-  submitEditCourtMaster(data) {
-    $.toaster({ priority: 'success', title: 'Success', message: 'Court updated successfully' });
-    this.closeModal();
+  submitEditCourtMaster(data: Court) {
+    debugger
+    var reqData = {
+      courtName: data.courtName,
+      courtDesc: data.courtDesc,
+      id: data.id,
+      userId: this._storageService.getUserId()
+
+    };
+
+    this._courtService.updateCourt(reqData).subscribe(
+
+      result => {
+        var _result = result.body;
+        if (_result.httpCode == 200) { //success
+          this.closeModal();
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+        }
+        else
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+
+      },
+      err => {
+        console.log(err);
+      });
   }
   closeModal() {
     $("#closebtn1").click();
@@ -37,19 +63,22 @@ export class EditCourtMasterComponent implements OnInit, OnChanges {
 
   }
   subscriberFields() {
-    this.editCourtMasterForm.get('court').valueChanges.subscribe(
+    this.editCourtMasterForm.get('courtName').valueChanges.subscribe(
       (e) => {
-        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+        var fieldValue = e.toUpperCase();
+        if (this.editDetails.courtName.toUpperCase() != fieldValue && this.arCourt.filter(x => x.courtName.toUpperCase() == fieldValue).length > 0)
           this.isCourtNameAlreadyExists = true;
-        else
+        else {
           this.isCourtNameAlreadyExists = false;
+        }
       }
     );
   }
-  createForm(data) {
+  createForm(data: Court) {
     this.editCourtMasterForm = this.fb.group({
-      court: [data == null ? null : data.CourtName, Validators.required],
-      courtdesc: [data == null ? null : data.CourtDesc, Validators.required]
+      courtName: [data == null ? null : data.courtName, Validators.required],
+      courtDesc: [data == null ? null : data.courtDesc, Validators.required],
+      id: [data == null ? null : data.id]
     });
   }
 }

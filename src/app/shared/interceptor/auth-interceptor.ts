@@ -37,14 +37,10 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(verifyEmailReq);
         }
 
-        else if (req.url.indexOf('users/updatePassword') >= 0) {
-            const authHeader = this.auth.getAuthorizationHeader();
-            const changepwdReq = req.clone({
-                headers: req.headers.set('Content-Type', 'application/json')
-            });
-            return next.handle(changepwdReq);
-        }
-        else {
+        if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('signup') >= 0)) {
+            console.log('inside auth interceptor login');
+            return next.handle(req);
+        } else {
             console.log('inside auth interceptor login');
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({

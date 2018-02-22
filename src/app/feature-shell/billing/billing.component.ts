@@ -19,25 +19,65 @@ export class BillingComponent implements OnInit {
 
         this.getBillingData();
         this.setDropdownUniqueValues();
-        $($.document).ready(function () {
-
-            var $table = $("#example1").DataTable({
-                "bSort": false,
-                lengthMenu: [[10, 15, 25, -1], [10, 15, 25, "All"]],
-                pageLength: 15,
-                oLanguage: {
-                    sLengthMenu: "Show _MENU_ rows",
-                    sSearch: "",
-                    sSearchPlaceholder: "Search..."
+        $($.document).ready(function() {
+          
+            var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+            var selectedPageLength = 15;
+            const $table = $("#example1").DataTable({
+               columns: [
+                { name: "#", orderable: true },
+                { name: "Bank", orderable: false },
+                { name: "CaseID", orderable: true },
+                { name: "Recourse", orderable: true },
+                { name: "Stage", orderable: false },
+                { name: "Amount", orderable: false },
+                 { name: "Action", orderable: false }
+              ],
+              lengthMenu: arLengthMenu,
+              pageLength: selectedPageLength,
+              oLanguage: {
+                sLengthMenu: "Show _MENU_ rows",
+                sSearch: "",
+                sSearchPlaceholder: "Search..."
+              },
+              initComplete: function() {
+                var tableid = "example1";
+                var $rowSearching = $("#" + tableid + "_wrapper");
+                $rowSearching.find(".row:eq(0)").hide();
+      
+                for (var i = 0; i < arLengthMenu[0].length; i++) {
+                  var selectText=(arLengthMenu[0][i]==selectedPageLength)?'selected':'';
+                  
+                  $("#ddlLengthMenu").append(
+                   
+      
+                    "<option "+ selectText  +" value=" +
+                      arLengthMenu[0][i] +
+                      ">" +
+                      arLengthMenu[1][i] +
+                      "</option>"
+                  );
                 }
+                // $("#ddlLengthMenu").val(selectedPageLength);
+      
+                $("#ddlLengthMenu").on("change", function() {
+                  $rowSearching
+                    .find(".row:eq(0)")
+                    .find("select")
+                    .val($(this).val())
+                    .change();
+                });
+              }
             });
 
-            $table.columns().every(function () {
-                $('#txtSearch').on('keyup change', function () {
-                    if ($table.search() !== this.value) {
-                        $table.search(this.value).draw();
-                    }
+            $table.columns().every(function() {
+              
+                $("#txtSearch").on("keyup change", function() {
+                  if ($table.search() !== this.value) {
+                    $table.search(this.value).draw();
+                  }
                 });
+              
 
                 //start bank filter
                 $("#ddlBank").on("change", function () {
