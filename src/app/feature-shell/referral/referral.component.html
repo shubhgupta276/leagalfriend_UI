@@ -21,7 +21,7 @@
         <div class="box">
           <div class="box-body profile-box">
             <div class="col-md-12 col-lg-12 mg-t-30 mg-md-t-0">
-                <!-- <form [formGroup]="referrelForm" class="form-horizontal" (ngSubmit)="sendreferrelmail(referrelForm.value)"> -->
+                <form [formGroup]="referrelForm" class="form-horizontal" (ngSubmit)="sendreferrelmail(referrelForm.value)">
                 <div class="form-body">
                   <div class="form-group">
                     <label class="col-xs-3 control-label">Email:</label>
@@ -44,12 +44,12 @@
 
                   <div class="form-group">
                     <div class="col-xs-5 col-xs-offset-3">
-                      <!-- <button type="submit" class="btn btn-default" [disabled]="referrelForm.invalid" >Send referral</button> -->
+                      <button type="submit" class="btn btn-default" [disabled]="referrelForm.invalid" >Send referral</button>
                     </div>
                   </div>
 
                 </div>
-              <!-- </form> -->
+              </form>
             </div>
 
           </div>

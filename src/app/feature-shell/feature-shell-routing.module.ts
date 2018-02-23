@@ -13,7 +13,8 @@ const featureShellRoutes: Routes = [
             { path: 'master', loadChildren: 'app/feature-shell/master/master.module#MasterModule' },
             { path: 'institution', loadChildren: 'app/feature-shell/institution/institution.module#InstitutionModule' },
             { path: 'profile', loadChildren: 'app/feature-shell/profile/profile.module#ProfileModule' },
-            { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },          
+            { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },  
+            { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },          
             { path: 'calendar', component: CalendarComponent },
             { path: 'dashboard', component: DashboardComponent },
             { path: '', redirectTo: 'user', pathMatch: 'full' }
