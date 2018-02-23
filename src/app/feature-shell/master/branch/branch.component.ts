@@ -23,7 +23,7 @@ declare let $;
   styleUrls: ['./branch.component.css']
 })
 export class BranchComponent implements OnInit {
-  arr: [any];
+  arr= [];
   editBranchMasterForm: FormGroup;
   editDetails:any;
 

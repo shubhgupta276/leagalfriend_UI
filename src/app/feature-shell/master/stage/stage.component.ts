@@ -23,7 +23,7 @@ declare let $;
   styleUrls: ['./stage.component.css']
 })
 export class StageComponent implements OnInit {
-  arr: [any];
+  arr= [];
   editStageMasterForm: FormGroup;
   editDetails:any;
   constructor(private fb: FormBuilder) {
