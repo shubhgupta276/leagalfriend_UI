@@ -24,7 +24,13 @@ import { UserModel } from "../shared/models/user/user.model";
 
 @Injectable()
 export class AuthService {
-  constructor(public apiGateWay: ApiGateway) {}
+  constructor(public apiGateWay: ApiGateway) {
+    window.addEventListener('storage', function (event) {
+      if (event.key == 'access_token') {
+        window.location.href = "/login";
+      }
+    });
+  }
 
   login(customerData: LoginModel): Observable<LoginModel> {
     return this.apiGateWay.post<LoginModel>(
@@ -54,4 +60,11 @@ export class AuthService {
       localStorage.removeItem("refresh_token");
     }
   }
+  isLoggedIn(): boolean {
+    if (localStorage.getItem("access_token"))
+      return true;
+    else
+      return false;
+  }
+
 }

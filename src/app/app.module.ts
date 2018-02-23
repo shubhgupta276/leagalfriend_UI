@@ -10,6 +10,7 @@ import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
 import {MasterTemplateComponentService} from "../app/feature-shell/master/masterTemplates/masterTemplate.component.service"
 
+import { LFAuthantication } from './shared/services/lfAuthantication-service';
 @NgModule({
   imports: [
     BrowserModule,
@@ -24,8 +25,8 @@ import {MasterTemplateComponentService} from "../app/feature-shell/master/master
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     ApiGateway,
     TokenService,
-    ,MasterTemplateComponentService
-  
+    MasterTemplateComponentService,
+    LFAuthantication 
   ],
   bootstrap: [AppComponent]
 })

@@ -23,12 +23,17 @@
                             <label class="col-sm-3 col-form-label createUserLabel">Court:
                               <em class="astrick">*</em>
                             </label>
-                            <div class="col-md-9" [class.has-error]="editCourtMasterForm.get('court').invalid &&  editCourtMasterForm.get('court').touched">
-                              <input class="form-control" placeholder="Court" formControlName="court">
+                            <div class="col-md-9" [class.has-error]="editCourtMasterForm.get('courtName').invalid &&  editCourtMasterForm.get('courtName').touched">
+                              <input class="form-control" placeholder="Court" formControlName="courtName">
                             </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="editCourtMasterForm.get('court').invalid &&  editCourtMasterForm.get('court').touched">
+                            <div class="col-sm-9 valodation-padding" *ngIf="editCourtMasterForm.get('courtName').invalid &&  editCourtMasterForm.get('courtName').touched">
                               <small class="text-danger">
                                 <span>Court is required.</span>
+                              </small>
+                            </div>
+                            <div class="col-sm-9 valodation-padding" *ngIf="isCourtNameAlreadyExists">
+                              <small class="text-danger">
+                                <span>Court already exists.</span>
                               </small>
                             </div>
                           </div>
@@ -36,10 +41,10 @@
                               <label class="col-sm-3 col-form-label createUserLabel">Court Desc:
                                 <em class="astrick">*</em>
                               </label>
-                              <div class="col-md-9" [class.has-error]="editCourtMasterForm.get('courtdesc').invalid &&  editCourtMasterForm.get('courtdesc').touched">
-                                <input class="form-control" placeholder="Court Desc" formControlName="courtdesc">
+                              <div class="col-md-9" [class.has-error]="editCourtMasterForm.get('courtDesc').invalid &&  editCourtMasterForm.get('courtDesc').touched">
+                                <input class="form-control" placeholder="Court Desc" formControlName="courtDesc">
                               </div>
-                              <div class="col-sm-9 valodation-padding" *ngIf="editCourtMasterForm.get('courtdesc').invalid &&  editCourtMasterForm.get('courtdesc').touched">
+                              <div class="col-sm-9 valodation-padding" *ngIf="editCourtMasterForm.get('courtDesc').invalid &&  editCourtMasterForm.get('courtDesc').touched">
                                 <small class="text-danger">
                                   <span>Court Desc is required.</span>
                                 </small>
@@ -58,7 +63,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="editCourtMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="editCourtMasterForm.invalid || isCourtNameAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>

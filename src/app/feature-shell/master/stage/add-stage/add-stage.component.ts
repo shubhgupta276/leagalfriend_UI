@@ -15,21 +15,20 @@ declare var $;
 
 @Component({
   selector: 'app-add-stage',
-  templateUrl:'../add-stage/add-stage.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-stage/add-stage.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class AddStageMasterComponent implements OnInit
-{
-    addStageMasterForm: FormGroup;
-    Resource: KeyValue[] = Resources;
-    Status1: KeyValue[] = Status;
-
+export class AddStageMasterComponent implements OnInit {
+  addStageMasterForm: FormGroup;
+  Resource: KeyValue[] = Resources;
+  Status1: KeyValue[] = Status;
+  isStagecodeAlreadyExists: boolean = false;
   AddStageMaster() {
     this.addStageMasterForm = this.fb.group({
-        resource: [1],
-        stagecode: [null, Validators.required],
-        stagename: [null, Validators.required],
-        status: [1]
+      resource: [1],
+      stagecode: [null, Validators.required],
+      stagename: [null, Validators.required],
+      status: [1]
     });
   }
 
@@ -38,18 +37,28 @@ export class AddStageMasterComponent implements OnInit
   }
 
   submitAddStageMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'Stage added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'Stage added successfully' });
     this.AddStageMaster();
     this.closeModal();
+    this.subscriberFields();
   }
 
-  closeModal()
-  {
+  closeModal() {
     $("#closebtn").click();
   }
 
-ngOnInit()
-  {
+  ngOnInit() {
+    this.subscriberFields();
+  }
 
+  subscriberFields() {
+    this.addStageMasterForm.get('stagecode').valueChanges.subscribe(
+      (e) => {
+        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+          this.isStagecodeAlreadyExists = true;
+        else
+          this.isStagecodeAlreadyExists = false;
+      }
+    );
   }
 }

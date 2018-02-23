@@ -44,6 +44,11 @@
                                   <span>Stage Code is required.</span>
                                 </small>
                               </div>
+                              <div class="col-sm-9 valodation-padding" *ngIf="isStagecodeAlreadyExists">
+                                <small class="text-danger">
+                                  <span>Stage Code already exists.</span>
+                                </small>
+                              </div>
                             </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label createUserLabel">Stage Name:
@@ -84,7 +89,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="addStageMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="addStageMasterForm.invalid || isStagecodeAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>

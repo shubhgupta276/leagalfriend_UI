@@ -23,12 +23,17 @@
                                   <label class="col-sm-3 col-form-label createUserLabel">Institution:
                                     <em class="astrick">*</em>
                                   </label>
-                                  <div class="col-md-9" [class.has-error]="editInstitutionMasterForm.get('institution').invalid &&  editInstitutionMasterForm.get('institution').touched">
-                                    <input class="form-control" OnlyString="true" placeholder="Institution" formControlName="institution">
+                                  <div class="col-md-9" [class.has-error]="editInstitutionMasterForm.get('institutionName').invalid &&  editInstitutionMasterForm.get('institutionName').touched">
+                                    <input class="form-control" OnlyString="true" placeholder="Institution Name" formControlName="institutionName">
                                   </div>
-                                  <div class="col-sm-9 valodation-padding" *ngIf="editInstitutionMasterForm.get('institution').invalid &&  editInstitutionMasterForm.get('institution').touched">
+                                  <div class="col-sm-9 valodation-padding" *ngIf="editInstitutionMasterForm.get('institutionName').invalid &&  editInstitutionMasterForm.get('institutionName').touched">
                                     <small class="text-danger">
                                       <span>Institution is required.</span>
+                                    </small>
+                                  </div>
+                                  <div class="col-sm-9 valodation-padding" *ngIf="isInstitutionAlreadyExists">
+                                    <small class="text-danger">
+                                      <span>Institution already exists.</span>
                                     </small>
                                   </div>
                                 </div>
@@ -45,7 +50,7 @@
                       </div>
                       <div class="modal-footer modal-footer-addedit">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" [disabled]="editInstitutionMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                        <button type="submit" [disabled]="editInstitutionMasterForm.invalid || isInstitutionAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                       </div>
                     </form>
                   </div>

@@ -42,7 +42,7 @@
               </thead>
               <tbody>
               <tr *ngFor="let item of arr; let i=index" (dblclick)="showEditModal(item)" data-target="#editDistrictMasterModal">
-                <td>{{item.District}}</td>
+                <td>{{item.districtName}}</td>
                 <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
               
               </tr>
@@ -75,6 +75,6 @@
         <i class="fa fa-plus" type="button"></i>
       </a>
     </div>
-  <app-add-district></app-add-district>
-  <app-edit-district [editDistrictMasterForm]="editDistrictMasterForm"></app-edit-district>
+  <app-add-district [arDisrict]="arr"></app-add-district>
+  <app-edit-district [editDetails]="editDetails" [arDisrict]="arr"></app-edit-district>
 </div>

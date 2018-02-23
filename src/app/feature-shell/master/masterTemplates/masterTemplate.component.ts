@@ -51,12 +51,6 @@ GetAllCustomer() {
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
     var selectedPageLength = 15;
     const $table = $("#example1").DataTable({
-      columns: [
-        { name: "Id", orderable: true },
-        { name: "FileName", orderable: true },
-        { name: "Lastupdated", orderable: true },
-        { name: "LastUpdatedBy", orderable: true }
-      ],
       lengthMenu: arLengthMenu,
       pageLength: selectedPageLength,
       oLanguage: {
@@ -107,12 +101,12 @@ GetAllCustomer() {
         const status = $(this).val();
         if (status === "All") {
           $table
-            .columns(4)
+            .columns(0)
             .search("")
             .draw();
-        } else if ($table.columns(4).search() !== this.value) {
+        } else if ($table.columns(0).search() !== this.value) {
           $table
-            .columns(4)
+            .columns(0)
             .search(this.value)
             .draw();
         } else {
@@ -123,12 +117,12 @@ GetAllCustomer() {
         const status = $(this).val();
         if (status === "All") {
           $table
-            .columns(5)
+            .columns(2)
             .search("")
             .draw();
-        } else if ($table.columns(5).search() !== this.value) {
+        } else if ($table.columns(2).search() !== this.value) {
           $table
-            .columns(5)
+            .columns(2)
             .search(this.value)
             .draw();
         } else {
