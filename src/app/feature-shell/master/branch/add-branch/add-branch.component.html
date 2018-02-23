@@ -44,6 +44,11 @@
                                             <span>Branch Code is required.</span>
                                           </small>
                                         </div>
+                                        <div class="col-sm-9 valodation-padding" *ngIf="isBranchcodeAlreadyExists">
+                                          <small class="text-danger">
+                                            <span>Branch Code already exists.</span>
+                                          </small>
+                                        </div>
                                 </div>
                                 <div class="form-group row">
                                         <label class="col-sm-3 col-form-label createUserLabel">Address:
@@ -97,7 +102,7 @@
                       </div>
                       <div class="modal-footer modal-footer-addedit">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" [disabled]="addBranchMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                        <button type="submit" [disabled]="addBranchMasterForm.invalid || isBranchcodeAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                       </div>
                     </form>
                   </div>

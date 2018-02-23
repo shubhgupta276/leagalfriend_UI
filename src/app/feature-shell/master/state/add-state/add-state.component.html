@@ -23,12 +23,17 @@
                             <label class="col-sm-3 col-form-label createUserLabel">State:
                               <em class="astrick">*</em>
                             </label>
-                            <div class="col-md-9" [class.has-error]="addStateMasterForm.get('state').invalid &&  addStateMasterForm.get('state').touched">
-                              <input class="form-control" OnlyString="true" placeholder="State" formControlName="state">
+                            <div class="col-md-9" [class.has-error]="addStateMasterForm.get('stateName').invalid &&  addStateMasterForm.get('stateName').touched">
+                              <input class="form-control" OnlyString="true" placeholder="State" formControlName="stateName">
                             </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="addStateMasterForm.get('state').invalid &&  addStateMasterForm.get('state').touched">
+                            <div class="col-sm-9 valodation-padding" *ngIf="addStateMasterForm.get('stateName').invalid &&  addStateMasterForm.get('stateName').touched">
                               <small class="text-danger">
                                 <span>State is required.</span>
+                              </small>
+                            </div>
+                            <div class="col-sm-9 valodation-padding" *ngIf="isStateAlreadyExists">
+                              <small class="text-danger">
+                                <span>State already exists.</span>
                               </small>
                             </div>
                           </div>
@@ -45,7 +50,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="addStateMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="addStateMasterForm.invalid || isStateAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>

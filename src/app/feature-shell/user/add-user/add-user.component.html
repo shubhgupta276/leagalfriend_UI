@@ -105,11 +105,20 @@
                         <div class="col-md-9" [class.has-error]="addForm.get('email').invalid &&  addForm.get('email').touched">
                           <input class="form-control" placeholder="Email Address" formControlName="email">
                         </div>
-                        <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('email').invalid &&  addForm.get('email').touched">
+                        <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('email').invalid && addForm.get('email').touched">
                           <small class="text-danger">
                             <span>{{emailValidationMessage}}</span>
                           </small>
                         </div>
+                        
+
+                        <div class="col-sm-9 valodation-padding" *ngIf="isEmailAlreadyExists">
+                          <small class="text-danger">
+                            <span>This email already exists.</span>
+                          </small>
+                        </div>
+                       
+                        
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Password:
@@ -188,7 +197,7 @@
                 </div>
                 <div class="modal-footer modal-footer-addedit">
                   <button type="button" class="btn btn-default btn-default-add-edit" data-dismiss="modal">Close</button>
-                  <button type="submit" [disabled]="addForm.invalid" class="btn btn-modal-addedit">Submit</button>
+                  <button type="submit" [disabled]="addForm.invalid || isEmailAlreadyExists" class="btn btn-modal-addedit">Submit</button>
                 </div>
               </form>
             </div>

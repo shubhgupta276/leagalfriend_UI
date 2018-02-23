@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   isShowUpload: boolean = false;
   isPhotoChange: boolean = false;
   prevPhotoUrl: string = "assets/dist/img/user2-160x160.jpg";
+  upComingEvents:number;
   constructor(private fb: FormBuilder) {
     this.arrEditProfileInfo =
       {

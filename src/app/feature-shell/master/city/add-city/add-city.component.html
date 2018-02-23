@@ -23,12 +23,17 @@
                             <label class="col-sm-3 col-form-label createUserLabel">City:
                               <em class="astrick">*</em>
                             </label>
-                            <div class="col-md-9" [class.has-error]="addCityMasterForm.get('city').invalid &&  addCityMasterForm.get('city').touched">
-                              <input class="form-control" OnlyString="true" placeholder="City" formControlName="city">
+                            <div class="col-md-9" [class.has-error]="addCityMasterForm.get('cityName').invalid &&  addCityMasterForm.get('cityName').touched">
+                              <input class="form-control" OnlyString="true" placeholder="City Name" formControlName="cityName">
                             </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="addCityMasterForm.get('city').invalid &&  addCityMasterForm.get('city').touched">
+                            <div class="col-sm-9 valodation-padding" *ngIf="addCityMasterForm.get('cityName').invalid &&  addCityMasterForm.get('cityName').touched">
                               <small class="text-danger">
                                 <span>City is required.</span>
+                              </small>
+                            </div>
+                            <div class="col-sm-9 valodation-padding" *ngIf="isCityAlreadyExists">
+                              <small class="text-danger">
+                                <span>City already exists.</span>
                               </small>
                             </div>
                           </div>
@@ -45,7 +50,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="addCityMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="addCityMasterForm.invalid || isCityAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>

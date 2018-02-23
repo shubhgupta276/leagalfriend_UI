@@ -15,21 +15,20 @@ declare var $;
 
 @Component({
   selector: 'app-add-branch',
-  templateUrl:'../add-branch/add-branch.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../add-branch/add-branch.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class AddBranchMasterComponent implements OnInit
-{
-    addBranchMasterForm: FormGroup;
-    City: KeyValue[] = Cities;
-
+export class AddBranchMasterComponent implements OnInit {
+  addBranchMasterForm: FormGroup;
+  City: KeyValue[] = Cities;
+  isBranchcodeAlreadyExists: boolean = false;
   AddBranchMaster() {
     this.addBranchMasterForm = this.fb.group({
-        branchname: [null, Validators.required],
-        branchcode: [null, Validators.required],
-        address: [null, Validators.required],
-        city: [1],
-        contact: [null, Validators.required],
+      branchname: [null, Validators.required],
+      branchcode: [null, Validators.required],
+      address: [null, Validators.required],
+      city: [1],
+      contact: [null, Validators.required],
     });
   }
 
@@ -38,18 +37,27 @@ export class AddBranchMasterComponent implements OnInit
   }
 
   submitAddBranchMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'Branch added successfully'});
+    $.toaster({ priority: 'success', title: 'Success', message: 'Branch added successfully' });
     this.AddBranchMaster();
     this.closeModal();
+    this.subscriberFields();
   }
 
-  closeModal()
-  {
+  closeModal() {
     $("#closebtn").click();
   }
 
-ngOnInit()
-  {
-
+  ngOnInit() {
+    this.subscriberFields();
+  }
+  subscriberFields() {
+    this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
+      (e) => {
+        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+          this.isBranchcodeAlreadyExists = true;
+        else
+          this.isBranchcodeAlreadyExists = false;
+      }
+    );
   }
 }

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { LFAuthantication } from '../shared/services/lfAuthantication-service'
 const featureShellRoutes: Routes = [
     {
         path: 'admin', component: FeatureShellComponent, children: [
@@ -14,7 +14,8 @@ const featureShellRoutes: Routes = [
             { path: 'institution', loadChildren: 'app/feature-shell/institution/institution.module#InstitutionModule' },
             { path: 'profile', loadChildren: 'app/feature-shell/profile/profile.module#ProfileModule' },
             { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },  
-            { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },          
+            { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },
+            { path: 'wallet', loadChildren:'app/feature-shell/wallet/wallet.module#WalletModule' },          
             { path: 'calendar', component: CalendarComponent },
             { path: 'dashboard', component: DashboardComponent },
             { path: '', redirectTo: 'user', pathMatch: 'full' }

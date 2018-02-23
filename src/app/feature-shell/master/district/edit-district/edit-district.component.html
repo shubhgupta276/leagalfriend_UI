@@ -23,12 +23,17 @@
                             <label class="col-sm-3 col-form-label createUserLabel">District Name:
                               <em class="astrick">*</em>
                             </label>
-                            <div class="col-md-9" [class.has-error]="editDistrictMasterForm.get('district').invalid &&  editDistrictMasterForm.get('district').touched">
-                              <input class="form-control" OnlyString="true" placeholder="District" formControlName="district">
+                            <div class="col-md-9" [class.has-error]="editDistrictMasterForm.get('districtName').invalid &&  editDistrictMasterForm.get('districtName').touched">
+                              <input class="form-control" OnlyString="true" placeholder="District" formControlName="districtName">
                             </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="editDistrictMasterForm.get('district').invalid &&  editDistrictMasterForm.get('district').touched">
+                            <div class="col-sm-9 valodation-padding" *ngIf="editDistrictMasterForm.get('districtName').invalid &&  editDistrictMasterForm.get('districtName').touched">
                               <small class="text-danger">
                                 <span>District is required.</span>
+                              </small>
+                            </div>
+                            <div class="col-sm-9 valodation-padding" *ngIf="isDistrictAlreadyExists">
+                              <small class="text-danger">
+                                <span>District already exists.</span>
                               </small>
                             </div>
                           </div>
@@ -45,7 +50,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="editDistrictMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="editDistrictMasterForm.invalid || isDistrictAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>

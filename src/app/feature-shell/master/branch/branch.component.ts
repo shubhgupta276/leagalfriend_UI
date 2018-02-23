@@ -25,11 +25,10 @@ declare let $;
 export class BranchComponent implements OnInit {
   arr: [any];
   editBranchMasterForm: FormGroup;
-
+  editDetails:any;
 
   constructor(private fb: FormBuilder) {
-    this.EditBranchMaster(null);
-  }
+    }
   ngOnInit() {
     this.GetAllBranch();
     $($.document).ready(function () {
@@ -100,17 +99,9 @@ export class BranchComponent implements OnInit {
   }
 
   showEditModal(data) {
+    this.editDetails=data;
     $('#editBranchMasterModal').modal('show');
-    this.EditBranchMaster(data);
   }
-  EditBranchMaster(data) {
-    this.editBranchMasterForm = this.fb.group({
-      branchname: [data == null ? null : data.BranchName, Validators.required],
-      branchcode: [data == null ? null : data.BranchCode, Validators.required],
-      address: [data == null ? null : data.Address, Validators.required],
-      city: [1],
-      contact: [data == null ? null : data.Contact, Validators.required],
-    });
-  }
+  
 
 }

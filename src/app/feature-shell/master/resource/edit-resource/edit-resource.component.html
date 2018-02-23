@@ -23,12 +23,17 @@
                               <label class="col-sm-3 col-form-label createUserLabel">Resource Code:
                                 <em class="astrick">*</em>
                               </label>
-                              <div class="col-md-9" [class.has-error]="editResourceMasterForm.get('resourcecode').invalid &&  editResourceMasterForm.get('resourcecode').touched">
-                                <input class="form-control" placeholder="Resource Code" formControlName="resourcecode">
+                              <div class="col-md-9" [class.has-error]="editResourceMasterForm.get('recourseCode').invalid &&  editResourceMasterForm.get('recourseCode').touched">
+                                <input class="form-control" placeholder="Resource Code" formControlName="recourseCode">
                               </div>
-                              <div class="col-sm-9 valodation-padding" *ngIf="editResourceMasterForm.get('resourcecode').invalid &&  editResourceMasterForm.get('resourcecode').touched">
+                              <div class="col-sm-9 valodation-padding" *ngIf="editResourceMasterForm.get('recourseCode').invalid &&  editResourceMasterForm.get('recourseCode').touched">
                                 <small class="text-danger">
                                   <span>Resource Code is required.</span>
+                                </small>
+                              </div>
+                              <div class="col-sm-9 valodation-padding" *ngIf="isResourcecodeAlreadyExists">
+                                <small class="text-danger">
+                                  <span>Resource Code already exists.</span>
                                 </small>
                               </div>
                             </div>
@@ -36,10 +41,10 @@
                                 <label class="col-sm-3 col-form-label createUserLabel">Resource Name:
                                   <em class="astrick">*</em>
                                 </label>
-                                <div class="col-md-9" [class.has-error]="editResourceMasterForm.get('resourcename').invalid &&  editResourceMasterForm.get('resourcename').touched">
-                                  <input class="form-control" placeholder="Resource Name" formControlName="resourcename">
+                                <div class="col-md-9" [class.has-error]="editResourceMasterForm.get('recourseName').invalid &&  editResourceMasterForm.get('recourseName').touched">
+                                  <input class="form-control" placeholder="Resource Name" formControlName="recourseName">
                                 </div>
-                                <div class="col-sm-9 valodation-padding"  *ngIf="editResourceMasterForm.get('resourcename').invalid &&  editResourceMasterForm.get('resourcename').touched">
+                                <div class="col-sm-9 valodation-padding"  *ngIf="editResourceMasterForm.get('recourseName').invalid &&  editResourceMasterForm.get('recourseName').touched">
                                   <small class="text-danger">
                                     <span>Resource Name is required.</span>
                                   </small>
@@ -49,11 +54,11 @@
                                   <label class="col-sm-3 col-form-label createUserLabel">Resource Desc:
                                     <em class="astrick">*</em>
                                   </label>
-                                  <div class="col-md-9" [class.has-error]="editResourceMasterForm.get('resourcedesc').invalid &&  editResourceMasterForm.get('resourcedesc').touched">
+                                  <div class="col-md-9" [class.has-error]="editResourceMasterForm.get('recourseDesc').invalid &&  editResourceMasterForm.get('recourseDesc').touched">
                                     <!-- <input class="form-control" placeholder="Resource Desc" formControlName="resourcedesc"> -->
-                                    <textarea type="text" class="form-control" placeholder="Resource Desc" formControlName="resourcedesc"></textarea>
+                                    <textarea type="text" class="form-control" placeholder="Resource Desc" formControlName="recourseDesc"></textarea>
                                   </div>
-                                  <div class="col-sm-9 valodation-padding" *ngIf="editResourceMasterForm.get('resourcedesc').invalid &&  editResourceMasterForm.get('resourcedesc').touched">
+                                  <div class="col-sm-9 valodation-padding" *ngIf="editResourceMasterForm.get('recourseDesc').invalid &&  editResourceMasterForm.get('recourseDesc').touched">
                                     <small class="text-danger">
                                       <span>Resource Desc is required.</span>
                                     </small>
@@ -72,7 +77,7 @@
                   </div>
                   <div class="modal-footer modal-footer-addedit">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="editResourceMasterForm.invalid"  class="btn btn-modal-addedit">Submit</button>
+                    <button type="submit" [disabled]="editResourceMasterForm.invalid || isResourcecodeAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
                   </div>
                 </form>
               </div>

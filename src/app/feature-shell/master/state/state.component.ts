@@ -3,18 +3,22 @@ import { EditStateMasterComponent } from './edit-state/edit-state.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
-import { FormsModule, ReactiveFormsModule,FormGroup,FormBuilder,Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { StateService } from './state.service';
+import { StorageService } from '../../../shared/services/storage.service';
+import { State } from './state';
 
 declare let $;
 
 @NgModule(
   {
-    imports: [CommonModule,FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
     declarations: [
       StateComponent,
       AddStateMasterComponent,
       EditStateMasterComponent
-    ]
+    ],
+    providers: [StateService, StorageService]
   }
 )
 @Component({
@@ -23,17 +27,55 @@ declare let $;
   styleUrls: ['./state.component.css']
 })
 export class StateComponent implements OnInit {
-  arr:[any];
+  arr: State[]=[];
   editStateMasterForm: FormGroup;
-  constructor(private fb: FormBuilder) { 
-    this.EditStateMaster(null);
+  editDetails: any;
+  constructor(private fb: FormBuilder, private _stateService: StateService, private _storageService: StorageService) {
+
   }
 
   ngOnInit() {
     this.GetAllState();
-    $($.document).ready(function () {
+  }
+  GetAllState() {
+    var reqObj = {
+      email: this._storageService.getUserEmail(),
+    };
 
-      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+    this._stateService.getStates(reqObj).subscribe(
+      result => {
+        result = result.body;
+        
+        if (result.httpCode == 200) {
+          
+          for (var i = 0; i < result.states.length; i++) {
+            const obj = result.states[i];
+
+            this.arr.push({
+              stateName: obj.stateName,
+              id: obj.id
+            });
+            
+          }
+          setTimeout(() => {
+            this.bindDatatable();
+          }, 1);
+
+        }
+        else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+        this.arr = [];
+
+      });
+      
+  }
+
+  bindDatatable(){
+    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
       var selectedPageLength = 15;
 
       var $table = $("#example1").DataTable({
@@ -74,53 +116,11 @@ export class StateComponent implements OnInit {
           }
         });
       });
+  }
+  showEditModal(data) {
+    this.editDetails = data;
+    $('#editStateMasterModal').modal('show');
+  }
 
-    });
-  }
-  GetAllState()
-  {
-    this.arr=[
-      {State:"Uttar Pradesh"},
-      {State:"Andhra Pradesh"},
-      {State:"Arunachal Pradesh"},
-      {State:"Assam"},
-      {State:"Bihar"},
-      {State:"Chandigarh "},
-      {State:"Chhattisgarh"},
-      {State:"Goa"},
-      {State:"Dadra and Nagar Haveli "},
-      {State:"Gujarat"},
-      {State:"Haryana"},
-      {State:"Himachal Pradesh"},
-      {State:"Jammu & Kashmir"},
-      {State:"Jharkhand"},
-      {State:"Karnataka"},
-      {State:"Kerala"},
-      {State:"Lakshadweep "},
-      {State:"Madhya Pradesh"},
-      {State:"Maharashtra"},
-      {State:"Manipur"},
-      {State:"Meghalaya"},
-      {State:"Mizoram"},
-      {State:"Nagaland"},
-      {State:"National Capital Territory of Delhi "},
-      {State:"Odisha"},
-      {State:"Puducherry "},
-      {State:"Punjab"},
-      {State:"Rajasthan"},
-      {State:"Sikkim"},
-      {State:"Tripura"},
-    ];
-  }
-  
-showEditModal(data){
-  $('#editStateMasterModal').modal('show');
-this.EditStateMaster(data);
-  }
-  EditStateMaster(data) {
-    this.editStateMasterForm = this.fb.group({
-      state: [data == null ? null : data.State, Validators.required]
-    });
-  }
 
 }

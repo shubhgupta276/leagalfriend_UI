@@ -25,11 +25,9 @@ export class UserComponent implements OnInit {
   arr: User[];
   usertype = "All";
   filterby = "All";
-  editForm: FormGroup;
+  selectedUser: User;
 
-  constructor(private fb: FormBuilder) {
-    this.createForm(null);
-  }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.GetAllCustomer();
@@ -135,40 +133,7 @@ export class UserComponent implements OnInit {
   }
 
   editUser(user) {
-    this.createForm(user);
+    this.selectedUser = user;
     $("#editUserModal").modal("show");
-  }
-
-  createForm(user) {
-    this.editForm = this.fb.group({
-      firstName: [user == null ? null : user.FirstName, Validators.required],
-      lastName: [user == null ? null : user.LastName, Validators.required],
-      organisation: [
-        user == null ? null : user.Organisation,
-        Validators.required
-      ],
-      addressLine1: [
-        user == null ? null : user.AddressLine1,
-        Validators.required
-      ],
-      addressLine2: [
-        user == null ? null : user.AddressLine2,
-        Validators.required
-      ],
-      postalCode: [
-        user == null ? null : user.PostalCode,
-        Validators.compose([Validators.required, Validators.minLength(4)])
-      ],
-      email: [
-        user == null ? null : user.Email,
-        Validators.compose([Validators.required, Validators.email])
-      ],
-      mobileNumber: [
-        user == null ? null : user.MobileNumber,
-        Validators.compose([Validators.required, Validators.minLength(10)])
-      ],
-      role: [user == null ? 1 : user.UserTypeCode],
-      status: [user == null ? 1 : user.StatusCode]
-    });
   }
 }
