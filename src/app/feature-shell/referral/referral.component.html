@@ -1,0 +1,65 @@
+<div class="content-wrapper">
+  <div class="nav-tabs-custom">
+    <div>
+      <div class="row case-table-toolbar">
+        <div class="col-sm-8 pr-zero">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#tab_running" data-toggle="tab">Send Referral</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- /.box -->
+        <div class="box">
+          <div class="box-body profile-box">
+            <div class="col-md-12 col-lg-12 mg-t-30 mg-md-t-0">
+                <!-- <form [formGroup]="referrelForm" class="form-horizontal" (ngSubmit)="sendreferrelmail(referrelForm.value)"> -->
+                <div class="form-body">
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label">Email:</label>
+                    <div class="col-xs-5">
+                      <input type="text" class="form-control" formControlName="Email" />
+                      
+                    </div>
+                    <div class="col-xs-4">
+                      <button type="button" class="btn btn-default addButton" (click)="adddynamic()"><i class="fa fa-plus"></i></button>
+                    </div>
+                  </div>
+
+                  <!-- The option field template containing an option field and a Remove button -->
+                  <div class="form-group hide" id="optionTemplate">
+                    <div class="col-xs-offset-3 col-xs-5" style="margin-top:10px;">
+                      <input class="form-control" type="text" id="dyncntrl1" formControlName="Email" />
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-xs-5 col-xs-offset-3">
+                      <!-- <button type="submit" class="btn btn-default" [disabled]="referrelForm.invalid" >Send referral</button> -->
+                    </div>
+                  </div>
+
+                </div>
+              <!-- </form> -->
+            </div>
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>

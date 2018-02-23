@@ -19,7 +19,7 @@ import { AuthService } from '../auth-shell/auth-shell.service';
     // InstitutionModule,
     FeatureShellRoutingModule
   ],
-  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent,
+  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent
   ],
   providers: [AuthService]
 })
