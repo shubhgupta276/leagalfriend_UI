@@ -11,6 +11,8 @@ import {
   CasesRunning,
   CasesCompleted
 } from "../../shared/models/case/case";
+import {MasterTemplateComponentService} from "../master/masterTemplates/masterTemplate.component.service";
+import { FileInfo } from "../../shared/models/master/FileInfo";
 // import { ALPN_ENABLED } from "constants";
 declare var $;
 
@@ -21,18 +23,22 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   caseRunning: Case[];
-  caseCompleted: Case[];
+  caseCompleted: Case[];f
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private masterTemplateService :MasterTemplateComponentService) {
     this.caseRunning = CasesRunning
     this.caseCompleted = CasesCompleted;
     this.setDropdownUniqueValues();
     this.initCaseForm();
+    this.updateCheckedOptions( this.caseRunning);
+    if(!this.IsPrintable){
+    this.updateCheckedOptions(this.caseCompleted)
+    }
   }
 
   ngOnInit() {
@@ -63,14 +69,14 @@ export class CaseComponent implements OnInit {
        debugger;
        
         $('#ddlCaseRecource').val("All");
-        $table.columns(3).search("").draw();
+        $table.columns(4).search("").draw();
 
         $('#ddlCaseStage').val("All");
-        $table.columns(4).search("").draw();
+        $table.columns(5).search("").draw();
 
         $('#ddlCaseBranch').val("All");
         $('#ddlCaseBranch1').val("All");
-        $table.columns(6).search("").draw();
+        $table.columns(7).search("").draw();
         // $('#reservation').val('');
         // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
         // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
@@ -78,7 +84,7 @@ export class CaseComponent implements OnInit {
         $('#reservation').data('daterangepicker').setEndDate(new Date());
       
         $.fn.dataTableExt.afnFiltering.length = 0;
-        $table.columns(5).search("").draw();
+        $table.columns(6).search("").draw();
         });
      
         $('#reservation').daterangepicker({
@@ -96,11 +102,11 @@ export class CaseComponent implements OnInit {
         var status = $(this).val();
         if (status == "All") {
             $('#ddlCaseBranch').val("All");
-            $table.columns(6).search("").draw();
+            $table.columns(7).search("").draw();
         }
-        else if ($table.columns(6).search() !== this.value) {
+        else if ($table.columns(7).search() !== this.value) {
             $('#ddlCaseBranch').val($("#ddlCaseBranch1").val());
-            $table.columns(6).search(this.value).draw();
+            $table.columns(7).search(this.value).draw();
         }
       });
       //end Branch1 filter
@@ -114,37 +120,37 @@ export class CaseComponent implements OnInit {
 
         // start recourse filter
         if (recourseVal == "All") {
-          $table.columns(3).search("").draw();
+          $table.columns(4).search("").draw();
         }
-        else if ($table.columns(3).search() !== recourseVal) {
-          $table.columns(3).search(recourseVal).draw();
+        else if ($table.columns(4).search() !== recourseVal) {
+          $table.columns(4).search(recourseVal).draw();
         }
         //end recourse filter
 
         // start Case stage filter
         if (caseStageVal == "All") {
-          $table.columns(4).search("").draw();
+          $table.columns(5).search("").draw();
         }
-        else if ($table.columns(4).search() !== caseStageVal) {
-          $table.columns(4).search(caseStageVal).draw();
+        else if ($table.columns(5).search() !== caseStageVal) {
+          $table.columns(5).search(caseStageVal).draw();
         }
         //end Case stage filter
 
         // start caseBranchVal filter
         if (caseBranchVal == "All") {
           $('#ddlCaseBranch1').val("All");
-          $table.columns(6).search("").draw();
+          $table.columns(7).search("").draw();
         }
-        else if ($table.columns(6).search() !== caseBranchVal) {
+        else if ($table.columns(7).search() !== caseBranchVal) {
           $('#ddlCaseBranch1').val(caseBranchVal);
-          $table.columns(6).search(caseBranchVal).draw();
+          $table.columns(7).search(caseBranchVal).draw();
         }
        
           $.fn.dataTableExt.afnFiltering.push(
             function (oSettings, data, iDataIndex) {
                 var startDate =new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY')) ;
                 var endDate =new Date( $('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
-                var rowDate = new Date(data[5]);
+                var rowDate = new Date(data[6]);
                 debugger
                 if (rowDate >= startDate && rowDate <= endDate) {
                   return true;
@@ -325,4 +331,64 @@ export class CaseComponent implements OnInit {
     document.getElementById("searchBox2").style.display = "block";
     document.getElementById("searchBox1").style.display = "none";
   }
+  
+  
+  IsPrintable = false;
+  updateCheckedOptions(items){
+    var flagPrint = false;
+    for(var i=0;i<items.length;i++)
+    {
+     if(items[i].IsChecked == true)
+     {
+      flagPrint = true;
+      this.IsPrintable = true;
+     }
+    }
+    if(flagPrint == false)
+    {
+      this.IsPrintable = false;
+    }
+ }
+
+  lstUploadedDocuments : FileInfo[];
+ getUploadedDocuments(){
+    this.masterTemplateService.getuploadedFile().subscribe(x=>this.lstUploadedDocuments = x);
+ }
+  SelectedFileIds = [];
+  getSelectedDocument(IsChecked,FileId)
+  {
+     if(IsChecked.srcElement.checked)
+       {
+         this.SelectedFileIds.push(FileId);
+       }
+     else
+     {
+       this.SelectedFileIds = this.SelectedFileIds.filter(function(i) {
+       return i != FileId;
+       });
+     }
+   
+  }
+  getMappingFilesTodownload()
+ {
+   
+   for(var i=0;i<this.SelectedFileIds.length;i++){
+        var data = this.lstUploadedDocuments.find(x => x.Id ===  this.SelectedFileIds[i]);
+        var selectedCases = this.caseRunning.filter(function(x) {
+          return x.IsChecked == true;})
+          var selectedCasescompelted = this.caseCompleted.filter(function(x) {
+            return x.IsChecked == true;});
+            selectedCases = selectedCases.concat(selectedCasescompelted);
+
+            for(var j= 0;j<selectedCases.length;j++)
+            {
+              data.Value= data.Value.replace('@CourtCaseId', selectedCases[j].CourtCaseId.toString());
+              data.Value= data.Value.replace('@CustomerName',' '+ selectedCases[j].CustomerName.name);
+
+            }
+        var blob = new Blob([data.Value], { type: data.FileType });
+        var url= window.URL.createObjectURL(blob);
+        window.open(url);
+   }
+}
 }

@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,NgModule} from "@angular/core";
 import { AddInstitutionMasterComponent } from "./add-institution/add-institution.component";
 import { EditInstitutionMasterComponent } from "./edit-institution/edit-institution.component";
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Institution } from './institution';
 import { InstitutionService } from './institution.service';
@@ -34,6 +34,7 @@ export class InstitutionComponent implements OnInit {
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
     
   }
+
 
   ngOnInit() {
     this.GetAllInstitute();
