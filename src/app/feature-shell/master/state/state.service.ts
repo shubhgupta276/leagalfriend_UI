@@ -7,18 +7,18 @@ import { addStateUrl, updateStateUrl, getStatesUrl } from '../master.config'
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
+import { StorageService } from '../../../shared/services/storage.service';
 @Injectable()
 export class StateService {
     
-    constructor(private apiGateWay: ApiGateway) {
+    constructor(private apiGateWay: ApiGateway, private _storageService:StorageService) {
 
     }
 
-    getStates(reqData: any): Observable<any> {
-
-        return this.apiGateWay.post<State>(
-            getStatesUrl,
-            JSON.stringify(reqData)
+    getStates(): Observable<any> {
+        
+        return this.apiGateWay.get<State>(
+            getStatesUrl+ "?email=" + this._storageService.getUserEmail()
         );
     }
 

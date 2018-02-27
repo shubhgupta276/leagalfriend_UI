@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, ViewChild } from '@angular/core';
 import { Component, OnInit } from "@angular/core";
 import { AddCityMasterComponent } from './add-city/add-city.component';
 import { EditCityMasterComponent } from './edit-city/edit-city.component';
@@ -28,7 +28,7 @@ declare let $;
 })
 export class CityComponent implements OnInit {
   arCityData: City[] = [];
-  editDetails: City;
+  @ViewChild(EditCityMasterComponent) editChild: EditCityMasterComponent;
   constructor(private fb: FormBuilder, private _cityService: CityService, private _storageService: StorageService) {
 
   }
@@ -39,20 +39,14 @@ export class CityComponent implements OnInit {
   }
 
   showEditModal(data) {
-    this.editDetails = data;
+    this.editChild.createForm(data);
     $('#editCityMasterModal').modal('show');
 
   }
 
   getCityData() {
-    var reqObj = {
-      email: this._storageService.getUserEmail(),
-    };
-
-
-    this._cityService.getCities(reqObj).subscribe(
+    this._cityService.getCities().subscribe(
       result => {
-        result = result.body;
         if (result.httpCode == 200) {
           for (var i = 0; i < result.cities.length; i++) {
             const obj = result.cities[i];

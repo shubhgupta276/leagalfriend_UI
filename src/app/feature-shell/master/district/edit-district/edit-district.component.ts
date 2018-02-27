@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -14,8 +14,8 @@ declare var $;
   templateUrl: '../edit-district/edit-district.component.html'
   //template:`<h1>test popup</h1>`
 })
-export class EditDistrictMasterComponent implements OnInit, OnChanges {
-  @Input() editDetails: any;
+export class EditDistrictMasterComponent implements OnInit {
+  editDetails: any;
   @Input() arDisrict: District[];
 
   editDistrictMasterForm: FormGroup;
@@ -37,9 +37,14 @@ export class EditDistrictMasterComponent implements OnInit, OnChanges {
 
       result => {
         var _result = result.body;
+
         if (_result.httpCode == 200) { //success
-          this.closeModal();
+
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.closeModal();
+
+          const objFind = this.arDisrict.find(x => x.id == this.editDetails.id);
+          objFind.districtName = data.districtName;
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -57,14 +62,6 @@ export class EditDistrictMasterComponent implements OnInit, OnChanges {
   ngOnInit() {
 
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.editDetails.currentValue !== undefined) {
-      this.createForm(changes.editDetails.currentValue);
-      this.subscriberFields();
-    }
-
-  }
-
   subscriberFields() {
     this.editDistrictMasterForm.get('districtName').valueChanges.subscribe(
       (e) => {
@@ -79,10 +76,16 @@ export class EditDistrictMasterComponent implements OnInit, OnChanges {
     );
   }
 
-  createForm(data) {
+  createForm(data: District) {
     this.editDistrictMasterForm = this.fb.group({
       districtName: [data == null ? null : data.districtName, Validators.required],
       id: [data == null ? null : data.id, Validators.required]
     });
+
+    if (data != null) {
+      this.isDistrictAlreadyExists = false;
+      this.editDetails = data;
+      this.subscriberFields();
+    }
   }
 }

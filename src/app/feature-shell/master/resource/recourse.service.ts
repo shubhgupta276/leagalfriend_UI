@@ -7,18 +7,18 @@ import { addRecourseUrl, updateRecourseUrl, getRecoursesUrl } from '../master.co
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
+import { StorageService } from '../../../shared/services/storage.service';
 @Injectable()
 export class RecourseService {
     
-    constructor(private apiGateWay: ApiGateway) {
+    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService) {
 
     }
 
-    getResources(reqData: any): Observable<any> {
-
-        return this.apiGateWay.post<Recourse>(
-            getRecoursesUrl,
-            JSON.stringify(reqData)
+    getResources(): Observable<any> {
+       
+        return this.apiGateWay.get<Recourse>(
+            getRecoursesUrl+ "?email=" + this._storageService.getUserEmail()
         );
     }
 

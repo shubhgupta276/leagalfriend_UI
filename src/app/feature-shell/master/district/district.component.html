@@ -46,7 +46,9 @@
                 <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
               
               </tr>
-              
+              <tr *ngIf="!arr || arr.length==0">
+                  <td colspan="2"> No Record Found...!</td>
+                </tr>
               
               </tbody>
               <!-- <tfoot>
@@ -76,5 +78,5 @@
       </a>
     </div>
   <app-add-district [arDisrict]="arr"></app-add-district>
-  <app-edit-district [editDetails]="editDetails" [arDisrict]="arr"></app-edit-district>
+  <app-edit-district [arDisrict]="arr"></app-edit-district>
 </div>

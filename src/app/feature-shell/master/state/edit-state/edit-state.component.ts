@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -14,10 +14,9 @@ declare var $;
   templateUrl: '../edit-state/edit-state.component.html'
   //template:`<h1>test popup</h1>`
 })
-export class EditStateMasterComponent implements OnInit, OnChanges {
-  @Input() editDetails: State;
+export class EditStateMasterComponent implements OnInit {
   @Input() arState: State[];
-
+  editDetails: State;
   editStateMasterForm: FormGroup;
   isStateAlreadyExists: boolean = false;
   constructor(private fb: FormBuilder, private _stateService: StateService, private _storageService: StorageService) {
@@ -37,8 +36,11 @@ export class EditStateMasterComponent implements OnInit, OnChanges {
       result => {
         var _result = result.body;
         if (_result.httpCode == 200) { //success
-          this.closeModal();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.closeModal();
+
+          const objFind = this.arState.find(x => x.id == this.editDetails.id);
+          objFind.stateName = data.stateName;
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -56,12 +58,6 @@ export class EditStateMasterComponent implements OnInit, OnChanges {
 
   ngOnInit() {
 
-  }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.editDetails.currentValue !== undefined) {
-      this.createForm(changes.editDetails.currentValue);
-      this.subscriberFields();
-    }
   }
 
   subscriberFields() {
@@ -81,6 +77,11 @@ export class EditStateMasterComponent implements OnInit, OnChanges {
       stateName: [data == null ? null : data.stateName, Validators.required],
       id: [data == null ? null : data.id]
     });
+    if (data != null) {
+      this.isStateAlreadyExists = false;
+      this.editDetails = data;
+      this.subscriberFields();
+    }
   }
 
 }

@@ -38,8 +38,9 @@ export class AddDistrictMasterComponent implements OnInit {
     this._districtService.addDistrict(reqData).subscribe(
       result => {
         var _result = result.body;
-
+        
         if (_result.httpCode == 200) { //success
+          this.arDisrict.push({ districtName: data.districtName, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddDistrictMaster();
           this.closeModal();
@@ -64,10 +65,11 @@ export class AddDistrictMasterComponent implements OnInit {
     this.addDistrictMasterForm.get('districtName').valueChanges.subscribe(
       (e) => {
 
-        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+        if (this.arDisrict.filter(x => x.districtName.toUpperCase() == e.toUpperCase()).length > 0)
           this.isDistrictAlreadyExists = true;
-        else
+        else {
           this.isDistrictAlreadyExists = false;
+        }
       }
     );
   }
