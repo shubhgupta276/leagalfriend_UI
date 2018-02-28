@@ -40,7 +40,7 @@ export class AddStageMasterComponent implements OnInit {
     this.AddStageMaster();
   }
 
-  submitAddStageMaster(data: Stage) {
+  submitAddStageMaster(data) {
     var reqData = {
       recourseId: data.recourse.id,
       stageCode: data.stageCode,
