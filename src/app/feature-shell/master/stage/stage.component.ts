@@ -2,8 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AddStageMasterComponent } from "./add-stage/add-stage.component";
 import { EditStageMasterComponent } from "./edit-stage/edit-stage.component";
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule,ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Stage } from './stage';
+import { StageService } from './stage.service';
+import { StorageService } from '../../../shared/services/storage.service';
+import { KeyValue } from '../branch/add-branch/add-branch.component';
+import { RecourseService } from '../resource/recourse.service';
 
 declare let $;
 
@@ -14,7 +19,8 @@ declare let $;
       StageComponent,
       AddStageMasterComponent,
       EditStageMasterComponent,
-    ]
+    ],
+    providers: [StageService, StorageService]
   }
 )
 @Component({
@@ -23,80 +29,142 @@ declare let $;
   styleUrls: ['./stage.component.css']
 })
 export class StageComponent implements OnInit {
-  arr= [];
+  arr: Stage[] = [];
+  arStatus: any[] = [];
+  arRecourse: any[] = [];
   editStageMasterForm: FormGroup;
-  editDetails:any;
-  constructor(private fb: FormBuilder) {
-   }
+  @ViewChild(EditStageMasterComponent) editChild: EditStageMasterComponent;
+  constructor(private fb: FormBuilder, private _stageService: StageService, private _storageService: StorageService,
+    private _recourseService: RecourseService) {
+  }
 
   ngOnInit() {
     this.GetAllStage();
-    $($.document).ready(function () {
+    this.getStatus();
+    this.getRecourse();
 
-      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-      var selectedPageLength = 15;
-
-      var $table = $("#example1").DataTable({
-        paging: true,
-        lengthChange: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        autoWidth: false,
-        lengthMenu: arLengthMenu,
-        pageLength: selectedPageLength,
-        oLanguage: {
-          sLengthMenu: "Show _MENU_ rows",
-          sSearch: "",
-          sSearchPlaceholder: "Search..."
-        },
-        initComplete: function () {
-          var tableid = "example1";
-          var $rowSearching = $("#" + tableid + "_wrapper");
-          $rowSearching.find(".row:eq(0)").hide();
-
-          for (var i = 0; i < arLengthMenu[0].length; i++) {
-            $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-          }
-          $("#ddlLengthMenu").val(selectedPageLength);
-
-          $("#ddlLengthMenu").on("change", function () {
-            $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-          });
-        }
-      });
-
-      $table.columns().every(function () {
-
-        $('#txtSearch').on('keyup change', function () {
-          if ($table.search() !== this.value) {
-            $table.search(this.value).draw();
-          }
-        });
-      });
-
-    });
   }
   GetAllStage() {
-    this.arr = [
-      { Recource: "ARB", StageCode: "1ST_NOTICE_BY_ARBITRATOR", StageName: "1ST NOTICE BY ARBITRATOR" },
-      { Recource: "ARB", StageCode: "2ND_NOTICE_BY_ARBITRATOR", StageName: "2ND NOTICE BY ARBITRATOR" },
-      { Recource: "ARB", StageCode: "APPEAL_US_34_FILED", StageName: "APPEAL U/S 34 FILED" },
-      { Recource: "ARB", StageCode: "APPEAL_US_37_FILED", StageName: "APPEAL U/S 37 FILED" },
-      { Recource: "ARB", StageCode: "APPEARANCE", StageName: "APPEARANCE" },
-      { Recource: "ARB", StageCode: "ARGUMENTS", StageName: "ARGUMENTS" },
-      { Recource: "ARB", StageCode: "ARREST_WARRANT", StageName: "ARREST WARRANT" },
-      { Recource: "ARB", StageCode: "ATTACHMENT_WARRANT", StageName: "ATTACHMENT WARRANT" },
-      { Recource: "ARB", StageCode: "AWARD_COPY_SENT", StageName: "AWARD COPY SENT" },
-      { Recource: "ARB", StageCode: "AWARD_PASSED", StageName: "AWARD PASSED" },
-      { Recource: "ARB", StageCode: "AW_EXECUTED", StageName: "ATTACHMENT WARRANT EXECUTED" }
+    this._stageService.getStages().subscribe(
+      result => {
 
-    ]
+        if (result.httpCode == 200) {
+          result = result.stageRecourses;
+          for (var i = 0; i < result.length; i++) {
+            const obj = result[i];
+
+            this.arr.push(
+              {
+                stageCode: obj.stageCode,
+                stageName: obj.stageName,
+                recourse: obj.recourseId,
+                recourseCode: obj.recourseCode,
+                status: obj.stageStatusId,
+                id: obj.id
+              }
+            );
+
+          }
+          setTimeout(() => {
+            this.bindDatatable();
+          }, 1);
+        }
+        else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+        this.arr = [];
+
+      });
+
+  }
+  getStatus() {
+
+    this._stageService.getStatus().subscribe(
+      result => {
+
+        if (result != null) {
+          this.arStatus = result;
+        }
+        else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+        this.arr = [];
+
+      });
+  }
+  getRecourse() {
+
+    this._recourseService.getResources().subscribe(
+      result => {
+
+        if (result != null) {
+          this.arRecourse = result.recourses;
+        }
+        else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+        this.arRecourse = [];
+
+      });
+
+  }
+  bindDatatable() {
+    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+    var selectedPageLength = 15;
+
+    var $table = $("#example1").DataTable({
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      lengthMenu: arLengthMenu,
+      pageLength: selectedPageLength,
+      oLanguage: {
+        sLengthMenu: "Show _MENU_ rows",
+        sSearch: "",
+        sSearchPlaceholder: "Search..."
+      },
+      initComplete: function () {
+        var tableid = "example1";
+        var $rowSearching = $("#" + tableid + "_wrapper");
+        $rowSearching.find(".row:eq(0)").hide();
+
+        for (var i = 0; i < arLengthMenu[0].length; i++) {
+          $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+        }
+        $("#ddlLengthMenu").val(selectedPageLength);
+
+        $("#ddlLengthMenu").on("change", function () {
+          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+        });
+      }
+    });
+
+    $table.columns().every(function () {
+
+      $('#txtSearch').on('keyup change', function () {
+        if ($table.search() !== this.value) {
+          $table.search(this.value).draw();
+        }
+      });
+    });
   }
 
-  showEditModal(data) {
-    this.editDetails=data;
+  showEditModal(data: Stage) {
+    this.editChild.createForm(data);
+
     $('#editStageMasterModal').modal('show');
   }
-  
+
 }

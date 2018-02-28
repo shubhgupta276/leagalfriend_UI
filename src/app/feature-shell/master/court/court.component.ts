@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { AddCourtMasterComponent } from "./add-court/add-court.component";
 import { EditCourtMasterComponent } from "./edit-court/edit-court.component";
 import { CommonModule } from '@angular/common';
@@ -28,7 +28,7 @@ declare let $;
 })
 export class CourtComponent implements OnInit {
   arr: Court[] = [];
-  editDetails: any;
+  @ViewChild(EditCourtMasterComponent) editChild: EditCourtMasterComponent;
   constructor(private fb: FormBuilder, private _courtService: CourtService, private _storageService: StorageService) {
 
   }
@@ -38,18 +38,14 @@ export class CourtComponent implements OnInit {
   }
 
   showEditModal(data) {
-    this.editDetails = data;
+    this.editChild.createForm(data);
     $('#editCourtMasterModal').modal('show');
 
   }
   GetAllCourt() {
-    var reqObj = {
-      email: this._storageService.getUserEmail(),
-    };
-
-    this._courtService.getCourts(reqObj).subscribe(
+    
+    this._courtService.getCourts().subscribe(
       result => {
-        result = result.body;
         if (result.httpCode == 200) {
 
           for (var i = 0; i < result.courts.length; i++) {

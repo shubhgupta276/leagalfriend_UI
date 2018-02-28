@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
+import { Stage } from '../stage';
+import { StageService } from '../stage.service';
+import { StorageService } from '../../../../shared/services/storage.service';
+import { Recourse } from '../../resource/recourse';
 
 export interface KeyValue {
   id: number;
   name: string;
 }
-
-export const Resources: KeyValue[] = [{ id: 1, name: "RODA" }, { id: 2, name: "DRT" }, { id: 3, name: "ARB" }];
-export const Status: KeyValue[] = [{ id: 1, name: "ACTIVE" }, { id: 2, name: "DEACTIVE" }, { id: 3, name: "SUSPENDED" }];
 
 declare var $;
 
@@ -19,30 +20,61 @@ declare var $;
   //template:`<h1>test popup</h1>`
 })
 export class AddStageMasterComponent implements OnInit {
+  @Input() arStage: Stage[];
+  @Input() arStatus: any[];
+  @Input() arRecourse: any[];
+  
   addStageMasterForm: FormGroup;
-  Resource: KeyValue[] = Resources;
-  Status1: KeyValue[] = Status;
   isStagecodeAlreadyExists: boolean = false;
   AddStageMaster() {
     this.addStageMasterForm = this.fb.group({
-      resource: [1],
-      stagecode: [null, Validators.required],
-      stagename: [null, Validators.required],
-      status: [1]
+      recourseName: [""],
+      recourse: ["", Validators.required],
+      stageCode: [null, Validators.required],
+      stageName: [null, Validators.required],
+      status: ["", Validators.required]
     });
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _stageService: StageService, private _storageService: StorageService) {
     this.AddStageMaster();
   }
 
   submitAddStageMaster(data) {
-    $.toaster({ priority: 'success', title: 'Success', message: 'Stage added successfully' });
-    this.AddStageMaster();
-    this.closeModal();
-    this.subscriberFields();
+    var reqData = {
+      recourseId: data.recourse.id,
+      stageCode: data.stageCode,
+      stageName: data.stageName,
+      statusId: data.status,
+      userId: this._storageService.getUserId()
+    };
+    
+    this._stageService.addStage(reqData).subscribe(
+      result => {
+        var _result = result.body;
+        
+        if (_result.httpCode == 200) { //success
+          
+          this.arStage.push(
+            {
+              recourse: data.recourse.id, recourseCode: data.recourse.recourseCode, stageName: data.stageName,
+              stageCode: data.stageCode, status: data.status, id: _result.id
+            }
+          );
+          
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.AddStageMaster();
+          this.closeModal();
+          this.subscriberFields();
+        }
+        else
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+      },
+      err => {
+        console.log(err);
+      });
   }
-
+ 
   closeModal() {
     $("#closebtn").click();
   }
@@ -52,12 +84,13 @@ export class AddStageMasterComponent implements OnInit {
   }
 
   subscriberFields() {
-    this.addStageMasterForm.get('stagecode').valueChanges.subscribe(
+    this.addStageMasterForm.get('stageCode').valueChanges.subscribe(
       (e) => {
-        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+        if (this.arStage.filter(x => x.stageCode.toUpperCase() == e.toUpperCase()).length > 0)
           this.isStagecodeAlreadyExists = true;
-        else
+        else {
           this.isStagecodeAlreadyExists = false;
+        }
       }
     );
   }

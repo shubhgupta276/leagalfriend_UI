@@ -1,58 +1,59 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <!-- Main content -->
-    <div class="page-heading" >
-      Master Management
-    </div>
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-  
-          <!-- /.box -->
-  
-          <div class="box">
-            <!-- <div class="box-header">
+  <!-- Content Header (Page header) -->
+  <!-- Main content -->
+  <div class="page-heading">
+    Master Management
+  </div>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+
+        <!-- /.box -->
+
+        <div class="box">
+          <!-- <div class="box-header">
               <h3 class="box-title">Data Table With Full Features</h3>
             </div> -->
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div>
-                <div class="row table-toolbar">
-                  <div class="col-sm-4 heading">Stage</div>
-                  <div class="col-sm-2"></div>
-                  <div class="col-sm-2"></div>
-                  <div class="col-sm-2">
-                    <label class="custom-label">Show
-                      <select class="input-sm" id="ddlLengthMenu">
-                      </select> rows
-                    </label>
-                  </div>
-                  <div class="col-sm-2">
-                    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                  </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div>
+              <div class="row table-toolbar">
+                <div class="col-sm-4 heading">Stage</div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                  <label class="custom-label">Show
+                    <select class="input-sm" id="ddlLengthMenu">
+                    </select> rows
+                  </label>
+                </div>
+                <div class="col-sm-2">
+                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
                 </div>
               </div>
+            </div>
             <table id="example1" class="table table-bordered table-hover">
               <thead>
-              <tr>
-                <th>Recource</th>
-                <th>Stage Code</th>
-                <th>Stage Name</th>
-                <th>Action</th>
-               
-              </tr>
+                <tr>
+                  <th>Recource</th>
+                  <th>Stage Code</th>
+                  <th>Stage Name</th>
+                  <th>Action</th>
+
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editStageMasterModal" >
-                <td>{{item.Recource}}</td>
-                <td>{{item.StageCode}}
-                </td>
-                <td>{{item.StageName}}</td>
-                <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
-              </tr>
-            
+                <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editStageMasterModal">
+                  <td>{{item.recourseCode}}</td>
+                  <td>{{item.stageCode}}</td>
+                  <td>{{item.stageName}}</td>
+                  <td><a title="Edit"><i class="fa fa-edit"></i></a></td>
+                </tr>
+                <tr *ngIf="!arr || arr.length==0">
+                  <td colspan="4"> No Record Found...!</td>
+                </tr>
               </tbody>
-             
+
             </table>
           </div>
           <!-- /.box-body -->
@@ -65,13 +66,13 @@
   </section>
   <!-- /.content -->
   <div class="favicon" data-toggle="modal" data-target="#addStageMasterModal">
-      <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
-        <span class="tooltip-text">Add Stage</span>
-      </div>
-      <a>
-        <i class="fa fa-plus" type="button"></i>
-      </a>
+    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+      <span class="tooltip-text">Add Stage</span>
     </div>
-  <app-add-stage></app-add-stage>
-  <app-edit-stage [editDetails]="editDetails"></app-edit-stage>
+    <a>
+      <i class="fa fa-plus" type="button"></i>
+    </a>
+  </div>
+  <app-add-stage [arStage]="arr" [arStatus]="arStatus" [arRecourse]="arRecourse"></app-add-stage>
+  <app-edit-stage [arStage]="arr" [arStatus]="arStatus" [arRecourse]="arRecourse"></app-edit-stage>
 </div>

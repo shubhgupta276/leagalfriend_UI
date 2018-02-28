@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -13,9 +13,9 @@ declare var $;
   templateUrl: '../edit-court/edit-court.component.html'
   //template:`<h1>test popup</h1>`
 })
-export class EditCourtMasterComponent implements OnInit, OnChanges {
-  @Input() editDetails: Court;
+export class EditCourtMasterComponent implements OnInit {
   @Input() arCourt: Court[];
+  editDetails: Court;
   editCourtMasterForm: FormGroup;
   isCourtNameAlreadyExists: boolean = false;
   constructor(private fb: FormBuilder, private _courtService: CourtService, private _storageService: StorageService) {
@@ -23,7 +23,7 @@ export class EditCourtMasterComponent implements OnInit, OnChanges {
   }
 
   submitEditCourtMaster(data: Court) {
-    debugger
+
     var reqData = {
       courtName: data.courtName,
       courtDesc: data.courtDesc,
@@ -37,8 +37,12 @@ export class EditCourtMasterComponent implements OnInit, OnChanges {
       result => {
         var _result = result.body;
         if (_result.httpCode == 200) { //success
-          this.closeModal();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.closeModal();
+
+          const objFind = this.arCourt.find(x => x.id == this.editDetails.id);
+          objFind.courtName = data.courtName;
+          objFind.courtDesc = data.courtDesc;
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -55,13 +59,7 @@ export class EditCourtMasterComponent implements OnInit, OnChanges {
   ngOnInit() {
 
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.editDetails.currentValue !== undefined) {
-      this.createForm(changes.editDetails.currentValue);
-      this.subscriberFields();
-    }
 
-  }
   subscriberFields() {
     this.editCourtMasterForm.get('courtName').valueChanges.subscribe(
       (e) => {
@@ -80,5 +78,10 @@ export class EditCourtMasterComponent implements OnInit, OnChanges {
       courtDesc: [data == null ? null : data.courtDesc, Validators.required],
       id: [data == null ? null : data.id]
     });
+    if (data != null) {
+      this.isCourtNameAlreadyExists = false;
+      this.editDetails = data;
+      this.subscriberFields();
+    }
   }
 }
