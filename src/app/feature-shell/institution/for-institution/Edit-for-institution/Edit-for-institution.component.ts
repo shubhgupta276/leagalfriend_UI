@@ -108,6 +108,7 @@ ngOnInit(){
   submitEditinstitutionUser(data) {
     debugger;
     $.toaster({ priority : 'success', title : 'Success', message : 'Institution updated successfully'});
-    // $("#editForInstitutionModal").hide();
+    $("#editForInstitutionModal").hide();
+    $(".modal-backdrop").hide();
   }
 }

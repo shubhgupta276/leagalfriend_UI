@@ -8,6 +8,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
+import {MasterTemplateComponentService} from "../app/feature-shell/master/masterTemplates/masterTemplate.component.service"
+
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
 @NgModule({
   imports: [
@@ -23,6 +25,7 @@ import { LFAuthantication } from './shared/services/lfAuthantication-service';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     ApiGateway,
     TokenService,
+    MasterTemplateComponentService,
     LFAuthantication 
   ],
   bootstrap: [AppComponent]
