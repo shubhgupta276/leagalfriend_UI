@@ -39,6 +39,7 @@ export class AddStateMasterComponent implements OnInit {
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
+          this.arState.push({ stateName: data.stateName, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddStateMaster();
           this.closeModal();

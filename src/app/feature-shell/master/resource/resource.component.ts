@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { EditResourceMasterComponent } from "./edit-resource/edit-resource.component";
 import { AddResourceMasterComponent } from "./add-resource/add-resource.component";
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { NgModule, ViewChild } from "@angular/core";
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Recourse } from "./recourse";
 import { RecourseService } from "./recourse.service";
@@ -26,7 +26,7 @@ declare let $;
 })
 export class ResourceComponent implements OnInit {
   arr: Recourse[] = [];
-  editDetails: any;
+  @ViewChild(EditResourceMasterComponent) editChild: EditResourceMasterComponent;
   constructor(private fb: FormBuilder, private _recourseService: RecourseService, private _storageService: StorageService) {
   }
   editResourceMasterForm: FormGroup;
@@ -34,19 +34,15 @@ export class ResourceComponent implements OnInit {
     this.GetAllResource();
   }
   GetAllResource() {
-    var reqObj = {
-      email: this._storageService.getUserEmail(),
-    };
 
-
-    this._recourseService.getResources(reqObj).subscribe(
+    this._recourseService.getResources().subscribe(
       result => {
-        result = result.body;
+
         if (result.httpCode == 200) {
-          debugger
+
           for (var i = 0; i < result.recourses.length; i++) {
             const obj = result.recourses[i];
-            
+
             this.arr.push({
               recourseName: obj.recourseName,
               recourseCode: obj.recourseCode,
@@ -114,7 +110,7 @@ export class ResourceComponent implements OnInit {
     });
   }
   showEditModal(data: Recourse) {
-    this.editDetails = data;
+    this.editChild.createForm(data);
     $("#editResourceMasterModal").modal("show");
   }
 

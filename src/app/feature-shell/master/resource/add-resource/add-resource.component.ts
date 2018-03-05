@@ -44,6 +44,8 @@ export class AddResourceMasterComponent implements OnInit {
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
+          
+          this.arRecourse.push({recourseCode:data.recourseCode, recourseName: data.recourseName, recourseDesc: data.recourseDesc, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddResourceMaster();
           this.closeModal();
@@ -67,6 +69,7 @@ export class AddResourceMasterComponent implements OnInit {
   subscriberFields() {
     this.addResourceMasterForm.get('recourseCode').valueChanges.subscribe(
       (e) => {
+        
         if (this.arRecourse.filter(x => x.recourseCode.toUpperCase() == e.toUpperCase()).length > 0)
           this.isResourcecodeAlreadyExists = true;
         else {

@@ -48,7 +48,9 @@
                 <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
                
               </tr>
-             
+              <tr *ngIf="!arr || arr.length==0">
+                  <td colspan="2"> No Record Found...!</td>
+                </tr>
               </tbody>
             
             </table>
@@ -70,6 +72,6 @@
         <i class="fa fa-plus" type="button"></i>
       </a>
     </div>
-   <app-add-court [arCourt]="arr"></app-add-court>
-  <app-edit-court [editDetails]="editDetails" [arCourt]="arr"></app-edit-court> 
+  <app-add-court [arCourt]="arr"></app-add-court>
+  <app-edit-court [arCourt]="arr"></app-edit-court>
 </div>

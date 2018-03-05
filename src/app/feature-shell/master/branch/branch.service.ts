@@ -1,38 +1,37 @@
 import { Injectable } from '@angular/core'
 import { retry } from 'rxjs/operator/retry';
-import { Court } from './Court'
+import { Branch } from './branch'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../../shared/services/api-gateway';
-import { addCourtUrl, updateCourtUrl, getCourtsUrl } from '../master.config'
+import { addBranchUrl, updateBranchUrl, getBranchesUrl } from '../master.config'
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
 import { StorageService } from '../../../shared/services/storage.service';
 @Injectable()
-export class CourtService {
+export class BranchService {
 
     constructor(private apiGateWay: ApiGateway, private _storageService: StorageService) {
 
     }
 
-    getCourts(): Observable<any> {
-
-        return this.apiGateWay.get<Court>(
-            getCourtsUrl + "?email=" + this._storageService.getUserEmail()
+    getCities(): Observable<any> {
+        return this.apiGateWay.get<Branch>(
+            getBranchesUrl + "?email=" + this._storageService.getUserEmail()
         );
     }
 
-    addCourt(reqData: any): Observable<any> {
+    addCity(reqData: any): Observable<any> {
 
-        return this.apiGateWay.post<Court>(
-            addCourtUrl,
+        return this.apiGateWay.post<Branch>(
+            addBranchUrl,
             JSON.stringify(reqData)
         );
     }
 
-    updateCourt(reqData: any): Observable<any> {
-        return this.apiGateWay.post<Court>(
-            updateCourtUrl,
+    updateCity(reqData: any): Observable<any> {
+        return this.apiGateWay.post<Branch>(
+            updateBranchUrl,
             JSON.stringify(reqData)
         );
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -12,11 +12,9 @@ declare var $;
 @Component({
   selector: 'app-edit-city',
   templateUrl: '../edit-city/edit-city.component.html'
-  //template:`<h1>test popup</h1>`
 })
-export class EditCityMasterComponent implements OnInit, OnChanges {
+export class EditCityMasterComponent implements OnInit {
 
-  @Input()
   editDetails: City;
   @Input()
   arCityData: City[];
@@ -34,14 +32,17 @@ export class EditCityMasterComponent implements OnInit, OnChanges {
       userId: this._storageService.getUserId()
 
     };
-    
+
     this._cityService.updateCity(reqData).subscribe(
 
       result => {
         var _result = result.body;
         if (_result.httpCode == 200) { //success
-          this.closeModal();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.closeModal();
+
+          const objFind = this.arCityData.find(x => x.id == this.editDetails.id);
+          objFind.cityName = data.cityName;
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -60,17 +61,11 @@ export class EditCityMasterComponent implements OnInit, OnChanges {
   ngOnInit() {
 
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.editDetails.currentValue !== undefined) {
-      this.createForm(changes.editDetails.currentValue);
-      this.subscriberFields();
-    }
-
-  }
 
   subscriberFields() {
     this.editCityMasterForm.get('cityName').valueChanges.subscribe(
       (e) => {
+
         var fieldValue = e.toUpperCase();
         if (this.editDetails.cityName.toUpperCase() != fieldValue && this.arCityData.filter(x => x.cityName.toUpperCase() == fieldValue).length > 0)
           this.isCityAlreadyExists = true;
@@ -81,10 +76,16 @@ export class EditCityMasterComponent implements OnInit, OnChanges {
     );
   }
 
-  createForm(data) {
+  createForm(data: City) {
+
     this.editCityMasterForm = this.fb.group({
       cityName: [data == null ? null : data.cityName, Validators.required],
       id: [data == null ? null : data.id],
     });
+    if (data != null) {
+      this.isCityAlreadyExists = false;
+      this.editDetails = data;
+      this.subscriberFields();
+    }
   }
 }
