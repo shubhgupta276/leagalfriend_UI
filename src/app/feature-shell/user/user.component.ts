@@ -39,6 +39,7 @@ export class UserComponent implements OnInit {
 
   GetAllCustomer() {
     this.arr = Users;
+    debugger
     $($.document).ready(function() {
       var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
       var selectedPageLength = 15;
