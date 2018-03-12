@@ -1,46 +1,113 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
+import { Compliance } from '../compliance';
+import { ComplianceService } from '../compliance.service';
+import { StorageService } from '../../../../shared/services/storage.service';
 
 export interface KeyValue {
   id: number;
   name: string;
 }
 
-export const Resources: KeyValue[] = [{ id: 1, name: "RODA" }, { id: 2, name: "DRT" }, { id: 3, name: "ARB" }];
-export const Stages: KeyValue[] = [{ id: 1, name: "Arguments" }, { id: 2, name: "Summons" }, { id: 3, name: "Appeal Filed" }];
-export const Status: KeyValue[] = [{ id: 1, name: "ACTIVE" }, { id: 2, name: "DEACTIVE" }, { id: 3, name: "SUSPENDED" }];
-
 declare var $;
 
 @Component({
   selector: 'app-edit-compliance',
-  templateUrl:'../edit-compliance/edit-compliance.component.html'
- //template:`<h1>test popup</h1>`
+  templateUrl: '../edit-compliance/edit-compliance.component.html'
+  //template:`<h1>test popup</h1>`
 })
-export class EditComplianceMasterComponent implements OnInit
-{
-   @Input() editComplianceMasterForm: FormGroup;
+export class EditComplianceMasterComponent implements OnInit, OnChanges {
+  @Input() arCompliance: Compliance[];
+  @Input() arRecourse: any[];
+  @Input() arStage: any[];
+  @Input() arStatus: any[];
+  editDetails: Compliance;
+  isComplianceAlreadyExists: boolean = false;
+  editComplianceMasterForm: FormGroup;
+  constructor(private fb: FormBuilder, private _complianceService: ComplianceService, private _storageService: StorageService) {
+  }
 
-    Resource: KeyValue[] = Resources;
-    Stage: KeyValue[] = Stages;
-    Status1: KeyValue[] = Status;
-  constructor() {
+  ngOnInit() {
+    this.createForm(null);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+
+    if (changes.editDetails !== undefined && changes.editDetails.currentValue !== undefined) {
+      this.createForm(changes.editDetails.currentValue);
+      this.subscriberFields();
+    }
+
+  }
+
+  subscriberFields() {
+    this.editComplianceMasterForm.get('compliance').valueChanges.subscribe(
+      (e) => {
+        var fieldValue = e.toUpperCase();
+        if (this.editDetails.compliance.toUpperCase() != fieldValue && this.arCompliance.filter(x => x.compliance.toUpperCase() == fieldValue).length > 0)
+          this.isComplianceAlreadyExists = true;
+        else {
+          this.isComplianceAlreadyExists = false;
+        }
+      }
+    );
   }
 
   submitEditComplianceMaster(data) {
-    $.toaster({ priority : 'success', title : 'Success', message : 'Compliance updated successfully'});
-    this.closeModal();
+    var reqData = {
+      recourseId: data.recourse,
+      stageId: data.stage,
+      complianceName: data.compliance,
+      statusId: data.status,
+      userId: this._storageService.getUserId(),
+      id:data.id
+    };
+    
+    this._complianceService.updateCompliance(reqData).subscribe(
+
+      result => {
+        
+        var _result = result.body;
+        if (_result.httpCode == 200) { //success
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.closeModal();
+
+          const objFind = this.arCompliance.find(x => x.id == this.editDetails.id);
+          objFind.compliance = data.compliance;
+          objFind.recourseId = data.recourse;
+          objFind.stageId = data.stage;
+          objFind.statusId = data.status;
+          objFind.recourse = $("#ddlRecourse option:selected").text();
+          objFind.stage = $("#ddlStage option:selected").text();
+          objFind.statusId = $("#ddlStatus option:selected").text();
+        }
+        else
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+
+      },
+      err => {
+        console.log(err);
+      });
   }
 
-  closeModal()
-  {
+  closeModal() {
     $('#closebtn').click();
   }
+  createForm(data: Compliance) {
+    this.editComplianceMasterForm = this.fb.group({
+      recourse: [data == null ? null : data.recourseId, Validators.required],
+      stage: [data == null ? null : data.stageId, Validators.required],
+      compliance: [data == null ? null : data.compliance, Validators.required],
+      status: [data == null ? null : data.statusId, Validators.required],
+      id: [data == null ? null : data.id, Validators.required],
+    });
 
-ngOnInit()
-  {
-
+    if (data != null) {
+      this.isComplianceAlreadyExists = false;
+      this.editDetails = data;
+      this.subscriberFields();
+    }
   }
 }

@@ -13,7 +13,7 @@ import { ResourceComponent } from "./resource/resource.component";
 import { ComplianceComponent } from "./compliance/compliance.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../../shared/shared.module";
-
+import { MasterTemplatesComponent } from "../master/masterTemplates/masterTemplate.component";
 @NgModule({
   imports: [
     MasterRoutingModule,
@@ -30,7 +30,8 @@ import { SharedModule } from "../../shared/shared.module";
     BranchComponent,
     ComplianceComponent,
     InstitutionComponent,
-    ResourceComponent
+    ResourceComponent,
+    MasterTemplatesComponent
   ],
   declarations: []
 })

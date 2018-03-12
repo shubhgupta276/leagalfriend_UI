@@ -6,24 +6,25 @@ import { addDistrictUrl, updateDistrictUrl, getDistrictsUrl } from '../master.co
 import { District } from './district'
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
+import { StorageService } from '../../../shared/services/storage.service';
 @Injectable()
 export class DistrictService {
     arCityData: District[];
 
-    constructor(private apiGateWay: ApiGateway) {
+    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService) {
 
     }
 
-    getDistricts(reqData: any): Observable<any> {
-
-        return this.apiGateWay.post<District>(
-            getDistrictsUrl,
-            JSON.stringify(reqData)
+    getDistricts(): Observable<any> {
+        
+        return this.apiGateWay.get<District>(
+            getDistrictsUrl + "?email=" + this._storageService.getUserEmail()
+          
         );
     }
-
+    
     addDistrict(reqData: any): Observable<any> {
-        
+
         return this.apiGateWay.post<District>(
             addDistrictUrl,
             JSON.stringify(reqData)

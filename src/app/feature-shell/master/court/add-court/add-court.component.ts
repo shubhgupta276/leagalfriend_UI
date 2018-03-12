@@ -40,6 +40,7 @@ export class AddCourtMasterComponent implements OnInit {
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
+          this.arCourt.push({ courtName: data.courtName, courtDesc: data.courtDesc, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddCourtMaster();
           this.closeModal();

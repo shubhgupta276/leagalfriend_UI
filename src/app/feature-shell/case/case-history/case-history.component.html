@@ -1,0 +1,191 @@
+<style>
+  .bg-case-li {
+    /* background-color: #346188 !important; */
+    color: #333 !important;;
+    background-color: #f5f5f5 !important;
+    border-color: #ddd !important;
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    margin-right: -15px;
+    margin-left: -9px;
+    margin-bottom: 0px;
+  }
+  .timeline>.time-label>span {
+    padding: 5px;
+    display: inline-block;
+    /* background-color: #fff; */
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    /* float: right; */
+    /* position: relative; */
+    margin-left: 590px;
+}
+.casehistorySpan{
+    margin-left: 10px !important;
+    font-weight: normal !important;
+}
+.casehistoryDetails{
+  padding-left: 5px;
+  padding-top: 13px;
+  padding-bottom: 0px;
+  width:50%;
+  float:left;
+}
+.casehistoryDetails table tr td b{
+  color: grey;
+}
+.caseHistoryImage {
+    width: 13%;
+    float: left;
+    margin-top: 15px;
+    /* border-left: 1px solid black; */
+    border: 1px solid grey;
+	  height: 75px;
+}
+.caseHistoryDownloadbtn{
+ 
+    width:30%;
+    float:right;
+    margin-top: 10px;
+    margin-top: 15px;
+    margin-left: 10px;
+
+}
+.historyImage{
+  width:78px;
+  height: 73px
+}
+#spnplusminus{
+  font-size: 13px;
+  padding-left: 506px;
+}
+</style>
+<div class="modal fade" id="modal-default1">
+  <div class="modal-dialog" style="width:700px;">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Case History</h4>
+      </div>
+      <div style="height:10%;background-color:black;"></div>
+      <div style="margin: -15px -15px 0px -15px" class="modal-body modal-body-adedit">
+        <div  style="margin-left:0px;margin-bottom:-50px;">
+          <section class="content-header">
+            <div class="panel panel-default">
+              <div class="panel-headingCaseHistory" style="font-size:16px;"  id="dvHistory">Add Remark <span style="font-size:13px;" id="spnplusminus" class="glyphicon glyphicon-plus clssign"></span></div>
+              <div class="panel-body" id="dvHistoryRemark" style="display:none;">
+                <form [formGroup]="caseHistoryForm" class="form-horizontal" (ngSubmit)="SubmitRemarks(caseHistoryForm.value)">
+                  <div class="form-wizard">
+                    <div class="form-body">
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label createUserLabel">Remark:
+                              <em class="astrick">*</em>
+                            </label>
+                            <div class="col-md-9" [class.has-error]="caseHistoryForm.get('remarks').invalid && 
+                            caseHistoryForm.get('remarks').touched">
+                              <textarea class="form-control" name="CASE_HISTORY" id="CASE_HISTORY" cols="75" formControlName="remarks"></textarea >
+                            </div>
+                           
+                          </div>
+                          <div class="form-group row">
+                              <label class="col-sm-3 col-form-label createUserLabel">Upload File:
+                              </label>
+                              <div class="col-md-9">
+                                  <input type="file" name="upload_doc" id="upload_doc">
+                              </div>
+                             
+                            </div>
+                
+                <div class="form-group" >
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8" style="padding-left:5px;">
+                      
+                      <button type="submit" style="margin-right: 3px !important;" [disabled]="caseHistoryForm.invalid" name="submit" value="submit" class="btn green button-submit btn-modal-addedit" onclick="return historyvalidation();"> Save <i class="m-icon-swapright m-icon-white"></i> </button>&nbsp;
+                                        <a href="" type="button" data-dismiss="modal" class="btn btn-default">Cancel</a>
+                                      <!--button type="button" name="submit" value="submit" class="btn green button-submit" onclick="return window.top.location.reload();" > Close <i class="m-icon-swapright m-icon-white"></i> </button -->
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+      </div>
+    </section>
+    <section class="content skin-blue">
+     
+      <!--a class="btn btn-info" onclick="return window.history.back();">Close</a -->
+      <div style="margin-bottom: -15px;margin-top: -15px;font-size:16px;" class="panel-headingCaseHistory">Case History</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+    
+            <ul class="timeline case-timeline" id="accordion">
+              <ng-container *ngFor="let item of jsonHistory;let i=index">
+                <li class="time-label bg-red bg-case-li toggleCaseHistory" data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+i">
+                  {{item.Date}} &nbsp;&nbsp;|<span  class="casehistorySpan">{{item.Name}}</span ><span style="font-size:13px;" class="glyphicon glyphicon-plus clssign"></span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li [attr.id]="'collapse'+i" class="panel-collapse collapse clsListDetails">
+                    <div class="casehistoryDetails">
+                      <table>
+                        <tr>
+                          <td style="width: 100px;" > <b>New Value: </b></td>
+                          <td>{{item.NewValue}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px;"><b>Prev Value:  </b></td>
+                            <td>{{item.PrevValue}}</td>
+                        </tr>
+                          <tr>
+                              <td style="width: 100px;"> <b>User:</b> </td>
+                              <td>{{item.User}}</td>
+                          </tr>
+                            <tr>
+                                <td style="width: 100px;"><b>Remark:</b></td>
+                                <td>{{item.Remarks}}</td>
+                            </tr>
+                      </table>
+                      </div>
+                      <div class="caseHistoryImage">
+                        <a target="_blank" href="../assets/dist/img/user2-160x160.jpg"><img src="../assets/dist/img/user2-160x160.jpg" class="historyImage" alt="image"></a>
+                      </div>
+                      <div class="caseHistoryDownloadbtn img-responsive">
+                          <b style="color:grey;">File Type:</b>&nbsp;&nbsp;.jpg<br/>
+                          <a href="#" target="_blank" style="margin-top: 10px;" class="btn btn-default btn-xs">Download</a>
+                      </div>
+                     
+                    </li>
+              </ng-container>
+    
+              <!-- END timeline item -->
+            </ul>
+           
+          </div>
+         
+          <!-- /.col -->
+        </div>
+      </div>
+    
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+    <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+    
+  </div> -->
+
+</div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>

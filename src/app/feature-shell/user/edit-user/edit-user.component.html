@@ -1,0 +1,185 @@
+<div class="modal fade" id="editUserModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Edit User</h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+        <!-- Edit User Starts -->
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+              <form [formGroup]="editForm" class="form-horizontal" (ngSubmit)="submitEditUser(editForm.value)">
+                <input type="hidden" formControlName="id">
+                <div class="form-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active">
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">First Name:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('firstName').invalid &&  editForm.get('firstName').touched">
+                          <input class="form-control" OnlyString="true" placeholder="First Name" formControlName="firstName">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('firstName').invalid &&  editForm.get('firstName').touched">
+                          <small class="text-danger">
+                            <span>First name is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Last Name:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('lastName').invalid &&  editForm.get('lastName').touched">
+                          <input class="form-control" OnlyString="true" placeholder="Last Name" formControlName="lastName">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('lastName').invalid &&  editForm.get('lastName').touched">
+                          <small class="text-danger">
+                            <span>Last name is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Organisation:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('organisation').invalid &&  editForm.get('organisation').touched">
+                          <input class="form-control" placeholder="Organisation" formControlName="organisation">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('organisation').invalid &&  editForm.get('organisation').touched">
+                          <small class="text-danger">
+                            <span>Organisation is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Address Line1:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('addressLine1').invalid &&  editForm.get('addressLine1').touched">
+                          <input class="form-control" placeholder="Address Line1" formControlName="addressLine1">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('addressLine1').invalid &&  editForm.get('addressLine1').touched">
+                          <small class="text-danger">
+                            <span>Address Line1 is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Address Line2:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('addressLine2').invalid &&  editForm.get('addressLine2').touched">
+                          <input class="form-control" placeholder="Address Line2" formControlName="addressLine2">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('addressLine2').invalid &&  editForm.get('addressLine2').touched">
+                          <small class="text-danger">
+                            <span>Address Line2 is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Postalcode/Zip:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('postalCode').invalid &&  editForm.get('postalCode').touched">
+                          <input class="form-control" OnlyNumber="true" placeholder="Postalcode/Zip" formControlName="postalCode">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('postalCode').invalid &&  editForm.get('postalCode').touched">
+                          <small class="text-danger">
+                            <span>{{zipValidationMessage}}</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Email:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('email').invalid &&  editForm.get('email').touched">
+                          <input class="form-control" placeholder="Email Address" formControlName="email">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('email').invalid &&  editForm.get('email').touched">
+                          <small class="text-danger">
+                            <span>{{emailValidationMessage}}</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Mobile No:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="editForm.get('mobileNumber').invalid &&  editForm.get('mobileNumber').touched">
+                          <input class="form-control" OnlyNumber="true" placeholder="Mobile No" formControlName="mobileNumber">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('mobileNumber').invalid &&  editForm.get('mobileNumber').touched">
+                          <small class="text-danger">
+                            <span>{{mobileNoValidationMessage}}</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Role:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                          <select formControlName="role" class="form-control">
+                            <option *ngFor="let option of Roles" [ngValue]="option.id">
+                              {{ option.roleName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Status:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                          <select formControlName="status" class="form-control">
+                            <option *ngFor="let option of Status" [ngValue]="option.statusId">
+                              {{ option.statusName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-4">
+                          <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+                      Submit
+                      <i class="m-icon-swapright m-icon-white"></i>
+                    </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer modal-footer-addedit">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" [disabled]="editForm.invalid" class="btn btn-modal-addedit">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+        <!-- Create User ends -->
+      </div>
+      <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+          
+        </div> -->
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

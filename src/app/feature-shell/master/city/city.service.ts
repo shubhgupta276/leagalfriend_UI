@@ -7,18 +7,17 @@ import { addCityUrl, updateCityUrl, getCitiesUrl } from '../master.config'
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
+import { StorageService } from '../../../shared/services/storage.service';
 @Injectable()
 export class CityService {
-    
-    constructor(private apiGateWay: ApiGateway) {
+
+    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService) {
 
     }
 
-    getCities(reqData: any): Observable<any> {
-
-        return this.apiGateWay.post<City>(
-            getCitiesUrl,
-            JSON.stringify(reqData)
+    getCities(): Observable<any> {
+        return this.apiGateWay.get<City>(
+            getCitiesUrl + "?email=" + this._storageService.getUserEmail()
         );
     }
 

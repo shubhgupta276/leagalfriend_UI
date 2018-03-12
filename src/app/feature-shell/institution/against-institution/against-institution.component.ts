@@ -6,7 +6,7 @@ declare let $;
   styleUrls: ['./against-institution.component.css']
 })
 export class AgainstInstitutionComponent implements OnInit {
-arr:[any];
+arr=[];
   constructor() { }
 
   ngOnInit() {
