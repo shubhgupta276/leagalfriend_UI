@@ -128,7 +128,7 @@ export class SignupComponent implements OnInit {
     signUpDetails.email = data.email;
     signUpDetails.organization = data.organisation;
     signUpDetails.password = data.password;
-    signUpDetails.isClient = 1;
+    signUpDetails.isClient = true;
     this.authService.signup(signUpDetails).subscribe(
       result => {
         console.log(result);
