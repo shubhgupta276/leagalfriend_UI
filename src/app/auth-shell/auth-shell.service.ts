@@ -60,6 +60,7 @@ export class AuthService {
       localStorage.removeItem("refresh_token");
     }
   }
+  
   isLoggedIn(): boolean {
     if (localStorage.getItem("access_token"))
       return true;

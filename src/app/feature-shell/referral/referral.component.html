@@ -32,12 +32,14 @@
                   <th class="padding-bottom">Name</th>
                   <th class="padding-bottom">Email</th>
                   <th class="padding-bottom">Phone</th>
+                  <th class="padding-bottom">Referrel Date</th>
+                  <th class="padding-bottom">Joining Date</th>
                   <th>Status
                     <select id="ddlStatusFilter" class="status input-sm">
                       <option value="All">All</option>
-                      <option value="Active">Active</option>
-                      <option value="Expired">Expired</option>
-                      <option value="Trial">Trial</option>
+                      <option value="Joined">Joined</option>
+                      <option value="Not Joined">Not Joined</option>
+                      
                     </select>
                   </th>
                 </tr>
@@ -48,13 +50,12 @@
                   <td>{{refrrel.Name}}</td>
                   <td>{{refrrel.Email}}</td>
                   <td>{{refrrel.MobileNumber}}</td>
-                  <td *ngIf="refrrel.Status==='Active'">
+                  <td>{{refrrel.ReferrelDate}}</td>
+                  <td>{{refrrel.JoiningDate}}</td>
+                  <td *ngIf="refrrel.Status==='Joined'">
                     <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{refrrel.Status}}</button>
                   </td>
-                  <td *ngIf="refrrel.status==='Trial'">
-                    <button class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{refrrel.Status}}</button>
-                  </td>
-                  <td *ngIf="refrrel.Status==='Expired'">
+                  <td *ngIf="refrrel.Status==='Not Joined'">
                     <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{refrrel.Status}}</button>
                   </td>
                 </tr>

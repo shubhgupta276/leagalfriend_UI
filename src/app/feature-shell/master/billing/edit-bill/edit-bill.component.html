@@ -20,15 +20,20 @@
                                         <div class="tab-content">
                                             <div class="tab-pane active">
                                                     <div class="form-group row">
+                                                            <div class="col-md-9">
+                                                                <input type="hidden" formControlName="id">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    <!-- <div class="form-group row">
                                                             <label class="col-sm-3 col-form-label createUserLabel">Branch:
                                                                 <em class="astrick">*</em>
                                                             </label>
                                                             <div class="col-md-9" [class.has-error]="editForm.get('branch').invalid 
                                                           &&  editForm.get('branch').touched">
-                                                                <!-- <input class="form-control" placeholder="Bank" formControlName="bank"> -->
                                                                 <select class="form-control" formControlName="branch" (change)="changeCombinations()">
                                                                     <option  value="">Select Branch</option>
-                                                                    <option *ngFor="let item of arListBranch" value="{{item.name}}">
+                                                                    <option *ngFor="let item of arListBranch" value="{{item.id}}">
                                                                         {{item.name}}
                                                                     </option>
                                                                 </select>
@@ -39,7 +44,7 @@
                                                                     <span>Branch is required.</span>
                                                                 </small>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label createUserLabel">Bank:
                                                         <em class="astrick">*</em>
@@ -69,7 +74,7 @@
                                                         &&  editForm.get('recourse').touched">
                                                         <select class="form-control" formControlName="recourse" (change)="changeCombinations()">
                                                                 <option value="">Select Resource</option>
-                                                                <option *ngFor="let item of arListRecourse" value="{{item.name}}">
+                                                                <option *ngFor="let item of arListRecourse" value="{{item.id}}">
                                                                     {{item.name}}
                                                                 </option>
                                                         </select>
@@ -91,7 +96,7 @@
                                                             &&  editForm.get('stage').touched">
                                                             <select class="form-control" formControlName="stage" (change)="changeCombinations()">
                                                                     <option value="">Select Stage</option>
-                                                                    <option *ngFor="let item of arListStage" value="{{item.name}}">
+                                                                    <option *ngFor="let item of arListStage" value="{{item.id}}">
                                                                         {{item.name}}
                                                                     </option>
                                                             </select>

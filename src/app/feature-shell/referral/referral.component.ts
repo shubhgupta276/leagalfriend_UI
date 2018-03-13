@@ -22,7 +22,9 @@ export class ReferralComponent implements OnInit {
     this.referrelForm = this.fb.group({
         Name: [],
         Email: [null, Validators.required],
-        mobileNumber:[]
+        mobileNumber:[],
+        ReferrelDate:[],
+        JoiningDate:[]
     });
   }
   ngOnInit() {
@@ -43,7 +45,9 @@ export class ReferralComponent implements OnInit {
         { name: "Name", orderable: true },
         { name: "Email", orderable: true },
         { name: "Phone", orderable: true },
-        { name: "Status", orderable: false }
+        { name: "ReferrelDate", orderable: true },
+        { name: "JoiningDate", orderable: true },
+        { name: "Status", orderable: false },
       ],
       lengthMenu: arLengthMenu,
       pageLength: selectedPageLength,
@@ -95,12 +99,12 @@ export class ReferralComponent implements OnInit {
         const status = $(this).val();
         if (status === "All") {
           $table
-            .columns(4)
+            .columns(6)
             .search("")
             .draw();
-        } else if ($table.columns(4).search() !== this.value) {
+        } else if ($table.columns(6).search() !== this.value) {
           $table
-            .columns(4)
+            .columns(6)
             .search(this.value)
             .draw();
         } else {
@@ -112,13 +116,13 @@ export class ReferralComponent implements OnInit {
         const status = $(this).val();
         if (status === "All") {
           $table
-            .columns(4)
+            .columns(6)
             .search("")
             .draw();
         } else if ($table.columns(4).search() !== this.value) {
             debugger
           $table
-            .columns(4)
+            .columns(6)
             .search(this.value)
             .draw();
         } else {

@@ -39,7 +39,7 @@ export class EditCourtMasterComponent implements OnInit {
         if (_result.httpCode == 200) { //success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-
+          debugger
           const objFind = this.arCourt.find(x => x.id == this.editDetails.id);
           objFind.courtName = data.courtName;
           objFind.courtDesc = data.courtDesc;
