@@ -28,6 +28,12 @@ import { SignUpModel } from "../shared/models/auth/signup.model";
 import { TokenModel } from "../shared/models/auth/token.model";
 import { ResetPassword } from "../shared/models/auth/resetpassword.model";
 import { ChangePassword } from "../shared/models/auth/changepassword.model";
+import { Branch } from '../shared/models/auth/case.model';
+import { Court } from '../shared/models/auth/court.model';
+import { State } from '../shared/models/auth/state.model';
+import { Recourse } from '../shared/models/auth/recourse.model';
+import {EditCase} from '../shared/models/auth/editcase.model';
+import {Calender} from '../shared/models/auth/calender.model';
 
 @Injectable()
 export class AuthService {
@@ -52,6 +58,7 @@ export class AuthService {
   // }
 
   signup(customerData: SignUpModel): Observable<SignUpModel> {
+    debugger
     return this.apiGateWay.post<SignUpModel>(
       signup,
       JSON.stringify(customerData)
@@ -77,10 +84,76 @@ export class AuthService {
     );
   }
   changepassword(customerData: ChangePassword): Observable<ChangePassword> {
-    debugger
+    
     return this.apiGateWay.post<ChangePassword>(
       'usermanagement/updatePassword',
       JSON.stringify(customerData)
+    );
+  }
+  getBranchDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Branch>(
+      'master/branches'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+
+  getCourtDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Court>(
+      'master/courts'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+
+  bindStateDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<State>(
+      'master/states'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+  bindRecourseDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'master/recourses'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+
+  submitEditCaseUser(customerData: EditCase): Observable<EditCase> {
+    return this.apiGateWay.post<EditCase>(
+      'case/add',
+      JSON.stringify(customerData)
+    );
+  }
+  updateEditCaseUser(customerData: EditCase): Observable<EditCase> {
+    return this.apiGateWay.post<EditCase>(
+      'case/update',
+      JSON.stringify(customerData)
+    );
+  }
+  getCaseRunning(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'case/caseList'+ '?userId='+ reqData.userId,null,
+      
+    );
+  }
+
+  getCaseByCaseId(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'case/getCase'+ '?caseId='+ reqData.caseId,null,
+      
+    );
+  }
+
+  saveEvent(customerData: Calender): Observable<Calender> {
+    return this.apiGateWay.post<Calender>(
+      '/events/addEvent',
+      JSON.stringify(customerData)
+    );
+  }
+
+  getEvent(reqData): Observable<any> {    
+    return this.apiGateWay.post<Recourse>(
+      'events/eventList'+ '?userId='+ reqData.userId,null,
+      
     );
   }
 

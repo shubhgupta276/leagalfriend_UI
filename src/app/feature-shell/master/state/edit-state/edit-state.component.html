@@ -23,10 +23,10 @@
                             <label class="col-sm-3 col-form-label createUserLabel">State:
                               <em class="astrick">*</em>
                             </label>
-                            <div class="col-md-9" [class.has-error]="editStateMasterForm.get('state').invalid &&  editStateMasterForm.get('state').touched">
-                              <input class="form-control" OnlyString="true" placeholder="State" formControlName="state">
+                            <div class="col-md-9" [class.has-error]="editStateMasterForm.get('stateName').invalid &&  editStateMasterForm.get('stateName').touched">
+                              <input class="form-control" OnlyString="true" placeholder="State" formControlName="stateName">
                             </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="editStateMasterForm.get('state').invalid &&  editStateMasterForm.get('state').touched">
+                            <div class="col-sm-9 valodation-padding" *ngIf="editStateMasterForm.get('stateName').invalid &&  editStateMasterForm.get('stateName').touched">
                               <small class="text-danger">
                                 <span>State is required.</span>
                               </small>

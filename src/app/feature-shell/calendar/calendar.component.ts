@@ -1,18 +1,28 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { SharedService, UpcomingEvents } from '../../shared/services/shared.service'
+import { Calender } from '../../shared/models/auth/calender.model';
+import { ApiGateway } from '../../shared/services/api-gateway';
+import { StorageService } from "../../shared/services/storage.service";
+import { AuthService } from '../../auth-shell/auth-shell.service';
+import { DatePipe } from '@angular/common';
 declare let $;
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  styleUrls: ['./calendar.component.css'],
+  providers: [StorageService, AuthService, DatePipe]
 })
 export class CalendarComponent implements OnInit {
-  constructor(private sharedService: SharedService) {
+  arrEvents: any = [];
+  constructor(private sharedService: SharedService, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
   }
 
   ngOnInit() {
+    this.getEvent();
     var $this = this;
     $(function () {
+
 
       /* initialize the external events
        -----------------------------------------------------------------*/
@@ -47,103 +57,85 @@ export class CalendarComponent implements OnInit {
       var d = date.getDate(),
         m = date.getMonth(),
         y = date.getFullYear()
-      $('#calendar').fullCalendar({
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay'
-        },
-        buttonText: {
-          today: 'today',
-          month: 'month',
-          week: 'week',
-          day: 'day'
-        },
-        //Random default events
-        events: [
-          {
-            title: 'All Day Event',
-            start: new Date(y, m, 1),
-            backgroundColor: '#f56954', //red
-            borderColor: '#f56954' //red
+      debugger
+      setTimeout(() => {
+        debugger
+        $('#calendar').fullCalendar({
+          header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
           },
-          {
-            title: 'Long Event',
-            start: new Date(y, m, d - 5),
-            end: new Date(y, m, d - 2),
-            backgroundColor: '#f39c12', //yellow
-            borderColor: '#f39c12' //yellow
+          buttonText: {
+            today: 'today',
+            month: 'month',
+            week: 'week',
+            day: 'day'
           },
-          {
-            title: 'Meeting',
-            start: new Date(y, m, d, 10, 30),
-            allDay: false,
-            backgroundColor: '#0073b7', //Blue
-            borderColor: '#0073b7' //Blue
+          //Random default events
+         events: $this.arrEvents,
+          timezone: 'local',
+          ignoreTimezone: false,
+          allDay: false,
+          editable: true,
+          droppable: true, // this allows things to be dropped onto the calendar !!!
+          drop: function (date, allDay) { // this function is called when something is dropped
+
+            // retrieve the dropped element's stored Event Object
+            var originalEventObject = $(this).data('eventObject')
+
+            // we need to copy it, so that multiple events don't have a reference to the same object
+            var copiedEventObject = $.extend({}, originalEventObject)
+
+            // assign it the date that was reported
+            copiedEventObject.start = date
+            copiedEventObject.allDay = allDay
+            copiedEventObject.backgroundColor = $(this).css('background-color')
+            copiedEventObject.borderColor = $(this).css('border-color')
+
+
+            debugger
+
+            const objEvent = new Calender();
+
+            objEvent.startDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
+            objEvent.eventName = copiedEventObject.title;
+            objEvent.userId = parseInt(localStorage.getItem('client_id'));
+
+            $this.authService.saveEvent(objEvent).subscribe(
+
+              result => {
+                debugger
+                $.toaster({ priority: 'success', title: 'Success', message: 'Event created successfully' });
+                console.log(result);
+              },
+              err => {
+                console.log(err);
+              });
+
+
+
+
+            //$('#divUpcomingEvents').append('<li><span style="background-color:'+copiedEventObject.backgroundColor+';border-color:'+copiedEventObject.borderColor+'">'+copiedEventObject.title+'</span></li>')
+
+            // render the event on the calendar
+            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
+
+            // is the "remove after drop" checkbox checked?
+            if ($('#drop-remove').is(':checked')) {
+              // if so, remove the element from the "Draggable Events" list
+              $(this).remove()
+            }
+            BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
           },
-          {
-            title: 'Lunch',
-            start: new Date(y, m, d, 12, 0),
-            end: new Date(y, m, d, 14, 0),
-            allDay: false,
-            backgroundColor: '#00c0ef', //Info (aqua)
-            borderColor: '#00c0ef' //Info (aqua)
+          eventDrop: function (event, delta, revertFunc) {
+
+            BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
           },
-          {
-            title: 'Birthday Party',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            allDay: false,
-            backgroundColor: '#00a65a', //Success (green)
-            borderColor: '#00a65a' //Success (green)
-          },
-          {
-            title: 'Click for Google',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            url: 'http://google.com/',
-            backgroundColor: '#3c8dbc', //Primary (light-blue)
-            borderColor: '#3c8dbc' //Primary (light-blue)
-          }
-        ],
-        //timezone: 'local',
-        //ignoreTimezone: false,
-        //allDay: false,
-        editable: true,
-        droppable: true, // this allows things to be dropped onto the calendar !!!
-        drop: function (date, allDay) { // this function is called when something is dropped
-
-          // retrieve the dropped element's stored Event Object
-          var originalEventObject = $(this).data('eventObject')
-
-          // we need to copy it, so that multiple events don't have a reference to the same object
-          var copiedEventObject = $.extend({}, originalEventObject)
-
-          // assign it the date that was reported
-          copiedEventObject.start = date
-          copiedEventObject.allDay = allDay
-          copiedEventObject.backgroundColor = $(this).css('background-color')
-          copiedEventObject.borderColor = $(this).css('border-color')
-
-          //$('#divUpcomingEvents').append('<li><span style="background-color:'+copiedEventObject.backgroundColor+';border-color:'+copiedEventObject.borderColor+'">'+copiedEventObject.title+'</span></li>')
-
-          // render the event on the calendar
-          // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-          $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
-
-          // is the "remove after drop" checkbox checked?
-          if ($('#drop-remove').is(':checked')) {
-            // if so, remove the element from the "Draggable Events" list
-            $(this).remove()
-          }
-          BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-        },
-        eventDrop: function (event, delta, revertFunc) {
-
-          BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-        },
-      })
+        })
       BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
+      debugger
       /* ADDING EVENTS */
       var currColor = '#3c8dbc' //Red by default
       //Color chooser button
@@ -156,13 +148,14 @@ export class CalendarComponent implements OnInit {
         $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
       })
       $('#add-new-event').click(function (e) {
+        debugger
         e.preventDefault()
         //Get value and make sure it is not null
         var val = $('#new-event').val()
         if (val.length == 0) {
           return
         }
-
+debugger
         //Create events
         var event = $('<div />')
         event.css({
@@ -179,7 +172,9 @@ export class CalendarComponent implements OnInit {
         //Remove event from text input
         $('#new-event').val('')
       })
+    },500);
       function BindUpcomingEvents(data) {
+        debugger
         $('#divUpcomingEvents').empty();
         $this.sharedService.arrTodayCalendarEvents = [];
         $.each(data, function (i, d) {
@@ -192,7 +187,7 @@ export class CalendarComponent implements OnInit {
           //   d.start._d = new Date(d.start._d.setDate(d.start._d.getDate() - 1) );
           if (d.end != null) {
             if (d.end._isUTC)
-              d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1) );
+              d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1));
           }
 
           //  $this.sharedService.emitChange(15);
@@ -202,6 +197,39 @@ export class CalendarComponent implements OnInit {
 
       }
     })
+
   }
+
+
+  getEvent() {
+    var $this = this;
+
+    var reqData = {
+      userId: parseInt(localStorage.getItem('client_id')),
+    };
+
+
+    this.authService.getEvent(reqData).subscribe(
+
+      result => {
+        this.arrEvents = [];
+        result.body.forEach(function (value) {
+debugger
+          $this.arrEvents.push({
+            title: value.eventName,
+            start: value.startDate,
+            backgroundColor: '#f56954',
+            borderColor: '#f56954'
+          });
+
+        });
+
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
 
 }

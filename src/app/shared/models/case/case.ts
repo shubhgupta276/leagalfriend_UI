@@ -25,42 +25,43 @@ export class Case {
 }
 
 export const CasesRunning: Case[] = [
-    {
-        Id: 1, CaseId: 'I/DRT/3', CourtCaseId: 234, Resource: { id: 1, name: 'Criminal Case' }, Manager: { id: null, name: null },
-        Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
-        NextHearingDate: '22-Dec-2017', CustomerName: { id: 1, name: 'Pam' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
-        FillingDate: '', CaseStage: { id: 1, name: 'Bail' }, Employee: { id: 1, name: 'Manjul Sood' },
-        CourtePlace: { id: 1, name: 'Delhi' }, OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
-    },
-    // dsff
-    {
-        Id: 2, CaseId: 'I/LKAD/4', CourtCaseId: null, Resource: { id: 1, name: 'Criminal Case' }, Manager: { id: null, name: null },
-        Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
-        NextHearingDate: '10-Feb-2018', CustomerName: { id: 1, name: 'Pam' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
-        FillingDate: '', CaseStage: { id: 1, name: 'Bail' }, Employee: { id: 1, name: 'Manjul Sood' },
-        CourtePlace: { id: 1, name: 'Delhi' }, OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
-    },
-    {
-        Id: 3, CaseId: 'I/LKAD/5', CourtCaseId: null, Resource: { id: 2, name: 'RODA' }, Manager: { id: null, name: null },
-        Court: { id: null, name: null }, State: { id: 4, name: 'Delhi' }, ParentCase: { id: null, name: null },
-        NextHearingDate: '10-Feb-2018', CustomerName: { id: 2, name: 'Kelvin' }, Remark: 'test remark', Branch: { id: 1, name: 'Delhi' },
-        FillingDate: '', CaseStage: { id: 2, name: 'Auction' }, Employee: { id: 2, name: 'Kelly' }, CourtePlace: { id: 1, name: 'Delhi' },
-        OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: true
-    },
-    {
-        Id: 4, CaseId: 'I/LKAD/6', CourtCaseId: null, Resource: { id: 2, name: 'RODA' }, Manager: { id: null, name: null },
-        Court: { id: null, name: null }, State: { id: 4, name: 'Delhi' }, ParentCase: { id: null, name: null },
-        NextHearingDate: '10-Feb-2018', CustomerName: { id: 2, name: 'Kelvin' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
-        FillingDate: '', CaseStage: { id: 2, name: 'Auction' }, Employee: { id: 2, name: 'Kelly' }, CourtePlace: { id: 1, name: 'Delhi' },
-        OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
-    },
-    {
-        Id: 5, CaseId: 'I/LKAD/7', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
-        Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
-        NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 2, name: 'Gujrat' },
-        FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 1, name: 'Delhi' },
-        OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
-    }
+    // {
+    //     Id: 1, CaseId: 'I/DRT/3', CourtCaseId: 234, Resource: { id: 1, name: 'Criminal Case' }, Manager: { id: null, name: null },
+    //     Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
+    //     NextHearingDate: '22-Dec-2017', CustomerName: { id: 1, name: 'Pam' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
+    //     FillingDate: '', CaseStage: { id: 1, name: 'Bail' }, Employee: { id: 1, name: 'Manjul Sood' },
+    //     CourtePlace: { id: 1, name: 'Delhi' }, OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
+    
+    // },
+    
+    // {
+    //     Id: 2, CaseId: 'I/LKAD/4', CourtCaseId: null, Resource: { id: 1, name: 'Criminal Case' }, Manager: { id: null, name: null },
+    //     Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
+    //     NextHearingDate: '10-Feb-2018', CustomerName: { id: 1, name: 'Pam' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
+    //     FillingDate: '', CaseStage: { id: 1, name: 'Bail' }, Employee: { id: 1, name: 'Manjul Sood' },
+    //     CourtePlace: { id: 1, name: 'Delhi' }, OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
+    // },
+    // {
+    //     Id: 3, CaseId: 'I/LKAD/5', CourtCaseId: null, Resource: { id: 2, name: 'RODA' }, Manager: { id: null, name: null },
+    //     Court: { id: null, name: null }, State: { id: 4, name: 'Delhi' }, ParentCase: { id: null, name: null },
+    //     NextHearingDate: '10-Feb-2018', CustomerName: { id: 2, name: 'Kelvin' }, Remark: 'test remark', Branch: { id: 1, name: 'Delhi' },
+    //     FillingDate: '', CaseStage: { id: 2, name: 'Auction' }, Employee: { id: 2, name: 'Kelly' }, CourtePlace: { id: 1, name: 'Delhi' },
+    //     OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: true
+    // },
+    // {
+    //     Id: 4, CaseId: 'I/LKAD/6', CourtCaseId: null, Resource: { id: 2, name: 'RODA' }, Manager: { id: null, name: null },
+    //     Court: { id: null, name: null }, State: { id: 4, name: 'Delhi' }, ParentCase: { id: null, name: null },
+    //     NextHearingDate: '10-Feb-2018', CustomerName: { id: 2, name: 'Kelvin' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
+    //     FillingDate: '', CaseStage: { id: 2, name: 'Auction' }, Employee: { id: 2, name: 'Kelly' }, CourtePlace: { id: 1, name: 'Delhi' },
+    //     OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
+    // },
+    // {
+    //     Id: 5, CaseId: 'I/LKAD/7', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
+    //     Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
+    //     NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 2, name: 'Gujrat' },
+    //     FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 1, name: 'Delhi' },
+    //     OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
+    // }
 
 ];
 export const CasesCompleted: Case[] = [

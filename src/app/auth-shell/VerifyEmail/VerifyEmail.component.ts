@@ -30,7 +30,7 @@ export class VerifyEmailComponent implements OnInit {
   _signup: any;
   isMailSent = false;
   message: string;
-  isSuccess: boolean;
+  isSuccess: boolean=true;
 
 
   constructor(private fb: FormBuilder,
@@ -60,7 +60,7 @@ debugger
           this.isSuccess = false;
         } else {
           this.message = result.body.successMessage;
-          this.isSuccess = false;
+          this.isSuccess = true;
         }
       },
       err => {
@@ -69,6 +69,7 @@ debugger
   }
 
   getColor() {
+    debugger
     if (this.isSuccess) {
       return 'green';
     } else {

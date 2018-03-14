@@ -44,7 +44,7 @@
               <tbody>
 
                 <tr *ngFor="let item of arCityData" (dblclick)="showEditModal(item)" data-target="#editCityMasterModal">
-                  <td>{{item.BankCity}}</td>
+                  <td>{{item.cityName}}</td>
                   <td>
                     <a title="Edit">
                       <i class="fa fa-edit"></i>
@@ -72,6 +72,6 @@
       <i class="fa fa-plus" type="button" ></i>
     </a>
   </div>
-  <app-add-city></app-add-city>
-  <app-edit-city [editDetails]="editDetails"></app-edit-city>
+   <app-add-city [arCityData]="arCityData"></app-add-city>
+  <app-edit-city [arCityData]="arCityData" [editDetails]="editDetails"></app-edit-city> 
 </div>

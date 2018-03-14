@@ -25,9 +25,15 @@
                   <div id="pageLength1" class="col-sm-2 case-pagelength">
                       <div style="margin-left:-365px;margin-bottom: -35px;">
                           <label style="width:85px" class="caseSearchLabel">Branch:</label>
+                          <!-- <select name="COURT_ID" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="court">
+                            <option *ngFor="let option of Court" [ngValue]="option.id">
+                            {{ option.courtName }}
+                            </option>
+                            </select> -->
+                          
                           <select style="width:250px;" id="ddlCaseBranch1" class="caseFilterDropDown">
                             <option value="All">All</option>
-                            <option *ngFor="let item of arrListCaseBranch1" value="{{item}}">{{item}}</option>
+                            <option *ngFor="let item of arrListCaseBranch1" [ngValue]="item.id" >{{item.branchName}}</option>
                           </select>
                         </div>
                     <button style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
@@ -68,14 +74,14 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let items of caseRunning" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
-                        <td>{{items.CaseId}}</td>
-                        <td>{{items.CourtCaseId}}</td>
-                        <td>{{items.CustomerName.name}}</td>
-                        <td>{{items.Resource.name}}</td>
-                        <td>{{items.CaseStage.name}}</td>
-                        <td>{{items.NextHearingDate}}</td>
-                        <td>{{items.Branch.name}}</td>
-                        <td>{{items.Employee.name}}</td>
+                        <td>{{items.caseId}}</td>
+                        <td>{{items.courtCaseId}}</td>
+                        <td>{{items.customerFirstName}}</td>
+                        <td>{{items.recourseCode}}</td>
+                        <td>{{items.stageName}}</td>
+                        <td>{{items.nextHearingDate}}</td>
+                        <td>{{items.branchName}}</td>
+                        <td>{{items.empFirstName}}</td>
                         <td>
                           <a title="Edit">
                             <i class="fa fa-edit"></i>
@@ -131,6 +137,9 @@
       </div>
     </div>
   </section>
+  <app-edit-case [editCaseForm]="editCaseForm"></app-edit-case>
+    <app-add-case></app-add-case>
+    <app-history-case></app-history-case>
   <!-- /.content -->
   <!-- Filter Case Starts -->
   <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
@@ -193,48 +202,16 @@
       <!-- /.modal-dialog -->
     </div>
     <!-- Filter case ends -->
-    <div class="favicon" data-toggle="modal" data-target="#addCaseModal">
-      <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
-        <span class="tooltip-text">Add Case</span>
-      </div>
-      <a>
-        <i class="fa fa-plus" type="button"></i>
-      </a>
-    </div>
-    <app-edit-case [editCaseForm]="editCaseForm"></app-edit-case>
-    <app-add-case></app-add-case>
-    <app-history-case></app-history-case>
+    
+    
   </div>
-  <!-- jQuery 3 -->
-  <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-  <!-- Bootstrap 3.3.7 -->
-  <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <!-- Select2 -->
-  <script src="../../bower_components/select2/dist/js/select2.full.min.js"></script>
-  <!-- InputMask -->
-  <script src="../../plugins/input-mask/jquery.inputmask.js"></script>
-  <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-  <script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
-  <!-- date-range-picker -->
-  <script src="../../bower_components/moment/min/moment.min.js"></script>
-  <script src="../../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-  <!-- bootstrap datepicker -->
-  <script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-  <!-- bootstrap color picker -->
-  <script src="../../bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
-  <!-- bootstrap time picker -->
-  <script src="../../plugins/timepicker/bootstrap-timepicker.min.js"></script>
-  <!-- SlimScroll -->
-  <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-  <!-- iCheck 1.0.1 -->
-  <script src="../../plugins/iCheck/icheck.min.js"></script>
-  <!-- FastClick -->
-  <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
-  <!-- AdminLTE App -->
-  <script src="../../dist/js/adminlte.min.js"></script>
-  <!-- AdminLTE for demo purposes -->
-  <script src="../../dist/js/demo.js"></script>
-  <!-- Page script -->
-  <script>
-   
-  </script>
+  <div class="favicon" data-toggle="modal" data-target="#addCaseModal">
+    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+      <span class="tooltip-text">Add Case</span>
+    </div>
+    <a>
+      <i class="fa fa-plus" type="button"></i>
+    </a>
+  </div>
+  <app-add-case></app-add-case> 
+  <app-edit-case></app-edit-case> 

@@ -35,18 +35,18 @@
             <table id="example1" class="table table-bordered table-hover">
               <thead>
               <tr>
-                <th>Recousce Code</th>
-                <th>Recousce Name</th>
-                <th>Recousce Desc</th>
+                <th>Recourse Code</th>
+                <th>Recourse Name</th>
+                <th>Recourse Desc</th>
                 
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let item of arr;let i=index" (dblclick)="showEditModal(item)" data-target="#editResourceMasterModal" >
-                <td>{{item.ResourceCode}}</td>
-                <td>{{item.ResourceName}}
+                <td>{{item.recourseCode}}</td>
+                <td>{{item.recourseName}}
                 </td>
-                <td>{{item.ResourceDesc}}</td>
+                <td>{{item.recourseDesc}}</td>
                
               </tr>
              
@@ -71,6 +71,6 @@
         <i class="fa fa-plus" type="button"></i>
       </a>
     </div>
-  <app-add-resource></app-add-resource>
-  <app-edit-resource [editDetails]="editDetails"></app-edit-resource>
+  <app-add-resource [arRecourse]="arr"></app-add-resource>
+  <app-edit-resource [editDetails]="editDetails" [arRecourse]="arr"></app-edit-resource>
 </div>

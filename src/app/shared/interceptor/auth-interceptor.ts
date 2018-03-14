@@ -20,13 +20,13 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('signup') >= 0)) {
-            debugger
+            
             console.log('inside auth interceptor login');
             return next.handle(req);
         } 
         
         else if (req.url.indexOf('verifyEmail') >= 0) {
-            debugger
+            
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
@@ -34,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
         } 
 
          else if (req.url.indexOf('forgotpwd') >= 0) {
-            debugger
+            
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
@@ -62,7 +62,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     
             });
             
-            debugger
+            
             return next.handle(authReq);
         }
     }
