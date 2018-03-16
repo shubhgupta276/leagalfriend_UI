@@ -51,7 +51,7 @@ export class EditBillingComponent implements OnInit {
             recourseId:data.recourse,
             stageId:data.stage,
             amount:data.amount,
-            userId:"1"
+            userId:this._storageservice.getUserId()
             //userId: this._storageservice.getUserId()
           };
           this._billingservice.updateBilling(reqData).subscribe(

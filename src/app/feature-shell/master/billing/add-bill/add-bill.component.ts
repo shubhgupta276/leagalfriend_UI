@@ -69,7 +69,7 @@ export class AddBillingComponent implements OnInit {
             recourseId:data.recourseId,
             stageId:data.stageId,
             amount:data.amount,
-            userId:1
+            userId:this._storageservice.getUserId()
           };
           this._billingservice.addBilling(reqData).subscribe(
             result => {

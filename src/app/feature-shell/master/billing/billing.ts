@@ -6,5 +6,5 @@ export class Billing {
   amount:number;
   recourseId:number;
   stageId:number;
-  userId:1;
+  userId:string;
 }
