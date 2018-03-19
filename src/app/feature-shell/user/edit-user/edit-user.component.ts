@@ -75,6 +75,7 @@ export class EditUserComponent {
       statusId: data.status
     };
     userdata.isClient = false;
+    userdata.clientId = Number(localStorage.getItem('client_id'));
     return userdata;
   }
   createForm(user) {

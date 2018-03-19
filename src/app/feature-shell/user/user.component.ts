@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild, AfterContentInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -34,16 +34,16 @@ export class UserComponent implements OnInit {
   filterby = 'All';
   editForm: FormGroup;
   $table: any;
-  @ViewChild(EditUserComponent ) child: EditUserComponent; 
+  @ViewChild(EditUserComponent) child: EditUserComponent;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.setRoles();
     this.setStatus();
   }
 
   ngOnInit() {
-    this.getUsers();
+    this.getUsers();    
   }
- 
+
   bindDataTable() {
     const arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, 'All']];
     const selectedPageLength = 15;
@@ -155,7 +155,7 @@ export class UserComponent implements OnInit {
 
   };
 
-  editUser(user) {    
+  editUser(user) {
     $('#editUserModal').modal('show');
     this.child.createForm(user);
     this.child.subscriberFields();
