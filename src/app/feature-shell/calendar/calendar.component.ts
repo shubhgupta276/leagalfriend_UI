@@ -1,17 +1,30 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { SharedService, UpcomingEvents } from '../../shared/services/shared.service'
+import {CalenderService} from './calender.service';
+import {CalenderEvent} from './calender-event';
+import { DatePipe } from '@angular/common';
 declare let $;
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  styleUrls: ['./calendar.component.css'],
+  providers: [CalenderService, DatePipe]
 })
 export class CalendarComponent implements OnInit {
-  constructor(private sharedService: SharedService) {
+
+  public calenderEvent : CalenderEvent;
+  public datepipe: DatePipe;  
+  arrCalendarEvents: any = [];
+//arrEvents: any = [];
+  constructor(private sharedService: SharedService, private calenderService: CalenderService) {
+     const datepipe2: DatePipe = new DatePipe('en-US');
+     this.datepipe = datepipe2;          
   }
 
   ngOnInit() {
+    this.getUsersCalenderEvent(+localStorage.getItem('client_id'));
     var $this = this;
+    var $calenderEvents = [];        
     $(function () {
 
       /* initialize the external events
@@ -46,7 +59,8 @@ export class CalendarComponent implements OnInit {
       var date = new Date()
       var d = date.getDate(),
         m = date.getMonth(),
-        y = date.getFullYear()
+        y = date.getFullYear()              
+setTimeout(() => {
       $('#calendar').fullCalendar({
         header: {
           left: 'prev,next today',
@@ -60,60 +74,14 @@ export class CalendarComponent implements OnInit {
           day: 'day'
         },
         //Random default events
-        events: [
-          {
-            title: 'All Day Event',
-            start: new Date(y, m, 1),
-            backgroundColor: '#f56954', //red
-            borderColor: '#f56954' //red
-          },
-          {
-            title: 'Long Event',
-            start: new Date(y, m, d - 5),
-            end: new Date(y, m, d - 2),
-            backgroundColor: '#f39c12', //yellow
-            borderColor: '#f39c12' //yellow
-          },
-          {
-            title: 'Meeting',
-            start: new Date(y, m, d, 10, 30),
-            allDay: false,
-            backgroundColor: '#0073b7', //Blue
-            borderColor: '#0073b7' //Blue
-          },
-          {
-            title: 'Lunch',
-            start: new Date(y, m, d, 12, 0),
-            end: new Date(y, m, d, 14, 0),
-            allDay: false,
-            backgroundColor: '#00c0ef', //Info (aqua)
-            borderColor: '#00c0ef' //Info (aqua)
-          },
-          {
-            title: 'Birthday Party',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            allDay: false,
-            backgroundColor: '#00a65a', //Success (green)
-            borderColor: '#00a65a' //Success (green)
-          },
-          {
-            title: 'Click for Google',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            url: 'http://google.com/',
-            backgroundColor: '#3c8dbc', //Primary (light-blue)
-            borderColor: '#3c8dbc' //Primary (light-blue)
-          }
-        ],
+        events: $this.arrCalendarEvents,
         //timezone: 'local',
         //ignoreTimezone: false,
         //allDay: false,
         editable: true,
         droppable: true, // this allows things to be dropped onto the calendar !!!
         drop: function (date, allDay) { // this function is called when something is dropped
-
-          // retrieve the dropped element's stored Event Object
+          // retrieve the dropped element's stored Event Object          
           var originalEventObject = $(this).data('eventObject')
 
           // we need to copy it, so that multiple events don't have a reference to the same object
@@ -124,6 +92,21 @@ export class CalendarComponent implements OnInit {
           copiedEventObject.allDay = allDay
           copiedEventObject.backgroundColor = $(this).css('background-color')
           copiedEventObject.borderColor = $(this).css('border-color')
+
+          debugger
+          // Add calender event into db         
+          var eventName = originalEventObject.title;
+          var eventDescription = originalEventObject.title;          
+          let eventStartDate = formatDate(date._d);              
+          var eventEndDate = formatDate(date._d);
+          const calenderEvent = new CalenderEvent();
+          calenderEvent.eventName = eventName;
+          calenderEvent.eventDescription = eventName;
+          calenderEvent.startDate = eventStartDate;
+          calenderEvent.endDate = eventEndDate;
+          calenderEvent.userId = +localStorage.getItem('client_id');
+          calenderEvent.eventStatus = 'CREATED'
+           addCalenderEvent(calenderEvent);
 
           //$('#divUpcomingEvents').append('<li><span style="background-color:'+copiedEventObject.backgroundColor+';border-color:'+copiedEventObject.borderColor+'">'+copiedEventObject.title+'</span></li>')
 
@@ -179,6 +162,7 @@ export class CalendarComponent implements OnInit {
         //Remove event from text input
         $('#new-event').val('')
       })
+},500);
       function BindUpcomingEvents(data) {
         $('#divUpcomingEvents').empty();
         $this.sharedService.arrTodayCalendarEvents = [];
@@ -201,7 +185,48 @@ export class CalendarComponent implements OnInit {
         $this.sharedService.GetEventsGroup();
 
       }
+     
+
+    
+      function addCalenderEvent(calenderEvent : CalenderEvent) {           
+        $this.calenderService.addCalenderEvent(calenderEvent).subscribe(
+      result => {debugger
+        console.log(result);       
+      },
+      err => {
+        console.log(err);
+      });      
+    }
+    
+    function formatDate(dateString): any {
+       const datepipe: DatePipe = new DatePipe('en-US');
+       return datepipe.transform(dateString, 'yyyy-MM-dd HH:mm:ss');
+    }
+
     })
   }
 
+  getUsersCalenderEvent(userId: Number) {        
+        this.calenderService.getUsersCalenderEvent(userId).subscribe(
+      result => {
+        this.arrCalendarEvents = [];
+for (let value of result) {
+this.arrCalendarEvents.push({
+title: value.eventName,
+start: value.startDate,
+backgroundColor: '#f56954',
+borderColor: '#f56954'
+});
+
 }
+
+console.log(result);         
+      },
+      err => {
+        console.log(err);
+      });       
+    }
+  
+
+}
+
