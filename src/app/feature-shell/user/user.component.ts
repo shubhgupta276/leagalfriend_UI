@@ -91,8 +91,8 @@ export class UserComponent implements OnInit {
         });
       }
     });
-
-    this.$table.columns().every(function () {
+    var $this = this;
+    $this.$table.columns().every(function () {
       $('#txtSearch').on('keyup change', function () {
         if (this.$table.search() !== this.value) {
           this.$table.search(this.value).draw();
@@ -100,17 +100,17 @@ export class UserComponent implements OnInit {
       });
     });
 
-    this.$table.columns().every(function () {
+    $this.$table.columns().every(function () {
       // user filter
       $('#ddlUserFilter').on('change', function () {
         const status = $(this).val();
         if (status === 'All') {
-          this.$table
+          $this.$table
             .columns(4)
             .search('')
             .draw();
-        } else if (this.$table.columns(5).search() !== this.value) {
-          this.$table
+        } else if ($this.$table.columns(5).search() !== this.value) {
+          $this.$table
             .columns(4)
             .search(this.value)
             .draw();
@@ -121,12 +121,12 @@ export class UserComponent implements OnInit {
       $('#ddlStatusFilter').on('change', function () {
         const status = $(this).val();
         if (status === 'All') {
-          this.$table
+          $this.$table
             .columns(5)
             .search('')
             .draw();
-        } else if (this.$table.columns(5).search() !== this.value) {
-          this.$table
+        } else if ($this.$table.columns(5).search() !== this.value) {
+          $this.$table
             .columns(5)
             .search(this.value)
             .draw();
