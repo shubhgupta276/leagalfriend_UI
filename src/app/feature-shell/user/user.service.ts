@@ -14,4 +14,4 @@ export class UserService{
     addNewUser(customerData: UserModel): Observable<UserModel> {
         return this.apiGateWay.post<UserModel>(addUser, JSON.stringify(customerData));
       }
-}
+    }

@@ -7,18 +7,18 @@ import { addCourtUrl, updateCourtUrl, getCourtsUrl } from '../master.config'
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
+import { StorageService } from '../../../shared/services/storage.service';
 @Injectable()
 export class CourtService {
 
-    constructor(private apiGateWay: ApiGateway) {
+    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService) {
 
     }
 
-    getCourts(reqData: any): Observable<any> {
+    getCourts(): Observable<any> {
 
-        return this.apiGateWay.post<Court>(
-            getCourtsUrl,
-            JSON.stringify(reqData)
+        return this.apiGateWay.get<Court>(
+            getCourtsUrl + "?email=" + this._storageService.getUserEmail()
         );
     }
 

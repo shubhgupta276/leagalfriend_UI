@@ -2,14 +2,14 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
+import { Stage } from '../stage';
+import { StageService } from '../stage.service';
+import { StorageService } from '../../../../shared/services/storage.service';
 
 export interface KeyValue {
   id: number;
   name: string;
 }
-
-export const Resources: KeyValue[] = [{ id: 1, name: "RODA" }, { id: 2, name: "DRT" }, { id: 3, name: "ARB" }];
-export const Status: KeyValue[] = [{ id: 1, name: "ACTIVE" }, { id: 2, name: "DEACTIVE" }, { id: 3, name: "SUSPENDED" }];
 
 declare var $;
 
@@ -19,18 +19,49 @@ declare var $;
   //template:`<h1>test popup</h1>`
 })
 export class EditStageMasterComponent implements OnInit, OnChanges {
-  @Input() editDetails:any;
+  @Input() arStage: Stage[];
+  @Input() arStatus: KeyValue[];
+  @Input() arRecourse: any[];
+  editDetails: Stage;
   editStageMasterForm: FormGroup;
-  Resource: KeyValue[] = Resources;
-  Status1: KeyValue[] = Status;
   isStagecodeAlreadyExists: boolean = false;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _stageService: StageService, private _storageService: StorageService) {
     this.createForm(null);
   }
 
   submitEditStageMaster(data) {
-    $.toaster({ priority: 'success', title: 'Success', message: 'Stage updated successfully' });
-    this.closeModal();
+    var reqData = {
+      recourseId: data.recourse,
+      stageCode: data.stageCode,
+      stageName: data.stageName,
+      statusId: data.status,
+      id: data.id,
+      userId: this._storageService.getUserId()
+    };
+
+    this._stageService.updateStage(reqData).subscribe(
+
+      result => {
+        var _result = result.body;
+
+        if (_result.httpCode == 200) { //success
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.closeModal();
+
+          const objFind = this.arStage.find(x => x.id == this.editDetails.id);
+          objFind.recourse = data.recourse.id;
+          objFind.recourseCode = $("#ddlRecourse option:selected").text();
+          objFind.stageCode = data.stageCode;
+          objFind.stageName = data.stageName;
+          objFind.status = data.status;
+        }
+        else
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+
+      },
+      err => {
+        console.log(err);
+      });
   }
 
   closeModal() {
@@ -41,29 +72,39 @@ export class EditStageMasterComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.editDetails.currentValue !== undefined) {
+    if (changes.editDetails !== undefined && changes.editDetails.currentValue !== undefined) {
+
       this.createForm(changes.editDetails.currentValue);
       this.subscriberFields();
     }
   }
 
   subscriberFields() {
-    this.editStageMasterForm.get('stagecode').valueChanges.subscribe(
+    this.editStageMasterForm.get('stageCode').valueChanges.subscribe(
       (e) => {
-        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+        var fieldValue = e.toUpperCase();
+        if (this.editDetails.stageCode.toUpperCase() != fieldValue && this.arStage.filter(x => x.stageCode.toUpperCase() == fieldValue).length > 0)
           this.isStagecodeAlreadyExists = true;
-        else
+        else {
           this.isStagecodeAlreadyExists = false;
+        }
       }
     );
   }
-  createForm(data) {
-    this.editStageMasterForm = this.fb.group({
-      resource: [1],
-      stagecode: [data == null ? null : data.StageCode, Validators.required],
-      stagename: [data == null ? null : data.StageName, Validators.required],
-      status: [1]
-    });
-  }
 
+  createForm(data) {
+
+    this.editStageMasterForm = this.fb.group({
+      recourse: [data == null ? null : data.recourse, Validators.required],
+      stageCode: [data == null ? null : data.stageCode, Validators.required],
+      stageName: [data == null ? null : data.stageName, Validators.required],
+      status: [data == null ? null : data.status, Validators.required],
+      id: [data == null ? null : data.id]
+    });
+    if (data != null) {
+      this.isStagecodeAlreadyExists = false;
+      this.editDetails = data;
+      this.subscriberFields();
+    }
+  }
 }

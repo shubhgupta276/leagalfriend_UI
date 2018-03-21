@@ -116,6 +116,12 @@ export class AuthService {
       
     );
   }
+  bindStageDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'master/stages'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
 
   submitEditCaseUser(customerData: EditCase): Observable<EditCase> {
     return this.apiGateWay.post<EditCase>(
@@ -156,6 +162,15 @@ export class AuthService {
       
     );
   }
+
+
+  listUsers(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'usermanagement/listusers'+ '?clientId='+ reqData.clientId,null,
+      
+    );
+  }
+
 
   
 

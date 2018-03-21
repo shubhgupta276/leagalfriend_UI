@@ -25,8 +25,17 @@ export class ApiGateway {
 
     public post<T>(apiPath: string, body): Observable<any> {
         console.log(apiPath);
-        const _url: string = this.createApiUrl(apiPath);
+        const _url: string = this.createApiUrl(apiPath);debugger
         return this._httpClient.post<T>(_url, body, { observe: 'response' })
+            .catch(initialError => {
+                return Observable.throw(initialError);
+            });
+    }
+
+    public postWithParam<T>(apiPath: string, urlParam): Observable<any> {
+        console.log(apiPath);
+        const _url: string = this.createApiUrl(apiPath);
+        return this._httpClient.post<T>(_url+urlParam, { observe: 'response' })
             .catch(initialError => {
                 return Observable.throw(initialError);
             });

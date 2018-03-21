@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule} from '@angular/core';
 import { AddBillingComponent } from "./add-bill/add-bill.component";
 import { EditBillingComponent } from "./edit-bill/edit-bill.component";
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
 import { UserRoles, UserStatus, KeyValue, ListBillingBank, ListBillingRecourse, ListBillingStage, ListBranch } from '../../../shared/Utility/util-common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 

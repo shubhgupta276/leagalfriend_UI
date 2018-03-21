@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <!-- Main content -->
-  <div class="page-heading" >
+  <div class="page-heading">
     Master Management
   </div>
   <section class="content">
@@ -51,6 +51,9 @@
                     </a>
                   </td>
                 </tr>
+                <tr *ngIf="!arCityData || arCityData.length==0">
+                  <td colspan="2"> No Record Found...!</td>
+                </tr>
               </tbody>
 
             </table>
@@ -69,9 +72,9 @@
       <span class="tooltip-text">Add City</span>
     </div>
     <a>
-      <i class="fa fa-plus" type="button" ></i>
+      <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-   <app-add-city [arCityData]="arCityData"></app-add-city>
-  <app-edit-city [arCityData]="arCityData" [editDetails]="editDetails"></app-edit-city> 
+  <app-add-city [arCityData]="arCityData"></app-add-city>
+  <app-edit-city [arCityData]="arCityData"></app-edit-city>
 </div>

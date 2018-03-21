@@ -37,12 +37,12 @@
                           <div class="col-md-9" [class.has-error]="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
                             <input class="form-control" placeholder="Case Id" formControlName="caseId">
                           </div>
-                          
-                          <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
+                         
+                            <!-- <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
                             <small class="text-danger">
                               <span>Case Id is required.</span>
                             </small>
-                          </div>
+                          </div>   -->
                         </div>
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
@@ -72,8 +72,9 @@
                           <div class="col-md-9">
                             <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
                             <select name="MANAGER" tabindex="3" class="form-control select2me" id="MANAGER" formControlName="manager">
-                                <option *ngFor="let option of Manager" [ngValue]="option.employeeId">
-                                    {{ option.name }}
+                              <option  value="">Select Manager</option>  
+                              <option *ngFor="let option of Manager" [ngValue]="option.id">
+                                    {{ option.FirstName }}
                                   </option>
                             </select>
                           </div>
@@ -112,7 +113,7 @@
                             <!-- <input class="form-control" placeholder="Parent Case" formControlName="parentCase"> -->
                             <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE" formControlName="parentCase">
                                 <option *ngFor="let option of ParentCases" [ngValue]="option.id">
-                                    {{ option.name }}
+                                    {{ option.courtCaseId }}
                                   </option>
                             </select>
                           </div>
@@ -140,7 +141,7 @@
                             <!-- <input class="form-control" placeholder="Customer Name" formControlName="customerName"> -->
                             <select name="CUSTOMER_NAME" tabindex="7" class="form-control select2me" id="CUSTOMER_NAME" formControlName="customerName">
                                 <option *ngFor="let option of CustomerName" [ngValue]="option.customerId">
-                                    {{ option.name }}
+                                    {{ option.FirstName }}
                                   </option>
                             </select>
                           </div>
@@ -211,8 +212,8 @@
                             <div class="col-md-9">
                               <!-- <input class="form-control" placeholder="Stage" formControlName="stage"> -->
                               <select name="STAGE" tabindex="5" class="form-control select2me" id="STAGE" required="" formControlName="stage">
-                                <option *ngFor="let option of Stage" [ngValue]="option.stateId">
-                                    {{ option.name }}
+                                <option *ngFor="let option of Stage" [ngValue]="option.stageId">
+                                    {{ option.stageName }}
                                   </option>
                             </select>
                             </div>
@@ -224,8 +225,9 @@
                             <div class="col-md-9">
                               <!-- <input class="form-control" placeholder="Employee" formControlName="employee"> -->
                               <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE" formControlName="employee">
+                                <option  value="">Select Employee</option> 
                                 <option *ngFor="let option of Employee" [ngValue]="option.employeeId">
-                                    {{ option.name }}
+                                    {{ option.FirstName }}
                                   </option>
                             </select>
                             </div>
@@ -237,8 +239,8 @@
                             <div class="col-md-9">
                               <!-- <input class="form-control" placeholder="Court place" formControlName="courtplace"> -->
                               <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE" formControlName="courtplace">
-                                <option *ngFor="let option of CourtPlace" [ngValue]="option.id">
-                                    {{ option.name }}
+                                <option *ngFor="let option of CourtPlace" [ngValue]="option.courtId">
+                                    {{ option.courtName }}
                                   </option>
                             </select>
                             </div>

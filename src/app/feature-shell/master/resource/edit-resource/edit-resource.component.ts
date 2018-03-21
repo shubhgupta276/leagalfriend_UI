@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -13,9 +13,9 @@ declare var $;
   templateUrl: '../edit-resource/edit-resource.component.html'
   //template:`<h1>test popup</h1>`
 })
-export class EditResourceMasterComponent implements OnInit, OnChanges {
-  @Input() editDetails: Recourse;
+export class EditResourceMasterComponent implements OnInit {
   @Input() arRecourse: Recourse[];
+  editDetails: Recourse;
   editResourceMasterForm: FormGroup;
   isResourcecodeAlreadyExists: boolean = false;
   constructor(private fb: FormBuilder, private _recourseService: RecourseService, private _storageService: StorageService) {
@@ -23,22 +23,30 @@ export class EditResourceMasterComponent implements OnInit, OnChanges {
   }
 
   submitEditResourceMaster(data: Recourse) {
+    
     var reqData = {
-      cityName: data.recourseCode,
+      recourseCode: data.recourseCode,
       recourseName: data.recourseName,
       recourseDesc: data.recourseDesc,
       id: data.id,
       userId: this._storageService.getUserId()
 
     };
-
+    
     this._recourseService.updateResource(reqData).subscribe(
 
       result => {
+        
         var _result = result.body;
         if (_result.httpCode == 200) { //success
-          this.closeModal();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.closeModal();
+          
+          const objFind = this.arRecourse.find(x => x.id == this.editDetails.id);
+          objFind.recourseCode = data.recourseCode;
+          objFind.recourseName = data.recourseName;
+          objFind.recourseDesc = data.recourseDesc;
+          
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -55,14 +63,7 @@ export class EditResourceMasterComponent implements OnInit, OnChanges {
   ngOnInit() {
 
   }
-  ngOnChanges(changes: SimpleChanges) {
-    
-    if (changes.editDetails.currentValue !== undefined) {
-      this.createForm(changes.editDetails.currentValue);
-      this.subscriberFields();
-    }
-
-  }
+  
   subscriberFields() {
 
     this.editResourceMasterForm.get('recourseCode').valueChanges.subscribe(
@@ -82,5 +83,10 @@ export class EditResourceMasterComponent implements OnInit, OnChanges {
       recourseDesc: [data == null ? null : data.recourseDesc, Validators.required],
       id: [data == null ? null : data.id]
     });
+    if (data != null) {
+      this.isResourcecodeAlreadyExists = false;
+      this.editDetails = data;
+      this.subscriberFields();
+    }
   }
 }

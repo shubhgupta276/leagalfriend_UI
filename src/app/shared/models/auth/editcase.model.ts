@@ -1,5 +1,6 @@
 export class EditCase
 {
+    id:number;
     caseId:number;
     courtCaseId: string;
     userId: number;
@@ -17,5 +18,7 @@ export class EditCase
     childCase:string;
     lastHearingDate:string;
     remark :string;
+    parentCaseId:string;
+    managerId:number;
     
 }

@@ -4,6 +4,8 @@ import { Calender } from '../../shared/models/auth/calender.model';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { StorageService } from "../../shared/services/storage.service";
 import { AuthService } from '../../auth-shell/auth-shell.service';
+import {CalenderService} from './calender.service';
+import {CalenderEvent} from './calender-event';
 import { DatePipe } from '@angular/common';
 declare let $;
 
@@ -21,6 +23,7 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
     this.getEvent();
     var $this = this;
+    var $calenderEvents = [];        
     $(function () {
 
 
@@ -196,6 +199,15 @@ debugger
         $this.sharedService.GetEventsGroup();
 
       }
+     
+
+    
+      
+    function formatDate(dateString): any {
+       const datepipe: DatePipe = new DatePipe('en-US');
+       return datepipe.transform(dateString, 'yyyy-MM-dd HH:mm:ss');
+    }
+
     })
 
   }
@@ -233,3 +245,7 @@ debugger
 
 
 }
+
+
+
+

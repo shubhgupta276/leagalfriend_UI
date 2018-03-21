@@ -20,7 +20,7 @@ import {CommonModule} from '@angular/common';
     FeatureShellRoutingModule,
     CommonModule 
   ],
-  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent,
+  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent
   ],
   providers: [AuthService]
 })

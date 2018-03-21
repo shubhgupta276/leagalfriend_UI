@@ -1,6 +1,7 @@
 import { KeyValue } from '../../Utility/util-common';
 
 export class Case {
+    IsChecked: boolean;
     Id: number;
     CaseId: string;
     Compliance: boolean;
@@ -66,35 +67,35 @@ export const CasesRunning: Case[] = [
 ];
 export const CasesCompleted: Case[] = [
     {
-        Id: 6, CaseId: 'I/DRT/4', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
+        IsChecked: false,Id: 6, CaseId: 'I/DRT/4', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
         NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
         FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 1, name: 'Delhi' },
         OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
     },
     {
-        Id: 7, CaseId: 'I/DRT/5', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
+        IsChecked: false,Id: 7, CaseId: 'I/DRT/5', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
         NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 2, name: 'Nagpur' },
         FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 2, name: 'Nagpur' },
         OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
     },
     {
-        Id: 8, CaseId: 'I/DRT/6', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
+        IsChecked: false,Id: 8, CaseId: 'I/DRT/6', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
         NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 2, name: 'Nagpur' },
         FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 2, name: 'Nagpur' },
         OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
     },
     {
-        Id: 9, CaseId: 'I/DRT/7', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
+        IsChecked: false,Id: 9, CaseId: 'I/DRT/7', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
         NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 3, name: 'Pune' },
         FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 3, name: 'Pune' },
         OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
     },
     {
-        Id: 10, CaseId: 'I/DRT/8', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
+        IsChecked: false,Id: 10, CaseId: 'I/DRT/8', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
         NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: 'test', Branch: { id: 3, name: 'Pune' },
         FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 3, name: 'Pune' },

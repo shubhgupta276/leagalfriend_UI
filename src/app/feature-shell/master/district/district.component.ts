@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, NgModule } from "@angular/core";
 import { AddDistrictMasterComponent } from './add-district/add-district.component';
 import { EditDistrictMasterComponent } from './edit-district/edit-district.component';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -31,7 +30,7 @@ export class DistrictComponent implements OnInit {
 
   }
   editDistrictMasterForm: FormGroup;
-  editDetails: any;
+  @ViewChild(EditDistrictMasterComponent) editChild: EditDistrictMasterComponent;
   ngOnInit() {
     this.GetAllDistrict();
 
@@ -39,14 +38,9 @@ export class DistrictComponent implements OnInit {
 
   GetAllDistrict() {
 
-    var reqObj = {
-      email: this._storageService.getUserEmail(),
-    };
-
-    this._districtService.getDistricts(reqObj).subscribe(
+    this._districtService.getDistricts().subscribe(
       result => {
-        result = result.body;
-
+        
         if (result.httpCode == 200) {
 
           for (var i = 0; i < result.districts.length; i++) {
@@ -119,7 +113,7 @@ export class DistrictComponent implements OnInit {
   }
 
   showEditModal(data) {
-    this.editDetails = data;
+    this.editChild.createForm(data);
     $('#editDistrictMasterModal').modal('show');
   }
 

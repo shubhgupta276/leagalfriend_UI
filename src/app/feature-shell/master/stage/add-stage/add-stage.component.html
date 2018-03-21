@@ -1,113 +1,126 @@
 <div class="modal fade" id="addStageMasterModal">
-    <div class="modal-dialog">
-      <div class="modal-content" style="border-radius: 5px;">
-        <div class="modal-header modal-header-addedit">
-          <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title">Add Stage</h4>
-        </div>
-        <div style="width:120px;height:10%;background-color:black;"></div>
-        <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
-          <!-- Edit Case Starts -->
-          <div class="row">
-            <!-- <div class="col-md-12"> -->
-            <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-            <div>
-              <div class="box-body widget-content">
-                <form [formGroup]="addStageMasterForm" class="form-horizontal" (ngSubmit)="submitAddStageMaster(addStageMasterForm.value)">
-                  <div class="form-body">
-                    <div class="tab-content">
-                      <div class="tab-pane active">
-                          <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Resource:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                                <select name="Resource" tabindex="3" class="form-control select2me" id="Resource" formControlName="resource">
-                                    <option *ngFor="let option of Resource" [ngValue]="option.id">
-                                        {{ option.name }}
-                                      </option>
-                                </select>
-                              </div>
-                            </div>
-                          <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Stage Code:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" [class.has-error]="addStageMasterForm.get('stagecode').invalid &&  addStageMasterForm.get('stagecode').touched">
-                                <input class="form-control" placeholder="Stage Code" formControlName="stagecode">
-                              </div>
-                              <div class="col-sm-9 valodation-padding" *ngIf="addStageMasterForm.get('stagecode').invalid &&  addStageMasterForm.get('stagecode').touched">
-                                <small class="text-danger">
-                                  <span>Stage Code is required.</span>
-                                </small>
-                              </div>
-                              <div class="col-sm-9 valodation-padding" *ngIf="isStagecodeAlreadyExists">
-                                <small class="text-danger">
-                                  <span>Stage Code already exists.</span>
-                                </small>
-                              </div>
-                            </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Stage Name:
-                              <em class="astrick">*</em>
-                            </label>
-                            <div class="col-md-9" [class.has-error]="addStageMasterForm.get('stagename').invalid &&  addStageMasterForm.get('stagename').touched">
-                              <input class="form-control" placeholder="Stage Name" formControlName="stagename">
-                            </div>
-                            <div class="col-sm-9 valodation-padding" *ngIf="addStageMasterForm.get('stagename').invalid &&  addStageMasterForm.get('stagename').touched">
-                              <small class="text-danger">
-                                <span>Stage Name is required.</span>
-                              </small>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Status:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                                <select name="Status" tabindex="3" class="form-control select2me" id="Status" formControlName="status">
-                                    <option *ngFor="let option of Status1" [ngValue]="option.id">
-                                        {{ option.name }}
-                                      </option>
-                                </select>
-                              </div>
-                            </div>
-                        <div class="form-group row">
-                          <div class="col-md-4">
-                            <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Add Stage</h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+        <!-- Edit Case Starts -->
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+              <form [formGroup]="addStageMasterForm" class="form-horizontal" (ngSubmit)="submitAddStageMaster(addStageMasterForm.value)">
+                <div class="form-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                          <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
+                          <select tabindex="3" class="form-control select2me" formControlName="recourse">
+                            <option value="">Select Recourse</option>
+                            <option *ngFor="let option of arRecourse" [ngValue]="option" >
+                              {{ option.recourseCode }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-9 valodation-padding" *ngIf="addStageMasterForm.get('recourse').invalid &&  addStageMasterForm.get('recourse').touched">
+                          <small class="text-danger">
+                            <span>Recourse is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Stage Code:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addStageMasterForm.get('stageCode').invalid &&  addStageMasterForm.get('stageCode').touched">
+                          <input class="form-control" placeholder="Stage Code" formControlName="stageCode">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addStageMasterForm.get('stageCode').invalid &&  addStageMasterForm.get('stageCode').touched">
+                          <small class="text-danger">
+                            <span>Stage Code is required.</span>
+                          </small>
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="isStagecodeAlreadyExists">
+                          <small class="text-danger">
+                            <span>Stage Code already exists.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Stage Name:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addStageMasterForm.get('stageName').invalid &&  addStageMasterForm.get('stageName').touched">
+                          <input class="form-control" placeholder="Stage Name" formControlName="stageName">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addStageMasterForm.get('stageName').invalid &&  addStageMasterForm.get('stageName').touched">
+                          <small class="text-danger">
+                            <span>Stage Name is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Status:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                          <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
+                          <select name="Status" tabindex="3" class="form-control select2me" id="Status" formControlName="status">
+                            <option value="">Select Status</option>
+                            <option *ngFor="let option of arStatus" [ngValue]="option.statusId">
+                              {{ option.statusName }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-9 valodation-padding" *ngIf="addStageMasterForm.get('status').invalid &&  addStageMasterForm.get('status').touched">
+                          <small class="text-danger">
+                            <span>Status is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-md-4">
+                          <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
                         Submit
                         <i class="m-icon-swapright m-icon-white"></i>
                       </button> -->
-                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="modal-footer modal-footer-addedit">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" [disabled]="addStageMasterForm.invalid || isStagecodeAlreadyExists"  class="btn btn-modal-addedit">Submit</button>
-                  </div>
-                </form>
-              </div>
+                </div>
+                <div class="modal-footer modal-footer-addedit">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" [disabled]="addStageMasterForm.invalid || isStagecodeAlreadyExists" class="btn btn-modal-addedit">Submit</button>
+                </div>
+              </form>
             </div>
-            <!-- </div> -->
           </div>
-          <!-- Create User ends -->
+          <!-- </div> -->
         </div>
-        <!-- <div class="modal-footer">
+        <!-- Create User ends -->
+      </div>
+      <!-- <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
             
           </div> -->
-  
-      </div>
-      <!-- /.modal-content -->
+
     </div>
-    <!-- /.modal-dialog -->
-    
+    <!-- /.modal-content -->
   </div>
-  
+  <!-- /.modal-dialog -->
+
+</div>
