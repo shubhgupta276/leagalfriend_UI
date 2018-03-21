@@ -1,3 +1,15 @@
+<style>
+  .bgColor{
+    background-color:#dd4b39;
+  }
+  .dateRange{
+    font-weight: 400;
+  }
+  .imgColor {
+  -webkit-filter: saturate(8);
+  filter: saturate(8);
+}
+</style>
 <div class="content-wrapper">
     <div class="page-heading">
       Case Management
@@ -36,8 +48,9 @@
                               <option *ngFor="let item of arrListCaseBranch1" value="{{item}}">{{item}}</option>
                             </select>
                           </label>
+                      <button _ngcontent-c2="" class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button">Reset</button> 
+                     <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
                         
-                      <button style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
                     </div>
                     <div id="pageLength1" class="col-sm-2 case-pagelength" >
                       <label class="custom-label">Show
@@ -190,14 +203,20 @@
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
                 <div class="form-group">
-                  <label>Date range:</label>
+                  <label class="dateRange">Date range:</label>
   
                   <div class="input-group">
                     <div class="input-group-addon">
+                      <!-- <label class="dateRange">Start Date</label> -->
                       <i class="fa fa-calendar"></i>
                     </div>
-                    <input style="width:560px;margin-right:575px;" type="text" class="form-control pull-right" id="reservation">
+                    <!-- <div class="input-group-addon">
+                        <label class="dateRange">End Date</label>
+                        <i class="fa fa-calendar"></i>
+                   </div> -->
+                   <input style="width:560px;margin-right:575px;" type="text" class="form-control" id="reservation">
                   </div>
+                  
   
                   <!-- /.input group -->
                 </div>

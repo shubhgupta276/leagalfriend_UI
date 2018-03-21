@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<div id="divContentInstitution" class="content-wrapper">
   <!-- Content Header (Page header) -->
   <!-- Main content -->
   <div class="page-heading" >
@@ -18,9 +18,23 @@
           <div class="box-body">
             <div>
               <div class="row table-toolbar">
-                <div class="col-sm-4 heading">For</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
+                <div class="col-sm-2 heading">For</div>
+                <div class="col-sm-4">
+                  <select tabindex="3" class="form-control select2me input-sm" (change)="GetInstitutionDrpValue($event.target.value)">
+                      <!-- <option value="">Select Institution</option> -->
+                      <option *ngFor="let option of arInstitution" [ngValue]="option.institutionName">
+                        {{ option.institutionName }}
+                      </option>
+                  </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" (change)="GetBranchDrpValue($event.target.value)">
+                        <!-- <option  value="">Select Branch</option> -->
+                        <option *ngFor="let item of arListBranch" value="{{item.name}}">
+                            {{item.name}}
+                        </option>
+                    </select>
+                </div>
                 <div class="col-sm-2">
                   <label class="custom-label">Show
                     <select class="input-sm" id="ddlLengthMenu">
@@ -63,6 +77,9 @@
                     
                   </td>
                 </tr>
+                <tr *ngIf="!arr || arr.length == 0">
+                  <td colspan="9">No Record Found...!</td>
+                </tr>
                 </tbody>
                
               </table>
@@ -86,6 +103,7 @@
       <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addForInstitutionModal"></i>
     </a>
   </div>
-  <add-for-institution-modal></add-for-institution-modal> 
+  <add-for-institution-modal [InstitutiondrpValue] = "InstitutionValue" [BranchdrpValue]="BranchValue"></add-for-institution-modal> 
   <edit-for-institution-modal></edit-for-institution-modal> 
+  
   

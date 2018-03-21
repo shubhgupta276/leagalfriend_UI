@@ -42,13 +42,11 @@ export class CaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
     const self = this;
     // Running Case DataTable
     $($.document).ready(function () {
 
       $("#ddlCaseRecource").change(function () {
-        debugger;
         if($("#ddlCaseRecource").val() !== "All")
         {
           for (var i = 0; i < self.caseRunning.length; i++) {
@@ -66,7 +64,6 @@ export class CaseComponent implements OnInit {
       });
 
       $('#btnReset').click(function () {
-       debugger;
        
         $('#ddlCaseRecource').val("All");
         $table.columns(4).search("").draw();
@@ -86,6 +83,29 @@ export class CaseComponent implements OnInit {
         $.fn.dataTableExt.afnFiltering.length = 0;
         $table.columns(6).search("").draw();
         });
+
+         //Button Reset FrontEnd
+        $('#btnResetFilter').click(function () {
+          $('#btnFilter').removeClass("bgColor");
+          
+           $('#ddlCaseRecource').val("All");
+           $table.columns(4).search("").draw();
+   
+           $('#ddlCaseStage').val("All");
+           $table.columns(5).search("").draw();
+   
+           $('#ddlCaseBranch').val("All");
+           $('#ddlCaseBranch1').val("All");
+           $table.columns(7).search("").draw();
+           // $('#reservation').val('');
+           // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
+           // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+           $('#reservation').data('daterangepicker').setStartDate(new Date());
+           $('#reservation').data('daterangepicker').setEndDate(new Date());
+         
+           $.fn.dataTableExt.afnFiltering.length = 0;
+           $table.columns(6).search("").draw();
+           });
      
         $('#reservation').daterangepicker({
           autoApply:true,
@@ -111,7 +131,7 @@ export class CaseComponent implements OnInit {
       });
       //end Branch1 filter
       $('#btnSearch').click(function () {
-        debugger;
+        $('#btnFilter').addClass("bgColor");
         var recourseVal = $('#ddlCaseRecource').val();
         var caseStageVal = $('#ddlCaseStage').val();
         var caseBranchVal = $('#ddlCaseBranch').val();
@@ -213,6 +233,7 @@ export class CaseComponent implements OnInit {
         });
       });
     });
+   
 
     // Completed Case DataTable
     $($.document).ready(function () {

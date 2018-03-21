@@ -5,13 +5,19 @@ import { InstitutionRoutingModule } from './institution-routing.module';
 import { ForInstitutionComponent } from './for-institution/for-institution.component'
 import { AddForInstitutionComponent  } from './for-institution/add-for-institution/add-for-institution.component'
 import { AgainstInstitutionComponent } from './against-institution/against-institution.component'
-import { EditForInstitutionComponent  } from './for-institution/Edit-for-institution/Edit-for-institution.component'
+import { EditForInstitutionComponent  } from './for-institution/Edit-for-institution/Edit-for-institution.component';
+import { InstitutionService } from '../institution/institution.service';
+import { StorageService } from '../../shared/services/storage.service';
+import { FileValueAccessorDirective  } from '../../shared/Directives/fileValueAccessor';
+import { FileValidator } from '../../shared/Directives/fileValidator';
 
 
 @NgModule(
     {
         imports: [ InstitutionRoutingModule ,CommonModule, FormsModule, ReactiveFormsModule],
-        declarations: [ ForInstitutionComponent, AgainstInstitutionComponent, AddForInstitutionComponent,EditForInstitutionComponent]
+        declarations: [ ForInstitutionComponent, AgainstInstitutionComponent, AddForInstitutionComponent,
+                        EditForInstitutionComponent,FileValueAccessorDirective,FileValidator],
+        providers : [InstitutionService,StorageService]
     }
 )    
 
