@@ -12,6 +12,7 @@ import {
   HttpParams
 } from '@angular/common/http';
 import { UserModel } from '../../shared/models/user/user.model';
+import { SignUpModel, LoginCredential, Roles } from '../../shared/models/auth/signup.model';
 import { AuthService } from '../auth-shell.service';
 import { validateConfig } from '@angular/router/src/config';
 import { CHECKBOX_REQUIRED_VALIDATOR } from '@angular/forms/src/directives/validators';
@@ -112,7 +113,7 @@ export class SignupComponent implements OnInit {
       postalCode: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
       email: [null, Validators.compose([Validators.required, Validators.email])],
       password: [null, Validators.compose([Validators.required,
-        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
+      Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
       confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [1],
@@ -122,28 +123,73 @@ export class SignupComponent implements OnInit {
   }
 
   registerUser(data) {
-    const signUpDetails = new UserModel();
-    signUpDetails.firstName = data.firstName;
-    signUpDetails.lastName = data.lastName;
+
+    const signUpDetails = new SignUpModel();
     signUpDetails.email = data.email;
     signUpDetails.organization = data.organisation;
     signUpDetails.password = data.password;
-    signUpDetails.isClient = true;
+    signUpDetails.firstName = data.firstName;
+    signUpDetails.lastName = data.lastName;
+
+
+
+    // signUpDetails.address1 = data.address1;
+
+    signUpDetails.status = {
+      statusId: 1,
+    };
+
+    signUpDetails.roles = [{
+      id: 1,
+
+    }];
+
+    signUpDetails.login = {
+      userLoginId: data.email,
+      password: data.password
+    };
+
+
+    signUpDetails.isClient = 1;
+
+    // const testData = {
+    //   "email": "puneet.kumar@globallogic.com",
+    //   "organization": "gl",
+    //   "password": "Global@123",
+    //   "firstName": "Puneet", "lastName": "Kumar",
+    //   "status": {
+    //     "statusId": 1
+    //   },
+    //   "roles": [{
+    //     "id": 1
+    //   }],
+    //   "login": {
+    //     "userLoginId": "anup.debey1@globallogic.com",
+    //     "password": "Global@123"
+    //   },
+    //   "isClient": 1
+    // }
+
     this.authService.signup(signUpDetails).subscribe(
+
       result => {
+        debugger;
         console.log(result);
         this._signup = result;
         this.isMailSent = true;
-        this.router.navigate(['/']);
+        // this.router.navigate(['/']);
       },
       err => {
         console.log(err);
       });
+    debugger
   }
 
   redirectToLogin() {
     this.router.navigate(['login']);
   }
+
+
 
 }
 

@@ -9,6 +9,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
+import { SignUpModel } from '../shared/models/auth/signup.model';
+import {TokenModel} from '../shared/models/auth/token.model';
+import { changepasswordComponent } from './changepassword/changepassword.component';
 
 
 @NgModule({
@@ -26,7 +29,9 @@ import { SharedModule } from '../shared/shared.module';
        LoginComponent,
        ForgotPasswordComponent,
        ResetPasswordComponent,
-       SignupComponent
+       SignupComponent,
+       changepasswordComponent
+      
     ]
   })
   export class AuthShellModule {}

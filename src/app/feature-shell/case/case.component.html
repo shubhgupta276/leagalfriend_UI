@@ -25,9 +25,15 @@
                   <div id="pageLength1" class="col-sm-2 case-pagelength">
                       <div style="margin-left:-365px;margin-bottom: -35px;">
                           <label style="width:85px" class="caseSearchLabel">Branch:</label>
+                          <!-- <select name="COURT_ID" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="court">
+                            <option *ngFor="let option of Court" [ngValue]="option.id">
+                            {{ option.courtName }}
+                            </option>
+                            </select> -->
+                          
                           <select style="width:250px;" id="ddlCaseBranch1" class="caseFilterDropDown">
                             <option value="All">All</option>
-                            <option *ngFor="let item of arrListCaseBranch1" value="{{item}}">{{item}}</option>
+                            <option *ngFor="let item of arrListCaseBranch1" [ngValue]="item.id" >{{item.branchName}}</option>
                           </select>
                         </div>
                     <button style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
@@ -67,15 +73,15 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let items of caseRunning" (dblclick)="showEditModal(items)">
-                        <td>{{items.CaseId}}</td>
-                        <td>{{items.CourtCaseId}}</td>
-                        <td>{{items.CustomerName.name}}</td>
-                        <td>{{items.Resource.name}}</td>
-                        <td>{{items.CaseStage.name}}</td>
-                        <td>{{items.NextHearingDate}}</td>
-                        <td>{{items.Branch.name}}</td>
-                        <td>{{items.Employee.name}}</td>
+                      <tr *ngFor="let items of caseRunning" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
+                        <td>{{items.caseId}}</td>
+                        <td>{{items.courtCaseId}}</td>
+                        <td>{{items.customerFirstName}}</td>
+                        <td>{{items.recourseCode}}</td>
+                        <td>{{items.stageName}}</td>
+                        <td>{{items.nextHearingDate}}</td>
+                        <td>{{items.branchName}}</td>
+                        <td>{{items.empFirstName}}</td>
                         <td>
                           <a title="Edit">
                             <i class="fa fa-edit"></i>
@@ -131,11 +137,11 @@
       </div>
     </div>
   </section>
-  <!-- /.content -->
-  <!-- Filter Case Starts -->
   <app-edit-case [editCaseForm]="editCaseForm"></app-edit-case>
     <app-add-case></app-add-case>
     <app-history-case></app-history-case>
+  <!-- /.content -->
+  <!-- Filter Case Starts -->
   <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
     <div class="modal-dialog caseModalSearch">
       <div class="modal-content" style="border-radius: 5px;">
@@ -196,13 +202,16 @@
       <!-- /.modal-dialog -->
     </div>
     <!-- Filter case ends -->
-    <div class="favicon" data-toggle="modal" data-target="#addCaseModal">
-      <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
-        <span class="tooltip-text">Add Case</span>
-      </div>
-      <a>
-        <i class="fa fa-plus" type="button"></i>
-      </a>
-    </div>
+    
     
   </div>
+  <div class="favicon" data-toggle="modal" data-target="#addCaseModal">
+    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+      <span class="tooltip-text">Add Case</span>
+    </div>
+    <a>
+      <i class="fa fa-plus" type="button"></i>
+    </a>
+  </div>
+  <!-- <app-add-case></app-add-case>  -->
+  <app-edit-case></app-edit-case> 
