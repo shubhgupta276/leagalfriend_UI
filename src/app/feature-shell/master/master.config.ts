@@ -38,3 +38,7 @@ export let updatestageUrl = "master/update/stage";
 export let addInstitutionUrl = "master/add/institution";
 export let getInstitutionsUrl = "master/institutions";
 export let updateInstitutionUrl = "master/update/institution";
+
+export let addBillingUrl = "master/add/billing";
+export let getBillingUrl = "master/billings";
+export let updateBillingUrl = "master/update/billing";

@@ -163,7 +163,7 @@
               <a routerLink="../admin/wallet">Wallet <span class="pull-right">₹150.00</span></a>
             </li>
             <li class="profile-li">
-              <a routerLink="../admin/referel">Referal</a>
+              <a routerLink="../admin/Referral">Referal</a>
             </li>
             <li class="profile-li">
               <a routerLink="../login" (click)="signOutButton()">Sign out</a>
@@ -227,14 +227,14 @@
         </a>
       </li>
       <li class="treeview" [routerLinkActive]="['active']">
-        <a href="javascript:;">
+        <a (click)="showmastermenu()">
           <i class="fa fa-laptop"></i>
           <span>Master Management</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
-        <ul class="treeview-menu">
+        <ul class="treeview-menu" id="limastermenu">
           <li [routerLinkActive]="['active']">
             <a routerLink="master/city">
               <i class="fa fa-circle-o"></i> City</a>
