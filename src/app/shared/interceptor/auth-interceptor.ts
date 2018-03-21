@@ -7,17 +7,35 @@ import {
     HttpResponse,
     HttpEvent,
     HttpErrorResponse,
-    
-    
+
+
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { TokenService } from '../services/token-service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private auth: TokenService) {}
+    constructor(private auth: TokenService) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+        if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('signup') >= 0)) {
+            console.log('inside auth interceptor login');
+            return next.handle(req);
+        }
+        else if (req.url.indexOf('verifyEmail') >= 0) {
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+            return next.handle(verifyEmailReq);
+        }
+
+        else if (req.url.indexOf('forgotpwd') >= 0) {
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+            return next.handle(verifyEmailReq);
+        }
 
     if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('signup') >= 0) ){
         console.log('inside auth interceptor login');
@@ -36,5 +54,4 @@ export class AuthInterceptor implements HttpInterceptor {
         
         return next.handle(authReq);
     }
-  }
 }

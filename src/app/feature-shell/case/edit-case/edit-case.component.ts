@@ -6,13 +6,17 @@ import {
   CaseBranch, CaseStage, CaseEmployee, CaseCourtPlace, KeyValue
 } from '../../../shared/Utility/util-common';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
-
+import { Court } from "../../master/court/Court";
+import { getCourtsUrl } from '../../master/master.config';
+import { ApiGateway } from '../../../shared/services/api-gateway';
+import { StorageService } from "../../../shared/services/storage.service";
 declare var $;
 
 
 @Component({
   selector: 'app-edit-case',
-  templateUrl: '../edit-case/edit-case.component.html'
+  templateUrl: '../edit-case/edit-case.component.html',
+  providers: [StorageService]
   // template:`<h1>test popup</h1>`
 })
 export class EditCaseComponent implements OnInit {
@@ -21,7 +25,7 @@ export class EditCaseComponent implements OnInit {
 
   Resource: KeyValue[] = CaseResource;
   Manager: KeyValue[] = CaseManager;
-  Court: KeyValue[] = CaseCourt;
+  Court: any =[];
   State: KeyValue[] = CaseState;
   ParentCases: KeyValue[] = ParentCase;
   CustomerName: KeyValue[] = CaseCustomerName;
@@ -30,7 +34,10 @@ export class EditCaseComponent implements OnInit {
   Employee: KeyValue[] = CaseEmployee;
   CourtPlace: KeyValue[] = CaseCourtPlace;
   // emailValidationMessage: string = "Email address is required.";
+constructor(private apiGateWay: ApiGateway, private _storageService: StorageService)
+{
 
+}
   submitEditCaseUser(data) {
     $.toaster({ priority: 'success', title: 'Success', message: 'Case updated successfully' });
   }
@@ -45,5 +52,34 @@ export class EditCaseComponent implements OnInit {
         self.editCaseForm.controls[attrName].setValue(attrValue);
       });
     });
+    this.GetAllCourt();
+  }
+
+  GetAllCourt() {    
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    return this.apiGateWay.post<Court>(
+      getCourtsUrl,
+      JSON.stringify(reqData)).subscribe(
+        result => {
+          result = result.body;
+          if (result.httpCode == 200) {
+           result.courts.forEach(obj => {
+             this.Court.push({
+              courtName: obj.courtName,
+              id: obj.id
+             })
+           
+           });
+          }
+          else {
+            console.log(result);
+          }
+        },
+        err => {
+          console.log(err);
+  
+        });
   }
 }

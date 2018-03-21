@@ -27,10 +27,10 @@ export class BillingComponent implements OnInit {
                columns: [
                 { name: "#", orderable: true },
                 { name: "Bank", orderable: false },
-                { name: "CaseID", orderable: true },
-                { name: "Recourse", orderable: true },
+                { name: "CaseID", orderable: false },
+                { name: "Recourse", orderable: false },
                 { name: "Stage", orderable: false },
-                { name: "Amount", orderable: false },
+                { name: "Amount", orderable: true },
                  { name: "Action", orderable: false }
               ],
               lengthMenu: arLengthMenu,
