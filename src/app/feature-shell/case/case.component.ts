@@ -71,6 +71,7 @@ export class CaseComponent implements OnInit {
         console.log(err);
       });
   }
+  
 
   ngOnInit() {
     this.getRunningCase();

@@ -30,7 +30,7 @@ export class BillingComponent implements OnInit {
                 { name: "CaseID", orderable: false },
                 { name: "Recourse", orderable: false },
                 { name: "Stage", orderable: false },
-                { name: "Amount", orderable: false },
+                { name: "Amount", orderable: true },
                  { name: "Action", orderable: false }
               ],
               lengthMenu: arLengthMenu,

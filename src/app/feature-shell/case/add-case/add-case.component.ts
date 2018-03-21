@@ -27,8 +27,8 @@ export class AddCaseComponent implements OnInit {
   State: any = [];
   ParentCases: any = [];
   CustomerName: any = [];
-  Branch:any= [];
-  Stage: any  = [];
+  Branch: any = [];
+  Stage: any = [];
   Employee: any = [];
   CourtPlace: any[] = [];
   fillignDateValue: string;
@@ -57,72 +57,72 @@ export class AddCaseComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
-   
+
     this.AddCaseUser();
   }
 
 
-    GetAllCourt() {   
-      var $this = this 
-      var reqData = {
-        email: this._storageService.getUserEmail(),
-      };
-      this.authService.getCourtDDL(reqData).subscribe(
+  GetAllCourt() {
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.authService.getCourtDDL(reqData).subscribe(
 
-        result => {
+      result => {
 
-            result.courts.forEach(function (value) {
+        result.courts.forEach(function (value) {
 
-              //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
-              $this.Court.push(value);
-              
-              $this.CourtPlace.push(value);
-          });
-            console.log(result);
-        },
-        err => {
-            console.log(err);
+          //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
+          $this.Court.push(value);
+
+          $this.CourtPlace.push(value);
         });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
   }
 
   getBranchDDL() {
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
-      };
+    };
     this.authService.getBranchDDL(reqData).subscribe(
 
-        result => {
-            result.branches.forEach(function (value) {
+      result => {
+        result.branches.forEach(function (value) {
 
-              $this.Branch.push({id:value.id,branchName:value.branchName});
-          });
-            console.log(result);
-        },
-        err => {
-            console.log(err);
+          $this.Branch.push({ id: value.id, branchName: value.branchName });
         });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
   }
 
-  bindStateDDL() {   
-    var $this = this 
+  bindStateDDL() {
+    var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.bindStateDDL(reqData).subscribe(
-  
+
       result => {
-        
-          result.states.forEach(function (value) {
-            
-           
-            //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
-            $this.State.push(value);
+
+        result.states.forEach(function (value) {
+
+
+          //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
+          $this.State.push(value);
         });
-          console.log(result);
+        console.log(result);
       },
       err => {
-          console.log(err);
+        console.log(err);
       });
   }
 
@@ -141,14 +141,14 @@ export class AddCaseComponent implements OnInit {
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
           $this.Resource.push(value);
         });
-        
+
       },
       err => {
         console.log(err);
       });
   }
 
-  
+
 
 
   getManagers() {
@@ -156,94 +156,91 @@ export class AddCaseComponent implements OnInit {
     var $this = this
     var reqData = {
       clientId: localStorage.getItem('client_id'),
-      };
+    };
     this.authService.listUsers(reqData).subscribe(
 
-        result => {
+      result => {
 
-            result.forEach(function (value) {
+        result.forEach(function (value) {
 
-          if(value.roles[0].roleName=='MANAGER')
-            {
-              $this.Manager.push(
-                {
-                  FirstName:value.firstName,
-                  id:value.id,
-                  //Role:value.roles[0].roleName
-                }
-              );
-            }
-            if(value.roles[0].roleName=='CLIENT')
-            {
-              $this.CustomerName.push(
-                {
-                  FirstName:value.firstName,
-                  id:value.id,
-                  //Role:value.roles[0].roleName
-                }
-              );
-            }
-          });
-        
-            
-        },
-        err => {
-            console.log(err);
+          if (value.roles[0].roleName == 'MANAGER') {
+            $this.Manager.push(
+              {
+                FirstName: value.firstName,
+                id: value.id,
+                //Role:value.roles[0].roleName
+              }
+            );
+          }
+          if (value.roles[0].roleName == 'CLIENT') {
+            $this.CustomerName.push(
+              {
+                FirstName: value.firstName,
+                id: value.id,
+                //Role:value.roles[0].roleName
+              }
+            );
+          }
         });
+
+
+      },
+      err => {
+        console.log(err);
+      });
   }
 
 
   getEmployee() {
-    
+
     var $this = this
     var reqData = {
       clientId: localStorage.getItem('client_id'),
-      };
+    };
     this.authService.listUsers(reqData).subscribe(
 
-        result => {
-          
-            result.forEach(function (value) {
-              if(value.roles[0].roleName=='EMPLOYEE')
+      result => {
+
+        result.forEach(function (value) {
+          if (value.roles[0].roleName == 'EMPLOYEE') {
+            $this.Employee.push(
               {
-              $this.Employee.push(
-                {
-                  FirstName:value.firstName,
-                  id:value.id,
-                  //Role:value.roles[0].roleName
-                }
-              );
-            }
-          });
-            console.log(result);
-        },
-        err => {
-            console.log(err);
+                FirstName: value.firstName,
+                id: value.id,
+                //Role:value.roles[0].roleName
+              }
+            );
+          }
         });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
   }
 
 
   bindStageDDL() {
-    
+
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
-      };
+    };
     this.authService.bindStageDDL(reqData).subscribe(
 
-        result => {
-          
-            result.stageRecourses.forEach(function (value) {
+      result => {
+
+        result.stageRecourses.forEach(function (value) {
 
 
-              //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
-              $this.Stage.push(value);
-          });
-            console.log(result);
-        },
-        err => {
-            console.log(err);
+          //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
+          $this.Stage.push(value);
         });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
   }
   submitAddCaseUser(data) {
 
@@ -266,9 +263,9 @@ export class AddCaseComponent implements OnInit {
     objEditCase.stageId = data.stage;
     objEditCase.employeeId = data.employee;
     debugger
-    objEditCase.managerId=data.manager;
+    objEditCase.managerId = data.manager;
     objEditCase.stateId = data.state;
-    objEditCase.parentCaseId=data.parentCase;
+    objEditCase.parentCaseId = data.parentCase;
     this.authService.submitEditCaseUser(objEditCase).subscribe(
 
       result => {
@@ -291,18 +288,18 @@ export class AddCaseComponent implements OnInit {
         self.addCaseForm.controls[attrName].setValue(attrValue);
       });
     });
-      this.GetAllCourt();
-      this.bindStateDDL();
-      this.getBranchDDL();
-      this.bindRecourseDDL();
-       this.getManagers();
-      this.getEmployee();
-     this.bindStageDDL();
-     this.getRunningCase();
-    
+    this.GetAllCourt();
+    this.bindStateDDL();
+    this.getBranchDDL();
+    this.bindRecourseDDL();
+    this.getManagers();
+    this.getEmployee();
+    this.bindStageDDL();
+    this.getRunningCase();
+
   }
 
-  
+
   getRunningCase() {
 
     var $this = this
@@ -316,15 +313,16 @@ export class AddCaseComponent implements OnInit {
         result.forEach(function (value) {
 
           $this.ParentCases.push(
-          {
-            courtCaseId:value.courtCaseId;
-          }
+            {
+              // courtCaseId:value.courtCaseId;
+            }
+          );
+        }
         );
-          }
-);
+      })
+  }
 }
 
-},
-}
+
 }
 

@@ -143,7 +143,7 @@
                                 <div class="col-md-9">
                                   <!-- <input class="form-control" placeholder="Branch" formControlName="branch"> -->
                                   <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id" formControlName="branch">
-                                    <option  value="">Select Branch</option> 
+                                    <!-- <option  value="">Select Branch</option>  -->
                                     <option *ngFor="let option of Branch" [ngValue]="option.id">
                                         {{ option.branchName }}
                                       </option>

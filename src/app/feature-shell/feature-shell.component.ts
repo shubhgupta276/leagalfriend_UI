@@ -58,6 +58,11 @@ export class FeatureShellComponent implements OnInit {
   signOutButton() {
     this.authService.signOut();
 }
+showmastermenu()
+{
+  debugger
+  $("#limastermenu").toggle();
+}
 
 }
 

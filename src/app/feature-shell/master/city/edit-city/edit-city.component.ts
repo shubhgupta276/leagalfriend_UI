@@ -40,7 +40,7 @@ export class EditCityMasterComponent implements OnInit {
         if (_result.httpCode == 200) { //success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-
+          debugger
           const objFind = this.arCityData.find(x => x.id == this.editDetails.id);
           objFind.cityName = data.cityName;
         }

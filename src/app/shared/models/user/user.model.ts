@@ -1,19 +1,22 @@
 export class UserModel {
+    id: number;
     firstName: string;
     lastName: string;
     organization: string;
     email: string;
-    isClient: number;
+    isClient: boolean;
     // login : {
     //     userLoginId : string,
     //     paswword : string
     // }
-    // mobile: number;
+    clientId: number;
+    mobileNumber: number;
     password: string;
-    // postcode: number;
-    // address1: string;
-    // address2 : string;
-    // role : string;
-    // status : string;
+    postcode: number;
+    addressLine1: string;
+    addressLine2: string;
+    role: string;
+    status: any = [];
+    roles: any = [];
+    address:any=[];
 }
-   

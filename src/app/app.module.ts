@@ -8,7 +8,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
-import {MasterTemplateComponentService} from "../app/feature-shell/master/masterTemplates/masterTemplate.component.service"
+import {MasterTemplateComponentService} from "../app/feature-shell/master/masterTemplates/masterTemplate.component.service";
+import { HttpClientModule } from '@angular/common/http'
 
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
 @NgModule({
