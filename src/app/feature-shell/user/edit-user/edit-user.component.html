@@ -130,7 +130,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9">
-                          <select formControlName="role" class="form-control">
+                          <select (change)="rolechange($event)" formControlName="role" class="form-control">
                             <option *ngFor="let option of Roles" [ngValue]="option.id">
                               {{ option.roleName }}
                             </option>
@@ -142,7 +142,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9">
-                          <select formControlName="status" class="form-control">
+                          <select (change)="statuschange($event)" formControlName="status" class="form-control">
                             <option *ngFor="let option of Status" [ngValue]="option.statusId">
                               {{ option.statusName }}
                             </option>

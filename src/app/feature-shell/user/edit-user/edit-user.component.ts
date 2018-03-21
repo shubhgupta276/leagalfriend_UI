@@ -20,6 +20,10 @@ export class EditUserComponent {
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
   @Input() arrUsers: any;
+  selectedStatus: string;
+  selectedRole: string;
+  isStatusChange: boolean;
+  isRoleChange: boolean;
   emailValidationMessage = 'Email address is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
@@ -27,8 +31,19 @@ export class EditUserComponent {
   constructor(private userService: UserService, private fb: FormBuilder) {
     this.createForm(null);
   }
-
-  submitEditUser(data) {    
+  statuschange(args) {
+    this.isStatusChange = true;
+    this.selectedStatus = args.target.options[args.target.selectedIndex].text;
+  }
+  rolechange(args) {
+    this.isRoleChange = true;
+    this.selectedRole = args.target.options[args.target.selectedIndex].text;
+  }
+  submitEditUser(data) {
+    if (this.isStatusChange)
+      data.statusName = this.selectedStatus;
+    if (this.isRoleChange)
+      data.roleName = this.selectedRole;
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
@@ -48,8 +63,7 @@ export class EditUserComponent {
   }
   BindGridOnEdit(data) {
     this.arrUsers.forEach((item, index) => {
-      if(data.id == item.id)
-      {
+      if (data.id == item.id) {
         this.arrUsers[index].firstName = data.firstName;
         this.arrUsers[index].lastName = data.lastName;
         this.arrUsers[index].organization = data.organisation;
@@ -72,7 +86,7 @@ export class EditUserComponent {
             zipCode: data.postalCode
           }
           ;
-          this.arrUsers[index].status = {
+        this.arrUsers[index].status = {
           statusId: data.status,
           statusName: data.statusName
         };

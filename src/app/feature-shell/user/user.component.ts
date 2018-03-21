@@ -19,6 +19,7 @@ import { UserModel } from '../../shared/models/user/user.model';
 import { RoleModel } from '../../shared/models/auth/role.model';
 import { StatusModel } from '../../shared/models/auth/status.model';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { AddUserComponent } from './add-user/add-user.component';
 declare var $;
 
 @Component({
@@ -94,8 +95,8 @@ export class UserComponent implements OnInit {
     var $this = this;
     $this.$table.columns().every(function () {
       $('#txtSearch').on('keyup change', function () {
-        if (this.$table.search() !== this.value) {
-          this.$table.search(this.value).draw();
+        if ($this.$table.search() !== this.value) {
+          $this.$table.search(this.value).draw();
         }
       });
     });
@@ -103,16 +104,17 @@ export class UserComponent implements OnInit {
     $this.$table.columns().every(function () {
       // user filter
       $('#ddlUserFilter').on('change', function () {
-        const status = $(this).val();
-        if (status === 'All') {
+        const role = $(this).val();
+        if (role === 'All') {
           $this.$table
             .columns(4)
             .search('')
             .draw();
         } else if ($this.$table.columns(5).search() !== this.value) {
+          var query = "((  )|^)" + regex_escape(this.value) + "((  )|$)";
           $this.$table
             .columns(4)
-            .search(this.value)
+            .search(query,true,false)
             .draw();
         } else {
         }
@@ -126,14 +128,18 @@ export class UserComponent implements OnInit {
             .search('')
             .draw();
         } else if ($this.$table.columns(5).search() !== this.value) {
+          var query = "((  )|^)" + regex_escape(this.value) + "((  )|$)";
           $this.$table
             .columns(5)
-            .search(this.value)
+            .search(query,true,false)
             .draw();
         } else {
         }
       });
     });
+    function regex_escape(text) {
+      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    };
   }
 
   getUsers() {

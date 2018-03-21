@@ -60,9 +60,9 @@
                   <td>{{user.mobileNumber}}</td>
                   <td>{{user.roles[0].roleName}}</td>
                   <td >
-                    <button *ngIf="user.status==='Active'" class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{user.status}}</button>
-                    <button *ngIf="user.status==='Trial'" class="btn btn-block btn-warning btn-xs btn3" style="width:80px;font-size:small;cursor:auto">{{user.status}}</button>
-                    <button  *ngIf="user.status==='Expired'" class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{user.status}}</button>
+                    <button *ngIf="user.status.statusName==='ACTIVE'" class="btn btn-block btn-success btn-xs btn2" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
+                    <button *ngIf="user.status.statusName==='SUSPENDED'" class="btn btn-block btn-warning btn-xs btn3" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
+                    <button  *ngIf="user.status.statusName==='DEACTIVE'" class="btn btn-block btn-danger btn-xs btn4" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
                   </td>
                 
                 </tr>
@@ -79,7 +79,7 @@
     <!-- /.row -->
   </section>
 
-  <div class="favicon" data-toggle="modal" data-target="#addUserModal">
+  <div class="favicon"  data-toggle="modal" data-target="#addUserModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
       <span class="tooltip-text">Add User</span>
     </div>
