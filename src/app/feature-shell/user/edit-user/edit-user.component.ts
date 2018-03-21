@@ -19,6 +19,7 @@ export class EditUserComponent {
   editForm: FormGroup;
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
+  @Input() arrUsers: any;
   emailValidationMessage = 'Email address is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
@@ -27,14 +28,13 @@ export class EditUserComponent {
     this.createForm(null);
   }
 
-  submitEditUser(data) {
-    debugger
+  submitEditUser(data) {    
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
         if (result.body.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
-          console.log(result);
+          this.BindGridOnEdit(data);
         }
         else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
@@ -46,12 +46,44 @@ export class EditUserComponent {
 
     $('#editUserModal').modal('hide');
   }
-
+  BindGridOnEdit(data) {
+    this.arrUsers.forEach((item, index) => {
+      if(data.id == item.id)
+      {
+        this.arrUsers[index].firstName = data.firstName;
+        this.arrUsers[index].lastName = data.lastName;
+        this.arrUsers[index].organization = data.organisation;
+        this.arrUsers[index].addressLine1 = data.addressLine1;
+        this.arrUsers[index].addressLine2 = data.addressLine2;
+        this.arrUsers[index].email = data.email;
+        this.arrUsers[index].mobileNumber = data.mobileNumber;
+        this.arrUsers[index].roles = [
+          {
+            id: data.role,
+            roleName: data.roleName
+          }
+        ];
+        this.arrUsers[index].address =
+          {
+            address1: data.addressLine1,
+            address2: data.addressLine2,
+            city: '',
+            state: '',
+            zipCode: data.postalCode
+          }
+          ;
+          this.arrUsers[index].status = {
+          statusId: data.status,
+          statusName: data.statusName
+        };
+      }
+    });
+  }
   GetUserEditData(data): UserModel {
     const userdata = new UserModel();
     userdata.id = data.id;
     userdata.firstName = data.firstName;
-    userdata.lastName = data.firstName;
+    userdata.lastName = data.lastName;
     userdata.organization = data.organisation;
     userdata.addressLine1 = data.addressLine1;
     userdata.addressLine2 = data.addressLine2;
@@ -59,7 +91,8 @@ export class EditUserComponent {
     userdata.mobileNumber = data.mobileNumber;
     userdata.roles = [
       {
-        id: data.role
+        id: data.role,
+        roleName: data.roleName
       }
     ];
     userdata.address =
@@ -72,7 +105,8 @@ export class EditUserComponent {
       }
       ;
     userdata.status = {
-      statusId: data.status
+      statusId: data.status,
+      statusName: data.statusName
     };
     userdata.isClient = false;
     userdata.clientId = Number(localStorage.getItem('client_id'));
@@ -108,7 +142,9 @@ export class EditUserComponent {
         Validators.compose([Validators.required, Validators.minLength(10)])
       ],
       role: [user == null ? 1 : user.roles[0].id],
-      status: [user == null ? 1 : user.status.statusId]
+      roleName: [user == null ? 1 : user.roles[0].roleName],
+      status: [user == null ? 1 : user.status.statusId],
+      statusName: [user == null ? 1 : user.status.statusName]
     });
   }
   subscriberFields() {

@@ -89,6 +89,6 @@
   </div>
   <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles"></app-add-user>
 
-  <app-edit-user [Roles]="userRoles" [Status]="userStatus" ></app-edit-user>
+  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [arrUsers]="arrUsers"></app-edit-user>
   <!-- /.content -->
 </div>
