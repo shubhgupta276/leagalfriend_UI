@@ -20,16 +20,15 @@
                                     <div class="tab-content">
                                         <div class="tab-pane active">
 
-                                                <div class="form-group row">
+                                                <!-- <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label createUserLabel">Branch:
                                                             <em class="astrick">*</em>
                                                         </label>
                                                         <div class="col-md-9" [class.has-error]="addForm.get('branch').invalid 
                                                       &&  addForm.get('branch').touched">
-                                                            <!-- <input class="form-control" placeholder="Bank" formControlName="bank"> -->
                                                             <select class="form-control" formControlName="branch" (change)="changeCombinations()">
                                                                 <option  value="">Select Branch</option>
-                                                                <option *ngFor="let item of arListBranch" value="{{item.name}}">
+                                                                <option *ngFor="let item of arListBranch" value="{{item.id}}">
                                                                     {{item.name}}
                                                                 </option>
                                                             </select>
@@ -40,24 +39,24 @@
                                                                 <span>Branch is required.</span>
                                                             </small>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
         
 
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label createUserLabel">Bank:
                                                     <em class="astrick">*</em>
                                                 </label>
-                                                <div class="col-md-9" [class.has-error]="addForm.get('bank').invalid 
-                                              &&  addForm.get('bank').touched">
+                                                <div class="col-md-9" [class.has-error]="addForm.get('bankName').invalid 
+                                              &&  addForm.get('bankName').touched">
                                                     <!-- <input class="form-control" placeholder="Bank" formControlName="bank"> -->
-                                                    <select class="form-control" formControlName="bank" (change)="changeCombinations()">
+                                                    <select class="form-control" formControlName="bankName" (change)="changeCombinations()">
                                                         <option  value="">Select Bank</option>
                                                         <option *ngFor="let item of arListBanks" value="{{item.name}}">
                                                             {{item.name}}
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('bank').invalid &&  addForm.get('bank').touched">
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('bankName').invalid &&  addForm.get('bankName').touched">
                                                     <small class="text-danger">
                                                         <span>Bank name is required.</span>
                                                     </small>
@@ -68,17 +67,17 @@
                                                 <label class="col-sm-3 col-form-label createUserLabel">Resource:
                                                     <em class="astrick">*</em>
                                                 </label>
-                                                <div class="col-md-9" [class.has-error]="addForm.get('recourse').invalid 
-                                                    &&  addForm.get('recourse').touched">
-                                                    <select class="form-control" formControlName="recourse" (change)="changeCombinations()">
+                                                <div class="col-md-9" [class.has-error]="addForm.get('recourseId').invalid 
+                                                    &&  addForm.get('recourseId').touched">
+                                                    <select class="form-control" formControlName="recourseId" (change)="changeCombinations()">
                                                             <option value="">Select Resource</option>
-                                                            <option *ngFor="let item of arListRecourse" value="{{item.name}}">
+                                                            <option *ngFor="let item of arListRecourse" value="{{item.id}}">
                                                                 {{item.name}}
                                                             </option>
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('recourse').invalid
-                                                     &&  addForm.get('recourse').touched">
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('recourseId').invalid
+                                                     &&  addForm.get('recourseId').touched">
                                                     <small class="text-danger">
                                                         <span>Recourse is required.</span>
                                                     </small>
@@ -90,17 +89,17 @@
                                                 <label class="col-sm-3 col-form-label createUserLabel">Stage:
                                                     <em class="astrick">*</em>
                                                 </label>
-                                                <div class="col-md-9" [class.has-error]="addForm.get('stage').invalid 
-                                                        &&  addForm.get('stage').touched">
-                                                        <select class="form-control" formControlName="stage" (change)="changeCombinations()">
+                                                <div class="col-md-9" [class.has-error]="addForm.get('stageId').invalid 
+                                                        &&  addForm.get('stageId').touched">
+                                                        <select class="form-control" formControlName="stageId" (change)="changeCombinations()">
                                                                 <option value="">Select Stage</option>
-                                                                <option *ngFor="let item of arListStage" value="{{item.name}}" >
+                                                                <option *ngFor="let item of arListStage" value="{{item.id}}" >
                                                                     {{item.name}}
                                                                 </option>
                                                         </select>
                                                 </div>
-                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('stage').invalid &&
-                                                          addForm.get('stage').touched">
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('stageId').invalid &&
+                                                          addForm.get('stageId').touched">
                                                     <small class="text-danger">
                                                         <span>Stage is required.</span>
                                                     </small>

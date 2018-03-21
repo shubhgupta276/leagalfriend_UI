@@ -1,17 +1,6 @@
 <div class="content-wrapper">
-  <div class="nav-tabs-custom">
-    <div>
-      <div class="row case-table-toolbar">
-        <div class="col-sm-8 pr-zero">
-          <ul class="nav nav-tabs">
-            <li class="active">
-              <a href="#tab_running" data-toggle="tab">Send Referral</a>
-            </li>
-
-          </ul>
-        </div>
-      </div>
-    </div>
+  <div class="page-heading">
+    Referrel Management
   </div>
   <!-- Main content -->
   <section class="content">
@@ -19,39 +8,60 @@
       <div class="col-xs-12">
         <!-- /.box -->
         <div class="box">
-          <div class="box-body profile-box">
-            <div class="col-md-12 col-lg-12 mg-t-30 mg-md-t-0">
-                <form [formGroup]="referrelForm" class="form-horizontal" (ngSubmit)="sendreferrelmail(referrelForm.value)">
-                <div class="form-body">
-                  <div class="form-group">
-                    <label class="col-xs-3 control-label">Email:</label>
-                    <div class="col-xs-5">
-                      <input type="text" class="form-control" formControlName="Email" />
-                      
-                    </div>
-                    <div class="col-xs-4">
-                      <button type="button" class="btn btn-default addButton" (click)="adddynamic()"><i class="fa fa-plus"></i></button>
-                    </div>
-                  </div>
-
-                  <!-- The option field template containing an option field and a Remove button -->
-                  <div class="form-group hide" id="optionTemplate">
-                    <div class="col-xs-offset-3 col-xs-5" style="margin-top:10px;">
-                      <input class="form-control" type="text" id="dyncntrl1" formControlName="Email" />
-                    </div>
-
-                  </div>
-
-                  <div class="form-group">
-                    <div class="col-xs-5 col-xs-offset-3">
-                      <button type="submit" class="btn btn-default" [disabled]="referrelForm.invalid" >Send referral</button>
-                    </div>
-                  </div>
-
+          <div class="box-body">
+            <div>
+              <div class="row table-toolbar">
+                <div class="col-sm-4 heading">Referrel Users</div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                  <label class="custom-label">Show
+                    <select class="input-sm" id="ddlLengthMenu">
+                    </select> rows
+                  </label>
                 </div>
-              </form>
+                <div class="col-sm-2">
+                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
+                </div>
+              </div>
             </div>
+            <table id="referreltable" class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="padding-bottom">Id</th>
+                  <th class="padding-bottom">Name</th>
+                  <th class="padding-bottom">Email</th>
+                  <th class="padding-bottom">Phone</th>
+                  <th class="padding-bottom">Referrel Date</th>
+                  <th class="padding-bottom">Joining Date</th>
+                  <th>Status
+                    <select id="ddlStatusFilter" class="status input-sm">
+                      <option value="All">All</option>
+                      <option value="Joined">Joined</option>
+                      <option value="Not Joined">Not Joined</option>
+                      
+                    </select>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let refrrel of arr; let i=index">
+                  <td>{{i+1}}</td>
+                  <td>{{refrrel.Name}}</td>
+                  <td>{{refrrel.Email}}</td>
+                  <td>{{refrrel.MobileNumber}}</td>
+                  <td>{{refrrel.ReferrelDate}}</td>
+                  <td>{{refrrel.JoiningDate}}</td>
+                  <td *ngIf="refrrel.Status==='Joined'">
+                    <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{refrrel.Status}}</button>
+                  </td>
+                  <td *ngIf="refrrel.Status==='Not Joined'">
+                    <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{refrrel.Status}}</button>
+                  </td>
+                </tr>
+              </tbody>
 
+            </table>
           </div>
           <!-- /.box-body -->
         </div>
@@ -61,5 +71,78 @@
     </div>
     <!-- /.row -->
   </section>
-  <!-- /.content -->
+</div>
+<!-- added for model -->
+<div class="modal fade" id="addreferrelModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Send Referrel</h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div style="margin-top: -15px;" class="modal-body modal-body-adedit">
+        <div class="row">
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+              <form [formGroup]="referrelForm" class="form-horizontal" (ngSubmit)="sendreferrelmail(referrelForm.value)">
+                <div class="form-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Name:
+                        </label>
+                        <div class="col-md-9">
+                          <input class="form-control" OnlyString="true" placeholder="Name" formControlName="Name">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Email:
+                        </label>
+                        <div class="col-md-9" [class.has-error]="referrelForm.get('Email').invalid &&  referrelForm.get('Email').touched">
+                          <input class="form-control" placeholder="Email" formControlName="Email">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="referrelForm.get('Email').invalid &&  referrelForm.get('Email').touched">
+                          <small class="text-danger">
+                            <span>Email is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Mobile No:
+                        </label>
+                        <div class="col-md-9">
+                          <input class="form-control" OnlyNumber="true" placeholder="Mobile No" formControlName="mobileNumber">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-md-4">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer modal-footer-addedit">
+                  <button type="button" class="btn btn-default btn-default-add-edit" data-dismiss="modal">Close</button>
+                  <button type="submit" [disabled]="referrelForm.invalid || isEmailAlreadyExists" class="btn btn-modal-addedit">Send</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="favicon" data-toggle="modal" data-target="#addreferrelModal">
+  <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+    <span class="tooltip-text">Add User</span>
+  </div>
+  <a>
+    <i class="fa fa-plus" type="button"></i>
+  </a>
 </div>
