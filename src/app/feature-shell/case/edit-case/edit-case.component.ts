@@ -303,13 +303,13 @@ getRunningCase() {
 
         $this.ParentCases.push(
         {
-          courtCaseId:value.courtCaseId;
+          courtCaseId:value.courtCaseId,
         }
       );
-        }
-);
+      }
+    );
+})
 }
 
 }
 
-}
