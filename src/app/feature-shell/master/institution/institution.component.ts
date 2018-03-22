@@ -47,13 +47,8 @@ export class InstitutionComponent implements OnInit {
   }
   
   GetAllInstitute() {
-    var reqObj = {
-      email: this._storageService.getUserEmail(),
-    };
-
-    this._institutionService.getInstitutions(reqObj).subscribe(
+    this._institutionService.getInstitutions().subscribe(
       result => {
-        result = result.body;
         if (result.httpCode == 200) {
 
           for (var i = 0; i < result.institutions.length; i++) {

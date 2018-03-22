@@ -50,6 +50,9 @@
                   </td>
 
                 </tr>
+                <tr *ngIf="!arr || arr.length==0">
+                  <td colspan="2"> No Record Found...!</td>
+                </tr>
 
               </tbody>
 

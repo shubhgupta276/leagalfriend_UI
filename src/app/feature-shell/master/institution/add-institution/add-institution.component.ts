@@ -39,6 +39,7 @@ export class AddInstitutionMasterComponent implements OnInit {
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
+          this.arInstitution.push({ institutionName: data.institutionName, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddInstitutionMaster();
           this.closeModal();
@@ -62,7 +63,6 @@ export class AddInstitutionMasterComponent implements OnInit {
   subscriberFields() {
     this.addInstitutionMasterForm.get('institutionName').valueChanges.subscribe(
       (e) => {
-        debugger
         if (this.arInstitution.filter(x => x.institutionName.toUpperCase() == e.toUpperCase()).length > 0) 
           this.isInstitutionAlreadyExists = true;
         else

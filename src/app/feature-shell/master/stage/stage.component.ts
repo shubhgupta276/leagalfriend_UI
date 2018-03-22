@@ -45,11 +45,12 @@ export class StageComponent implements OnInit {
 
   }
   GetAllStage() {
+    debugger;
     this._stageService.getStages().subscribe(
       result => {
 
         if (result.httpCode == 200) {
-          result = result.stageRecourses;
+          
           for (var i = 0; i < result.length; i++) {
             const obj = result[i];
 
