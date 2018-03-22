@@ -28,6 +28,7 @@ declare var $;
   ],
 })
 export class CaseComponent implements OnInit {
+  lstUploadedDocuments: any;
   caseRunning: Case[];
   caseCompleted: Case[]; f
   editCaseForm: FormGroup;

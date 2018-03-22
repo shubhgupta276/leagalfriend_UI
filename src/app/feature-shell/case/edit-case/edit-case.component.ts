@@ -296,14 +296,15 @@ export class EditCaseComponent implements OnInit {
 
         result.forEach(function (value) {
 
-          $this.ParentCases.push(
-            {
-              //courtCaseId:value.courtCaseId;
-            }
-          );
-        })
+        $this.ParentCases.push(
+        {
+          courtCaseId:value.courtCaseId,
+        }
+      );
       }
-        );
-      }
+    );
+})
+}
 
 }
+

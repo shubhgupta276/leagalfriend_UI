@@ -19,7 +19,7 @@ const authShellRoutes: Routes = [
         { path: 'resetpwd', component: VerifyEmailComponent },
         { path: 'updatePassword/:id', component: ResetPasswordComponent },
         { path: 'changepassword', component: changepasswordComponent },
-        { path: '**', component: VerifyEmailComponent },
+        { path: 'verifyemail/:id', component: VerifyEmailComponent },
         
        
        

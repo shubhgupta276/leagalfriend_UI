@@ -29,8 +29,6 @@ import { TokenModel } from "../shared/models/auth/token.model";
 import { ResetPassword } from "../shared/models/auth/resetpassword.model";
 import { ChangePassword } from "../shared/models/auth/changepassword.model";
 import { Branch } from '../shared/models/auth/case.model';
-import { Court } from '../shared/models/auth/court.model';
-import { State } from '../shared/models/auth/state.model';
 import { Recourse } from '../shared/models/auth/recourse.model';
 import {EditCase} from '../shared/models/auth/editcase.model';
 import {Calender} from '../shared/models/auth/calender.model';
@@ -98,14 +96,14 @@ export class AuthService {
   }
 
   getCourtDDL(reqData): Observable<any> {    
-    return this.apiGateWay.get<Court>(
+    return this.apiGateWay.get<any>(
       'master/courts'+ '?email='+ reqData.email.replace('"',''), null,
       
     );
   }
 
   bindStateDDL(reqData): Observable<any> {    
-    return this.apiGateWay.get<State>(
+    return this.apiGateWay.get<any>(
       'master/states'+ '?email='+ reqData.email.replace('"',''), null,
       
     );
