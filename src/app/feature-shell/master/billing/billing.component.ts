@@ -1,9 +1,12 @@
-import { Component, OnInit, NgModule} from '@angular/core';
+import { Component, OnInit, NgModule,ViewChild} from '@angular/core';
 import { AddBillingComponent } from "./add-bill/add-bill.component";
 import { EditBillingComponent } from "./edit-bill/edit-bill.component";
 import { CommonModule } from '@angular/common';
 import { UserRoles, UserStatus, KeyValue, ListBillingBank, ListBillingRecourse, ListBillingStage, ListBranch } from '../../../shared/Utility/util-common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { BillingService } from './billing.service';
+import { StorageService } from '../../../shared/services/storage.service';
+import { Billing } from '../billing/billing';
 
 declare let $;
 
@@ -14,7 +17,8 @@ declare let $;
       BillingComponent,
       AddBillingComponent,
       EditBillingComponent,
-    ]
+    ],
+    providers: [BillingService, StorageService]
   }
 )
 @Component({
@@ -24,7 +28,7 @@ declare let $;
 })
 
 export class BillingComponent implements OnInit {
-  arBillingData: any[] = [];
+  arBillingData: Billing[] = [];
   arListBanks: any[] = [];
   arListRecourse: any[] = [];
   arListStage: any[] = [];
@@ -32,7 +36,8 @@ export class BillingComponent implements OnInit {
   editForm: FormGroup;
   editDetails: any;
   arListBranch: KeyValue[] = ListBranch;
-  constructor(private fb: FormBuilder) {
+   @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
+  constructor(private fb: FormBuilder,private _billingservice:BillingService,private _storageservice:StorageService) {
   }
 
   ngOnInit() {
@@ -40,11 +45,11 @@ export class BillingComponent implements OnInit {
     this.setDropdownUniqueValues();
     var $this = this;
     $($.document).ready(function () {
-      $this.bindBillingGridPaging();
+     // $this.bindBillingGridPaging();
     });
   }
   bindBillingGridPaging() {
-
+    debugger
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
     var selectedPageLength = 15;
 
@@ -153,40 +158,76 @@ export class BillingComponent implements OnInit {
     for (var i = 0; i < this.arBillingData.length; i++) {
       var obj = this.arBillingData[i];
 
-      if ($.inArray(obj.Bank, this.arListBanks) < 0)
-        this.arListBanks.push(obj.Bank);
+      if ($.inArray(obj.bankName, this.arListBanks) < 0)
+        this.arListBanks.push(obj.bankName);
 
-      if ($.inArray(obj.Recourse, this.arListRecourse) < 0)
-        this.arListRecourse.push(obj.Recourse);
+      if ($.inArray(obj.recourseId, this.arListRecourse) < 0)
+        this.arListRecourse.push(obj.recourseId);
 
-      if ($.inArray(obj.Stage, this.arListStage) < 0)
-        this.arListStage.push(obj.Stage);
+      if ($.inArray(obj.stageId, this.arListStage) < 0)
+        this.arListStage.push(obj.stageId);
 
-      if ($.inArray(obj.Amount, this.arListAmount) < 0)
-        this.arListAmount.push(obj.Amount);
+      if ($.inArray(obj.amount, this.arListAmount) < 0)
+        this.arListAmount.push(obj.amount);
 
     }
 
   }
   getBillingData() {
-    this.arBillingData = [];
-    this.arBillingData.push(
-      { Branch: "Delhi", Bank: "DCB BANK LTD.", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100" },
-      { Branch: "Delhi", Bank: "DCB BANK LTD.", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11" },
-      { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300" },
-      { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-      { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300" },
-      { Branch: "Delhi", Bank: "RBS BANK", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588" },
-      { Branch: "Delhi", Bank: "RBS BANK", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100" },
-      { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5" },
-      { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-      { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-      { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-    );
-  }
+    // this.arBillingData = [];
+    // this.arBillingData.push(
+    //   { Branch: "Delhi", Bank: "DCB BANK LTD.", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100" },
+    //   { Branch: "Delhi", Bank: "DCB BANK LTD.", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11" },
+    //   { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300" },
+    //   { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
+    //   { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300" },
+    //   { Branch: "Delhi", Bank: "RBS BANK", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588" },
+    //   { Branch: "Delhi", Bank: "RBS BANK", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100" },
+    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5" },
+    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
+    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
+    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
+    // );
+    this._billingservice.getBilling().subscribe(
+      result=>{
+        debugger
+        if(result.httpCode==200)
+        {
+          for(var i = 0; i < result.billings.length; i++)
+          {
+            const obj=result.billings[i];
+            this.arBillingData.push({
+              id:obj.id,
+              //branch:obj.branch,
+              bankName: obj.bankName,
+              amount:obj.amount,
+              recourseId:obj.recourseId,
+              stageId:obj.stageId,
+              userId:obj.userId
+            })
+            debugger
+          }
+            setTimeout(() => {
+              this.bindBillingGridPaging();
+            }, 1);
+          }
+          else {
+            console.log(result);
+          }
+        },
+        err => {
+          console.log(err);
+          this.arBillingData = [];
+  
+        });
+    }
+        
+  
 
   showEditModal(data) {
-    this.editDetails = data;
+    debugger
+    this.editChild.createForm(data);
+    // this.editDetails = data;
     $('#editBillModal').modal('show');
   }
 

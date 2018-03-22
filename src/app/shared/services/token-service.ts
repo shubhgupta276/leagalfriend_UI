@@ -15,6 +15,7 @@ export class TokenService {
 
     getAuthorizationHeader(): AuthHeaderModel {
         const model = new AuthHeaderModel();
+        
         model.access_token = localStorage.getItem('access_token');
         model.client_id = localStorage.getItem('client_id');
         return model;

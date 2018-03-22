@@ -3,23 +3,25 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../shared/Utility/util-custom.validation';
 import { Console } from '@angular/core/src/console';
+import { AuthService } from '../auth-shell.service';
+import { ResetPassword } from '../../shared/models/auth/resetpassword.model';
 
 declare let $;
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
+  styleUrls: ['./reset-password.component.css'],
+  providers: [AuthService]
 })
 
 export class ResetPasswordComponent implements OnInit {
   public resetPasswordForm: FormGroup;
   passwordValidationMessage = 'Password is required.';
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
     this.resetPasswordForm = fb.group({
-      newPassword: [null, Validators.compose([Validators.required,
-        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
-      confirmPassword: [null, Validators.compose([Validators.required, matchValidator('newPassword')])]
+      email: [null, Validators.required],
+      password: [null, Validators.required]
     });
   }
 
@@ -41,10 +43,31 @@ export class ResetPasswordComponent implements OnInit {
     );
   }
 
+  
+
   resetPassword(data) {
+    debugger
     if (data.newPassword !== '' && data.newPassword === data.confirmPassword) {
       this.router.navigate(['login']);
+      var token = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
+     
+      const resetDetails = new ResetPassword();
+
+  resetDetails.token = token;
+  resetDetails.email = data.email;
+  resetDetails.password = data.password;
+ 
+  this.authService.resetPassword(resetDetails).subscribe(
+
+    result => {
+    debugger
+    },
+    err => {
+      console.log(err);
+    });
   }
+  
+  
 }
 
   resetPasswordPageLayout() {

@@ -17,10 +17,23 @@ import {
   HttpParams
 } from "@angular/common/http";
 // const featureConfig = require('./auth-shell.config');
-import { login } from "./auth-shell.config";
+import { login, resetPassword } from "./auth-shell.config";
 import { signup } from "./auth-shell.config";
+import { changepassword } from "./auth-shell.config";
+import { forgot_password  } from "./auth-shell.config";
+import { verifyEmail } from "./auth-shell.config";
 import { LoginModel } from "../shared/models/auth/login.model";
 import { UserModel } from "../shared/models/user/user.model";
+import { SignUpModel } from "../shared/models/auth/signup.model";
+import { TokenModel } from "../shared/models/auth/token.model";
+import { ResetPassword } from "../shared/models/auth/resetpassword.model";
+import { ChangePassword } from "../shared/models/auth/changepassword.model";
+import { Branch } from '../shared/models/auth/case.model';
+import { Court } from '../shared/models/auth/court.model';
+import { State } from '../shared/models/auth/state.model';
+import { Recourse } from '../shared/models/auth/recourse.model';
+import {EditCase} from '../shared/models/auth/editcase.model';
+import {Calender} from '../shared/models/auth/calender.model';
 
 @Injectable()
 export class AuthService {
@@ -44,12 +57,124 @@ export class AuthService {
   //     localStorage.setItem('remberedMe.user', JSON.stringify(remberedUser));
   // }
 
-  signup(customerData: UserModel): Observable<UserModel> {
-    return this.apiGateWay.post<UserModel>(
+  signup(customerData: SignUpModel): Observable<SignUpModel> {
+    debugger
+    return this.apiGateWay.post<SignUpModel>(
       signup,
       JSON.stringify(customerData)
     );
   }
+
+  verifyemail(token): Observable<any> {
+    return this.apiGateWay.post<any>(
+      verifyEmail + '?token=' + token, null
+    );
+  }
+  forgot_password(email): Observable<any> {
+    
+   return  this.apiGateWay.get<any>(
+      forgot_password + '?email=' + email, null
+    );
+  
+  }
+  resetPassword(customerData: ResetPassword): Observable<ResetPassword> {
+    return this.apiGateWay.post<ResetPassword>(
+      resetPassword,
+      JSON.stringify(customerData)
+    );
+  }
+  changepassword(customerData: ChangePassword): Observable<ChangePassword> {
+    
+    return this.apiGateWay.post<ChangePassword>(
+      'usermanagement/updatePassword',
+      JSON.stringify(customerData)
+    );
+  }
+  getBranchDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Branch>(
+      'master/branches'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+
+  getCourtDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Court>(
+      'master/courts'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+
+  bindStateDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<State>(
+      'master/states'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+  bindRecourseDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'master/recourses'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+  bindStageDDL(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'master/stages'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
+
+  submitEditCaseUser(customerData: EditCase): Observable<EditCase> {
+    return this.apiGateWay.post<EditCase>(
+      'case/add',
+      JSON.stringify(customerData)
+    );
+  }
+  updateEditCaseUser(customerData: EditCase): Observable<EditCase> {
+    return this.apiGateWay.post<EditCase>(
+      'case/update',
+      JSON.stringify(customerData)
+    );
+  }
+  getCaseRunning(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'case/caseList'+ '?userId='+ reqData.userId,null,
+      
+    );
+  }
+
+  getCaseByCaseId(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'case/getCase'+ '?caseId='+ reqData.caseId,null,
+      
+    );
+  }
+
+  saveEvent(customerData: Calender): Observable<Calender> {
+    return this.apiGateWay.post<Calender>(
+      '/events/addEvent',
+      JSON.stringify(customerData)
+    );
+  }
+
+  getEvent(reqData): Observable<any> {    
+    return this.apiGateWay.post<Recourse>(
+      'events/eventList'+ '?userId='+ reqData.userId,null,
+      
+    );
+  }
+
+
+  listUsers(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'usermanagement/listusers'+ '?clientId='+ reqData.clientId,null,
+      
+    );
+  }
+
+
+  
+
+
 
   signOut(): void {
     // clear token remove user from local storage to log user out
@@ -60,6 +185,7 @@ export class AuthService {
       localStorage.removeItem("refresh_token");
     }
   }
+  
   isLoggedIn(): boolean {
     if (localStorage.getItem("access_token"))
       return true;

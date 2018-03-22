@@ -24,7 +24,7 @@ export class ForInstitutionComponent implements OnInit {
         { id: 2, institutionName: 'HDFC Bank Ltd' },
     ];
     arListBranch: KeyValue[] = ListBranch;
-    InstitutionValue: string = this.arInstitution[0].institutionName;
+     InstitutionValue: string = this.arInstitution[0].institutionName;
     BranchValue: string = this.arListBranch[0].name;
     arr: Institution[] = [];
     constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) { }

@@ -7,7 +7,6 @@ export class LFAuthantication implements CanActivate {
     constructor(private _authService: AuthService, private router: Router) {
     }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-        debugger
         if (this._authService.isLoggedIn())
             return true;
         else {
