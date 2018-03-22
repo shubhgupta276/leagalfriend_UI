@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import {
-  CaseResource, CaseManager, CaseCourt, CaseState, ParentCase, CaseCustomerName,
-  CaseBranch, CaseStage, CaseEmployee, CaseCourtPlace, KeyValue
-} from '../../../shared/Utility/util-common';
+// import {
+//   CaseResource, CaseManager, CaseCourt, CaseState, ParentCase, CaseCustomerName,
+//   CaseBranch, CaseStage, CaseEmployee, CaseCourtPlace, KeyValue
+// } from '../../../shared/Utility/util-common';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
 import { EditCase } from '../../../shared/models/auth/editcase.model';
 import { DatePipe } from '@angular/common';
@@ -314,7 +314,7 @@ export class AddCaseComponent implements OnInit {
 
           $this.ParentCases.push(
             {
-               courtCaseId:value.courtCaseId;
+               courtCaseId:value.courtCaseId,
             }
           );
         }
