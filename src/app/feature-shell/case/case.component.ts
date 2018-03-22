@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { debuglog } from "util";
 import { AuthService } from '../../auth-shell/auth-shell.service';
+import { Branch } from '../../shared/models/auth/case.model';
 import { StorageService } from '../../shared/services/storage.service';
 import {
   FormGroup,
@@ -27,9 +28,8 @@ declare var $;
   ],
 })
 export class CaseComponent implements OnInit {
-  lstUploadedDocuments: any;
   caseRunning: Case[];
-  caseCompleted: Case[]; 
+  caseCompleted: Case[]; f
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
@@ -119,29 +119,6 @@ export class CaseComponent implements OnInit {
           self.$table.columns(6).search("").draw();
         });
 
-         //Button Reset FrontEnd
-        $('#btnResetFilter').click(function () {
-          $('#btnFilter').removeClass("bgColor");
-          
-           $('#ddlCaseRecource').val("All");
-           self.$table.columns(4).search("").draw();
-   
-           $('#ddlCaseStage').val("All");
-           self.$table.columns(5).search("").draw();
-   
-           $('#ddlCaseBranch').val("All");
-           $('#ddlCaseBranch1').val("All");
-           self.$table.columns(7).search("").draw();
-           // $('#reservation').val('');
-           // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
-           // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
-           $('#reservation').data('daterangepicker').setStartDate(new Date());
-           $('#reservation').data('daterangepicker').setEndDate(new Date());
-         
-           $.fn.dataTableExt.afnFiltering.length = 0;
-           self.$table.columns(6).search("").draw();
-           });
-     
         $('#reservation').daterangepicker({
           autoApply: true,
           locale: {
@@ -380,7 +357,6 @@ export class CaseComponent implements OnInit {
         result.branches.forEach(function (value) {
 
           $this.arrListCaseBranch1.push(value);
-          $this.arrListCaseBranch.push(value);
         });
         console.log(result);
       },
