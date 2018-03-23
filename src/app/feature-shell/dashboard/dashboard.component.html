@@ -1,9 +1,10 @@
 <!-- Content Wrapper. Contains page content -->
 <style>
-  .hide{
+  .hide {
     display: none
   }
-  .show{
+
+  .show {
     display: block
   }
 </style>
@@ -109,19 +110,19 @@
             <i class="fa fa-inbox"></i>
             <h3 class="box-title">Daily Login</h3>
             <div class="graph-filter pull-right">
-            <a class="btn btn-github" (click)="ShowHideMode(false,'DailyLogin')">
-               Monthly
-            </a>
-            <a  class="btn btn-github">
-               Weekly
-            </a>
-            <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isDailyLoginWeekly}">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
+              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'DailyLogin')">
+                Monthly
+              </a>
+              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'DailyLogin')">
+                Weekly
+              </a>
+              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isDailyLoginMonthly}">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control pull-right" id="dailyFilter">
               </div>
-              <input  type="text" class="form-control pull-right" id="dailyFilter">
             </div>
-          </div>
           </div>
           <div class="box-body">
             <div class="chart tab-pane active" id="daily-chart" style="position: relative; height: 300px;"></div>
@@ -134,22 +135,22 @@
             <i class="fa fa-inbox"></i>
             <h3 class="box-title">Customers</h3>
             <div class="graph-filter pull-right">
-              <a class="btn btn-github">
-                 Monthly
+              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'Customer')">
+                Monthly
               </a>
-              <a class="btn btn-github">
-                 Weekly
+              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'Customer')">
+                Weekly
               </a>
-              <div class="input-group pull-right" style="width:250px">
+              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isCustomerMonthly}">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input  type="text" class="form-control pull-right" id="customerFilter">
+                <input type="text" class="form-control pull-right" id="customerFilter">
               </div>
             </div>
           </div>
           <div class="box-body">
-            <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div>            
+            <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div>
           </div>
 
         </div>
@@ -162,17 +163,17 @@
             <i class="fa fa-inbox"></i>
             <h3 class="box-title">Case</h3>
             <div class="graph-filter pull-right">
-              <a class="btn btn-github">
-                 Monthly
+              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'Case')">
+                Monthly
               </a>
-              <a class="btn btn-github">
-                 Weekly
+              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'Case')">
+                Weekly
               </a>
-              <div class="input-group pull-right" style="width:250px">
+              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isCaseMonthly}">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input  type="text" class="form-control pull-right" id="caseFilter">
+                <input type="text" class="form-control pull-right" id="caseFilter">
               </div>
             </div>
           </div>
@@ -186,17 +187,17 @@
             <i class="fa fa-inbox"></i>
             <h3 class="box-title">Referrals</h3>
             <div class="graph-filter pull-right">
-              <a class="btn btn-github">
-                 Monthly
+              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'Referral')">
+                Monthly
               </a>
-              <a class="btn btn-github">
-                 Weekly
+              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'Referral')">
+                Weekly
               </a>
-              <div class="input-group pull-right" style="width:250px">
+              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isReferralMonthly}">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input  type="text" class="form-control pull-right" id="referralFilter">
+                <input type="text" class="form-control pull-right" id="referralFilter">
               </div>
             </div>
           </div>

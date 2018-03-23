@@ -8,22 +8,18 @@ declare var Morris: any;
 })
 export class DashboardComponent implements OnInit {
   arrMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  isDailyWeekly: boolean = false;
   graphMode = {
-    isDailyLoginWeekly: false,
-    isCustomerWeekly: false,
-    isCaseWeekly: false,
-    isReferralWeekly: false
+    isDailyLoginMonthly: true,
+    isCustomerMonthly: true,
+    isCaseMonthly: true,
+    isReferralMonthly: true
   }
-  mode = {
-    monthly: 'M',
-    weekly: 'W'
-  }
+
   constructor() { }
 
   ngOnInit() {
     var $this = this;
-    this.DailyChart(null, null, $this.mode.monthly);
+    this.DailyChart(null, null);
     this.CustomerChart(null, null);
     this.CaseChart(null, null);
     this.ReferralGraph(null, null);
@@ -36,7 +32,7 @@ export class DashboardComponent implements OnInit {
       function (start, end, label) {
         switch ($(this)[0].element[0].id) {
           case 'dailyFilter': {
-            // $this.DailyChart(start, end, 'M');
+            $this.DailyChart(start, end);
             break;
           }
           case 'customerChart': {
@@ -56,35 +52,37 @@ export class DashboardComponent implements OnInit {
     );
 
   }
-  ShowHideMode(boolVal, mode) {
+  ShowHideModeFilter(isWeekly, mode) {
     switch (mode) {
       case 'DailyLogin':
         {
-          this.graphMode.isDailyLoginWeekly = boolVal;
+          this.graphMode.isDailyLoginMonthly = isWeekly;
+          this.DailyChart(null,null);
           break;
         }
         case 'Customer':
         {
-          this.graphMode.isCustomerWeekly = boolVal;
+          this.graphMode.isCustomerMonthly = isWeekly;
           break;
         }
         case 'Case':
         {
-          this.graphMode.isCaseWeekly = boolVal;
+          this.graphMode.isCaseMonthly = isWeekly;
           break;
         }
         case 'Referral':
         {
-          this.graphMode.isReferralWeekly = boolVal;
+          this.graphMode.isReferralMonthly = isWeekly;
           break;
         }
 
     }
   }
-  DailyChart(start, end, mode) {
+  DailyChart(start, end) {
     var $this = this;
     var data;
-    if (mode == this.mode.weekly) {
+    debugger
+    if (!this.graphMode.isDailyLoginMonthly) {
       data = [
         { x: '2016-05-10', y: 10 },
         { x: '2016-05-11', y: 60 },
@@ -115,7 +113,6 @@ export class DashboardComponent implements OnInit {
         { x: '2015-12', y: 199, },
       ];
     }
-    //var Morris;
     var area = new Morris.Area({
       element: 'daily-chart',
       resize: true,
@@ -125,10 +122,10 @@ export class DashboardComponent implements OnInit {
       labels: ['Members'],
       xLabelAngle: 45,
       xLabelFormat: function (d) {
-        if (mode == $this.mode.monthly)
+        if ($this.graphMode.isDailyLoginMonthly)
           return $this.arrMonths[d.getMonth()];
         else {
-          return this.arrMonths[d.getMonth()] + '-' +
+          return $this.arrMonths[d.getMonth()] + '-' +
             ("0" + (d.getDate())).slice(-2) + '-' +
             d.getFullYear();
         }
@@ -136,63 +133,9 @@ export class DashboardComponent implements OnInit {
       lineColors: ['#3c8dbc'],
       hideHover: 'auto'
     });
-    // var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    // Morris.Area({
-    //   element: 'daily-chart',
-    //   data: [{
-    //     x: '2015-01', // <-- valid timestamp strings
-    //     y: 0,
-    //   }, {
-    //     x: '2015-02',
-    //     y: 54,
-    //   }, {
-    //     x: '2015-03',
-    //     y: 243,
-    //   }, {
-    //     x: '2015-04',
-    //     y: 206,
-    //   }, {
-    //     x: '2015-05',
-    //     y: 161,
-    //   }, {
-    //     x: '2015-06',
-    //     y: 187,
-    //   }, {
-    //     x: '2015-07',
-    //     y: 210,
-    //   }, {
-    //     x: '2015-08',
-    //     y: 204,
-    //   }, {
-    //     x: '2015-09',
-    //     y: 224,
-    //   }, {
-    //     x: '2015-10',
-    //     y: 301,
-    //   }, {
-    //     x: '2015-11',
-    //     y: 262,
-    //   }, {
-    //     x: '2015-12',
-    //     y: 199,
-    //   },],
-    //   xkey: 'x',
-    //   ykeys: ['y'],
-    //   labels: ['Daily Member'],
-    //   // xLabelFormat: function (x) { // <--- x.getMonth() returns valid index
-    //   //   var month = months[x.getMonth()];
-    //   //   return month;
-    //   // },
-    //   // dateFormat: function (x) {
-    //   //   var month = months[new Date(x).getMonth()];
-    //   //   return month;
-    //   // },
-    // });
-
-    // setTimeout(() => {
-    //   // area.redraw();
-    // }, 5);
+    setTimeout(() => {
+      area.redraw();
+    }, 5);
   }
   CustomerChart(start, end) {
     var $this = this;
