@@ -1,43 +1,121 @@
 import { Component, OnInit } from '@angular/core';
 declare let $;
+declare var Morris: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  constructor() { 
-    
+  arrMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  isDailyWeekly: boolean = false;
+  graphMode = {
+    isDailyLoginWeekly: false,
+    isCustomerWeekly: false,
+    isCaseWeekly: false,
+    isReferralWeekly: false
   }
+  mode = {
+    monthly: 'M',
+    weekly: 'W'
+  }
+  constructor() { }
 
   ngOnInit() {
-    this.DailyChart();
-    this.CustomerChart();
-    this.CaseChart();
-    this.ReferralGraph();
+    var $this = this;
+    this.DailyChart(null, null, $this.mode.monthly);
+    this.CustomerChart(null, null);
+    this.CaseChart(null, null);
+    this.ReferralGraph(null, null);
     $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter').daterangepicker({
       autoApply: true,
       locale: {
         format: 'MM-DD-YYYY'
       }
-    });
-    
+    },
+      function (start, end, label) {
+        switch ($(this)[0].element[0].id) {
+          case 'dailyFilter': {
+            // $this.DailyChart(start, end, 'M');
+            break;
+          }
+          case 'customerChart': {
+            $this.CustomerChart(start, end);
+            break;
+          }
+          case 'caseChart': {
+            $this.CaseChart(start, end);
+            break;
+          }
+          case 'referralGraph': {
+            $this.ReferralGraph(start, end);
+            break;
+          }
+        }
+      }
+    );
+
   }
-  DailyChart() {
-    var data = [
-      { x: '2016-05-10', y: 10 },
-      { x: '2016-05-11', y: 60 },
-      { x: '2016-05-12', y: 30 },
-      { x: '2016-05-13', y: 80 },
-      { x: '2016-05-14', y: 50 },
-      { x: '2016-05-15', y: 90 },
-      { x: '2016-05-16', y: 70 },
-      { x: '2016-05-17', y: 75 },
-      { x: '2016-05-18', y: 90 },
-      { x: '2016-05-19', y: 100 },
-      { x: '2016-05-20', y: 110 }
-    ];
+  ShowHideMode(boolVal, mode) {
+    switch (mode) {
+      case 'DailyLogin':
+        {
+          this.graphMode.isDailyLoginWeekly = boolVal;
+          break;
+        }
+        case 'Customer':
+        {
+          this.graphMode.isCustomerWeekly = boolVal;
+          break;
+        }
+        case 'Case':
+        {
+          this.graphMode.isCaseWeekly = boolVal;
+          break;
+        }
+        case 'Referral':
+        {
+          this.graphMode.isReferralWeekly = boolVal;
+          break;
+        }
+
+    }
+  }
+  DailyChart(start, end, mode) {
+    var $this = this;
+    var data;
+    if (mode == this.mode.weekly) {
+      data = [
+        { x: '2016-05-10', y: 10 },
+        { x: '2016-05-11', y: 60 },
+        { x: '2016-05-12', y: 30 },
+        { x: '2016-05-13', y: 80 },
+        { x: '2016-05-14', y: 50 },
+        { x: '2016-05-15', y: 90 },
+        { x: '2016-05-16', y: 70 },
+        { x: '2016-05-17', y: 75 },
+        { x: '2016-05-18', y: 90 },
+        { x: '2016-05-19', y: 100 },
+        { x: '2016-05-20', y: 110 }
+      ];
+    }
+    else {
+      data = [
+        { x: '2015-01', y: 0, },
+        { x: '2015-02', y: 54, },
+        { x: '2015-03', y: 243, },
+        { x: '2015-04', y: 206, },
+        { x: '2015-05', y: 161, },
+        { x: '2015-06', y: 187, },
+        { x: '2015-07', y: 210, },
+        { x: '2015-08', y: 204, },
+        { x: '2015-09', y: 224, },
+        { x: '2015-10', y: 301, },
+        { x: '2015-11', y: 262, },
+        { x: '2015-12', y: 199, },
+      ];
+    }
+    //var Morris;
     var area = new Morris.Area({
       element: 'daily-chart',
       resize: true,
@@ -45,31 +123,79 @@ export class DashboardComponent implements OnInit {
       xkey: 'x',
       ykeys: ['y'],
       labels: ['Members'],
-      xLabels: 'day',
       xLabelAngle: 45,
       xLabelFormat: function (d) {
-        var weekdays = new Array(7);
-        weekdays[0] = "SUN";
-        weekdays[1] = "MON";
-        weekdays[2] = "TUE";
-        weekdays[3] = "WED";
-        weekdays[4] = "THU";
-        weekdays[5] = "FRI";
-        weekdays[6] = "SAT";
-
-        return weekdays[d.getDay()] + '-' +
-          ("0" + (d.getMonth() + 1)).slice(-2) + '-' +
-          ("0" + (d.getDate())).slice(-2);
+        if (mode == $this.mode.monthly)
+          return $this.arrMonths[d.getMonth()];
+        else {
+          return this.arrMonths[d.getMonth()] + '-' +
+            ("0" + (d.getDate())).slice(-2) + '-' +
+            d.getFullYear();
+        }
       },
-
       lineColors: ['#3c8dbc'],
       hideHover: 'auto'
     });
-    setTimeout(() => {
-      area.redraw();
-    }, 5);
+    // var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    // Morris.Area({
+    //   element: 'daily-chart',
+    //   data: [{
+    //     x: '2015-01', // <-- valid timestamp strings
+    //     y: 0,
+    //   }, {
+    //     x: '2015-02',
+    //     y: 54,
+    //   }, {
+    //     x: '2015-03',
+    //     y: 243,
+    //   }, {
+    //     x: '2015-04',
+    //     y: 206,
+    //   }, {
+    //     x: '2015-05',
+    //     y: 161,
+    //   }, {
+    //     x: '2015-06',
+    //     y: 187,
+    //   }, {
+    //     x: '2015-07',
+    //     y: 210,
+    //   }, {
+    //     x: '2015-08',
+    //     y: 204,
+    //   }, {
+    //     x: '2015-09',
+    //     y: 224,
+    //   }, {
+    //     x: '2015-10',
+    //     y: 301,
+    //   }, {
+    //     x: '2015-11',
+    //     y: 262,
+    //   }, {
+    //     x: '2015-12',
+    //     y: 199,
+    //   },],
+    //   xkey: 'x',
+    //   ykeys: ['y'],
+    //   labels: ['Daily Member'],
+    //   // xLabelFormat: function (x) { // <--- x.getMonth() returns valid index
+    //   //   var month = months[x.getMonth()];
+    //   //   return month;
+    //   // },
+    //   // dateFormat: function (x) {
+    //   //   var month = months[new Date(x).getMonth()];
+    //   //   return month;
+    //   // },
+    // });
+
+    // setTimeout(() => {
+    //   // area.redraw();
+    // }, 5);
   }
-  CustomerChart() {
+  CustomerChart(start, end) {
+    var $this = this;
     var data = [
       { x: '2016-05-10', Trial: 200, Boiled: 200, },
       { x: '2016-05-11', Trial: 15, Boiled: 275, },
@@ -93,20 +219,10 @@ export class DashboardComponent implements OnInit {
       xLabels: 'day',
       xLabelAngle: 45,
       xLabelFormat: function (d) {
-        var weekdays = new Array(7);
-        weekdays[0] = "SUN";
-        weekdays[1] = "MON";
-        weekdays[2] = "TUE";
-        weekdays[3] = "WED";
-        weekdays[4] = "THU";
-        weekdays[5] = "FRI";
-        weekdays[6] = "SAT";
-
-        return weekdays[d.getDay()] + '-' +
-          ("0" + (d.getMonth() + 1)).slice(-2) + '-' +
-          ("0" + (d.getDate())).slice(-2);
+        return $this.arrMonths[d.getMonth()] + '-' +
+          ("0" + (d.getDate())).slice(-2) + '-' +
+          d.getFullYear();
       },
-
       lineColors: ['#a0d0e0', '#3c8dbc'],
       hideHover: 'auto'
     });
@@ -114,7 +230,8 @@ export class DashboardComponent implements OnInit {
       area.redraw();
     }, 5);
   }
-  CaseChart() {
+  CaseChart(start, end) {
+    var $this = this;
     var data = [
       { x: '2016-05-10', CaseAdded: 200 },
       { x: '2016-05-11', CaseAdded: 15 },
@@ -138,20 +255,10 @@ export class DashboardComponent implements OnInit {
       xLabels: 'day',
       xLabelAngle: 45,
       xLabelFormat: function (d) {
-        var weekdays = new Array(7);
-        weekdays[0] = "SUN";
-        weekdays[1] = "MON";
-        weekdays[2] = "TUE";
-        weekdays[3] = "WED";
-        weekdays[4] = "THU";
-        weekdays[5] = "FRI";
-        weekdays[6] = "SAT";
-
-        return weekdays[d.getDay()] + '-' +
-          ("0" + (d.getMonth() + 1)).slice(-2) + '-' +
-          ("0" + (d.getDate())).slice(-2);
+        return $this.arrMonths[d.getMonth()] + '-' +
+          ("0" + (d.getDate())).slice(-2) + '-' +
+          d.getFullYear();
       },
-
       lineColors: ['#3c8dbc'],
       hideHover: 'auto'
     });
@@ -160,7 +267,8 @@ export class DashboardComponent implements OnInit {
     }, 5);
   }
 
-  ReferralGraph() {
+  ReferralGraph(start, end) {
+    var $this = this;
     var data = [
       { x: '2016-05-10', ReferralJoin: 200, ReferralSend: 200 },
       { x: '2016-05-11', ReferralJoin: 275, ReferralSend: 100 },
@@ -184,18 +292,9 @@ export class DashboardComponent implements OnInit {
       xLabels: 'day',
       xLabelAngle: 45,
       xLabelFormat: function (d) {
-        var weekdays = new Array(7);
-        weekdays[0] = "SUN";
-        weekdays[1] = "MON";
-        weekdays[2] = "TUE";
-        weekdays[3] = "WED";
-        weekdays[4] = "THU";
-        weekdays[5] = "FRI";
-        weekdays[6] = "SAT";
-
-        return weekdays[d.getDay()] + '-' +
-          ("0" + (d.getMonth() + 1)).slice(-2) + '-' +
-          ("0" + (d.getDate())).slice(-2);
+        return $this.arrMonths[d.getMonth()] + '-' +
+          ("0" + (d.getDate())).slice(-2) + '-' +
+          d.getFullYear();
       },
 
       lineColors: ['#a0d0e0', '#3c8dbc'],

@@ -1,4 +1,12 @@
 <!-- Content Wrapper. Contains page content -->
+<style>
+  .hide{
+    display: none
+  }
+  .show{
+    display: block
+  }
+</style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -99,13 +107,21 @@
         <div class="box box-info">
           <div class="box-header">
             <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Daily Graph</h3>
-            <div class="input-group pull-right" style="width:250px">
+            <h3 class="box-title">Daily Login</h3>
+            <div class="graph-filter pull-right">
+            <a class="btn btn-github" (click)="ShowHideMode(false,'DailyLogin')">
+               Monthly
+            </a>
+            <a  class="btn btn-github">
+               Weekly
+            </a>
+            <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isDailyLoginWeekly}">
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
               <input  type="text" class="form-control pull-right" id="dailyFilter">
             </div>
+          </div>
           </div>
           <div class="box-body">
             <div class="chart tab-pane active" id="daily-chart" style="position: relative; height: 300px;"></div>
@@ -116,12 +132,20 @@
         <div class="box box-info">
           <div class="box-header">
             <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Customer Graph</h3>
-            <div class="input-group pull-right" style="width:250px">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
+            <h3 class="box-title">Customers</h3>
+            <div class="graph-filter pull-right">
+              <a class="btn btn-github">
+                 Monthly
+              </a>
+              <a class="btn btn-github">
+                 Weekly
+              </a>
+              <div class="input-group pull-right" style="width:250px">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input  type="text" class="form-control pull-right" id="customerFilter">
               </div>
-              <input type="text" class="form-control pull-right" id="customerFilter">
             </div>
           </div>
           <div class="box-body">
@@ -136,12 +160,20 @@
         <div class="box box-info">
           <div class="box-header">
             <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Case Graph</h3>
-            <div class="input-group pull-right" style="width:250px">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
+            <h3 class="box-title">Case</h3>
+            <div class="graph-filter pull-right">
+              <a class="btn btn-github">
+                 Monthly
+              </a>
+              <a class="btn btn-github">
+                 Weekly
+              </a>
+              <div class="input-group pull-right" style="width:250px">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input  type="text" class="form-control pull-right" id="caseFilter">
               </div>
-              <input type="text" class="form-control pull-right" id="caseFilter">
             </div>
           </div>
           <div class="box-body">
@@ -152,12 +184,20 @@
         <div class="box box-info">
           <div class="box-header">
             <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Referral Graph</h3>
-            <div class="input-group pull-right" style="width:250px">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
+            <h3 class="box-title">Referrals</h3>
+            <div class="graph-filter pull-right">
+              <a class="btn btn-github">
+                 Monthly
+              </a>
+              <a class="btn btn-github">
+                 Weekly
+              </a>
+              <div class="input-group pull-right" style="width:250px">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input  type="text" class="form-control pull-right" id="referralFilter">
               </div>
-              <input  type="text" class="form-control pull-right" id="referralFilter">
             </div>
           </div>
           <div class="box-body">
