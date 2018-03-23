@@ -416,7 +416,7 @@ td {
   }
   
   .caseModalSearch{
-    width: 70%;
+    width: 55%;
     background-color: #ccc;
   }
   .append_bottom16 {
@@ -445,6 +445,14 @@ td {
     border-radius: 0;
     box-shadow: none;
     border-color: #d2d6de;
+  }
+  .caseFilterDropDown1{
+    border-radius: 5px;
+    width: 100px;
+	  height: 30px;
+    padding: 5px 10px;
+    background-color: #f4f4f4;
+    margin-bottom: 4px;
   }
   .input-group .form-control .caseCalender {
     float: none !important;
