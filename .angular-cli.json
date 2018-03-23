@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/ngx-select-dropdown/dist/assets/style.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
@@ -57,5 +58,5 @@
     "styleExt": "css",
     "component": {}
   }
- 
+  
 }

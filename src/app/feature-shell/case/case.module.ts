@@ -6,6 +6,7 @@ import { AddCaseComponent} from './Add-case/Add-case.component';
 import {CaseHistoryComponent} from './case-history/case-history-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SelectDropDownModule } from 'ngx-select-dropdown'
 
 
 @NgModule(
@@ -14,7 +15,8 @@ import { CommonModule } from '@angular/common';
             CaseRoutingModule, 
             CommonModule,
             ReactiveFormsModule,
-            FormsModule
+            FormsModule,
+            SelectDropDownModule
         ],
         declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent,CaseHistoryComponent ]
     }
