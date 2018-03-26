@@ -1,0 +1,64 @@
+<div class="content-wrapper">
+    <div class="page-heading">
+      Invoices
+    </div>
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- /.box -->
+          <div class="box">
+            <div class="box-body">
+              <div>
+                <div class="row table-toolbar">
+                  <div class="col-sm-4 heading">Invoice</div>
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-2">
+                    <label class="custom-label">Show
+                      <select class="input-sm" id="ddlLengthMenu">
+                      </select> rows
+                    </label>
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
+                  </div>
+                </div>
+              </div>
+
+              <table id="example1" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Invoice No</th>
+                    <th>Date</th>
+                    <th>Bank</th>
+                    
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of invoice">
+                 <td>{{item.InvoiceNo}}</td>
+                    <td>{{item.Date}}</td>
+                    <td>{{item.Bank}}</td>
+                    
+                    <td>
+                      <a title="Edit">
+                        <i class="fa fa-edit"></i>
+                      </a> 
+                    
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>

@@ -36,16 +36,14 @@ export class CaseComponent implements OnInit {
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
-  $table: any;
-  config:any;
-  configData:any;
+  $table:any;
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
     this.caseRunning = CasesRunning
     this.caseCompleted = CasesCompleted;
-    this.setDropdownUniqueValues();
+    //this.setDropdownUniqueValues();
     this.initCaseForm();
 
-    
+
 
   }
 
@@ -74,139 +72,154 @@ export class CaseComponent implements OnInit {
         console.log(err);
       });
   }
-
+  
 
   ngOnInit() {
-    this.config = {
-      displayKey: "branchName" ,//if objects array passed which key to be displayed defaults to description,
-      search: true //enables the search plugin to search in the list
-    }
     this.getRunningCase();
     const self = this;
     this.getBranchDDL();
+    this.bindRecourseDDL();
     // Running Case DataTable
     $($.document).ready(function () {
+    
+        $("#ddlCaseRecource").change(function () {
 
-      $("#ddlCaseRecource").change(function () {
-
-        if ($("#ddlCaseRecource").val() !== "All") {
-          for (var i = 0; i < self.caseRunning.length; i++) {
-            var obj = self.caseRunning[i];
-            if ($.inArray(obj.CaseStage.name, self.arrListCaseStage) < 0) {
-              self.arrListCaseStage.push(obj.CaseStage.name);
-            }
+          if ($("#ddlCaseRecource").val() !== "All") {
+            self.bindStageDDL();
           }
-        }
-        else {
-          self.arrListCaseStage = [];
-        }
+          else {
+            self.arrListCaseStage = [];
+          }
 
-      });
+        });
 
-      $('#btnReset').click(function () {
-
-
-        $('#ddlCaseRecource').val("All");
-        self.$table.columns(4).search("").draw();
-
-        $('#ddlCaseStage').val("All");
-        self.$table.columns(5).search("").draw();
-
-        $('#ddlCaseBranch').val("All");
-
-        $('#ddlCaseBranch1').val("All");
-        self.$table.columns(7).search("").draw();
-        // $('#reservation').val('');
-        // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
-        // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
-        $('#reservation').data('daterangepicker').setStartDate(new Date());
-        $('#reservation').data('daterangepicker').setEndDate(new Date());
-
-        $.fn.dataTableExt.afnFiltering.length = 0;
-        self.$table.columns(6).search("").draw();
-      });
-
-      $('#reservation').daterangepicker({
-        autoApply: true,
-        locale: {
-          format: 'MM-DD-YYYY'
-        }
-        // startDate:new Date('01/01/1999'),
-        // endDate:new Date('01/01/2099')
-      });
-      // $('#reservation').val('');
-
-      //start Branch1 filter
-      $("#ddlCaseBranch1").on("change", function () {
-        var status = $(this).val();
-        if (status == "All") {
-          $('#ddlCaseBranch').val("All");
-          self.$table.columns(7).search("").draw();
-        }
-        else if (self.$table.columns(7).search() !== this.value) {
-          $('#ddlCaseBranch').val($("#ddlCaseBranch1").val());
-          self.$table.columns(7).search(this.value).draw();
-        }
-      });
-      //end Branch1 filter
-      $('#btnSearch').click(function () {
-
-        var recourseVal = $('#ddlCaseRecource').val();
-        var caseStageVal = $('#ddlCaseStage').val();
-        var caseBranchVal = $('#ddlCaseBranch').val();
+        $('#btnReset').click(function () {
 
 
+          $('#ddlCaseRecource').val("All");
+          self.$table.columns(3).search("").draw();
 
-        // start recourse filter
-        if (recourseVal == "All") {
+          $('#ddlCaseStage').val("All");
           self.$table.columns(4).search("").draw();
-        }
-        else if (self.$table.columns(4).search() !== recourseVal) {
-          self.$table.columns(4).search(recourseVal).draw();
-        }
-        //end recourse filter
 
-        // start Case stage filter
-        if (caseStageVal == "All") {
-          self.$table.columns(5).search("").draw();
-        }
-        else if (self.$table.columns(5).search() !== caseStageVal) {
-          self.$table.columns(5).search(caseStageVal).draw();
-        }
-        //end Case stage filter
+          $('#ddlCaseBranch').val("All");
 
-        // start caseBranchVal filter
-        if (caseBranchVal == "All") {
           $('#ddlCaseBranch1').val("All");
-          self.$table.columns(7).search("").draw();
-        }
-        else if (self.$table.columns(7).search() !== caseBranchVal) {
-          $('#ddlCaseBranch1').val(caseBranchVal);
-          self.$table.columns(7).search(caseBranchVal).draw();
-        }
+          self.$table.columns(6).search("").draw();
+          // $('#reservation').val('');
+          // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
+          // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+          $('#reservation').data('daterangepicker').setStartDate(new Date());
+          $('#reservation').data('daterangepicker').setEndDate(new Date());
 
-        $.fn.dataTableExt.afnFiltering.push(
-          function (oSettings, data, iDataIndex) {
-            var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
-            var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
-            var rowDate = new Date(data[5]);
+          $.fn.dataTableExt.afnFiltering.length = 0;
+          self.$table.columns(5).search("").draw();
+        });
+       //Button Reset FrontEnd
+      $('#btnResetFilter').click(function () {
+          $('#btnFilter').removeClass("bgColor");
+          
+            $('#ddlCaseRecource').val("All");
+            self.$table.columns(3).search("").draw();
 
-            if (rowDate >= startDate && rowDate <= endDate) {
-              return true;
-            }
-            else {
-              return false;
-            }
+            $('#ddlCaseStage').val("All");
+            self.$table.columns(4).search("").draw();
 
+            $('#ddlCaseBranch').val("All");
+            $('#ddlCaseBranch1').val("All");
+            self.$table.columns(6).search("").draw();
+            // $('#reservation').val('');
+            // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
+            // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+            $('#reservation').data('daterangepicker').setStartDate(new Date());
+            $('#reservation').data('daterangepicker').setEndDate(new Date());
+          
+            $.fn.dataTableExt.afnFiltering.length = 0;
+            self.$table.columns(5).search("").draw();
+        });
+
+        $('#reservation').daterangepicker({
+          autoApply: true,
+          locale: {
+            format: 'MM-DD-YYYY'
           }
-        );
+          // startDate:new Date('01/01/1999'),
+          // endDate:new Date('01/01/2099')
+        });
+        // $('#reservation').val('');
 
-        self.$table.draw();
-        $("#closebtnFilter").click();
+        //start Branch1 filter
+        $("#ddlCaseBranch1").on("change", function () {
+          debugger;
+          var status = $(this).val();
+          if (status == "All") {
+            $('#ddlCaseBranch').val("All");
+            self.$table.columns(6).search("").draw();
+          }
+          else if (self.$table.columns(6).search() !== this.value) {
+            $('#ddlCaseBranch').val($("#ddlCaseBranch1").val());
+            self.$table.columns(6).search(this.value).draw();
+          }
+        });
+        //end Branch1 filter
+        $('#btnSearch').click(function () {
+          $('#btnFilter').addClass("bgColor");
+          var recourseVal = $('#ddlCaseRecource').val();
+          var caseStageVal = $('#ddlCaseStage').val();
+          var caseBranchVal = $('#ddlCaseBranch').val();
 
-      });
-      setTimeout(() => {
 
+
+          // start recourse filter
+          if (recourseVal == "All") {
+            self.$table.columns(3).search("").draw();
+          }
+          else if (self.$table.columns(3).search() !== recourseVal) {
+            self.$table.columns(3).search(recourseVal).draw();
+          }
+          //end recourse filter
+
+          // start Case stage filter
+          if (caseStageVal == "All") {
+            self.$table.columns(4).search("").draw();
+          }
+          else if (self.$table.columns(4).search() !== caseStageVal) {
+            self.$table.columns(4).search(caseStageVal).draw();
+          }
+          //end Case stage filter
+
+          // start caseBranchVal filter
+          if (caseBranchVal == "All") {
+            $('#ddlCaseBranch1').val("All");
+            self.$table.columns(6).search("").draw();
+          }
+          else if (self.$table.columns(6).search() !== caseBranchVal) {
+            $('#ddlCaseBranch1').val(caseBranchVal);
+            self.$table.columns(6).search(caseBranchVal).draw();
+          }
+
+          $.fn.dataTableExt.afnFiltering.push(
+            function (oSettings, data, iDataIndex) {
+              var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
+              var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
+              var rowDate = new Date(data[5]);
+
+              if (rowDate >= startDate && rowDate <= endDate) {
+                return true;
+              }
+              else {
+                return false;
+              }
+
+            }
+          );
+
+          self.$table.draw();
+          $("#closebtnFilter").click();
+
+        });
+        setTimeout(() => {
+         
         // var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
         // var selectedPageLength = 15;
         // self.$table = $("#example1").DataTable({
@@ -260,6 +273,7 @@ export class CaseComponent implements OnInit {
     $($.document).ready(function () {
       var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
       var selectedPageLength = 15;
+      debugger
       const $table = $("#example2").DataTable({
         lengthMenu: arLengthMenu,
         pageLength: selectedPageLength,
@@ -313,7 +327,7 @@ export class CaseComponent implements OnInit {
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
     var selectedPageLength = 15;
 
-    var $table = $("#example1").DataTable({
+    this.$table = $("#example1").DataTable({
       paging: true,
       lengthChange: true,
       searching: true,
@@ -343,16 +357,16 @@ export class CaseComponent implements OnInit {
       }
     });
 
-    $table.columns().every(function () {
+    this.$table.columns().every(function () {
       $('#txtSearch').on('keyup change', function () {
-        if ($table.search() !== this.value) {
-          $table.search(this.value).draw();
+        if (this.$table.search() !== this.value) {
+          this.$table.search(this.value).draw();
         }
       });
     });
 
   }
-
+  
   getBranchDDL() {
     var $this = this
     var reqData = {
@@ -364,6 +378,39 @@ export class CaseComponent implements OnInit {
         result.branches.forEach(function (value) {
 
           $this.arrListCaseBranch1.push(value);
+          $this.arrListCaseBranch.push(value);
+        });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+  bindRecourseDDL() {
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.authService.bindRecourseDDL(reqData).subscribe(
+      result => {
+        result.recourses.forEach(function (value) {
+          $this.arrListCaseRecource.push(value);
+        });
+      },
+      err => {
+        console.log(err);
+      });
+  }
+  bindStageDDL() {
+    debugger;
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.authService.bindStageDDL(reqData).subscribe(
+      result => {
+        result.stageRecourses.forEach(function (value) {
+          $this.arrListCaseStage.push(value);
         });
         console.log(result);
       },
@@ -372,24 +419,23 @@ export class CaseComponent implements OnInit {
       });
   }
 
+  // setDropdownUniqueValues() {
 
-  setDropdownUniqueValues() {
+  //   for (var i = 0; i < this.caseRunning.length; i++) {
+  //     var obj = this.caseRunning[i];
+  //     if ($.inArray(obj.Resource.name, this.arrListCaseRecource) < 0) {
+  //       this.arrListCaseRecource.push(obj.Resource.name);
+  //     }
+  //     if ($.inArray(obj.Branch.name, this.arrListCaseBranch) < 0) {
+  //       this.arrListCaseBranch.push(obj.Branch.name);
+  //     }
 
-    for (var i = 0; i < this.caseRunning.length; i++) {
-      var obj = this.caseRunning[i];
-      if ($.inArray(obj.Resource.name, this.arrListCaseRecource) < 0) {
-        this.arrListCaseRecource.push(obj.Resource.name);
-      }
-      if ($.inArray(obj.Branch.name, this.arrListCaseBranch) < 0) {
-        this.arrListCaseBranch.push(obj.Branch.name);
-      }
+  //     if ($.inArray(obj.Branch.name, this.arrListCaseBranch1) < 0) {
+  //       this.arrListCaseBranch1.push(obj.Branch.name);
+  //     }
+  //   }
 
-      if ($.inArray(obj.Branch.name, this.arrListCaseBranch1) < 0) {
-        this.arrListCaseBranch1.push(obj.Branch.name);
-      }
-    }
-
-  }
+  // }
 
   //Filter by date ends
   initCaseForm() {
@@ -405,10 +451,10 @@ export class CaseComponent implements OnInit {
 
       courtCaseId: [c == null ? null : c.courtCaseId],
       recourseId: [c == null ? null : c.recourseId],
-      manager: [c == null ? null : c.managerId],
-      courtId: [c == null ? null : c.courtId],
-      stateId: [c == null ? null : c.stateId],
-      parentCaseId: [c == null ? null : c.parentCaseId],
+       manager: [c == null ? null : c.managerId],
+       courtId: [c == null ? null : c.courtId],
+       stateId: [c == null ? null : c.stateId],
+       parentCaseId: [c == null ? null : c.parentCaseId],
       nextHearingDate: [c == null ? null : c.nextHearingDate],
       customerId: [c == null ? null : c.customerId],
       remark: [c == null ? null : c.remark, Validators.required],
@@ -422,7 +468,7 @@ export class CaseComponent implements OnInit {
       oppLawyer: [c == null ? null : c.oppLawyer],
       childCase: [c == null ? null : c.childCase],
       lastHearingDate: [c == null ? null : c.lastHearingDate],
-      uploadDocument: [],
+       uploadDocument: [],
       completionDate: [c == null ? null : c.completionDate]
     });
   }
@@ -436,7 +482,7 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseByCaseId(reqData).subscribe(
 
       result => {
-        debugger
+debugger
         this.createForm(result);
         $("#editCaseModal").modal("show");
         console.log(result);
