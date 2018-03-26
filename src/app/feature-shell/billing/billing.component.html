@@ -1,3 +1,19 @@
+<style>
+    .billingLabel {
+      font-weight: 400;
+      padding-left: 10px;
+      padding-top: 7px;
+      width: 125px;
+  }
+  .billingDropdown {
+      border-radius: 5px;
+      width: 100px;
+      height: 30px;
+      padding: 5px 10px;
+      background-color: #f4f4f4;
+      margin-bottom: 4px;
+  }
+  </style>
 <div class="content-wrapper">
   <div class="page-heading">
     Billing Management
@@ -15,6 +31,13 @@
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2">
+                    <div style="margin-left:-315px;margin-bottom: -35px;">
+                        <label style="width:85px" class="billingLabel">Branch:</label>
+                        <select id="ddlBillingBranch" class="billingDropdown">
+                        <option value="All">All</option>
+                        <option *ngFor="let item of arListBranch" value="{{item}}">{{item}}</option>
+                        </select>
+                        </div>
                   <label class="custom-label">Show
                     <select class="input-sm" id="ddlLengthMenu">
                     </select> rows
@@ -59,7 +82,12 @@
                           <option *ngFor="let item of arListAmount" value="{{item}}">{{item}}</option>
                       </select> -->
                   </th>
+                  <th>Billing Date</th>
+                 
                   <th>Action</th>
+                  <th style="display: none;">Branch</th>
+                  <th style="display: none;">Billed</th>
+                  <th style="display: none;">Invoice Number</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,10 +98,19 @@
                   <td>{{item.CaseID}}</td>
                   <td>{{item.Recourse}}</td>
                   <td>{{item.Stage}}</td>
-                  <td>{{item.Amount}}</td>
+                  <td contenteditable='true'>
+                    {{item.Amount}}
+                    <img style="width:13px;float:right;" src="assets/dist/img/wrong.jpg">
+                    <img style="width:20px;float:right;" src="assets/dist/img/right.png">
+                    
+                  </td>
+                  <td>{{item.BillingDate}}</td>
                   <td><a href="#"><i class="fa fa-trash"></i></a></td>
+                  <td style="display: none;">{{item.Branch}}</td>
+                  <td style="display: none;">{{item.Billed}}</td>
+                  <td style="display: none;">{{item.InvoiceNumber}}</td>
                 </tr>
-                <tr *ngIf="!arBillingData || arBillingData.length==0" colspan="6">
+                <tr *ngIf="!arBillingData || arBillingData.length==0" colspan="8">
                   No record found..!!
                 </tr>
               </tbody>
