@@ -184,6 +184,11 @@ table.dataTable thead .sorting_asc:after {
   height: 27px !important;
   border: 1px solid #ccc;
 }
+.billingrole{
+  border-radius: 5px;
+  height: 27px !important;
+  border: 1px solid #ccc;
+}
 div.dataTables_wrapper div.dataTables_length select {
   width: auto;
   border-radius: 5px;
