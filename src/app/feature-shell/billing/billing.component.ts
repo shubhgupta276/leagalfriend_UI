@@ -13,6 +13,7 @@ export class BillingComponent implements OnInit {
     arListStage: any[] = [];
     arListAmount: any[] = [];
     arListCaseID: any[] = [];
+    arListBranch: any[] = [];
     constructor() { }
 
     ngOnInit() {
@@ -31,7 +32,11 @@ export class BillingComponent implements OnInit {
                 { name: "Recourse", orderable: false },
                 { name: "Stage", orderable: false },
                 { name: "Amount", orderable: true },
-                 { name: "Action", orderable: false }
+                { name: "BillingDate", orderable: true },
+                { name: "Action", orderable: false },
+                { name: "Branch", orderable: false },
+                { name: "Billed", orderable: false },
+                { name: "InvoiceNumber", orderable: false }
               ],
               lengthMenu: arLengthMenu,
               pageLength: selectedPageLength,
@@ -138,6 +143,17 @@ export class BillingComponent implements OnInit {
                     }
                 });
                 //end Amount filter
+                 //Branch filter
+                 $("#ddlBillingBranch").on("change", function () {
+                    var status = $(this).val();
+                    if (status == "All") {
+                        $table.columns(8).search("").draw();
+                    }
+                    else if ($table.columns(8).search() !== this.value) {
+                        $table.columns(8).search(this.value).draw();
+                    }
+                });
+                //end Branch filter
 
             });
 
@@ -164,6 +180,9 @@ export class BillingComponent implements OnInit {
             if ($.inArray(obj.CaseID, this.arListCaseID) < 0)
                 this.arListCaseID.push(obj.CaseID);
 
+            if ($.inArray(obj.Branch, this.arListBranch) < 0)
+                this.arListBranch.push(obj.Branch);
+
         }
 
     }
@@ -171,17 +190,17 @@ export class BillingComponent implements OnInit {
     getBillingData() {
 
         this.arBillingData.push(
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11" },
-            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300" },
-            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300" },
-            { Bank: "RBS BANK", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588" },
-            { Bank: "RBS BANK", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100" },
-            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5" },
-            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
+            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100",Billed:"Yes",Branch:"Mumbai",BillingDate:"12-02-2018",InvoiceNumber:"180213-002" },
+            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11",Billed:"Yes",Branch:"Delhi",BillingDate:"10-03-2018",InvoiceNumber:"180215-002" },
+            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300",Billed:"No",Branch:"Delhi",BillingDate:"23-04-2018",InvoiceNumber:"170213-002" },
+            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"No",Branch:"Mumbai",BillingDate:"12-06-2018",InvoiceNumber:"180223-002" },
+            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300",Billed:"Yes",Branch:"Mumbai",BillingDate:"12-08-2018",InvoiceNumber:"160213-002" },
+            { Bank: "RBS BANK", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588",Billed:"Yes",Branch:"Delhi",BillingDate:"12-08-2018",InvoiceNumber:"180883-002" },
+            { Bank: "RBS BANK", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100",Billed:"No",Branch:"Mumbai",BillingDate:"12-09-2018",InvoiceNumber:"177213-002" },
+            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5",Billed:"Yes",Branch:"Gujrat",BillingDate:"12-10-2018",InvoiceNumber:"180255-002" },
+            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"Yes",Branch:"Delhi",BillingDate:"12-10-2018",InvoiceNumber:"180266-002" },
+            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"No",Branch:"Mumbai",BillingDate:"12-11-2018",InvoiceNumber:"180277-002" },
+            { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"Yes",Branch:"Pune",BillingDate:"12-10-2018",InvoiceNumber:"180223-002" },
         );
     }
 
