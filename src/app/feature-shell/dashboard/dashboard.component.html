@@ -7,6 +7,11 @@
   .show {
     display: block
   }
+
+  .pagination>li>a {
+    padding: 7px;
+    font-weight: 600;
+  }
 </style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -110,13 +115,18 @@
             <i class="fa fa-inbox"></i>
             <h3 class="box-title">Daily Login</h3>
             <div class="graph-filter pull-right">
-              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'DailyLogin')">
-                Monthly
-              </a>
-              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'DailyLogin')">
-                Weekly
-              </a>
-              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isDailyLoginMonthly}">
+              <ul class="pagination pagination-sm inline">
+                <li>
+                  <a (click)="ShowHideModeFilter('M','DailyLogin')">Monthly</a>
+                </li>
+                <li>
+                  <a (click)="ShowHideModeFilter('W','DailyLogin')">Weekly</a>
+                </li>
+                <li>
+                  <a (click)="ShowHideModeFilter('D','DailyLogin')">DateWise</a>
+                </li>
+              </ul>
+              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.dailyLoginMode=='M' ||graphMode.dailyLoginMode=='W' }">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
@@ -125,7 +135,8 @@
             </div>
           </div>
           <div class="box-body">
-            <div class="chart tab-pane active" id="daily-chart" style="position: relative; height: 300px;"></div>
+            <!-- <div class="chart tab-pane active" id="daily-chart" style="position: relative; height: 300px;"></div> -->
+            <canvas id="daily-chart" style="position: relative; height: 300px;"></canvas>
           </div>
 
         </div>
@@ -135,13 +146,18 @@
             <i class="fa fa-inbox"></i>
             <h3 class="box-title">Customers</h3>
             <div class="graph-filter pull-right">
-              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'Customer')">
-                Monthly
-              </a>
-              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'Customer')">
-                Weekly
-              </a>
-              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isCustomerMonthly}">
+              <ul class="pagination pagination-sm inline">
+                <li>
+                  <a (click)="ShowHideModeFilter('M','Customer')">Monthly</a>
+                </li>
+                <li>
+                  <a (click)="ShowHideModeFilter('W','Customer')">Weekly</a>
+                </li>
+                <li>
+                  <a (click)="ShowHideModeFilter('D','Customer')">DateWise</a>
+                </li>
+              </ul>
+              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.customerMode=='M' ||graphMode.customerMode=='W' }">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
@@ -150,7 +166,19 @@
             </div>
           </div>
           <div class="box-body">
-            <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div>
+            <!-- <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div> -->
+            <canvas id="customer-chart" style="position: relative; height: 300px;"></canvas>
+          </div>
+
+        </div>
+        <div class="box box-info">
+          <div class="box-header">
+            <i class="fa fa-inbox"></i>
+            <h3 class="box-title">Branch</h3>
+          </div>
+          <div class="box-body">
+            <!-- <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div> -->
+            <canvas id="branch-chart"></canvas>
           </div>
 
         </div>
@@ -163,13 +191,18 @@
             <i class="fa fa-inbox"></i>
             <h3 class="box-title">Case</h3>
             <div class="graph-filter pull-right">
-              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'Case')">
-                Monthly
-              </a>
-              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'Case')">
-                Weekly
-              </a>
-              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isCaseMonthly}">
+              <ul class="pagination pagination-sm inline">
+                <li>
+                  <a (click)="ShowHideModeFilter('M','Case')">Monthly</a>
+                </li>
+                <li>
+                  <a (click)="ShowHideModeFilter('W','Case')">Weekly</a>
+                </li>
+                <li>
+                  <a (click)="ShowHideModeFilter('D','Case')">DateWise</a>
+                </li>
+              </ul>
+              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.caseMode=='M' ||graphMode.caseMode=='W' }">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
@@ -178,31 +211,30 @@
             </div>
           </div>
           <div class="box-body">
-            <div class="chart tab-pane" id="case-chart" style="position: relative; height: 300px;"></div>
+            <!-- <div class="chart tab-pane" id="case-chart" style="position: relative; height: 300px;"></div> -->
+            <canvas id="case-chart" style="position: relative; height: 300px;"></canvas>
           </div>
 
         </div>
         <div class="box box-info">
           <div class="box-header">
             <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Referrals</h3>
-            <div class="graph-filter pull-right">
-              <a class="btn btn-github" (click)="ShowHideModeFilter(true,'Referral')">
-                Monthly
-              </a>
-              <a class="btn btn-github" (click)="ShowHideModeFilter(false,'Referral')">
-                Weekly
-              </a>
-              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.isReferralMonthly}">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control pull-right" id="referralFilter">
-              </div>
-            </div>
+            <h3 class="box-title">Bank</h3>
           </div>
           <div class="box-body">
-            <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div>
+            <!-- <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div> -->
+            <canvas id="bank-chart"></canvas>
+          </div>
+
+        </div>
+        <div class="box box-info">
+          <div class="box-header">
+            <i class="fa fa-inbox"></i>
+            <h3 class="box-title">Recourse</h3>
+          </div>
+          <div class="box-body">
+            <!-- <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div> -->
+            <canvas id="recourse-chart"></canvas>
           </div>
 
         </div>

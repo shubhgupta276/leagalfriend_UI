@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+//import 'chart.piecelabel.js';
+import 'chartjs-plugin-datalabels';
+import Chart from 'chart.js';
 declare let $;
-declare var Morris: any;
+// declare var Chart: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -8,11 +11,16 @@ declare var Morris: any;
 })
 export class DashboardComponent implements OnInit {
   arrMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  mode = {
+    monthly: 'M',
+    Weekly: 'W',
+    DateWise: 'D'
+  }
   graphMode = {
-    isDailyLoginMonthly: true,
-    isCustomerMonthly: true,
-    isCaseMonthly: true,
-    isReferralMonthly: true
+    dailyLoginMode: this.mode.monthly,
+    customerMode: this.mode.monthly,
+    caseMode: this.mode.monthly,
+    referralMode: this.mode.monthly
   }
 
   constructor() { }
@@ -22,7 +30,9 @@ export class DashboardComponent implements OnInit {
     this.DailyChart(null, null);
     this.CustomerChart(null, null);
     this.CaseChart(null, null);
-    this.ReferralGraph(null, null);
+    this.BankGraph();
+    this.BranchGraph();
+    this.RecourseGraph();
     $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter').daterangepicker({
       autoApply: true,
       locale: {
@@ -44,7 +54,7 @@ export class DashboardComponent implements OnInit {
             break;
           }
           case 'referralGraph': {
-            $this.ReferralGraph(start, end);
+            // $this.ReferralGraph(start, end);
             break;
           }
         }
@@ -52,27 +62,29 @@ export class DashboardComponent implements OnInit {
     );
 
   }
-  ShowHideModeFilter(isWeekly, mode) {
-    switch (mode) {
+  ShowHideModeFilter(mode, graphMode) {
+    switch (graphMode) {
       case 'DailyLogin':
         {
-          this.graphMode.isDailyLoginMonthly = isWeekly;
-          this.DailyChart(null,null);
+          this.graphMode.dailyLoginMode = mode;
+          this.DailyChart(null, null);
           break;
         }
-        case 'Customer':
+      case 'Customer':
         {
-          this.graphMode.isCustomerMonthly = isWeekly;
+          this.graphMode.customerMode = mode;
+          this.CustomerChart(null, null);
           break;
         }
-        case 'Case':
+      case 'Case':
         {
-          this.graphMode.isCaseMonthly = isWeekly;
+          this.graphMode.caseMode = mode;
+          this.CaseChart(null, null);
           break;
         }
-        case 'Referral':
+      case 'Referral':
         {
-          this.graphMode.isReferralMonthly = isWeekly;
+          this.graphMode.referralMode = mode;
           break;
         }
 
@@ -81,8 +93,8 @@ export class DashboardComponent implements OnInit {
   DailyChart(start, end) {
     var $this = this;
     var data;
-    debugger
-    if (!this.graphMode.isDailyLoginMonthly) {
+    var weeklyLabel;
+    if (this.graphMode.dailyLoginMode == this.mode.DateWise) {
       data = [
         { x: '2016-05-10', y: 10 },
         { x: '2016-05-11', y: 60 },
@@ -96,6 +108,17 @@ export class DashboardComponent implements OnInit {
         { x: '2016-05-19', y: 100 },
         { x: '2016-05-20', y: 110 }
       ];
+    }
+    else if (this.graphMode.dailyLoginMode == this.mode.Weekly) {
+      data = [
+        { x: '1-7', y: 10 },
+        { x: '8-14', y: 60 },
+        { x: '15-21', y: 30 },
+        { x: '22-28', y: 80 },
+      ];
+      weeklyLabel =
+        ['1-7', '8-14', '15-21', '22-28'];
+
     }
     else {
       data = [
@@ -113,138 +136,455 @@ export class DashboardComponent implements OnInit {
         { x: '2015-12', y: 199, },
       ];
     }
-    var area = new Morris.Area({
-      element: 'daily-chart',
-      resize: true,
-      data: data,
-      xkey: 'x',
-      ykeys: ['y'],
-      labels: ['Members'],
-      xLabelAngle: 45,
-      xLabelFormat: function (d) {
-        if ($this.graphMode.isDailyLoginMonthly)
-          return $this.arrMonths[d.getMonth()];
-        else {
-          return $this.arrMonths[d.getMonth()] + '-' +
-            ("0" + (d.getDate())).slice(-2) + '-' +
-            d.getFullYear();
-        }
+    var config = {
+      type: 'line',
+      data: {
+        labels: this.graphMode.dailyLoginMode == this.mode.Weekly ? weeklyLabel : data,
+        datasets: [{
+          label: "Total Cases",
+          data: data,
+          backgroundColor: '#3c8dbc',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }],
+
       },
-      lineColors: ['#3c8dbc'],
-      hideHover: 'auto'
-    });
-    setTimeout(() => {
-      area.redraw();
-    }, 5);
+
+      options: {
+        scales: {
+          xAxes: [{
+            type: this.graphMode.dailyLoginMode == this.mode.Weekly ? undefined : "time",
+            time: {
+              displayFormats: {
+                'millisecond': 'MMM DD',
+                'second': 'MMM DD',
+                'minute': 'MMM DD',
+                'hour': 'MMM DD',
+                'day': 'MMM DD',
+                'week': 'MMM DD',
+                'month': 'MMM',
+                'quarter': 'MMM DD',
+                'year': 'MMM DD',
+              },
+              unit: this.graphMode.dailyLoginMode == this.mode.monthly ? "month" : ""
+            },
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }],
+        },
+      }
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('daily-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    new Chart(ctx, config);
   }
   CustomerChart(start, end) {
-    var $this = this;
-    var data = [
-      { x: '2016-05-10', Trial: 200, Boiled: 200, },
-      { x: '2016-05-11', Trial: 15, Boiled: 275, },
-      { x: '2016-05-12', Trial: 80, Boiled: 20, },
-      { x: '2016-05-13', Trial: 100, Boiled: 200, },
-      { x: '2016-05-14', Trial: 50, Boiled: 60, },
-      { x: '2016-05-15', Trial: 75, Boiled: 65, },
-      { x: '2016-05-16', Trial: 175, Boiled: 95, },
-      { x: '2016-05-17', Trial: 150, Boiled: 95, },
-      { x: '2016-05-18', Trial: 120, Boiled: 95, },
-      { x: '2016-05-19', Trial: 60, Boiled: 95, },
-      { x: '2016-05-20', Trial: 10, Boiled: 95, }
-    ];
-    var area = new Morris.Area({
-      element: 'customer-chart',
-      resize: true,
-      data: data,
-      xkey: 'x',
-      ykeys: ['Trial', 'Boiled'],
-      labels: ['Trial Customer', 'Boiled Customer'],
-      xLabels: 'day',
-      xLabelAngle: 45,
-      xLabelFormat: function (d) {
-        return $this.arrMonths[d.getMonth()] + '-' +
-          ("0" + (d.getDate())).slice(-2) + '-' +
-          d.getFullYear();
+    var data;
+    var data1;
+    var weeklyLabel;
+    if (this.graphMode.customerMode == this.mode.DateWise) {
+      data = [
+        { x: '2016-05-10', y: 10 },
+        { x: '2016-05-11', y: 60 },
+        { x: '2016-05-12', y: 30 },
+        { x: '2016-05-13', y: 80 },
+        { x: '2016-05-14', y: 50 },
+        { x: '2016-05-15', y: 90 },
+        { x: '2016-05-16', y: 70 },
+        { x: '2016-05-17', y: 75 },
+        { x: '2016-05-18', y: 90 },
+        { x: '2016-05-19', y: 100 },
+        { x: '2016-05-20', y: 110 }
+      ];
+      data1 = [
+        { x: '2016-05-10', y: 10 },
+        { x: '2016-05-11', y: 80 },
+        { x: '2016-05-12', y: 30 },
+        { x: '2016-05-13', y: 80 },
+        { x: '2016-05-14', y: 50 },
+        { x: '2016-05-15', y: 90 },
+        { x: '2016-05-16', y: 70 },
+        { x: '2016-05-17', y: 75 },
+        { x: '2016-05-18', y: 90 },
+        { x: '2016-05-19', y: 100 },
+        { x: '2016-05-20', y: 110 }
+      ];
+    }
+    else if (this.graphMode.customerMode == this.mode.Weekly) {
+      data = [
+        { x: '1-7', y: 10 },
+        { x: '8-14', y: 60 },
+        { x: '15-21', y: 30 },
+        { x: '22-28', y: 80 },
+      ];
+      data1 = [
+        { x: '1-7', y: 10 },
+        { x: '8-14', y: 50 },
+        { x: '15-21', y: 30 },
+        { x: '22-28', y: 80 },
+      ];
+      weeklyLabel =
+        ['1-7', '8-14', '15-21', '22-28'];
+
+    }
+    else {
+      data = [
+        { x: '2015-01', y: 0, },
+        { x: '2015-02', y: 54, },
+        { x: '2015-03', y: 243, },
+        { x: '2015-04', y: 206, },
+        { x: '2015-05', y: 161, },
+        { x: '2015-06', y: 187, },
+        { x: '2015-07', y: 210, },
+        { x: '2015-08', y: 204, },
+        { x: '2015-09', y: 224, },
+        { x: '2015-10', y: 301, },
+        { x: '2015-11', y: 262, },
+        { x: '2015-12', y: 199, },
+      ];
+      data1 = [
+        { x: '2015-01', y: 10, },
+        { x: '2015-02', y: 54, },
+        { x: '2015-03', y: 100, },
+        { x: '2015-04', y: 206, },
+        { x: '2015-05', y: 161, },
+        { x: '2015-06', y: 187, },
+        { x: '2015-07', y: 210, },
+        { x: '2015-08', y: 204, },
+        { x: '2015-09', y: 224, },
+        { x: '2015-10', y: 301, },
+        { x: '2015-11', y: 262, },
+        { x: '2015-12', y: 199, },
+      ];
+    }
+    var config = {
+      type: 'line',
+      data: {
+        labels: this.graphMode.customerMode == this.mode.Weekly ? weeklyLabel : data,
+        datasets: [{
+          label: "Trial Customer",
+          data: data,
+          fill: false,
+          borderColor: '#3c8dbc',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        },
+        {
+          label: "Boiled Customer",
+          data: data1,
+          fill: false,
+          borderColor: '#a0d0e0',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }
+        ],
+
       },
-      lineColors: ['#a0d0e0', '#3c8dbc'],
-      hideHover: 'auto'
-    });
-    setTimeout(() => {
-      area.redraw();
-    }, 5);
+
+      options: {
+        scales: {
+          xAxes: [{
+            type: this.graphMode.customerMode == this.mode.Weekly ? undefined : "time",
+            time: {
+              displayFormats: {
+                'millisecond': 'MMM DD',
+                'second': 'MMM DD',
+                'minute': 'MMM DD',
+                'hour': 'MMM DD',
+                'day': 'MMM DD',
+                'week': 'MMM DD',
+                'month': 'MMM',
+                'quarter': 'MMM DD',
+                'year': 'MMM DD',
+              },
+              unit: this.graphMode.customerMode == this.mode.monthly ? "month" : ""
+            },
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }],
+        },
+      }
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('customer-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    new Chart(ctx, config);
   }
   CaseChart(start, end) {
+    debugger
     var $this = this;
-    var data = [
-      { x: '2016-05-10', CaseAdded: 200 },
-      { x: '2016-05-11', CaseAdded: 15 },
-      { x: '2016-05-12', CaseAdded: 80 },
-      { x: '2016-05-13', CaseAdded: 100 },
-      { x: '2016-05-14', CaseAdded: 50 },
-      { x: '2016-05-15', CaseAdded: 75 },
-      { x: '2016-05-16', CaseAdded: 175 },
-      { x: '2016-05-17', CaseAdded: 150 },
-      { x: '2016-05-18', CaseAdded: 125 },
-      { x: '2016-05-19', CaseAdded: 60 },
-      { x: '2016-05-20', CaseAdded: 10 }
-    ];
-    var area = new Morris.Area({
-      element: 'case-chart',
-      resize: true,
-      data: data,
-      xkey: 'x',
-      ykeys: ['CaseAdded'],
-      labels: ['Case Added'],
-      xLabels: 'day',
-      xLabelAngle: 45,
-      xLabelFormat: function (d) {
-        return $this.arrMonths[d.getMonth()] + '-' +
-          ("0" + (d.getDate())).slice(-2) + '-' +
-          d.getFullYear();
+    var data;
+    var weeklyLabel;
+    if (this.graphMode.caseMode == this.mode.DateWise) {
+      data = [
+        { x: '2016-05-10', y: 10 },
+        { x: '2016-05-11', y: 60 },
+        { x: '2016-05-12', y: 30 },
+        { x: '2016-05-13', y: 80 },
+        { x: '2016-05-14', y: 50 },
+        { x: '2016-05-15', y: 90 },
+        { x: '2016-05-16', y: 70 },
+        { x: '2016-05-17', y: 75 },
+        { x: '2016-05-18', y: 90 },
+        { x: '2016-05-19', y: 100 },
+        { x: '2016-05-20', y: 110 }
+      ];
+    }
+    else if (this.graphMode.caseMode == this.mode.Weekly) {
+      data = [
+        { x: '1-7', y: 10 },
+        { x: '8-14', y: 60 },
+        { x: '15-21', y: 30 },
+        { x: '22-28', y: 80 },
+      ];
+      weeklyLabel =
+        ['1-7', '8-14', '15-21', '22-28'];
+
+    }
+    else {
+      data = [
+        { x: '2015-01', y: 0, },
+        { x: '2015-02', y: 54, },
+        { x: '2015-03', y: 243, },
+        { x: '2015-04', y: 206, },
+        { x: '2015-05', y: 161, },
+        { x: '2015-06', y: 187, },
+        { x: '2015-07', y: 210, },
+        { x: '2015-08', y: 204, },
+        { x: '2015-09', y: 224, },
+        { x: '2015-10', y: 301, },
+        { x: '2015-11', y: 262, },
+        { x: '2015-12', y: 199, },
+      ];
+    }
+    var config = {
+      type: 'line',
+      data: {
+        labels: this.graphMode.caseMode == this.mode.Weekly ? weeklyLabel : data,
+        datasets: [{
+          label: "Total Cases",
+          data: data,
+          backgroundColor: '#3c8dbc',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }],
+
       },
-      lineColors: ['#3c8dbc'],
-      hideHover: 'auto'
-    });
-    setTimeout(() => {
-      area.redraw();
-    }, 5);
+
+      options: {
+        scales: {
+          xAxes: [{
+            type: this.graphMode.caseMode == this.mode.Weekly ? undefined : "time",
+            time: {
+              displayFormats: {
+                'millisecond': 'MMM DD',
+                'second': 'MMM DD',
+                'minute': 'MMM DD',
+                'hour': 'MMM DD',
+                'day': 'MMM DD',
+                'week': 'MMM DD',
+                'month': 'MMM',
+                'quarter': 'MMM DD',
+                'year': 'MMM DD',
+              },
+              unit: this.graphMode.caseMode == this.mode.monthly ? "month" : ""
+            },
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }],
+        },
+      }
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('case-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    new Chart(ctx, config);
   }
 
-  ReferralGraph(start, end) {
-    var $this = this;
-    var data = [
-      { x: '2016-05-10', ReferralJoin: 200, ReferralSend: 200 },
-      { x: '2016-05-11', ReferralJoin: 275, ReferralSend: 100 },
-      { x: '2016-05-12', ReferralJoin: 20, ReferralSend: 150 },
-      { x: '2016-05-13', ReferralJoin: 200, ReferralSend: 50 },
-      { x: '2016-05-14', ReferralJoin: 60, ReferralSend: 75 },
-      { x: '2016-05-15', ReferralJoin: 65, ReferralSend: 100 },
-      { x: '2016-05-16', ReferralJoin: 95, ReferralSend: 200 },
-      { x: '2016-05-17', ReferralJoin: 95, ReferralSend: 300 },
-      { x: '2016-05-18', ReferralJoin: 95, ReferralSend: 375 },
-      { x: '2016-05-19', ReferralJoin: 95, ReferralSend: 300 },
-      { x: '2016-05-20', ReferralJoin: 95, ReferralSend: 200 }
-    ];
-    var area = new Morris.Area({
-      element: 'referral-chart',
-      resize: true,
-      data: data,
-      xkey: 'x',
-      ykeys: ['ReferralJoin', 'ReferralSend'],
-      labels: ['Referral Join', 'Referral Send'],
-      xLabels: 'day',
-      xLabelAngle: 45,
-      xLabelFormat: function (d) {
-        return $this.arrMonths[d.getMonth()] + '-' +
-          ("0" + (d.getDate())).slice(-2) + '-' +
-          d.getFullYear();
-      },
+  BankGraph() {
+    // var canvas = document.getElementById("referral-chart");
 
-      lineColors: ['#a0d0e0', '#3c8dbc'],
-      hideHover: 'auto'
+    var data = {
+      labels: ["DCB Bank", "HDFC Bank", "RBS Bank",],
+      datasets: [{
+        data: [40, 20, 40],
+        backgroundColor: ['#c0504e', '#4aacc5', '#b9cf8a'],
+        borderColor: 'white',
+        borderWidth: 1,
+      }]
+    };
+    var randomScalingFactor = function () {
+      return Math.round(Math.random() * 100);
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('bank-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    var myDoughnut = new Chart(ctx, {
+      type: 'pie',
+      data: data,
+      showDatapoints: true,
+      options: {
+        tooltips: {
+          enabled: true
+        },
+        pieceLabel: {
+          mode: 'value'
+        },
+        responsive: true,
+        legend: {
+          position: 'right',
+        },
+        title: {
+          display: true,
+          text: 'Bank',
+          fontSize: 20
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        }
+      }
     });
-    setTimeout(() => {
-      area.redraw();
-    }, 5);
+
+  }
+  BranchGraph() {
+    // var canvas = document.getElementById("referral-chart");
+
+    var data = {
+      labels: ["DCB Bank", "HDFC Bank", "RBS Bank",],
+      datasets: [{
+        data: [40, 20, 40],
+        backgroundColor: ['#c0504e', '#4aacc5', '#b9cf8a'],
+        borderColor: 'white',
+        borderWidth: 1,
+      }]
+    };
+    var randomScalingFactor = function () {
+      return Math.round(Math.random() * 100);
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('branch-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    var myDoughnut = new Chart(ctx, {
+      type: 'pie',
+      data: data,
+      showDatapoints: true,
+      options: {
+        tooltips: {
+          enabled: true
+        },
+        pieceLabel: {
+          mode: 'value'
+        },
+        responsive: true,
+        legend: {
+          position: 'right',
+        },
+        title: {
+          display: true,
+          text: 'Branch',
+          fontSize: 20
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        }
+      }
+    });
+
+  }
+  RecourseGraph() {
+    // var canvas = document.getElementById("referral-chart");
+
+    var data = {
+      labels: ["Roda", "CRI_CASE", "SEC_25c", "SEC9 RO", "ARB"],
+      datasets: [{
+        data: [20, 20, 20, 30, 10],
+        backgroundColor: ['#c0504e', '#4aacc5', '#b9cf8a', '#d9cf8a', '#c9cf8a'],
+        borderColor: 'white',
+        borderWidth: 1,
+      }]
+    };
+    var randomScalingFactor = function () {
+      return Math.round(Math.random() * 100);
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('recourse-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    var myDoughnut = new Chart(ctx, {
+      type: 'pie',
+      data: data,
+      showDatapoints: true,
+      options: {
+        tooltips: {
+          enabled: true
+        },
+        pieceLabel: {
+          mode: 'value'
+        },
+        responsive: true,
+        legend: {
+          position: 'right',
+        },
+        title: {
+          display: true,
+          text: 'Recourse',
+          fontSize: 20
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        }
+      }
+    });
+
   }
 }
