@@ -182,6 +182,53 @@
           </div>
 
         </div>
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Most Active Employees</h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Last Login</th>
+                    <th>Total Login</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
+                    <tr *ngIf="i<5">
+                      <td>{{i+1}}</td>
+                      <td>{{item.Name}}</td>
+                      <td>{{item.Designation}}</td>
+                      <td>{{item.LastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
+                      <td>{{item.TotalLogin}}</td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="text-align:center">
+            <a routerLink="/admin/employeeactive" class="btn btn-sm btn-default btn-flat">View More</a>
+          </div>
+          <!-- /.box-footer -->
+        </div>
       </section>
       <!-- /.Left col -->
       <!-- right col (We are only adding the ID to make the widgets sortable)-->
@@ -238,6 +285,57 @@
           </div>
 
         </div>
+        <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Recently Updated Cases</h3>
+  
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                  <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                    <tr>
+                      <th>CaseId</th>
+                      <th>Name</th>
+                      <th>Resource Type</th>
+                      <th>Near Hearing Date</th>
+                      <th>Branch</th>
+                      <th>Employee</th>
+                      <th>Last Update</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <ng-template ngFor let-item [ngForOf]="arrCaseList" let-i="index">
+                      <tr *ngIf="i<5">
+                        <td>{{item.CaseId}}</td>
+                        <td>{{item.Name}}</td>
+                        <td>{{item.ResourceType}}</td>
+                        <td>{{item.NearHearingDate | date}}</td>
+                        <td>{{item.Branch}}</td>
+                        <td>{{item.Employee}}</td>
+                        <td>{{item.LastUpdate | date}}</td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix" style="text-align:center">
+              <a routerLink="/admin/case" class="btn btn-sm btn-default btn-flat">View More</a>
+            </div>
+            <!-- /.box-footer -->
+          </div>
       </section>
       <!-- right col -->
     </div>
