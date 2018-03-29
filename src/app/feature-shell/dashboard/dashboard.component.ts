@@ -22,7 +22,8 @@ export class DashboardComponent implements OnInit {
     caseMode: this.mode.monthly,
     referralMode: this.mode.monthly
   }
-
+  arrActiveEmployeeList = [];
+  arrCaseList = [];
   constructor() { }
 
   ngOnInit() {
@@ -33,6 +34,8 @@ export class DashboardComponent implements OnInit {
     this.BankGraph();
     this.BranchGraph();
     this.RecourseGraph();
+    this.MostActiveEmployeeList();
+    this.CaseUpdateList();
     $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter').daterangepicker({
       autoApply: true,
       locale: {
@@ -61,6 +64,26 @@ export class DashboardComponent implements OnInit {
       }
     );
 
+  }
+  MostActiveEmployeeList() {
+    this.arrActiveEmployeeList = [
+      { Name: 'Anup', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 75 },
+      { Name: 'Puneet', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 70 },
+      { Name: 'Vipin', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 60 },
+      { Name: 'Anil', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 55 },
+      { Name: 'Mohit', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 50 },
+      { Name: 'Sourav', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 33 },
+    ]
+  }
+  CaseUpdateList() {
+    this.arrCaseList = [
+      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+    ]
   }
   ShowHideModeFilter(mode, graphMode) {
     switch (graphMode) {
