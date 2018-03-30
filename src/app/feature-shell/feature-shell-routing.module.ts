@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LFAuthantication } from '../shared/services/lfAuthantication-service';
-
+import {EmployeeActiveComponent} from './dashboard/EmployeeActive/employeeActive.component';
+import { LFAuthantication } from '../shared/services/lfAuthantication-service'
 const featureShellRoutes: Routes = [
     {
         path: 'admin', component: FeatureShellComponent, children: [
@@ -19,8 +19,9 @@ const featureShellRoutes: Routes = [
             { path: 'wallet', loadChildren:'app/feature-shell/wallet/wallet.module#WalletModule' },          
             { path: 'calendar', component: CalendarComponent },
             { path: 'dashboard', component: DashboardComponent },
-            {path: 'invoices' ,loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule'},
-            { path: '', redirectTo: 'user', pathMatch: 'full' }
+            { path: 'employeeactive', component: EmployeeActiveComponent },
+            { path: '', redirectTo: 'user', pathMatch: 'full' },
+            {path:'invoice', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule' }
         ]
     }
 ];

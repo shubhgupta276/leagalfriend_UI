@@ -228,7 +228,7 @@ export class BillingComponent implements OnInit {
                  //alert($row.find('#spnInvoiceNo').html())
                 $this.arrInvoiceNo.push($row.find('#spnInvoiceNo').html());
 
-                $("#btnCreateInvoice").show();
+                
              }
             }
           

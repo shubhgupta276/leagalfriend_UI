@@ -10,6 +10,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthService } from '../auth-shell/auth-shell.service';
 import {CommonModule} from '@angular/common';
+import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActive.component';
 @NgModule({
   imports: [
     // UserModule,
@@ -20,7 +21,7 @@ import {CommonModule} from '@angular/common';
     FeatureShellRoutingModule,
     CommonModule 
   ],
-  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent
+  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent,EmployeeActiveComponent
   ],
   providers: [AuthService]
 })
