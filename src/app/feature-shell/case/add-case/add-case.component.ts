@@ -70,6 +70,7 @@ export class AddCaseComponent implements OnInit {
 
 
   GetAllCourt() {
+
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -77,7 +78,7 @@ export class AddCaseComponent implements OnInit {
     this.authService.getCourtDDL(reqData).subscribe(
 
       result => {
-
+        
         result.courts.forEach(function (value) {
 
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
@@ -127,7 +128,7 @@ export class AddCaseComponent implements OnInit {
           
           $this.State.push(value);
           $this.arDdl.push({name:value.stateName});
-          debugger
+          
         });
         console.log(result);
       },
@@ -147,7 +148,7 @@ export class AddCaseComponent implements OnInit {
 
         result.recourses.forEach(function (value) {
 
-          debugger
+          
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
           $this.Resource.push(value);
         });

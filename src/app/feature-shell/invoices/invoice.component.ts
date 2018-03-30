@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Router } from '@angular/router';
+import { filter } from "rxjs/operator/filter";
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 declare var $;
 @Component({
     selector: "app-invoice",
@@ -8,13 +10,36 @@ declare var $;
    
   })
   export class InvoiceComponent implements OnInit{
-    debugger
+    
+    // @Input() editCaseForm: FormGroup;
+    editCaseForm1: FormGroup;
     invoice:any[]=[];
-constructor(){
- 
+    arListBanks: any[] = [{BankName:"HDFC BANK LTD."}];
+constructor(private fb: FormBuilder){
+ this.createForm(null);
 }
+arrFilter=[];
 ngOnInit(){
   this.getInvoice();
+ 
+  
+  
+  var arr = JSON.parse(localStorage.getItem('invoiceNo'));
+  this.invoice = this.invoice.filter(
+   
+    invoice =>
+    {
+      this.arrFilter=[];
+     arr.forEach(item => {
+        if(invoice.InvoiceNumber === item)
+        {
+          this.arrFilter.push(invoice);           
+        }
+      });
+      invoice = this.arrFilter[0];
+      return invoice;
+    }
+    );
   $($.document).ready(function() {
           
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
@@ -75,30 +100,61 @@ ngOnInit(){
         });
       
 
-        //start bank filter
+         //start bank filter
+         $("#ddlBank").on("change", function () {
+           debugger
+          var status = $(this).val();
+          if (status == "All") {
+              $table.columns(2).search("").draw();
+          }
+          else if ($table.columns(2).search() !== this.value) {
+              $table.columns(2).search(this.value).draw();
+          }
+      });
+      //end bank filter
       
     });
 
 });
 }
+
+createForm(c) {
+  debugger
+  this.editCaseForm1 = this.fb.group({
+
+    Bank: [c == null ? null : c.Bank],
+    Amount:[c == null ? null : c.Amount],
+    CaseID:[c == null ? null : c.CaseID],
+  
+
+  });
+}
+
+
+
+showModal(invoice)
+{
+  this.createForm(invoice);
+ $("#filterCaseModal").modal("show");
+}
 getInvoice()
 {
   this.invoice.push(
 
-    {InvoiceNo: "1",Date:'25-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "2",Date:'26-03-2018',Bank:'HDFC BANK LTD.'},
-    {InvoiceNo: "3",Date:'27-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "4",Date:'1-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "5",Date:'2-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "6",Date:'5-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "7",Date:'6-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "8",Date:'7-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "9",Date:'9-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "10",Date:'8-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "11",Date:'25-03-2018',Bank:'DCB BANK LTD.'},
-    {InvoiceNo: "12",Date:'25-03-2018',Bank:'DCB BANK LTD.'},
+      { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100",Billed:"Yes",Branch:"Mumbai",BillingDate:"12-02-2018",InvoiceNumber:"180213-002" },
+      { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11",Billed:"Yes",Branch:"Delhi",BillingDate:"10-03-2018",InvoiceNumber:"180215-002" },
+      { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300",Billed:"No",Branch:"Delhi",BillingDate:"12-02-2018",InvoiceNumber:"170213-002" },
+      { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"No",Branch:"Mumbai",BillingDate:"12-06-2018",InvoiceNumber:"180223-002" },
+      { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300",Billed:"Yes",Branch:"Mumbai",BillingDate:"12-08-2018",InvoiceNumber:"160213-002" },
+      { Bank: "RBS BANK", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588",Billed:"Yes",Branch:"Delhi",BillingDate:"12-08-2018",InvoiceNumber:"180883-002" },
+      { Bank: "RBS BANK", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100",Billed:"No",Branch:"Mumbai",BillingDate:"12-09-2018",InvoiceNumber:"177213-002" },
+      { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5",Billed:"Yes",Branch:"Gujrat",BillingDate:"12-10-2018",InvoiceNumber:"180255-002" },
+      { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"Yes",Branch:"Delhi",BillingDate:"12-10-2018",InvoiceNumber:"180266-002" },
+      { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"No",Branch:"Mumbai",BillingDate:"12-11-2018",InvoiceNumber:"180277-002" },
+      { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100",Billed:"Yes",Branch:"Pune",BillingDate:"12-10-2018",InvoiceNumber:"180223-002" },
   );
-  debugger
 }
+
+
 }
   
