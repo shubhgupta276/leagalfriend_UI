@@ -58,7 +58,7 @@
                           </label>
                           <div class="col-md-9">
                             <!-- <input class="form-control" placeholder="Recourse" formControlName="recourse"> -->
-                            <select tabindex="2" formControlName="recourse" class="form-control select2me">
+                            <select tabindex="2" formControlName="recourseId" class="form-control select2me">
                                 <option *ngFor="let option of Resource" [ngValue]="option.recourseId">
                                     {{ option.recourseName }}
                                   </option>
@@ -85,7 +85,7 @@
                           </label>
                           <div class="col-md-9">
                             <!-- <input class="form-control" placeholder="Court" formControlName="court"> -->
-                            <select name="COURT_ID" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="court">
+                            <select name="COURT_ID" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="courtCaseId">
                                 <option *ngFor="let option of Court" [ngValue]="option.courtId">
                                     {{ option.courtName }}
                                   </option>
@@ -98,7 +98,7 @@
                           </label>
                           <div class="col-md-9">
                             <!-- <input class="form-control" placeholder="State" formControlName="state"> -->
-                            <select name="STATE" tabindex="5" class="form-control select2me" id="STATE" formControlName="state">
+                            <select name="STATE" tabindex="5" class="form-control select2me" id="STATE" formControlName="stateId">
                                 <option *ngFor="let option of State" [ngValue]="option.stateId">
                                     {{ option.stateName }}
                                   </option>
@@ -111,7 +111,7 @@
                           </label>
                           <div class="col-md-9">
                             <!-- <input class="form-control" placeholder="Parent Case" formControlName="parentCase"> -->
-                            <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE" formControlName="parentCase">
+                            <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE" formControlName="courtCaseId">
                                 <option *ngFor="let option of ParentCases" [ngValue]="option.id">
                                     {{ option.courtCaseId }}
                                   </option>
@@ -139,7 +139,7 @@
                           </label>
                           <div class="col-md-9">
                             <!-- <input class="form-control" placeholder="Customer Name" formControlName="customerName"> -->
-                            <select name="CUSTOMER_NAME" tabindex="7" class="form-control select2me" id="CUSTOMER_NAME" formControlName="customerName">
+                            <select name="CUSTOMER_NAME" tabindex="7" class="form-control select2me" id="CUSTOMER_NAME" formControlName="customerId">
                                 <option *ngFor="let option of CustomerName" [ngValue]="option.customerId">
                                     {{ option.FirstName }}
                                   </option>
@@ -183,7 +183,7 @@
                             </label>
                             <div class="col-md-9">
                               <!-- <input class="form-control" placeholder="Branch" formControlName="branch"> -->
-                              <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id" formControlName="branch">
+                              <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id" formControlName="branchId">
                                 <option *ngFor="let option of Branch" [ngValue]="option.branchId">
                                     {{ option.branchName }}
                                   </option>
@@ -198,7 +198,7 @@
                               <!-- <input class="form-control" placeholder="Filing date" formControlName="filingdate"> -->
                               <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                                 <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                    size="10" value="2017-11-07" formControlName="filingDate">
+                                    size="10" value="2017-11-07" formControlName="filingdate">
                                 <div class="input-group-addon">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -211,7 +211,7 @@
                             </label>
                             <div class="col-md-9">
                               <!-- <input class="form-control" placeholder="Stage" formControlName="stage"> -->
-                              <select name="STAGE" tabindex="5" class="form-control select2me" id="STAGE" required="" formControlName="stage">
+                              <select name="STAGE" tabindex="5" class="form-control select2me" id="STAGE" required="" formControlName="stageId">
                                 <option *ngFor="let option of Stage" [ngValue]="option.stageId">
                                     {{ option.stageName }}
                                   </option>
@@ -224,7 +224,7 @@
                             </label>
                             <div class="col-md-9">
                               <!-- <input class="form-control" placeholder="Employee" formControlName="employee"> -->
-                              <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE" formControlName="employee">
+                              <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE" formControlName="employeeId">
                                 <option  value="">Select Employee</option> 
                                 <option *ngFor="let option of Employee" [ngValue]="option.employeeId">
                                     {{ option.FirstName }}
@@ -238,7 +238,7 @@
                             </label>
                             <div class="col-md-9">
                               <!-- <input class="form-control" placeholder="Court place" formControlName="courtplace"> -->
-                              <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE" formControlName="courtplace">
+                              <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE" formControlName="courtId">
                                 <option *ngFor="let option of CourtPlace" [ngValue]="option.courtId">
                                     {{ option.courtName }}
                                   </option>

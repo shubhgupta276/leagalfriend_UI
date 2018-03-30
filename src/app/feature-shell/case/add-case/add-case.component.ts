@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+
 // import {
 //   CaseResource, CaseManager, CaseCourt, CaseState, ParentCase, CaseCustomerName,
 //   CaseBranch, CaseStage, CaseEmployee, CaseCourtPlace, KeyValue
@@ -32,6 +33,9 @@ export class AddCaseComponent implements OnInit {
   Employee: any = [];
   CourtPlace: any[] = [];
   fillignDateValue: string;
+  config: any;
+  configData: any;
+  arDdl:any=[];
   AddCaseUser() {
     this.addCaseForm = this.fb.group({
 
@@ -57,12 +61,16 @@ export class AddCaseComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
-
+    this.config = {
+      displayKey: "name",//if objects array passed which key to be displayed defaults to description,
+      search: true //enables the search plugin to search in the list
+    }
     this.AddCaseUser();
   }
 
 
   GetAllCourt() {
+
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -70,7 +78,7 @@ export class AddCaseComponent implements OnInit {
     this.authService.getCourtDDL(reqData).subscribe(
 
       result => {
-
+        
         result.courts.forEach(function (value) {
 
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
@@ -117,7 +125,10 @@ export class AddCaseComponent implements OnInit {
 
 
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
+          
           $this.State.push(value);
+          $this.arDdl.push({name:value.stateName});
+          
         });
         console.log(result);
       },
@@ -137,7 +148,7 @@ export class AddCaseComponent implements OnInit {
 
         result.recourses.forEach(function (value) {
 
-
+          
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
           $this.Resource.push(value);
         });
@@ -280,6 +291,7 @@ export class AddCaseComponent implements OnInit {
   }
 
   ngOnInit() {
+
     const self = this;
     $(document).ready(function () {
       $('.input-group.date').datepicker().on('changeDate', function (ev) {
@@ -302,24 +314,25 @@ export class AddCaseComponent implements OnInit {
 
   getRunningCase() {
 
-    var $this = this
-    var reqData = {
-      userId: this._storageService.getUserId(),
-    };
-    this.authService.getCaseRunning(reqData).subscribe(
+    // $this = this;
+    // var reqData = {
+    // erId: this._storageService.getUserId(),
+    // };
+    //   authService.getCaseRunning(reqData).subscribe(
 
-      result => {
+    //        {  
 
-        result.forEach(function (value) {
+    //   sult.forEach(function (value) {
 
-          $this.ParentCases.push(
-            {
-               courtCaseId:value.courtCaseId,
-            }
-          );
-        }
-        );
-      })
+    //   $this.ParentCases.push(
+    //     {
+    //            courtCaseId:value.courtCaseId,
+    //         }
+    //       );
+    //     }
+    //     );
+    //   })
+
   }
 }
 
