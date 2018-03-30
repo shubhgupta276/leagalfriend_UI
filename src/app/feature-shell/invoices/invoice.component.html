@@ -55,9 +55,11 @@
                   <td style="display:none">{{item.Amount}}</td>
                   <td>
                     <a title="Edit">
-                      <i class="fa fa-edit"></i>
+                      <i class="fa fa-edit"></i>&nbsp; 
                     </a>
-
+                    <a title="download">
+                      <button id="cmd" class="btn-success" (click)="downloadPDF()">Download File <i class="fa fa-file"></i></button> 
+                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -70,7 +72,8 @@
       <!-- /.col -->
     </div>
     <!-- /.row -->
-
+    
+    
     <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
       <div class="modal-dialog">
         <div class="modal-content" style="border-radius: 5px;">
@@ -163,6 +166,11 @@
         <!-- /.modal-dialog -->
       </div>
     </div>
+    <div style="display:none" id="hiddenTemplate">
+
+    </div>
   </section>
   <!-- /.content -->
 </div>
+
+
