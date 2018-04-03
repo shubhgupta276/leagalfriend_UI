@@ -29,7 +29,7 @@ export class BillingComponent implements OnInit {
             $('#btnSearch').click(function () {
                 debugger
                 $('#btnFilter').addClass("bgColor");
-                var bankVal = $('#ddlBank').val();
+                var bankVal = $('#ddlBank1').val();
 
 
 
@@ -39,6 +39,7 @@ export class BillingComponent implements OnInit {
                     $table.columns(2).search("").draw();
                 }
                 else if ($table.columns(2).search() !== bankVal) {
+                   
                     $table.columns(2).search(bankVal).draw();
                 }
                 //end recourse filter
@@ -52,7 +53,10 @@ export class BillingComponent implements OnInit {
                         var rowDate = new Date(data[7]);
 
                         if (rowDate >= startDate && rowDate <= endDate) {
+                            $(".chkInvoice").show();
+                            $("#btncreateInvoice").show();
                             return true;
+                            
                         }
                         else {
                             return false;
@@ -60,7 +64,7 @@ export class BillingComponent implements OnInit {
 
                     }
                 );
-
+               // $("#chkInvoice").show();
                 $table.draw();
                 $("#closebtnFilter").click();
 
@@ -233,7 +237,7 @@ export class BillingComponent implements OnInit {
             }
           
         });
-        debugger
+        
         //this.arrInvoiceNo.push(invoiceNo);
         localStorage.setItem('invoiceNo', JSON.stringify(this.arrInvoiceNo));
     }

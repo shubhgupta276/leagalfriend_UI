@@ -32,12 +32,12 @@
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2">
                     <div style="margin-left:-315px;margin-bottom: -35px;">
-                        <label style="width:85px" class="billingLabel">Branch:</label>
+                        <label style="width:75px" class="billingLabel">Branch:</label>
                         <select id="ddlBillingBranch" class="billingDropdown">
                         <option value="All">All</option>
                         <option *ngFor="let item of arListBranch" value="{{item}}">{{item}}</option>
                         </select>
-                        <button  class="btn btn-default" data-target="#filterCaseModal" data-toggle="modal" id="btnFilter" style="margin-left: -1px;" type="button">Generate Invoice</button>
+                        <button  class="btn btn-default" data-target="#filterCaseModal" data-toggle="modal" id="btnFilter" style="margin-left: -1px" type="button">Generate Invoice</button>
                         </div>
                   <label class="custom-label">Show
                     <select class="input-sm" id="ddlLengthMenu">
@@ -52,7 +52,7 @@
             <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th></th>
+                  <th style="display:none"  class="chkInvoice"></th>
                   <th>#</th>
                   <th>Bank
                 <select class="role input-sm" id="ddlBank"> 
@@ -95,7 +95,7 @@
               <tbody>
                 
                 <tr *ngFor="let item of arBillingData; let i=index">
-                <td><input type="checkbox"  id="chkInvoice" name="vehicle" value=""><br></td>
+                <td style="display:none"  class="chkInvoice"><input type="checkbox"  class="chkInvoice" name="vehicle" value=""><br></td>
                   <td>{{i+1}}</td>
                   <td>{{item.Bank}}</td>
                   <td>{{item.CaseID}}</td>
@@ -128,9 +128,9 @@
         <!-- /.box -->
       </div>
       <!-- /.col -->
-      <div style="margin-left:300px">
-    <a class="btn default"   [routerLink]="['/admin/invoiceform']">sdgfsdv</a>
-       <button  id="btnCreateInvoice"><a class="btn default"  (click)="InvoiceChange()" [routerLink]="['/admin/invoices']">Create Invoice</a></button> 
+      <div style="margin-left:16px;display:none"id="btncreateInvoice">
+    <button><a class="btn default"   [routerLink]="['/admin/invoices/invoiceform']">Create Invoice</a></button>
+       <!-- <button  id="btnCreateInvoice"><a class="btn default"  (click)="InvoiceChange()" [routerLink]="['/admin/invoices']">Create Invoice</a></button>  -->
       </div>
     </div>
     <!-- Filter Case Starts -->
@@ -150,8 +150,8 @@
             <div class="row caseModalRow">
               <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
                 <label class="caseSearchLabel">Bank:</label>
-                <select id="ddlBank" class="caseFilterDropDown1">
-                  <option value="All">All</option>
+                <select id="ddlBank1" class="caseFilterDropDown1">
+                  <!-- <option value="All">All</option> -->
                   <option value="DCB BANK LTD.">DCB BANK LTD.</option>
                   <option value="HDFC BANK LTD.">HDFC BANK LTD.</option>
                   <option ></option>
