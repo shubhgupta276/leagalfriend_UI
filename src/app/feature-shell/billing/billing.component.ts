@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { parse } from 'url';
 import { Jsonp } from '@angular/http/src/http';
+
 declare var $;
 
 @Component({
@@ -9,6 +10,7 @@ declare var $;
     styleUrls: ['./billing.component.css']
 })
 export class BillingComponent implements OnInit {
+
     arBillingData: any[] = [];
     arListBanks: any[] = [];
     arListRecourse: any[] = [];
@@ -16,7 +18,7 @@ export class BillingComponent implements OnInit {
     arListAmount: any[] = [];
     arListCaseID: any[] = [];
     arListBranch: any[] = [];
-    arrInvoiceNo = [];
+    arrInvoiceDetails = [];
     constructor() { }
     $table: any;
     ngOnInit() {
@@ -24,12 +26,13 @@ export class BillingComponent implements OnInit {
         this.getBillingData();
         this.setDropdownUniqueValues();
         this.chaeck();
+
         $($.document).ready(function () {
 
             $('#btnSearch').click(function () {
                 debugger
                 $('#btnFilter').addClass("bgColor");
-                var bankVal = $('#ddlBank').val();
+                var bankVal = $('#ddlBank1').val();
 
 
 
@@ -39,6 +42,7 @@ export class BillingComponent implements OnInit {
                     $table.columns(2).search("").draw();
                 }
                 else if ($table.columns(2).search() !== bankVal) {
+
                     $table.columns(2).search(bankVal).draw();
                 }
                 //end recourse filter
@@ -52,7 +56,10 @@ export class BillingComponent implements OnInit {
                         var rowDate = new Date(data[7]);
 
                         if (rowDate >= startDate && rowDate <= endDate) {
+                            $(".chkInvoice").show();
+                            $("#btncreateInvoice").show();
                             return true;
+
                         }
                         else {
                             return false;
@@ -60,7 +67,7 @@ export class BillingComponent implements OnInit {
 
                     }
                 );
-
+                // $("#chkInvoice").show();
                 $table.draw();
                 $("#closebtnFilter").click();
 
@@ -215,27 +222,32 @@ export class BillingComponent implements OnInit {
         });
 
     }
-    InvoiceChange() {
-        localStorage.clear();
+
+
+    CreateInvoice() {        
         var $this = this;
         $("#example1 tr").each(function (i) {
             var $row = $(this);
-            if(i>0)
-            {
-             if($row.find("input[type=checkbox]").prop('checked'))
-             {
-                
-                 //alert($row.find('#spnInvoiceNo').html())
-                $this.arrInvoiceNo.push($row.find('#spnInvoiceNo').html());
+            if (i > 0) {
+                if ($row.find("input[type=checkbox]").prop('checked')) {
+                    debugger
+                    $this.arrInvoiceDetails.push(
+                        {
+                            caseId: $row.find('#spnCaseId').html(),
+                            recourse: $row.find('#spnRecourse').html(),
+                            stage: $row.find('#spnStage').html(),
+                            invoiceNo: $row.find('#spnInvoiceNo').html(),
+                            amount: $row.find('#spnAmount').html(),
+                            billingDate: $row.find('#spnBillingDate').html(),
+                        })
 
-                
-             }
+                }
             }
-          
+
         });
-        debugger
+
         //this.arrInvoiceNo.push(invoiceNo);
-        localStorage.setItem('invoiceNo', JSON.stringify(this.arrInvoiceNo));
+        localStorage.setItem('invoiceDetails', JSON.stringify(this.arrInvoiceDetails));
     }
     setDropdownUniqueValues() {
         for (var i = 0; i < this.arBillingData.length; i++) {
@@ -275,7 +287,7 @@ export class BillingComponent implements OnInit {
 
         this.arBillingData.push(
             { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180213-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11", Billed: "Yes", Branch: "Delhi", BillingDate: "10-03-2018", InvoiceNumber: "180215-002" },
+            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11", Billed: "Yes", Branch: "Delhi", BillingDate: "12-03-2018", InvoiceNumber: "180215-002" },
             { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300", Billed: "No", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "170213-002" },
             { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-06-2018", InvoiceNumber: "180223-002" },
             { Bank: "HDFC BANK Ltd.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-08-2018", InvoiceNumber: "160213-002" },

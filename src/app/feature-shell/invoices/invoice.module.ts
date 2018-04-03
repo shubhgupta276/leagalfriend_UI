@@ -5,7 +5,11 @@ import { InvoiceFormComponent } from './invoice-form/invoiceform-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { StorageService } from '../../shared/services/storage.service';
+
+import { InstitutionService } from '../../feature-shell/master/institution/institution.service';
+
 
 
 @NgModule(
@@ -18,7 +22,9 @@ import { SelectDropDownModule } from 'ngx-select-dropdown'
             SelectDropDownModule,
             SharedModule
         ],
-        declarations: [ InvoiceComponent ,InvoiceFormComponent]
+        declarations: [ InvoiceComponent ,InvoiceFormComponent],
+        providers: [InstitutionService,StorageService]
+       
     }
 )    
 export class invoiceModule {}

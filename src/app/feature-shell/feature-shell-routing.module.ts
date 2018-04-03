@@ -21,7 +21,8 @@ const featureShellRoutes: Routes = [
             { path: 'dashboard', component: DashboardComponent },
             { path: 'employeeactive', component: EmployeeActiveComponent },
             { path: '', redirectTo: 'user', pathMatch: 'full' },
-            {path:'invoice', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule' }
+            {path:'invoices', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule' },
+           
         ]
     }
 ];

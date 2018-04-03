@@ -1,19 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import html2canvas from 'html2canvas'
-import jsPDF from 'jspdf'
+import * as html2canvas from 'html2canvas';
+import * as jsPDF from 'jspdf';
+import { InstitutionService } from '../../../feature-shell/master/institution/institution.service';
+import { Institution } from '../../../feature-shell/master/institution/institution';
+import { StorageService } from '../../../shared/services/storage.service';
+import { forEach } from '@angular/router/src/utils/collection';
 
 declare let $;
 declare let canvas;
 @Component({
-  selector: 'app-invoiceform',
-  templateUrl: './invoiceform.html',
+    selector: 'app-invoiceform',
+    templateUrl: './invoiceform.html',
 })
 export class InvoiceFormComponent implements OnInit {
-
-  arrInvoice = [];
-  invoiceNo: string = '333333';
-  template: string = `<div class="invoice-inner" id="pdfdownloaddiv">
+    arr: Institution[] = [];
+    arrInvoice = [];
+    arrInvoiceDetails = {};
+    invoiceNo: string = '333333';
+    template: string = `<div class="invoice-inner" id="pdfdownloaddiv">
   <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
       <tbody>
           <tr>
@@ -235,70 +240,141 @@ export class InvoiceFormComponent implements OnInit {
   <br>
   <br> &nbsp;
 </div>`;
-  constructor() {
-    Window["InvoiceFormComponent"] = this;
-  }
+    constructor(private _institutionService: InstitutionService, private _storageService: StorageService) {
+        Window["InvoiceFormComponent"] = this;
+    }
 
-  ngOnInit() {
+    ngOnInit() {
+        this.GetAllInstitute();
+        this.GetBillFrom();
+        this.BindInvoice();
+        // this.arrInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+    }
+    BindInvoice() {
+        var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+        var totalAmount = 0;
+        var totalDescription = "";
+        invoiceDetails.forEach(element => {
+            totalAmount = totalAmount + parseFloat(element.amount);
+            totalDescription = totalDescription + (element.caseId + "   " + element.recourse + "   " + element.stage);
+        });
+        this.arrInvoiceDetails = {
+            totalAmount: totalAmount,
+            totalDescription: totalDescription,
+            totalQuantity: invoiceDetails.length,
+            invoiceNo: Math.floor(Math.random() * 90000) + 10000
+        };
+        debugger
+    }
+    anyForm: any;
+    generatepdf() {
+        var hiddenDiv = document.getElementById('pdfdownload')
+        hiddenDiv.style.display = 'block';
+        var pdf;
+        pdf = new jsPDF();
+        pdf.addHTML(document.getElementById('pdfdownload'), function () {
 
-  }
-  anyForm: any;
-  generatepdf() {
-    var hiddenDiv = document.getElementById('pdfdownload')
-    hiddenDiv.style.display = 'block';
-    var pdf;
-    pdf = new jsPDF();
-    pdf.addHTML(document.getElementById('pdfdownload'), function () {
+            pdf.save('stacking-plan.pdf');
+            hiddenDiv.style.display = 'none';
+        });
 
-      pdf.save('stacking-plan.pdf');
-      hiddenDiv.style.display = 'none';
-    });
+    }
+    GetBillFrom() {
 
-  }
-  AddMoreInvoice() {
-    var $row = $('.invoiceRow:eq(0)')[0].outerHTML;
-    $('#itemsInvoice').append($row);
-    var lastRow = $('.invoiceRow:last');
-    $(lastRow).find('.amount').html('0');
-  }
+        this._institutionService.getBilFrom().subscribe(
+            result => {
 
-  RemoveInvoice(row) {
-    if ($('.invoiceRow').length > 1)
-      $(row).closest('tr').remove();
-    this.CalculateFinalAmount();
-  }
+                if (result.httpCode == 200) {
+                    $("#companyNameBillFrom").val(result.branches[0].branchName + ", " + result.branches[0].branchAddress + ", " + result.branches[0].branchContact, );
 
-  CalculateFinalAmount() {
-    var totalAmount = 0;
-    $('.invoiceRow').each(function () {
-      var $row = $(this);
-      var amount = 0;
-      var quantity = $row.find('.quantity').val();
-      var unitPrice = $row.find('.unitPrice').val();
-      if (quantity > 0 && unitPrice > 0) {
-        amount = quantity * unitPrice;
-      }
-      $row.find('.amount').html(amount);
-      totalAmount = totalAmount + amount;
-    })
-    $('#totalAmount').html(totalAmount);
-  }
-  SaveInvoice() {
-    var self = this;
-    var totalAmount = 0;
-    $('.invoiceRow').each(function () {
-      var $row = $(this);
-      var amount = 0;
-      var productName = $row.find('.productName').val();
-      var quantity = $row.find('.quantity').val();
-      var unitPrice = $row.find('.unitPrice').val();
-      if (quantity > 0 && unitPrice > 0) {
-        amount = quantity * unitPrice;
-      }
-      var remarks = $('#remarksInvoice').val();
-      self.arrInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, unitPrice: unitPrice, remarks: remarks })
-      debugger
-    })
-    $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
-  }
+
+                }
+                else {
+                    console.log(result);
+                }
+            },
+            err => {
+                console.log(err);
+                this.arr = [];
+
+            });
+    }
+    GetAllInstitute() {
+
+        this._institutionService.getInstitutions().subscribe(
+            result => {
+
+                if (result.httpCode == 200) {
+                    $("#companyName").val(result.institutions[2].institutionName);
+                    //   for (var i = 0; i < result.institutions.length; i++) {
+                    //     const obj = result.institutions[i];
+
+                    //     // this.arr.push({
+                    //     //   institutionName: obj.institutionName,
+                    //     //   id: obj.id
+                    //     // });
+                    //   }
+                    //   setTimeout(() => {
+                    //     //this.bindDatatable();
+                    //   }, 1);
+
+                }
+                else {
+                    console.log(result);
+                }
+            },
+            err => {
+                console.log(err);
+                this.arr = [];
+
+            });
+    }
+
+    AddMoreInvoice() {
+        var $row = $('.invoiceRow:eq(0)')[0].outerHTML;
+        $('#itemsInvoice').append($row);
+        var lastRow = $('.invoiceRow:last');
+        $(lastRow).find('.amount').html('0');
+    }
+
+    RemoveInvoice(row) {
+        if ($('.invoiceRow').length > 1)
+            $(row).closest('tr').remove();
+        this.CalculateFinalAmount();
+    }
+
+    CalculateFinalAmount() {
+        var totalAmount = 0;
+        $('.invoiceRow').each(function () {
+            var $row = $(this);
+            debugger
+            //var quantity = $row.find('.quantity').val();
+            var amount = parseFloat($row.find('.amount').val());
+            // if (quantity > 0) {
+            //     amount = amount;
+            // }
+            //$row.find('.amount').html(amount);
+            if (amount > 0)
+                totalAmount = totalAmount + amount;
+        })
+        $('#totalAmount').html(totalAmount);
+    }
+    SaveInvoice() {
+        var self = this;
+        var totalAmount = 0;
+        $('.invoiceRow').each(function () {
+            var $row = $(this);
+            var amount = 0;
+            var productName = $row.find('.productName').val();
+            var quantity = $row.find('.quantity').val();
+            var unitPrice = $row.find('.unitPrice').val();
+            if (quantity > 0 && unitPrice > 0) {
+                amount = quantity * unitPrice;
+            }
+            var remarks = $('#remarksInvoice').val();
+            self.arrInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, unitPrice: unitPrice, remarks: remarks })
+            debugger
+        })
+        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
+    }
 }
