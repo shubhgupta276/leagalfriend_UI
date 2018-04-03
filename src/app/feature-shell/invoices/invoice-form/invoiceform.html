@@ -5,15 +5,15 @@
     }
 
     .invoice-wrap {
-        width: 950px;
+        width: 800px;
         margin: 0 auto;
         background: #FFF;
-        color: #000
+        color: #000;
     }
 
     .invoice-inner {
         margin: 0 15px;
-        padding: 20px 0
+        padding: 20px 0;
     }
 
     .invoice-address {
@@ -96,6 +96,11 @@
         border-right: 1px solid #555555;
         border-top: 1px solid #555555
     }
+
+    .html2canvas-container {
+        width: 3000px !important;
+        height: 3000px !important;
+    }
 </style>
 <div class="content-wrapper">
     <div class="page-heading">
@@ -103,17 +108,17 @@
     </div>
     <!-- Main content -->
     <section class="content">
-        <div id="templateArea">            
+        <div id="templateArea">
             <div class="invoice-wrap">
-                <div class="invoice-inner">
+                <div class="invoice-inner" id="pdfdownloaddiv">
                     <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
                         <tbody>
                             <tr>
                                 <td align="center" valign="top">
                                     <div>
                                         <div id="logoDiv">
-                                            <img height="102" id="logo" src="/assets/dist/img/logo.png"
-                                                width="122" style="width: 122px; height: 102px;" data-original-title="" title="">
+                                            <img height="102" id="logo" src="/assets/dist/img/logo.png" width="122" style="width: 122px; height: 102px;" data-original-title=""
+                                                title="">
                                         </div>
                                     </div>
                                 </td>
@@ -131,8 +136,7 @@
                                                 <tr>
                                                     <td valign="top">
                                                         <strong>
-                                                            <input type="text" id="label_bill_to" value="Bill To" class="invoice-input"
-                                                                style="font-weight: bold;">
+                                                            <label>Bill To</label>
                                                         </strong>
                                                     </td>
                                                     <td align="left" valign="top">
@@ -141,9 +145,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td align="left" style="padding-left:25px;">
-                                                                            <div class="reset_editor invoice-input mce-content-body"
-                                                                                id="client_info_editor" 
-                                                                                style="width: 200px; min-height: 80px; position: relative;">
+                                                                            <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
                                                                                 <p>Global Logic
                                                                                     <br> Tower A, Oxygen Park, Plot No.7, Sector-144
                                                                                     <br> Noida, 201304</p>
@@ -167,8 +169,7 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td align="right">
-                                                                        <div class="reset_editor invoice-input mce-content-body"
-                                                                            id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">                                                                          
+                                                                        <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
                                                                             <p style="font-size: 14pt;" data-mce-style="font-size: 14pt;">Global Logic</p>
                                                                             <p>Global Logic
                                                                                 <br> Noida, 110096
@@ -206,11 +207,10 @@
                                                         </strong>
                                                     </td>
                                                     <td align="left" style="padding-left:20px">
-                                                        <input type="text" id="date" value="3/28/2018" class="invoice-input"
-                                                            style="text-align: right;">
+                                                        <input type="text" id="date" value="3/28/2018" class="invoice-input" style="text-align: right;">
                                                     </td>
                                                 </tr>
-                                               
+
                                                 <!-- /Field10-->
                                             </tbody>
                                         </table>
@@ -225,7 +225,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                       Description
+                                        Description
                                     </th>
                                     <th class="mount-header">
                                         Quantity
@@ -233,27 +233,29 @@
                                     <th class="mount-header">
                                         Unit price
                                     </th>
-                                   
+
                                     <th class="subtotal-header">
                                         Amount
                                     </th>
                                     <th width="20">&nbsp;</th>
                                 </tr>
                             </thead>
-                           
+
                             <tbody id="itemsInvoice">
                                 <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                     <td>
-                                        <textarea  OnlyString="true" class="form-control productName" type="text" placeholder="Product Name"></textarea>
+                                        <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name"></textarea>
                                     </td>
                                     <td>
-                                        <input  class="form-control quantity" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Quantity">
+                                        <input class="form-control quantity" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Quantity">
                                     </td>
                                     <td>
                                         <input class="form-control unitPrice" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Unit Price">
                                     </td>
-                                   
-                                    <td>$ <label class="amount">0</label></td>
+
+                                    <td>$
+                                        <label class="amount">0</label>
+                                    </td>
                                     <td>
                                         <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
                                             <i class="fa fa-fw fa-trash"></i>
@@ -262,7 +264,7 @@
                                 </tr>
                             </tbody>
                             <tfoot id="TotalsSection">
-                               
+
                                 <tr class="totals-row" id="TotalRow">
                                     <td class="wide-cell" colspan="2">
                                         <button type="button" (click)="AddMoreInvoice()" id="AddProduct" class="btn btn-small btn-primary">
@@ -275,7 +277,8 @@
                                         </strong>
                                     </td>
                                     <td colspan="2">
-                                       $ <label id="totalAmount">0</label>
+                                        $
+                                        <label id="totalAmount">0</label>
                                     </td>
                                 </tr>
                                 <tr class="totals-row shaped" id="PaidRow" style="display:none">
@@ -312,12 +315,12 @@
                                 <tr>
                                     <td>
                                         <textarea id="remarksInvoice" rows="2" class="form-control" placeholder="Type your notes here"></textarea>
-                                        
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <button class="btn btn bg-navy margin pull-right" (click)="SaveInvoice()" style="margin-right:0px" type="submit" >Submit</button>
+                                        <button class="btn btn bg-navy margin pull-right" (click)="SaveInvoice()" style="margin-right:0px" type="submit">Submit</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -328,7 +331,156 @@
                     <br>
                     <br> &nbsp;
                 </div>
+                <div class="invoice-inner" id="pdfdownload" style="background-color:#ffffff;padding:20px; display:none;">
+                    <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
+                        <tbody>
+                            <tr>
+                                <td align="center" valign="top">
+                                    <div>
+                                        <div id="logoDiv">
+                                            <img height="102" id="logo" src="/assets/dist/img/logo.png" style="width: 122px; height: 102px;" title="" width="122">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="invoice-address">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td align="left" valign="top" width="50%">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <strong>
+                                                            <label>Bill To</label>
+                                                        </strong>
+                                                    </td>
+                                                    <td align="left" valign="top">
+                                                        <div>
+                                                            <table border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="left" style="padding-left: 25px;">
+                                                                            <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
+                                                                                <p>Global Logic
+                                                                                    <br /> Tower A, Oxygen Park, Plot No.7, Sector-144
+                                                                                    <br /> Noida, 201304</p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td align="right" valign="top" width="50%">
+                                        <table align="right" border="0" cellpadding="0" cellspacing="0" width="260">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right">
+                                                        <table border="0" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="right">
+                                                                        <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
+                                                                            <p style="font-size: 14pt;">Global Logic</p>
+                                                                            <p>Global Logic
+                                                                                <br /> Noida, 110096
+                                                                                <br /> 408-273-8900
+                                                                                <br /> sales@globallogic.com</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div style="clear: both;">&nbsp;</div>
+                                        &nbsp;&nbsp;
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right">
+                                                        <strong>
+                                                            <label style="text-align: right; font-weight: bold;">Invoice NO</label>
+                                                        </strong>
+                                                    </td>
+                                                    <td align="left" style="padding-left: 20px;">44444</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right">
+                                                        <strong>
+                                                            <label style="text-align: right; font-weight: bold;">Date</label>
+                                                        </strong>
+                                                    </td>
+                                                    <td align="left" style="padding-left: 20px;">4/2/2018</td>
+                                                </tr>
+                                                <!-- /Field10-->
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <table id="tblInvoice" class="table table-condensed table-bordered table-striped items-table" style="height: 68px;">
+                            <thead>
+                                <tr style="height: 32px;">
+                                    <th style="height: 32px;">Description</th>
+                                    <th class="mount-header" style="height: 32px;">Quantity</th>
+                                    <th class="mount-header" style="height: 32px;">Unit price</th>
+                                    <th class="subtotal-header" style="height: 32px;">Amount</th>
+                                    <th width="20" style="height: 32px;">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsInvoice">
+                                <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow" style="height: 36px;">
+                                    <td style="height: 36px;">product name</td>
+                                    <td style="height: 36px;">10</td>
+                                    <td style="height: 36px;">1000</td>
+                                    <td style="height: 36px;">$
+                                        <label class="amount">10000</label>
+                                    </td>
+                                    <td style="height: 36px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="notes-block">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br /> &nbsp;</div>
             </div>
         </div>
+        <div id="hiddenTemplate">
+
+
+        </div>
+        <div id="editor"></div>
+        <button id="cmd" class="btn-success" (click)="generatepdf()">Download File
+            <i class="fa fa-file"></i>
+        </button>
+
     </section>
 </div>
