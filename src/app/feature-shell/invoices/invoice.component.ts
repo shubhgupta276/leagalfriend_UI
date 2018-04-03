@@ -2,66 +2,36 @@ import { Component, OnInit, Input } from "@angular/core";
 import { Router } from '@angular/router';
 import { filter } from "rxjs/operator/filter";
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-// import { SampleModule } from 'pdf-generator-angular-2';
-
-import * as jsPDF from 'jspdf';
 import { HtmlParser } from "@angular/compiler";
+import * as html2canvas from 'html2canvas';
+import * as jsPDF from 'jspdf';
+
+
 declare var $;
-declare var html2canvas;
+declare let canvas;
 @Component({
   selector: "app-invoice",
   templateUrl: "./invoice.component.html",
-
+ 
 
 })
 export class InvoiceComponent implements OnInit {
   //template: string = `vsdcvascadcdc`;
 
-  downloadPDF() {
-    debugger
-    //const doc = new jsPDF();
 
-    // doc.fromHTML($("#element-to-print").get(0), 10, 10);
-    // doc.save("test.pdf");
-
-
-
-    function startPrintProcess(canvasObj, fileName, callback) {
-      debugger
-      var pdf = new jsPDF('l', 'pt', 'a4'),
-        pdfConf = {
-          pagesplit: false,
-          background: '#fff'
-        };
-      document.body.appendChild(canvasObj); //appendChild is required for html to add page in pdf
-      pdf.addHTML(canvasObj, 0, 0, pdfConf, function() {
-        document.body.removeChild(canvasObj);
-        pdf.addPage();
-        html2canvas(document.getElementById('new-page-dom')).then(function(newCanvasDom) { //render the dom to be printed on the second page
-          document.body.appendChild(newCanvasDom);
-          pdf.addHTML(newCanvasDom, 20, 20, pdfConf, function() {
-            document.body.removeChild(newCanvasDom);
-            pdf.save(fileName + '.pdf');
-            callback();
-          });
-        });
-      });
-    }
-
-  }
-
-
+ 
   // @Input() editCaseForm: FormGroup;
   editCaseForm1: FormGroup;
   invoice: any[] = [];
   arListBanks: any[] = [{ BankName: "HDFC BANK LTD." }];
   constructor(private fb: FormBuilder) {
     this.createForm(null);
+    Window["InvoiceFormComponent"] = this;
   }
   arrFilter = [];
   ngOnInit() {
     this.getInvoice();
-
+   
 
 
     // var arr = JSON.parse(localStorage.getItem('invoiceNo'));
@@ -155,6 +125,22 @@ export class InvoiceComponent implements OnInit {
       });
 
     });
+  }
+
+
+ 
+  anyForm: any;
+  generatepdf() {
+    var hiddenDiv = document.getElementById('pdfdownload')
+    hiddenDiv.style.display = 'block';
+    var pdf;
+    pdf = new jsPDF();
+    pdf.addHTML(document.getElementById('pdfdownload'), function () {
+
+      pdf.save('stacking-plan.pdf');
+      hiddenDiv.style.display = 'none';
+    });
+
   }
 
   createForm(c) {
