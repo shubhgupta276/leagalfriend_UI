@@ -244,14 +244,14 @@ export class InvoiceFormComponent implements OnInit {
   }
   anyForm: any;
   generatepdf() {
-    var hiddenDiv = document.getElementById('pdfdownload')
-    hiddenDiv.style.display = 'block';
+    var hiddenDiv = document.getElementById('pdfdownload');    
     var pdf;
     pdf = new jsPDF();
+    hiddenDiv.style.display = 'block';
     pdf.addHTML(document.getElementById('pdfdownload'), function () {
-
-      pdf.save('stacking-plan.pdf');
       hiddenDiv.style.display = 'none';
+      pdf.save('stacking-plan.pdf');
+      
     });
 
   }
@@ -301,4 +301,5 @@ export class InvoiceFormComponent implements OnInit {
     })
     $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
   }
+  
 }
