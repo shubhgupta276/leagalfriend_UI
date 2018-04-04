@@ -19,7 +19,7 @@ export class InvoiceNextFormComponent implements OnInit {
     arrInvoice = [];
     arrInvoiceDetails = [];
     invoiceNo: any = Math.floor(Math.random() * 90000) + 10000;
-    totalAmount:number;
+    totalAmount: number;
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService) {
         Window["InvoiceFormComponent"] = this;
     }
@@ -28,7 +28,7 @@ export class InvoiceNextFormComponent implements OnInit {
         this.GetAllInstitute();
         this.GetBillFrom();
         this.BindInvoice();
-        // this.arrInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
@@ -40,8 +40,20 @@ export class InvoiceNextFormComponent implements OnInit {
             this.arrInvoiceDetails.push({ description: totalDescription, amount: element.amount, quantity: 1 })
            this.totalAmount+= parseFloat(element.amount);
         });
-
-        debugger
+        setTimeout(() => {
+            $('#tblInvoice').DataTable({
+                responsive: true,
+                pagingType: 'simple',
+                searching: false,
+                "bLengthChange": false,
+                "bInfo": false,
+                "pageLength": 10,
+                "bSort": false
+            });
+            $("#NewPaginationContainer").append($(".dataTables_paginate"));
+        }, 10);
+       
+       
     }
     anyForm: any;
     generatepdf() {

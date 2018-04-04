@@ -101,6 +101,10 @@
         width: 3000px !important;
         height: 3000px !important;
     }
+
+    #NewPaginationContainer {
+        text-align: right;
+    }
 </style>
 <div class="content-wrapper" id="print-section">
     <div class="page-heading">
@@ -110,6 +114,18 @@
     <section class="content">
         <div id="templateArea">
             <div class="invoice-wrap">
+                <div id="NewPaginationContainer">
+                    <div class="dataTables_paginate paging_simple" id="tblInvoice_paginate">
+                        <ul class="pagination">
+                            <!-- <li class="paginate_button previous disabled" id="tblInvoice_previous">
+                                <a  aria-controls="tblInvoice" data-dt-idx="0" tabindex="0">Previous</a>
+                            </li> -->
+                            <li class="paginate_button next" id="tblInvoice_next">
+                                <a [routerLink]="['/admin/invoices/invoicenextform']" aria-controls="tblInvoice" data-dt-idx="1" tabindex="0">Product Details</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="invoice-inner" id="pdfdownloaddiv">
                     <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
                         <tbody>
@@ -146,10 +162,12 @@
                                                                     <tr>
                                                                         <td align="left" style="padding-left:25px;">
                                                                             <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
-                                                                               
 
-                                                                                    <p><textarea id="companyName" rows="2" class="form-control" style="width:400px" ></textarea></p> 
-                                      
+
+                                                                                <p>
+                                                                                    <textarea id="companyName" rows="2" class="form-control" style="width:400px"></textarea>
+                                                                                </p>
+
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -171,10 +189,12 @@
                                                                 <tr>
                                                                     <td align="right">
                                                                         <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
-                                                                            
 
-                                                                               <p><textarea id="companyNameBillFrom" rows="2" class="form-control" ></textarea></p> 
-                                      
+
+                                                                            <p>
+                                                                                <textarea id="companyNameBillFrom" rows="2" class="form-control"></textarea>
+                                                                            </p>
+
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -199,7 +219,7 @@
                                                     <td align="left" style="padding-left:20px">
                                                         <!-- <p style="text-align: right; ">2001321</p> -->
                                                         <span id=invoiceNo>{{arrInvoiceDetails.invoiceNo}}</span>
-                                          
+
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -249,15 +269,16 @@
                                         <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name">{{arrInvoiceDetails.totalDescription}}</textarea>
                                     </td>
                                     <td>
-                                        <input class="form-control quantity" value="{{arrInvoiceDetails.totalQuantity}}"  style="width:100px" placeholder="Quantity">
+                                        <input class="form-control quantity" value="{{arrInvoiceDetails.totalQuantity}}" style="width:100px" placeholder="Quantity">
                                     </td>
                                     <!-- <td>
                                         <input class="form-control unitPrice" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Unit Price">
                                     </td> -->
 
                                     <td>
-                                            <input class="form-control amount" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Amount">
-                                  
+                                        <input class="form-control amount" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()"
+                                            style="width:100px" placeholder="Amount">
+
                                     </td>
                                     <td>
                                         <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
@@ -284,30 +305,7 @@
                                         <label id="totalAmount">{{arrInvoiceDetails.totalAmount}}</label>
                                     </td>
                                 </tr>
-                                <tr class="totals-row shaped" id="PaidRow" style="display:none">
-                                    <td class="wide-cell" colspan="2">
-                                        <a href="#" class="show-row" id="toggle_paid"></a>
-                                    </td>
-                                    <td>
-                                        <strong>
-                                            <input type="text" id="label_paid" value="Paid Amount" class="invoice-input" style="font-weight: bold;">
-                                        </strong>
-                                    </td>
-                                    <td colspan="2">
-                                        <input type="text" id="paid" value="" class="invoice-input">
-                                    </td>
-                                </tr>
-                                <tr class="totals-row shaped" id="UnpaidRow" style="display:none">
-                                    <td class="wide-cell" colspan="2"></td>
-                                    <td>
-                                        <strong>
-                                            <input type="text" id="label_unpaid" value="Balance Due" class="invoice-input" style="font-weight: bold;">
-                                        </strong>
-                                    </td>
-                                    <td colspan="2">
-                                        <span id="unpaid">Rs.&nbsp;0</span>
-                                    </td>
-                                </tr>
+
                             </tfoot>
                         </table>
                     </div>
@@ -334,24 +332,13 @@
                     <br>
                     <br> &nbsp;
                 </div>
-                  </div>
+            </div>
         </div>
         <div id="hiddenTemplate">
 
 
         </div>
         <div id="editor"></div>
-        <button id="cmd" class="btn-success" [routerLink]="['/admin/invoices/invoiceform/invoicenextform']" >Next
-            <i class="fa fa-file"></i>
-        </button>
+
     </section>
 </div>
-
-
-
-
-
-
-
-
-
