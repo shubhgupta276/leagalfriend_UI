@@ -6,15 +6,22 @@ import { InstitutionService } from '../../../feature-shell/master/institution/in
 import { Institution } from '../../../feature-shell/master/institution/institution';
 import { StorageService } from '../../../shared/services/storage.service';
 import { forEach } from '@angular/router/src/utils/collection';
+import * as swiper from 'swiper';
 
 declare let $;
 declare let canvas;
+declare let Swiper;
 @Component({
     selector: 'app-invoicenextform',
     templateUrl: './invoicenextform.html',
 
 })
 export class InvoiceNextFormComponent implements OnInit {
+
+
+
+
+
     arr: Institution[] = [];
     arrInvoice = [];
     arrInvoiceDetails = [];
@@ -29,7 +36,22 @@ export class InvoiceNextFormComponent implements OnInit {
         this.GetBillFrom();
         this.BindInvoice();
         // this.arrInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+
+        var swiper = new Swiper('.swiper-container', {
+     
+            pagination: {
+              el: '.swiper-pagination',
+              type: 'fraction',
+            },
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            },
+            });
     }
+
+    
+
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         this.totalAmount = 0;
