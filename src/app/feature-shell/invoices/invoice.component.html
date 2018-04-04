@@ -1,3 +1,108 @@
+<style type="text/css">
+    body {
+        background: #fafafa;
+        font: 12px/20px Arial, Helvetica, sans-serif
+    }
+
+    .invoice-wrap {
+        width: 800px;
+        margin: 0 auto;
+        background: #FFF;
+        color: #000;
+    }
+
+    .invoice-inner {
+        margin: 0 15px;
+        padding: 20px 0;
+    }
+
+    .invoice-address {
+        border-top: 3px double #000000;
+        margin: 20px 0;
+        padding-top: 25px;
+    }
+
+    .bussines-name {
+        font-size: 18px;
+        font-weight: 100
+    }
+
+    .invoice-name {
+        font-size: 22px;
+        font-weight: 700
+    }
+
+    .listing-table th {
+        background-color: #e5e5e5;
+        border-bottom: 1px solid #555555;
+        border-top: 1px solid #555555;
+        font-weight: bold;
+        text-align: left;
+        padding: 6px 4px
+    }
+
+    .listing-table td {
+        border-bottom: 1px solid #555555;
+        text-align: left;
+        padding: 5px 6px;
+        vertical-align: top
+    }
+
+    .total-table td {
+        border-left: 1px solid #555555;
+    }
+
+    .total-row {
+        background-color: #e5e5e5;
+        border-bottom: 1px solid #555555;
+        border-top: 1px solid #555555;
+        font-weight: bold;
+    }
+
+    .row-items {
+        margin: 5px 0;
+        display: block
+    }
+
+    .notes-block {
+        margin: 50px 0 0 0
+    }
+
+    /*tables*/
+
+    table td {
+        vertical-align: top
+    }
+
+    .items-table {
+        border: 1px solid #555555;
+        border-collapse: collapse;
+        width: 100%
+    }
+
+    .items-table td,
+    .items-table th {
+        border: 1px solid #555555;
+        padding: 4px 5px;
+        text-align: left
+    }
+
+    .items-table th {
+        background: #f5f5f5;
+    }
+
+    .totals-row .wide-cell {
+        border: 1px solid #fff;
+        border-right: 1px solid #555555;
+        border-top: 1px solid #555555
+    }
+
+    .html2canvas-container {
+        width: 3000px !important;
+        height: 3000px !important;
+    }
+</style>
+
 <div class="content-wrapper">
   <div class="page-heading">
     Invoices
@@ -55,9 +160,11 @@
                   <td style="display:none">{{item.Amount}}</td>
                   <td>
                     <a title="Edit">
-                      <i class="fa fa-edit"></i>
+                      <i class="fa fa-edit"></i>&nbsp; 
                     </a>
-
+                    <a title="download">
+                      <button id="cmd" class="btn-success" (click)="generatepdf()">Download File <i class="fa fa-file"></i></button> 
+                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -70,7 +177,8 @@
       <!-- /.col -->
     </div>
     <!-- /.row -->
-
+    
+    
     <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
       <div class="modal-dialog">
         <div class="modal-content" style="border-radius: 5px;">
@@ -163,6 +271,165 @@
         <!-- /.modal-dialog -->
       </div>
     </div>
+   
+    <div class="invoice-wrap">
+    <div class="invoice-inner" id="pdfdownload" style="background-color:#ffffff;padding:20px; display:none;">
+      <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
+          <tbody>
+              <tr>
+                  <td align="center" valign="top">
+                      <div>
+                          <div id="logoDiv">
+                              <img height="102" id="logo" src="/assets/dist/img/logo.png" style="width: 122px; height: 102px;" title="" width="122">
+                          </div>
+                      </div>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <div class="invoice-address">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                  <tr>
+                      <td align="left" valign="top" width="50%">
+                          <table border="0" cellpadding="0" cellspacing="0">
+                              <tbody>
+                                  <tr>
+                                      <td valign="top">
+                                          <strong>
+                                              <label>Bill To</label>
+                                          </strong>
+                                      </td>
+                                      <td align="left" valign="top">
+                                          <div>
+                                              <table border="0" cellpadding="0" cellspacing="0">
+                                                  <tbody>
+                                                      <tr>
+                                                          <td align="left" style="padding-left: 25px;">
+                                                              <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
+                                                                  <p>Global Logic
+                                                                      <br /> Tower A, Oxygen Park, Plot No.7, Sector-144
+                                                                      <br /> Noida, 201304</p>
+                                                              </div>
+                                                          </td>
+                                                      </tr>
+                                                  </tbody>
+                                              </table>
+                                          </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </td>
+                      <td align="right" valign="top" width="50%">
+                          <table align="right" border="0" cellpadding="0" cellspacing="0" width="260">
+                              <tbody>
+                                  <tr>
+                                      <td align="right">
+                                          <table border="0" cellpadding="0" cellspacing="0">
+                                              <tbody>
+                                                  <tr>
+                                                      <td align="right">
+                                                          <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
+                                                              <p style="font-size: 14pt;">Global Logic</p>
+                                                              <p>Global Logic
+                                                                  <br /> Noida, 110096
+                                                                  <br /> 408-273-8900
+                                                                  <br /> sales@globallogic.com</p>
+                                                          </div>
+                                                      </td>
+                                                  </tr>
+                                              </tbody>
+                                          </table>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                          <div style="clear: both;">&nbsp;</div>
+                          &nbsp;&nbsp;
+                          <table border="0" cellpadding="0" cellspacing="0">
+                              <tbody>
+                                  <tr>
+                                      <td align="right">
+                                          <strong>
+                                              <label style="text-align: right; font-weight: bold;">Invoice NO</label>
+                                          </strong>
+                                      </td>
+                                      <td align="left" style="padding-left: 20px;">44444</td>
+                                  </tr>
+                                  <tr>
+                                      <td align="right">
+                                          <strong>
+                                              <label style="text-align: right; font-weight: bold;">Date</label>
+                                          </strong>
+                                      </td>
+                                      <td align="left" style="padding-left: 20px;">4/2/2018</td>
+                                  </tr>
+                                  <!-- /Field10-->
+                              </tbody>
+                          </table>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <div>
+          <table id="tblInvoice" class="table table-condensed table-bordered table-striped items-table" style="height: 68px;">
+              <thead>
+                  <tr style="height: 32px;">
+                      <th style="height: 32px;">Description</th>
+                      <th class="mount-header" style="height: 32px;">Quantity</th>
+                      <th class="mount-header" style="height: 32px;">Unit price</th>
+                      <th class="subtotal-header" style="height: 32px;">Amount</th>
+                      <th width="20" style="height: 32px;">&nbsp;</th>
+                  </tr>
+              </thead>
+              <tbody id="itemsInvoice">
+                  <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow" style="height: 36px;">
+                      <td style="height: 36px;">product name</td>
+                      <td style="height: 36px;">10</td>
+                      <td style="height: 36px;">1000</td>
+                      <td style="height: 36px;">$
+                          <label class="amount">10000</label>
+                      </td>
+                      <td style="height: 36px;"></td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <div class="notes-block">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                  <tr>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br /> &nbsp;
+    </div>
+  </div>
+      
   </section>
   <!-- /.content -->
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

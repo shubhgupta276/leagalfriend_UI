@@ -37,6 +37,7 @@ export class InstitutionComponent implements OnInit {
 
 
   ngOnInit() {
+    debugger
     this.GetAllInstitute();
     
   }
@@ -47,8 +48,10 @@ export class InstitutionComponent implements OnInit {
   }
   
   GetAllInstitute() {
+    debugger
     this._institutionService.getInstitutions().subscribe(
       result => {
+        debugger
         if (result.httpCode == 200) {
 
           for (var i = 0; i < result.institutions.length; i++) {

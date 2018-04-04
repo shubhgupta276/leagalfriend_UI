@@ -102,7 +102,7 @@
         height: 3000px !important;
     }
 </style>
-<div class="content-wrapper">
+<div class="content-wrapper" id="print-section">
     <div class="page-heading">
         Invoice
     </div>
@@ -146,9 +146,10 @@
                                                                     <tr>
                                                                         <td align="left" style="padding-left:25px;">
                                                                             <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
-                                                                                <p>Global Logic
-                                                                                    <br> Tower A, Oxygen Park, Plot No.7, Sector-144
-                                                                                    <br> Noida, 201304</p>
+                                                                               
+
+                                                                                    <p><textarea id="companyName" rows="2" class="form-control" style="width:400px" ></textarea></p> 
+                                      
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -170,11 +171,10 @@
                                                                 <tr>
                                                                     <td align="right">
                                                                         <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
-                                                                            <p style="font-size: 14pt;" data-mce-style="font-size: 14pt;">Global Logic</p>
-                                                                            <p>Global Logic
-                                                                                <br> Noida, 110096
-                                                                                <br> 408-273-8900
-                                                                                <br> sales@globallogic.com</p>
+                                                                            
+
+                                                                               <p><textarea id="companyNameBillFrom" rows="2" class="form-control" ></textarea></p> 
+                                      
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -193,11 +193,13 @@
                                                 <tr>
                                                     <td align="right">
                                                         <strong>
-                                                            <label style="text-align: right; font-weight: bold;">Invoice NO</label>
+                                                            <label style="text-align: right; font-weight: bold;">Invoice No</label>
                                                         </strong>
                                                     </td>
                                                     <td align="left" style="padding-left:20px">
-                                                        <input type="text" id="no" value="2001321" class="invoice-input" style="text-align: right;">
+                                                        <!-- <p style="text-align: right; ">2001321</p> -->
+                                                        <span id=invoiceNo>{{arrInvoiceDetails.invoiceNo}}</span>
+                                          
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -207,7 +209,7 @@
                                                         </strong>
                                                     </td>
                                                     <td align="left" style="padding-left:20px">
-                                                        <input type="text" id="date" value="3/28/2018" class="invoice-input" style="text-align: right;">
+                                                        <input type="text" id="date" value="3/28/2018" class="invoice-input" style="width:100px">
                                                     </td>
                                                 </tr>
 
@@ -230,9 +232,9 @@
                                     <th class="mount-header">
                                         Quantity
                                     </th>
-                                    <th class="mount-header">
+                                    <!-- <th class="mount-header">
                                         Unit price
-                                    </th>
+                                    </th> -->
 
                                     <th class="subtotal-header">
                                         Amount
@@ -244,17 +246,18 @@
                             <tbody id="itemsInvoice">
                                 <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                     <td>
-                                        <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name"></textarea>
+                                        <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name">{{arrInvoiceDetails.totalDescription}}</textarea>
                                     </td>
                                     <td>
-                                        <input class="form-control quantity" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Quantity">
+                                        <input class="form-control quantity" value="{{arrInvoiceDetails.totalQuantity}}"  style="width:100px" placeholder="Quantity">
                                     </td>
-                                    <td>
-                                        <input class="form-control unitPrice" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Unit Price">
-                                    </td>
+                                    <!-- <td>
+                                        <input class="form-control unitPrice" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Unit Price">
+                                    </td> -->
 
-                                    <td>$
-                                        <label class="amount">0</label>
+                                    <td>
+                                            <input class="form-control amount" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Amount">
+                                  
                                     </td>
                                     <td>
                                         <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
@@ -266,7 +269,7 @@
                             <tfoot id="TotalsSection">
 
                                 <tr class="totals-row" id="TotalRow">
-                                    <td class="wide-cell" colspan="2">
+                                    <td class="wide-cell" colspan="1">
                                         <button type="button" (click)="AddMoreInvoice()" id="AddProduct" class="btn btn-small btn-primary">
                                             <i class="fa fa-plus"></i> Add Line</button>
                                     </td>
@@ -278,7 +281,7 @@
                                     </td>
                                     <td colspan="2">
                                         $
-                                        <label id="totalAmount">0</label>
+                                        <label id="totalAmount">{{arrInvoiceDetails.totalAmount}}</label>
                                     </td>
                                 </tr>
                                 <tr class="totals-row shaped" id="PaidRow" style="display:none">
@@ -481,6 +484,14 @@
         <button id="cmd" class="btn-success" (click)="generatepdf()">Download File
             <i class="fa fa-file"></i>
         </button>
-
     </section>
 </div>
+
+
+
+
+
+
+
+
+
