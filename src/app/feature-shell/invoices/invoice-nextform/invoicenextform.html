@@ -198,7 +198,7 @@
                                                     </td>
                                                     <td align="left" style="padding-left:20px">
                                                         <!-- <p style="text-align: right; ">2001321</p> -->
-                                                        <span id=invoiceNo>{{arrInvoiceDetails.invoiceNo}}</span>
+                                                        <span id=invoiceNo>{{invoiceNo}}</span>
                                           
                                                     </td>
                                                 </tr>
@@ -243,20 +243,19 @@
                                 </tr>
                             </thead>
 
-                            <tbody id="itemsInvoice">
-                                <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
+                            <tbody id="itemsInvoice" >
+                                
+                                <tr *ngFor="let item of arrInvoiceDetails"  description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                     <td>
-                                        <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name">{{arrInvoiceDetails.totalDescription}}</textarea>
+                                        <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name">{{item.description}}</textarea>
                                     </td>
                                     <td>
-                                        <input class="form-control quantity" value="{{arrInvoiceDetails.totalQuantity}}"  style="width:100px" placeholder="Quantity">
+                                        <input class="form-control quantity" value="{{item.quantity}}"  style="width:100px" placeholder="Quantity">
                                     </td>
-                                    <!-- <td>
-                                        <input class="form-control unitPrice" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Unit Price">
-                                    </td> -->
+                                    
 
                                     <td>
-                                            <input class="form-control amount" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Amount">
+                                            <input class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Amount">
                                   
                                     </td>
                                     <td>
@@ -281,7 +280,7 @@
                                     </td>
                                     <td colspan="2">
                                         $
-                                        <label id="totalAmount">{{arrInvoiceDetails.totalAmount}}</label>
+                                        <label id="totalAmount">{{totalAmount}}</label>
                                     </td>
                                 </tr>
                                 <tr class="totals-row shaped" id="PaidRow" style="display:none">
@@ -341,7 +340,7 @@
 
         </div>
         <div id="editor"></div>
-        <button id="cmd" class="btn-success" [routerLink]="['/admin/invoices/invoiceform/invoicenextform']" >Next
+        <button id="cmd" class="btn-success" >Next
             <i class="fa fa-file"></i>
         </button>
     </section>

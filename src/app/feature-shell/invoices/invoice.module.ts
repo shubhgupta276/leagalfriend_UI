@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import { InvoiceComponent } from './invoice.component';
 import { InvoiceFormComponent } from './invoice-form/invoiceform-component';
+import { InvoiceNextFormComponent } from './invoice-nextform/invoicenextform.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
@@ -22,7 +23,7 @@ import { InstitutionService } from '../../feature-shell/master/institution/insti
             SelectDropDownModule,
             SharedModule
         ],
-        declarations: [ InvoiceComponent ,InvoiceFormComponent],
+        declarations: [ InvoiceComponent ,InvoiceFormComponent,InvoiceNextFormComponent],
         providers: [InstitutionService,StorageService]
        
     }
