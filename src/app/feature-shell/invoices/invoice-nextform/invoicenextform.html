@@ -102,747 +102,8 @@
         height: 3000px !important;
     }
 
-    html,
-    body {
-        position: relative;
-        height: 100%;
-    }
-
-    body {
-        background: #eee;
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        color: #000;
-        margin: 0;
-        padding: 0;
-    }
-
-    .swiper-container {
-        width: 100%;
-        height: 100%;
-    }
-
-    .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
-        /* Center slide text vertically */
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    .swiper-container {
-        margin: 0 auto;
-        position: relative;
-        overflow: hidden;
-        list-style: none;
-        padding: 0;
-        z-index: 1
-    }
-
-    .swiper-container-no-flexbox .swiper-slide {
-        float: left
-    }
-
-    .swiper-container-vertical>.swiper-wrapper {
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-        flex-direction: column
-    }
-
-    .swiper-wrapper {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-transition-property: -webkit-transform;
-        transition-property: -webkit-transform;
-        -o-transition-property: transform;
-        transition-property: transform;
-        transition-property: transform, -webkit-transform;
-        -webkit-box-sizing: content-box;
-        box-sizing: content-box
-    }
-
-    .swiper-container-android .swiper-slide,
-    .swiper-wrapper {
-        -webkit-transform: translate3d(0px, 0, 0);
-        transform: translate3d(0px, 0, 0)
-    }
-
-    .swiper-container-multirow>.swiper-wrapper {
-        -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap
-    }
-
-    .swiper-container-free-mode>.swiper-wrapper {
-        -webkit-transition-timing-function: ease-out;
-        -o-transition-timing-function: ease-out;
-        transition-timing-function: ease-out;
-        margin: 0 auto
-    }
-
-    .swiper-slide {
-        -webkit-flex-shrink: 0;
-        -ms-flex-negative: 0;
-        flex-shrink: 0;
-        width: 100%;
-        height: 100%;
-        position: relative;
-        -webkit-transition-property: -webkit-transform;
-        transition-property: -webkit-transform;
-        -o-transition-property: transform;
-        transition-property: transform;
-        transition-property: transform, -webkit-transform
-    }
-
-    .swiper-invisible-blank-slide {
-        visibility: hidden
-    }
-
-    .swiper-container-autoheight,
-    .swiper-container-autoheight .swiper-slide {
-        height: auto
-    }
-
-    .swiper-container-autoheight .swiper-wrapper {
-        -webkit-box-align: start;
-        -webkit-align-items: flex-start;
-        -ms-flex-align: start;
-        align-items: flex-start;
-        -webkit-transition-property: height, -webkit-transform;
-        transition-property: height, -webkit-transform;
-        -o-transition-property: transform, height;
-        transition-property: transform, height;
-        transition-property: transform, height, -webkit-transform
-    }
-
-    .swiper-container-3d {
-        -webkit-perspective: 1200px;
-        perspective: 1200px
-    }
-
-    .swiper-container-3d .swiper-wrapper,
-    .swiper-container-3d .swiper-slide,
-    .swiper-container-3d .swiper-slide-shadow-left,
-    .swiper-container-3d .swiper-slide-shadow-right,
-    .swiper-container-3d .swiper-slide-shadow-top,
-    .swiper-container-3d .swiper-slide-shadow-bottom,
-    .swiper-container-3d .swiper-cube-shadow {
-        -webkit-transform-style: preserve-3d;
-        transform-style: preserve-3d
-    }
-
-    .swiper-container-3d .swiper-slide-shadow-left,
-    .swiper-container-3d .swiper-slide-shadow-right,
-    .swiper-container-3d .swiper-slide-shadow-top,
-    .swiper-container-3d .swiper-slide-shadow-bottom {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 10
-    }
-
-    .swiper-container-3d .swiper-slide-shadow-left {
-        background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-        background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0))
-    }
-
-    .swiper-container-3d .swiper-slide-shadow-right {
-        background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-        background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0))
-    }
-
-    .swiper-container-3d .swiper-slide-shadow-top {
-        background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-        background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0))
-    }
-
-    .swiper-container-3d .swiper-slide-shadow-bottom {
-        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
-        background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0))
-    }
-
-    .swiper-container-wp8-horizontal,
-    .swiper-container-wp8-horizontal>.swiper-wrapper {
-        -ms-touch-action: pan-y;
-        touch-action: pan-y
-    }
-
-    .swiper-container-wp8-vertical,
-    .swiper-container-wp8-vertical>.swiper-wrapper {
-        -ms-touch-action: pan-x;
-        touch-action: pan-x
-    }
-
-    .swiper-button-prev,
-    .swiper-button-next {
-        position: absolute;
-        top: 50%;
-        width: 27px;
-        height: 44px;
-        margin-top: -22px;
-        z-index: 10;
-        cursor: pointer;
-        background-size: 27px 44px;
-        background-position: center;
-        background-repeat: no-repeat
-    }
-
-    .swiper-button-prev.swiper-button-disabled,
-    .swiper-button-next.swiper-button-disabled {
-        opacity: .35;
-        cursor: auto;
-        pointer-events: none
-    }
-
-    .swiper-button-prev,
-    .swiper-container-rtl .swiper-button-next {
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNyA0NCI+PHBhdGggZD0iTTAgMjIgMjIgMGwyLjEgMi4xTDQuMiAyMmwxOS45IDE5LjlMMjIgNDQgMCAyMnYwIDB6IiBmaWxsPSIjMDA3YWZmIi8+PC9zdmc+);
-        left: 10px;
-        right: auto
-    }
-
-    .swiper-button-next,
-    .swiper-container-rtl .swiper-button-prev {
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNyA0NCI+PHBhdGggZD0iTTI3IDIydjBMNSA0NGwtMi4xLTIuMUwyMi44IDIyIDIuOSAyLjEgNSAwIDI3IDIydjB6IiBmaWxsPSIjMDA3YWZmIi8+PC9zdmc+);
-        right: 10px;
-        left: auto
-    }
-
-    .swiper-button-prev.swiper-button-white,
-    .swiper-container-rtl .swiper-button-next.swiper-button-white {
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNyA0NCI+PHBhdGggZD0iTTAgMjIgMjIgMGwyLjEgMi4xTDQuMiAyMmwxOS45IDE5LjlMMjIgNDQgMCAyMnYwIDB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+)
-    }
-
-    .swiper-button-next.swiper-button-white,
-    .swiper-container-rtl .swiper-button-prev.swiper-button-white {
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNyA0NCI+PHBhdGggZD0iTTI3IDIydjBMNSA0NGwtMi4xLTIuMUwyMi44IDIyIDIuOSAyLjEgNSAwIDI3IDIydjB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+)
-    }
-
-    .swiper-button-prev.swiper-button-black,
-    .swiper-container-rtl .swiper-button-next.swiper-button-black {
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNyA0NCI+PHBhdGggZD0iTTAgMjIgMjIgMGwyLjEgMi4xTDQuMiAyMmwxOS45IDE5LjlMMjIgNDQgMCAyMnYwIDB6IiBmaWxsPSIjMDAwIi8+PC9zdmc+)
-    }
-
-    .swiper-button-next.swiper-button-black,
-    .swiper-container-rtl .swiper-button-prev.swiper-button-black {
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNyA0NCI+PHBhdGggZD0iTTI3IDIydjBMNSA0NGwtMi4xLTIuMUwyMi44IDIyIDIuOSAyLjEgNSAwIDI3IDIydjB6IiBmaWxsPSIjMDAwIi8+PC9zdmc+)
-    }
-
-    .swiper-button-lock {
-        display: none
-    }
-
-    .swiper-pagination {
-        position: absolute;
-        text-align: center;
-        -webkit-transition: 300ms opacity;
-        -o-transition: 300ms opacity;
-        transition: 300ms opacity;
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        z-index: 10
-    }
-
-    .swiper-pagination.swiper-pagination-hidden {
-        opacity: 0
-    }
-
-    .swiper-pagination-fraction,
-    .swiper-pagination-custom,
-    .swiper-container-horizontal>.swiper-pagination-bullets {
-        bottom: 10px;
-        left: 0;
-        width: 100%
-    }
-
-    .swiper-pagination-bullets-dynamic {
-        overflow: hidden;
-        font-size: 0
-    }
-
-    .swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
-        -webkit-transform: scale(.33);
-        -ms-transform: scale(.33);
-        transform: scale(.33);
-        position: relative
-    }
-
-    .swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active {
-        -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-        transform: scale(1)
-    }
-
-    .swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-main {
-        -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-        transform: scale(1)
-    }
-
-    .swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-prev {
-        -webkit-transform: scale(.66);
-        -ms-transform: scale(.66);
-        transform: scale(.66)
-    }
-
-    .swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-prev-prev {
-        -webkit-transform: scale(.33);
-        -ms-transform: scale(.33);
-        transform: scale(.33)
-    }
-
-    .swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-next {
-        -webkit-transform: scale(.66);
-        -ms-transform: scale(.66);
-        transform: scale(.66)
-    }
-
-    .swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-next-next {
-        -webkit-transform: scale(.33);
-        -ms-transform: scale(.33);
-        transform: scale(.33)
-    }
-
-    .swiper-pagination-bullet {
-        width: 8px;
-        height: 8px;
-        display: inline-block;
-        border-radius: 100%;
-        background: #000;
-        opacity: .2
-    }
-
-    button.swiper-pagination-bullet {
-        border: 0;
-        margin: 0;
-        padding: 0;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none
-    }
-
-    .swiper-pagination-clickable .swiper-pagination-bullet {
-        cursor: pointer
-    }
-
-    .swiper-pagination-bullet-active {
-        opacity: 1;
-        background: #007aff
-    }
-
-    .swiper-container-vertical>.swiper-pagination-bullets {
-        right: 10px;
-        top: 50%;
-        -webkit-transform: translate3d(0px, -50%, 0);
-        transform: translate3d(0px, -50%, 0)
-    }
-
-    .swiper-container-vertical>.swiper-pagination-bullets .swiper-pagination-bullet {
-        margin: 6px 0;
-        display: block
-    }
-
-    .swiper-container-vertical>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-        width: 8px
-    }
-
-    .swiper-container-vertical>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
-        display: inline-block;
-        -webkit-transition: 200ms top, 200ms -webkit-transform;
-        transition: 200ms top, 200ms -webkit-transform;
-        -o-transition: 200ms transform, 200ms top;
-        transition: 200ms transform, 200ms top;
-        transition: 200ms transform, 200ms top, 200ms -webkit-transform
-    }
-
-    .swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet {
-        margin: 0 4px
-    }
-
-    .swiper-container-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
-        left: 50%;
-        -webkit-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-        transform: translateX(-50%);
-        white-space: nowrap
-    }
-
-    .swiper-container-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
-        -webkit-transition: 200ms left, 200ms -webkit-transform;
-        transition: 200ms left, 200ms -webkit-transform;
-        -o-transition: 200ms transform, 200ms left;
-        transition: 200ms transform, 200ms left;
-        transition: 200ms transform, 200ms left, 200ms -webkit-transform
-    }
-
-    .swiper-container-horizontal.swiper-container-rtl>.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
-        -webkit-transition: 200ms right, 200ms -webkit-transform;
-        transition: 200ms right, 200ms -webkit-transform;
-        -o-transition: 200ms transform, 200ms right;
-        transition: 200ms transform, 200ms right;
-        transition: 200ms transform, 200ms right, 200ms -webkit-transform
-    }
-
-    .swiper-pagination-progressbar {
-        background: rgba(0, 0, 0, .25);
-        position: absolute
-    }
-
-    .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-        background: #007aff;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        -webkit-transform: scale(0);
-        -ms-transform: scale(0);
-        transform: scale(0);
-        -webkit-transform-origin: left top;
-        -ms-transform-origin: left top;
-        transform-origin: left top
-    }
-
-    .swiper-container-rtl .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-        -webkit-transform-origin: right top;
-        -ms-transform-origin: right top;
-        transform-origin: right top
-    }
-
-    .swiper-container-horizontal>.swiper-pagination-progressbar,
-    .swiper-container-vertical>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite {
-        width: 100%;
-        height: 4px;
-        left: 0;
-        top: 0
-    }
-
-    .swiper-container-vertical>.swiper-pagination-progressbar,
-    .swiper-container-horizontal>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite {
-        width: 4px;
-        height: 100%;
-        left: 0;
-        top: 0
-    }
-
-    .swiper-pagination-white .swiper-pagination-bullet-active {
-        background: #fff
-    }
-
-    .swiper-pagination-progressbar.swiper-pagination-white {
-        background: rgba(255, 255, 255, .25)
-    }
-
-    .swiper-pagination-progressbar.swiper-pagination-white .swiper-pagination-progressbar-fill {
-        background: #fff
-    }
-
-    .swiper-pagination-black .swiper-pagination-bullet-active {
-        background: #000
-    }
-
-    .swiper-pagination-progressbar.swiper-pagination-black {
-        background: rgba(0, 0, 0, .25)
-    }
-
-    .swiper-pagination-progressbar.swiper-pagination-black .swiper-pagination-progressbar-fill {
-        background: #000
-    }
-
-    .swiper-pagination-lock {
-        display: none
-    }
-
-    .swiper-scrollbar {
-        border-radius: 10px;
-        position: relative;
-        -ms-touch-action: none;
-        background: rgba(0, 0, 0, .1)
-    }
-
-    .swiper-container-horizontal>.swiper-scrollbar {
-        position: absolute;
-        left: 1%;
-        bottom: 3px;
-        z-index: 50;
-        height: 5px;
-        width: 98%
-    }
-
-    .swiper-container-vertical>.swiper-scrollbar {
-        position: absolute;
-        right: 3px;
-        top: 1%;
-        z-index: 50;
-        width: 5px;
-        height: 98%
-    }
-
-    .swiper-scrollbar-drag {
-        height: 100%;
-        width: 100%;
-        position: relative;
-        background: rgba(0, 0, 0, .5);
-        border-radius: 10px;
-        left: 0;
-        top: 0
-    }
-
-    .swiper-scrollbar-cursor-drag {
-        cursor: move
-    }
-
-    .swiper-scrollbar-lock {
-        display: none
-    }
-
-    .swiper-zoom-container {
-        width: 100%;
-        height: 100%;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: center;
-        -webkit-justify-content: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        -ms-flex-align: center;
-        align-items: center;
-        text-align: center
-    }
-
-    .swiper-zoom-container>img,
-    .swiper-zoom-container>svg,
-    .swiper-zoom-container>canvas {
-        max-width: 100%;
-        max-height: 100%;
-        -o-object-fit: contain;
-        object-fit: contain
-    }
-
-    .swiper-slide-zoomed {
-        cursor: move
-    }
-
-    .swiper-lazy-preloader {
-        width: 42px;
-        height: 42px;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin-left: -21px;
-        margin-top: -21px;
-        z-index: 10;
-        -webkit-transform-origin: 50%;
-        -ms-transform-origin: 50%;
-        transform-origin: 50%;
-        -webkit-animation: swiper-preloader-spin 1s steps(12, end) infinite;
-        animation: swiper-preloader-spin 1s steps(12, end) infinite
-    }
-
-    .swiper-lazy-preloader:after {
-        display: block;
-        content: '';
-        width: 100%;
-        height: 100%;
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTIwIDEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImwiIGQ9Ik02MCA3VjI3eiIgc3Ryb2tlPSIjNmM2YzZjIiBzdHJva2Utd2lkdGg9IjExIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2RlZnM+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3Ii8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCA2MCw2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNsIiBvcGFjaXR5PSIuMjciIHRyYW5zZm9ybT0icm90YXRlKDYwIDYwLDYwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2wiIG9wYWNpdHk9Ii4yNyIgdHJhbnNmb3JtPSJyb3RhdGUoOTAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3IiB0cmFuc2Zvcm09InJvdGF0ZSgxMjAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjM3IiB0cmFuc2Zvcm09InJvdGF0ZSgxODAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjQ2IiB0cmFuc2Zvcm09InJvdGF0ZSgyMTAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjU2IiB0cmFuc2Zvcm09InJvdGF0ZSgyNDAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjY2IiB0cmFuc2Zvcm09InJvdGF0ZSgyNzAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjc1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMDAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjg1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMzAgNjAsNjApIi8+PC9zdmc+);
-        background-position: 50%;
-        background-size: 100%;
-        background-repeat: no-repeat
-    }
-
-    .swiper-lazy-preloader-white:after {
-        background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTIwIDEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImwiIGQ9Ik02MCA3VjI3eiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjExIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2RlZnM+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3Ii8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCA2MCw2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNsIiBvcGFjaXR5PSIuMjciIHRyYW5zZm9ybT0icm90YXRlKDYwIDYwLDYwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2wiIG9wYWNpdHk9Ii4yNyIgdHJhbnNmb3JtPSJyb3RhdGUoOTAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3IiB0cmFuc2Zvcm09InJvdGF0ZSgxMjAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjI3IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjM3IiB0cmFuc2Zvcm09InJvdGF0ZSgxODAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjQ2IiB0cmFuc2Zvcm09InJvdGF0ZSgyMTAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjU2IiB0cmFuc2Zvcm09InJvdGF0ZSgyNDAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjY2IiB0cmFuc2Zvcm09InJvdGF0ZSgyNzAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjc1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMDAgNjAsNjApIi8+PHVzZSB4bGluazpocmVmPSIjbCIgb3BhY2l0eT0iLjg1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMzAgNjAsNjApIi8+PC9zdmc+)
-    }
-
-    @-webkit-keyframes swiper-preloader-spin {
-        100% {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg)
-        }
-    }
-
-    @keyframes swiper-preloader-spin {
-        100% {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg)
-        }
-    }
-
-    .swiper-container .swiper-notification {
-        position: absolute;
-        left: 0;
-        top: 0;
-        pointer-events: none;
-        opacity: 0;
-        z-index: -1000
-    }
-
-    .swiper-container-fade.swiper-container-free-mode .swiper-slide {
-        -webkit-transition-timing-function: ease-out;
-        -o-transition-timing-function: ease-out;
-        transition-timing-function: ease-out
-    }
-
-    .swiper-container-fade .swiper-slide {
-        pointer-events: none;
-        -webkit-transition-property: opacity;
-        -o-transition-property: opacity;
-        transition-property: opacity
-    }
-
-    .swiper-container-fade .swiper-slide .swiper-slide {
-        pointer-events: none
-    }
-
-    .swiper-container-fade .swiper-slide-active,
-    .swiper-container-fade .swiper-slide-active .swiper-slide-active {
-        pointer-events: auto
-    }
-
-    .swiper-container-cube {
-        overflow: visible
-    }
-
-    .swiper-container-cube .swiper-slide {
-        pointer-events: none;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        z-index: 1;
-        visibility: hidden;
-        -webkit-transform-origin: 0 0;
-        -ms-transform-origin: 0 0;
-        transform-origin: 0 0;
-        width: 100%;
-        height: 100%
-    }
-
-    .swiper-container-cube .swiper-slide .swiper-slide {
-        pointer-events: none
-    }
-
-    .swiper-container-cube.swiper-container-rtl .swiper-slide {
-        -webkit-transform-origin: 100% 0;
-        -ms-transform-origin: 100% 0;
-        transform-origin: 100% 0
-    }
-
-    .swiper-container-cube .swiper-slide-active,
-    .swiper-container-cube .swiper-slide-active .swiper-slide-active {
-        pointer-events: auto
-    }
-
-    .swiper-container-cube .swiper-slide-active,
-    .swiper-container-cube .swiper-slide-next,
-    .swiper-container-cube .swiper-slide-prev,
-    .swiper-container-cube .swiper-slide-next+.swiper-slide {
-        pointer-events: auto;
-        visibility: visible
-    }
-
-    .swiper-container-cube .swiper-slide-shadow-top,
-    .swiper-container-cube .swiper-slide-shadow-bottom,
-    .swiper-container-cube .swiper-slide-shadow-left,
-    .swiper-container-cube .swiper-slide-shadow-right {
-        z-index: 0;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden
-    }
-
-    .swiper-container-cube .swiper-cube-shadow {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-        background: #000;
-        opacity: .6;
-        -webkit-filter: blur(50px);
-        filter: blur(50px);
-        z-index: 0
-    }
-
-    .swiper-container-flip {
-        overflow: visible
-    }
-
-    .swiper-container-flip .swiper-slide {
-        pointer-events: none;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        z-index: 1
-    }
-
-    .swiper-container-flip .swiper-slide .swiper-slide {
-        pointer-events: none
-    }
-
-    .swiper-container-flip .swiper-slide-active,
-    .swiper-container-flip .swiper-slide-active .swiper-slide-active {
-        pointer-events: auto
-    }
-
-    .swiper-container-flip .swiper-slide-shadow-top,
-    .swiper-container-flip .swiper-slide-shadow-bottom,
-    .swiper-container-flip .swiper-slide-shadow-left,
-    .swiper-container-flip .swiper-slide-shadow-right {
-        z-index: 0;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden
-    }
-
-    .swiper-container-coverflow .swiper-wrapper {
-        -ms-perspective: 1200px
+    #NewPaginationContainer {
+        text-align: right;
     }
 </style>
 <div class="content-wrapper" id="print-section">
@@ -851,90 +112,130 @@
     </div>
     <!-- Main content -->
     <section class="content">
+
         <div id="templateArea">
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <div class="invoice-wrap">
-                        <div class="invoice-inner" id="pdfdownloaddiv">
-                            <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
-                                <tbody>
-                                    <tr>
-                                        <td align="center" valign="top">
-                                            <div>
-                                                <div id="logoDiv">
-                                                    <img height="102" id="logo" src="/assets/dist/img/logo.png" width="122" style="width: 122px; height: 102px;" data-original-title=""
-                                                        title="">
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div class="invoice-wrap">
+                <div id="divbtns" class="col-md-12">
+                <div id="divBack" class="col-md-4" style="margin-top:15px;">
+                    <a [routerLink]="['/admin/invoices/invoiceform']" class="btn btn-default">Back</a>
+                </div>
+                <div class="col-md-8" id="NewPaginationContainer"></div>
+            </div>
+                <div class="invoice-inner" id="pdfdownloaddiv">
+                    <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
+                        <tbody>
+                            <tr>
+                                <td align="center" valign="top">
+                                    <div>
+                                        <div id="logoDiv">
+                                            <img height="102" id="logo" src="/assets/dist/img/logo.png" width="122" style="width: 122px; height: 102px;" data-original-title=""
+                                                title="">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                            <div class="invoice-address">
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                    <tbody>
-                                        <tr>
-                                            <td align="left" valign="top" width="50%">
-                                                <table border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td valign="top">
-                                                                <strong>
-                                                                    <label>Bill To</label>
-                                                                </strong>
-                                                            </td>
-                                                            <td align="left" valign="top">
-                                                                <div>
-                                                                    <table border="0" cellpadding="0" cellspacing="0">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td align="left" style="padding-left:25px;">
-                                                                                    <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
-
-
-                                                                                        <p>
-                                                                                            <textarea id="companyName" rows="2"
-                                                                                                class="form-control" style="width:400px"></textarea>
-                                                                                        </p>
-
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                            <td align="right" valign="top" width="50%">
-                                                <table align="right" border="0" cellpadding="0" cellspacing="0" width="260">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td align="right">
-                                                                <table border="0" cellpadding="0" cellspacing="0">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td align="right">
-                                                                                <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
+                    <div class="invoice-address">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td align="left" valign="top" width="50%">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <strong>
+                                                            <label>Bill To</label>
+                                                        </strong>
+                                                    </td>
+                                                    <td align="left" valign="top">
+                                                        <div>
+                                                            <table border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="left" style="padding-left:25px;">
+                                                                            <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
 
 
-                                                                                    <p>
-                                                                                        <textarea id="companyNameBillFrom" rows="2"
-                                                                                            class="form-control"></textarea>
-                                                                                    </p>
+                                                                                <p>
+                                                                                    <textarea id="companyName" rows="2" class="form-control" style="width:400px"></textarea>
+                                                                                </p>
 
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td align="right" valign="top" width="50%">
+                                        <table align="right" border="0" cellpadding="0" cellspacing="0" width="260">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right">
+                                                        <table border="0" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="right">
+                                                                        <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
+
+
+                                                                            <p>
+                                                                                <textarea id="companyNameBillFrom" rows="2" class="form-control"></textarea>
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div style="clear:both">&nbsp;</div>
+                                        &nbsp;&nbsp;
+
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right">
+                                                        <strong>
+                                                            <label style="text-align: right; font-weight: bold;">Invoice No</label>
+                                                        </strong>
+                                                    </td>
+                                                    <td align="left" style="padding-left:20px">
+                                                        <!-- <p style="text-align: right; ">2001321</p> -->
+                                                        <span id=invoiceNo>{{invoiceNo}}</span>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right">
+                                                        <strong>
+                                                            <label style="text-align: right; font-weight: bold;">Date</label>
+                                                        </strong>
+                                                    </td>
+                                                    <td align="left" style="padding-left:20px">
+                                                        <input type="text" id="date" value="3/28/2018" class="invoice-input" style="width:100px">
+                                                    </td>
+                                                </tr>
+
+                                                <!-- /Field10-->
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                                                 <div style="clear:both">&nbsp;</div>
                                                 &nbsp;&nbsp;
@@ -987,24 +288,83 @@
                                         Unit price
                                     </th> -->
 
-                                            <th class="subtotal-header">
-                                                Amount
-                                            </th>
-                                            <th width="20">&nbsp;</th>
-                                        </tr>
-                                    </thead>
+                                    <th class="subtotal-header">
+                                        Amount
+                                    </th>
+                                    <th width="20">&nbsp;</th>
+                                </tr>
+                            </thead>
 
-                                    <tbody id="itemsInvoice">
+                            <tbody id="itemsInvoice">
 
-                                        <tr class="swiper-slide" *ngFor="let item of arrInvoiceDetails" description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0"
-                                            class="invoiceRow">
-                                            <td>
-                                                <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name">{{item.description}}</textarea>
-                                            </td>
-                                            <td>
-                                                <input class="form-control quantity" value="{{item.quantity}}" style="width:100px" placeholder="Quantity">
-                                            </td>
+                                <tr *ngFor="let item of arrInvoiceDetails" description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0"
+                                    class="invoiceRow">
+                                    <td>
+                                        <textarea class="form-control productName" type="text" placeholder="Product Name">{{item.description}}</textarea>
+                                    </td>
+                                    <td>
+                                        <input class="form-control quantity" value="{{item.quantity}}" style="width:100px" placeholder="Quantity">
+                                    </td>
 
+
+                                    <td>
+                                        <input class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()"
+                                            style="width:100px" placeholder="Amount">
+
+                                    </td>
+                                    <td>
+                                        <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
+                                            <i class="fa fa-fw fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot id="TotalsSection">
+
+                                <tr class="totals-row" id="TotalRow">
+                                    <td class="wide-cell" colspan="1">
+                                        <button type="button" (click)="AddMoreInvoice()" id="AddProduct" class="btn btn-small btn-primary">
+                                            <i class="fa fa-plus"></i> Add Line</button>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <!-- <input type="text" id="label_total" value="Total" class="invoice-input" style="font-weight: bold;"> -->
+                                            <label style="font-weight:bold">Total</label>
+                                        </strong>
+                                    </td>
+                                    <td colspan="2">
+                                        $
+                                        <label id="totalAmount">{{totalAmount}}</label>
+                                    </td>
+                                </tr>
+                                <tr class="totals-row shaped" id="PaidRow" style="display:none">
+                                    <td class="wide-cell" colspan="2">
+                                        <a href="#" class="show-row" id="toggle_paid"></a>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <input type="text" id="label_paid" value="Paid Amount" class="invoice-input" style="font-weight: bold;">
+                                        </strong>
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="text" id="paid" value="" class="invoice-input">
+                                    </td>
+                                </tr>
+                                <tr class="totals-row shaped" id="UnpaidRow" style="display:none">
+                                    <td class="wide-cell" colspan="2"></td>
+                                    <td>
+                                        <strong>
+                                            <input type="text" id="label_unpaid" value="Balance Due" class="invoice-input" style="font-weight: bold;">
+                                        </strong>
+                                    </td>
+                                    <td colspan="2">
+                                        <span id="unpaid">Rs.&nbsp;0</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
 
                                             <td>
                                                 <input class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()"
@@ -1094,10 +454,6 @@
                     <div class="swiper-slide">Slide 10</div>
                 
                 </div>
-                <div class="swiper-pagination"></div>
-
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
             </div>
         </div>
 
@@ -1105,38 +461,9 @@
 
 
         </div>
-
-
-
-
-
-
-        <!-- <body>
-
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">Slide 1</div>
-                    <div class="swiper-slide">Slide 2</div>
-                    <div class="swiper-slide">Slide 3</div>
-                    <div class="swiper-slide">Slide 4</div>
-                    <div class="swiper-slide">Slide 5</div>
-                    <div class="swiper-slide">Slide 6</div>
-                    <div class="swiper-slide">Slide 7</div>
-                    <div class="swiper-slide">Slide 8</div>
-                    <div class="swiper-slide">Slide 9</div>
-                    <div class="swiper-slide">Slide 10</div>
-                </div>
-
-                <div class="swiper-pagination"></div>
-
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-
-
-        </body> -->
-
-
-
+        <div id="editor"></div>
+        <button id="cmd" class="btn-success">Next
+            <i class="fa fa-file"></i>
+        </button>
     </section>
 </div>
