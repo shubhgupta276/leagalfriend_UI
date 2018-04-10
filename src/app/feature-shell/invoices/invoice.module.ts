@@ -8,9 +8,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { StorageService } from '../../shared/services/storage.service';
-
 import { InstitutionService } from '../../feature-shell/master/institution/institution.service';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule(
@@ -21,7 +20,8 @@ import { InstitutionService } from '../../feature-shell/master/institution/insti
             ReactiveFormsModule,
             FormsModule,
             SelectDropDownModule,
-            SharedModule
+            SharedModule,
+            NgxPaginationModule
         ],
         declarations: [ InvoiceComponent ,InvoiceFormComponent,InvoiceNextFormComponent],
         providers: [InstitutionService,StorageService]
