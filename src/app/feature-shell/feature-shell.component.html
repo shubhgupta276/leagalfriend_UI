@@ -28,10 +28,7 @@
         <!-- Notifications: style can be found in dropdown.less -->
         <li>
           <div style="width: 200px;padding: 9px;" *ngIf="arBranches.length>0">
-            <ng-select [items]="items" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-              (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected">
-            </ng-select>
-            <!-- <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown> -->
+            <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown>
           </div>
         </li>
         <li class="dropdown notifications-menu">
