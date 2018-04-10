@@ -12,6 +12,7 @@ import {MasterTemplateComponentService} from "../app/feature-shell/master/master
 import { HttpClientModule } from '@angular/common/http'
 
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
+import { StorageService } from './shared/services/storage.service';
 @NgModule({
   imports: [
     BrowserModule,
@@ -27,7 +28,8 @@ import { LFAuthantication } from './shared/services/lfAuthantication-service';
     ApiGateway,
     TokenService,
     MasterTemplateComponentService,
-    LFAuthantication 
+    LFAuthantication ,
+    StorageService
   ],
   bootstrap: [AppComponent]
 })
