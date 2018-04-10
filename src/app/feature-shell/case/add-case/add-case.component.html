@@ -35,49 +35,55 @@
                               <label class="col-sm-3 col-form-label createUserLabel">Recourse:
                                 <em class="astrick">*</em>
                               </label>
-                              <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Recourse" formControlName="recourse"> -->
-                                <select tabindex="2" formControlName="recourse" class="form-control select2me">
-                                  <!-- <option  value="">Select Resource</option>  -->
+                              <div class="col-md-9" id="divRecourse" *ngIf="Resource.length>0"> 
+                                  <ngx-select-dropdown [config]="config" [options]="Resource"  
+                                  [(value)]="configData" [multiple]="true" ></ngx-select-dropdown>
+                                  
+                                <!-- <select tabindex="2" formControlName="recourse" class="form-control select2me">
+                                
                                   <option *ngFor="let option of Resource" [ngValue]="option.id">
                                         {{ option.recourseName }}
                                       </option>
-                                </select>
+                                </select> -->
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Manager:
                                 <em class="astrick">*</em>
                               </label>
-                              <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                                <select name="MANAGER" tabindex="3" class="form-control select2me" id="MANAGER" formControlName="manager">
+                              <div class="col-md-9" *ngIf="Manager.length>0">
+                                  <ngx-select-dropdown [config]="config" [options]="Manager"  
+                                  [(value)]="configData" [multiple]="true" ></ngx-select-dropdown>
+                                <!-- <select name="MANAGER" tabindex="3" class="form-control select2me" id="MANAGER" formControlName="manager">
                                     <option *ngFor="let option of Manager" [ngValue]="option.id">
                                         {{ option.FirstName }}
                                       </option>
-                                </select>
+                                </select> -->
                               </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row" *ngIf="Court.length>0">
                               <label class="col-sm-3 col-form-label createUserLabel">Court:
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Court" formControlName="court"> -->
-                                <select name="COURT_ID1" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="court">
+                                 
+                                      <ngx-select-dropdown [config]="config" [options]="Court"  
+                                      [(value)]="configData" [multiple]="false" ></ngx-select-dropdown>
+                                    
+                                <!-- <select name="COURT_ID1" tabindex="5" class="form-control select2me" id="COURT_ID" formControlName="court">
                                     <option *ngFor="let option of Court" [ngValue]="option.id">
                                         {{ option.courtName }}
                                       </option>
-                                </select>
+                                </select> -->
                               </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row" *ngIf="arDdl.lentgh>0">
                               <label class="col-sm-3 col-form-label createUserLabel">State:
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9">
                                   <ngx-select-dropdown [config]="config" [options]="arDdl"  
-                                  [(value)]="configData" [multiple]="true" ></ngx-select-dropdown>
+                                  [(value)]="configData" [multiple]="false" ></ngx-select-dropdown>
                                 <!-- <select name="STATE" tabindex="5" class="form-control select2me" id="STATE" formControlName="state">
                                     <option *ngFor="let option of State" [ngValue]="option.id">
                                         {{ option.stateName }}
@@ -90,12 +96,14 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Parent Case" formControlName="parentCase"> -->
-                                <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE" formControlName="parentCase">
-                                    <option *ngFor="let option of ParentCases" [ngValue]="option.courtCaseId">
-                                        {{ option.courtCaseId }}
+                               
+                                  <ngx-select-dropdown [config]="config" [options]="ParentCases"  
+                                  [(value)]="configData" [multiple]="false" ></ngx-select-dropdown>
+                                <!-- <select name="PARENT_CASE" tabindex="5" class="form-control select2me" id="PARENT_CASE" formControlName="parentCase">
+                                    <option *ngFor="let option of ParentCases" [ngValue]="option.id">
+                                        {{ option.id }}
                                       </option>
-                                </select>
+                                </select> -->
                               </div>
                             </div>
                             <div class="form-group row">
@@ -117,13 +125,10 @@
                               <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
                                 <em class="astrick">*</em>
                               </label>
-                              <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Customer Name" formControlName="customerName"> -->
-                                <select name="CUSTOMER_NAME" tabindex="7" class="form-control select2me" id="CUSTOMER_NAME" formControlName="customerName">
-                                    <option *ngFor="let option of CustomerName" [ngValue]="option.id">
-                                        {{ option.FirstName }}
-                                      </option>
-                                </select>
+                              <div class="col-md-9"  *ngIf="CustomerName.length>0">
+                                  <ngx-select-dropdown [config]="config" [options]="CustomerName"  
+                                  [(value)]="configData" [multiple]="false" ></ngx-select-dropdown>
+                              
                               </div>
                             </div>
                             <div class="form-group row">
@@ -140,18 +145,19 @@
                                   </small>
                                 </div>
                               </div>
-                              <div class="form-group row">
+                              <div class="form-group row" *ngIf="Branch.length>0">
                                 <label class="col-sm-3 col-form-label createUserLabel">Branch:
                                   <em class="astrick">*</em>
                                 </label>
                                 <div class="col-md-9">
-                                  <!-- <input class="form-control" placeholder="Branch" formControlName="branch"> -->
-                                  <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id" formControlName="branch">
-                                    <!-- <option  value="">Select Branch</option>  -->
+                                    <ngx-select-dropdown [config]="config" [options]="Branch"  
+                                    [(value)]="configData" [multiple]="false" ></ngx-select-dropdown>
+                                  <!-- <select name="Branch_Id" tabindex="5" class="form-control select2me" id="Branch_Id" formControlName="branch">
+                               
                                     <option *ngFor="let option of Branch" [ngValue]="option.id">
                                         {{ option.branchName }}
                                       </option>
-                                </select>
+                                </select> -->
                                 </div>
                               </div>
                               <div class="form-group row">
@@ -169,43 +175,42 @@
                                 </div>
                                 </div>
                               </div>
-                              <div class="form-group row">
+                              <div class="form-group row" *ngIf="Stage.length>0">
                                 <label class="col-sm-3 col-form-label createUserLabel">Stage:
                                   <em class="astrick">*</em>
                                 </label>
                                 <div class="col-md-9">
-                                  <!-- <input class="form-control" placeholder="Stage" formControlName="stage"> -->
-                                  <select name="STAGE" tabindex="5" class="form-control select2me" id="STAGE" required="" formControlName="stage">
-                                    <option *ngFor="let option of Stage" [ngValue]="option.id">
-                                        {{ option.stageName }}
-                                      </option>
-                                </select>
+                                    <ngx-select-dropdown [config]="config" [options]="Stage"  
+                                    [(value)]="configData" [multiple]="false" ></ngx-select-dropdown>
+
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label createUserLabel">Employee:
                                   <em class="astrick">*</em>
                                 </label>
-                                <div class="col-md-9">
-                                  <!-- <input class="form-control" placeholder="Employee" formControlName="employee"> -->
-                                  <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE" formControlName="employee">
+                                <div class="col-md-9" *ngIf="Employee.length>0">
+                                  <ngx-select-dropdown [config]="config" [options]="Employee"  
+                                  [(value)]="configData" [multiple]="true" ></ngx-select-dropdown>
+                                  <!-- <select name="EMPLOYEE" tabindex="11" class="form-control select2me" id="EMPLOYEE" formControlName="employee">
                                     <option *ngFor="let option of Employee" [ngValue]="option.id">
                                         {{ option.FirstName }}
                                       </option>
-                                </select>
+                                </select> -->
                                 </div>
                               </div>
-                              <div class="form-group row">
+                              <div class="form-group row" *ngIf="CourtPlace.length>0">
                                 <label class="col-sm-3 col-form-label createUserLabel">Court place:
                                   <em class="astrick">*</em>
                                 </label>
                                 <div class="col-md-9">
-                                  <!-- <input class="form-control" placeholder="Court place" formControlName="courtplace"> -->
-                                  <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE" formControlName="court">
+                                    <ngx-select-dropdown [config]="config" [options]="CourtPlace"  
+                                    [(value)]="configData" [multiple]="true" ></ngx-select-dropdown>
+                                  <!-- <select name="COURT_PLACE" tabindex="5" class="form-control select2me" id="COURT_PLACE" formControlName="court">
                                     <option *ngFor="let option of CourtPlace" [ngValue]="option.id">
                                         {{ option.courtName }}
                                       </option>
-                                </select>
+                                </select> -->
                                 </div>
                               </div>
                               <div class="form-group row">
@@ -271,11 +276,7 @@
               </div>
               <!-- Create User ends -->
             </div>
-            <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
-                
-              </div> -->
+          
       
           </div>
           <!-- /.modal-content -->

@@ -4,7 +4,8 @@ import { EditBranchMasterComponent } from "./edit-branch/edit-branch.component";
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { BranchService } from './branch.service';
+import { StorageService } from '../../../shared/services/storage.service';
 declare let $;
 
 @NgModule(
@@ -14,7 +15,8 @@ declare let $;
       BranchComponent,
       AddBranchMasterComponent,
       EditBranchMasterComponent,
-    ]
+    ],
+    providers: [BranchService, StorageService]
   }
 )
 @Component({
@@ -27,75 +29,151 @@ export class BranchComponent implements OnInit {
   editBranchMasterForm: FormGroup;
   editDetails:any;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private _branchService: BranchService,) {
     }
   ngOnInit() {
     this.GetAllBranch();
-    $($.document).ready(function () {
+    // $($.document).ready(function () {
 
-      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-      var selectedPageLength = 15;
+    //   var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+    //   var selectedPageLength = 15;
 
-      var $table = $("#example1").DataTable({
-        paging: true,
-        lengthChange: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        autoWidth: false,
-        lengthMenu: arLengthMenu,
-        pageLength: selectedPageLength,
-        oLanguage: {
-          sLengthMenu: "Show _MENU_ rows",
-          sSearch: "",
-          sSearchPlaceholder: "Search..."
-        },
-        initComplete: function () {
-          var tableid = "example1";
-          var $rowSearching = $("#" + tableid + "_wrapper");
-          $rowSearching.find(".row:eq(0)").hide();
+    //   var $table = $("#example1").DataTable({
+    //     paging: true,
+    //     lengthChange: true,
+    //     searching: true,
+    //     ordering: true,
+    //     info: true,
+    //     autoWidth: false,
+    //     lengthMenu: arLengthMenu,
+    //     pageLength: selectedPageLength,
+    //     oLanguage: {
+    //       sLengthMenu: "Show _MENU_ rows",
+    //       sSearch: "",
+    //       sSearchPlaceholder: "Search..."
+    //     },
+    //     initComplete: function () {
+    //       var tableid = "example1";
+    //       var $rowSearching = $("#" + tableid + "_wrapper");
+    //       $rowSearching.find(".row:eq(0)").hide();
 
-          for (var i = 0; i < arLengthMenu[0].length; i++) {
-            $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-          }
-          $("#ddlLengthMenu").val(selectedPageLength);
+    //       for (var i = 0; i < arLengthMenu[0].length; i++) {
+    //         $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+    //       }
+    //       $("#ddlLengthMenu").val(selectedPageLength);
 
-          $("#ddlLengthMenu").on("change", function () {
-            $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-          });
-        }
-      });
+    //       $("#ddlLengthMenu").on("change", function () {
+    //         $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+    //       });
+    //     }
+    //   });
 
-      $table.columns().every(function () {
+    //   $table.columns().every(function () {
 
-        $('#txtSearch').on('keyup change', function () {
-          if ($table.search() !== this.value) {
-            $table.search(this.value).draw();
-          }
-        });
-      });
+    //     $('#txtSearch').on('keyup change', function () {
+    //       if ($table.search() !== this.value) {
+    //         $table.search(this.value).draw();
+    //       }
+    //     });
+    //   });
 
-    });
+    // });
   }
   
 
   GetAllBranch() {
-    this.arr = [
-      { BranchName: "Trident", BranchCode: "B01", Address: "Address01", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Gecko", BranchCode: "B02", Address: "Address02", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Webkit", BranchCode: "B03", Address: "Address03", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Presto", BranchCode: "B04", Address: "Address04", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "KHTML", BranchCode: "B05", Address: "Address05", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Tasman", BranchCode: "B06", Address: "Address06", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Misc", BranchCode: "B07", Address: "Address07", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Tasman", BranchCode: "B08", Address: "Address08", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Misc", BranchCode: "B09", Address: "Address09", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "KHTML", BranchCode: "B10", Address: "Address10", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Gecko", BranchCode: "B11", Address: "Address11", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Trident", BranchCode: "B12", Address: "Address12", City: "Jaipur", Contact: "1234567890" },
-      { BranchName: "Trident", BranchCode: "B13", Address: "Address13", City: "Jaipur", Contact: "1234567890" }
+debugger
 
-    ];
+    this._branchService.getBraches().subscribe(
+      result => {
+        debugger
+        if (result.httpCode == 200) {
+          for (var i = 0; i < result.branches.length; i++) {
+            const obj = result.branches[i];
+
+            this.arr.push({
+              branchName: obj.branchName,
+              branchCode:obj.branchCode,
+              branchAddress:obj.branchAddress,
+              branchContact:obj.branchContact,
+              cityId:obj.cityId,
+            });
+          }
+          setTimeout(() => {
+            this.bindDatatable();
+          }, 1);
+
+        }
+        else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+       // this.arCityData = [];
+
+      });
+    // this.arr = [
+    //   { BranchName: "Trident", BranchCode: "B01", Address: "Address01", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Gecko", BranchCode: "B02", Address: "Address02", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Webkit", BranchCode: "B03", Address: "Address03", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Presto", BranchCode: "B04", Address: "Address04", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "KHTML", BranchCode: "B05", Address: "Address05", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Tasman", BranchCode: "B06", Address: "Address06", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Misc", BranchCode: "B07", Address: "Address07", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Tasman", BranchCode: "B08", Address: "Address08", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Misc", BranchCode: "B09", Address: "Address09", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "KHTML", BranchCode: "B10", Address: "Address10", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Gecko", BranchCode: "B11", Address: "Address11", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Trident", BranchCode: "B12", Address: "Address12", City: "Jaipur", Contact: "1234567890" },
+    //   { BranchName: "Trident", BranchCode: "B13", Address: "Address13", City: "Jaipur", Contact: "1234567890" }
+
+    // ];
+  }
+
+  bindDatatable() {
+
+    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+    var selectedPageLength = 15;
+
+    var $table = $("#example1").DataTable({
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      lengthMenu: arLengthMenu,
+      pageLength: selectedPageLength,
+      oLanguage: {
+        sLengthMenu: "Show _MENU_ rows",
+        sSearch: "",
+        sSearchPlaceholder: "Search..."
+      },
+      initComplete: function () {
+        var tableid = "example1";
+        var $rowSearching = $("#" + tableid + "_wrapper");
+        $rowSearching.find(".row:eq(0)").hide();
+
+        for (var i = 0; i < arLengthMenu[0].length; i++) {
+          $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+        }
+        $("#ddlLengthMenu").val(selectedPageLength);
+
+        $("#ddlLengthMenu").on("change", function () {
+          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+        });
+      }
+    });
+
+    $table.columns().every(function () {
+      $('#txtSearch').on('keyup change', function () {
+        if ($table.search() !== this.value) {
+          $table.search(this.value).draw();
+        }
+      });
+    });
+
   }
 
   showEditModal(data) {

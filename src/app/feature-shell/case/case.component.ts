@@ -419,25 +419,6 @@ export class CaseComponent implements OnInit {
       });
   }
 
-  // setDropdownUniqueValues() {
-
-  //   for (var i = 0; i < this.caseRunning.length; i++) {
-  //     var obj = this.caseRunning[i];
-  //     if ($.inArray(obj.Resource.name, this.arrListCaseRecource) < 0) {
-  //       this.arrListCaseRecource.push(obj.Resource.name);
-  //     }
-  //     if ($.inArray(obj.Branch.name, this.arrListCaseBranch) < 0) {
-  //       this.arrListCaseBranch.push(obj.Branch.name);
-  //     }
-
-  //     if ($.inArray(obj.Branch.name, this.arrListCaseBranch1) < 0) {
-  //       this.arrListCaseBranch1.push(obj.Branch.name);
-  //     }
-  //   }
-
-  // }
-
-  //Filter by date ends
   initCaseForm() {
     this.createForm(null);
   }
@@ -470,7 +451,7 @@ export class CaseComponent implements OnInit {
       lastHearingDate: [c == null ? null : c.lastHearingDate],
        uploadDocument: [],
       completionDate: [c == null ? null : c.completionDate]
-    });
+   });
   }
 
   showEditModal(c) {

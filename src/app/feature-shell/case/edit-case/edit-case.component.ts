@@ -250,7 +250,7 @@ export class EditCaseComponent implements OnInit {
 
   submitEditCaseUser(data) {
 
-    debugger
+    
     const objEditCase = new EditCase();
     objEditCase.id = data.caseId;
     objEditCase.courtCaseId = data.courtCaseId;
@@ -274,7 +274,7 @@ export class EditCaseComponent implements OnInit {
     this.authService.updateEditCaseUser(objEditCase).subscribe(
 
       result => {
-        $.toaster({ priority: 'success', title: 'Success', message: 'Case updated successfully' });
+       // $.toaster({ priority: 'success', title: 'Success', message: 'Case updated successfully' });
         console.log(result);
       },
       err => {
