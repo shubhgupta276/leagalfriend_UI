@@ -155,17 +155,16 @@ export class InvoiceNextFormComponent implements OnInit {
         var totalAmount = 0;
         $('.invoiceRow').each(function () {
             var $row = $(this);
-            var amount = 0;
+            var amount = $row.find('.amount').val();
             var productName = $row.find('.productName').val();
             var quantity = $row.find('.quantity').val();
-            var unitPrice = $row.find('.unitPrice').val();
-            if (quantity > 0 && unitPrice > 0) {
-                amount = quantity * unitPrice;
-            }
+            
             var remarks = $('#remarksInvoice').val();
-            self.arrInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, unitPrice: unitPrice, remarks: remarks })
-            debugger
+            self.arrInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, remarks: remarks })
+            
         })
+        debugger
         $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
+        this.router.navigate(['/admin/invoices']);
     }
 }

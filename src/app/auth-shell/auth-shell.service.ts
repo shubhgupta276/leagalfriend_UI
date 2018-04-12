@@ -109,7 +109,7 @@ export class AuthService {
     );
   }
   bindRecourseDDL(reqData): Observable<any> {    
-    return this.apiGateWay.get<Recourse>(
+    return this.apiGateWay.get<any>(
       'master/recourses'+ '?email='+ reqData.email.replace('"',''), null,
       
     );
