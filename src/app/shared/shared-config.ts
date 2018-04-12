@@ -1,1 +1,1 @@
-export let endpoint_url = 'http://13.127.58.7:7777';
+export let endpoint_url = 'http://13.126.146.32:7777';

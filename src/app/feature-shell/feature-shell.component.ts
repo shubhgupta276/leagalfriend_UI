@@ -31,10 +31,12 @@ export class FeatureShellComponent implements OnInit {
     this._sessionStorage.setValue("branchId", null);//clear branchid when page refresh
 
     this.branchConfig = {
-      displayKey: "branchName",//if objects array passed which key to be displayed defaults to description,
-      search: true //enables the search plugin to search in the list,
+      displayKey: "branchName",
+      defaultText: "All Branches",
+      defaultTextAdd: true,
+      showIcon: true,
+      hideWhenOneItem: true
     }
-
 
     this.GetAllBranch();
     $(window.document).ready(function () {
@@ -88,6 +90,7 @@ export class FeatureShellComponent implements OnInit {
         console.log(err);
         this.arBranches = [];
       });
+
   }
 
   changeBranch($event) {

@@ -18,16 +18,19 @@
           <div class="box-body">
             <div>
               <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Against</div>
+                <div class="col-sm-4 heading">For Against</div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2"></div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="text-align: right;">
                   <!-- <label class="custom-label">Show
                     <select class="input-sm" id="ddlLengthMenu">
                     </select> rows
                   </label> -->
-                  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#filterInstitutionModal">Filter</button> &nbsp;
-                  <button type="button" class="btn btn-default" id="btnClearFilter">Clear Filter</button>
+                  <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
+                  <!-- <button type="button" class="btn btn-default" 
+                  data-toggle="modal" data-target="#filterInstitutionModal">Filter</button> &nbsp; -->
+                  <img src="assets/dist/img/reset_filter.png" title="Clear Filter" id="btnClearFilter">
+                  <!-- <button type="button" class="btn btn-default" id="btnClearFilter">Clear Filter</button> -->
                 </div>
                 <div class="col-sm-2">
                   <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
@@ -47,16 +50,16 @@
                   <th>Court Case Id</th>
                   <th>Legal Case Id</th>
                   <th>Last Hearing Date
-                    <select id="ddlLastHearingDate" class="role input-sm">
+                    <!-- <select id="ddlLastHearingDate" class="role input-sm">
                       <option value="All">All</option>
                       <option *ngFor="let item of arLastHearingDate" value="{{item}}">{{item}}</option>
-                    </select>
+                    </select> -->
                   </th>
                   <th>Next Hearing Date
-                    <select id="ddlNextHearingDate" class="role input-sm">
+                    <!-- <select id="ddlNextHearingDate" class="role input-sm">
                       <option value="All">All</option>
                       <option *ngFor="let item of arNextHearingDate" value="{{item}}">{{item}}</option>
-                    </select>
+                    </select> -->
                   </th>
                   <th>Loan Account No</th>
                   <th>Action</th>
@@ -163,7 +166,7 @@
 
         </div>
         <div class="modal-footer FilterSearch">
-          <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Reset</button>
+          <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="submit" id="btnSearch" class="btn btn-default">Search</button>
         </div>
 
