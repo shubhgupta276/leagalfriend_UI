@@ -26,6 +26,10 @@
                     <select class="input-sm" id="ddlLengthMenu">
                     </select> rows
                   </label> -->
+                  <div style="float: left;">
+                    <app-custom-single-select *ngIf="arRecourse.length > 0" 
+                      [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                  </div>
                   <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
                   <!-- <button type="button" class="btn btn-default" 
                   data-toggle="modal" data-target="#filterInstitutionModal">Filter</button> &nbsp; -->
@@ -107,6 +111,9 @@
   <!-- /.content -->
 </div>
 
+
+<add-for-institution-modal></add-for-institution-modal>
+
 <div class="favicon">
   <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
     <span class="tooltip-text">Import Cases</span>
@@ -131,14 +138,14 @@
       <div style="width:120px;height:10%;background-color:black;"></div>
       <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
         <div class="row caseModalRow">
-          <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
+          <!-- <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
             <label>Recourse Type:</label>
             <select id="ddlRecource" class="form-control" style="width: 150px;">
               <option value="All">All</option>
               <option *ngFor="let option of arRecourse" value="{{option.id}}">{{ option.recourseName }}</option>
             </select>
 
-          </div>
+          </div> -->
           <div class="col-md-12">
             <!-- <div class="form-group"> -->
             <div class="col-md-6">
@@ -167,7 +174,7 @@
         </div>
         <div class="modal-footer FilterSearch">
           <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" id="btnSearch" class="btn btn-default">Search</button>
+          <button type="submit" id="btnSearch" (click)="filterDatatableData()" class="btn btn-default">Search</button>
         </div>
 
       </div>
@@ -179,5 +186,4 @@
 
 
 
-  <add-for-institution-modal></add-for-institution-modal>
   <edit-for-institution-modal></edit-for-institution-modal>

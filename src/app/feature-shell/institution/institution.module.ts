@@ -10,11 +10,12 @@ import { InstitutionService } from '../institution/institution.service';
 import { StorageService } from '../../shared/services/storage.service';
 import { FileValueAccessorDirective  } from '../../shared/Directives/fileValueAccessor';
 import { FileValidator } from '../../shared/Directives/fileValidator';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule(
     {
-        imports: [ InstitutionRoutingModule ,CommonModule, FormsModule, ReactiveFormsModule],
+        imports: [ InstitutionRoutingModule ,CommonModule, FormsModule, ReactiveFormsModule,SharedModule],
         declarations: [ ForInstitutionComponent, AgainstInstitutionComponent, AddForInstitutionComponent,
                         EditForInstitutionComponent,FileValueAccessorDirective,FileValidator],
         providers : [InstitutionService,StorageService]
