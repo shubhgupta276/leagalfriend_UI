@@ -1,0 +1,92 @@
+<div class="content-wrapper">
+    <div class="page-heading">
+        Invoice Management
+    </div>
+    <section class="content">
+        <div class="box box-info invoice-form">
+            <div class="box-header with-border">
+                <h3 class="box-title">Invoice</h3>
+                <button *ngIf="!editTemplate" type="button" class="btn btn-default" (click)="editInvoice()">Edit Template</button>
+            </div>
+            <form *ngIf="!editTemplate" [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" class="form-horizontal ">
+                <div class="box-body">
+                    <!-- <div class="form-group">
+                        <label class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" formControlName="description" placeholder="Description">
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" formControlName="addressLine1" placeholder="Address Line 1">
+                            <input type="text" class="form-control" formControlName="addressLine2" placeholder="Address Line 2">
+                            <input type="text" class="form-control" formControlName="city" placeholder="City">
+                            <input type="text" class="form-control" formControlName="state" placeholder="State">
+                            <input type="text" class="form-control" formControlName="zipcode" placeholder="Zipcode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Terms & Conditions</label>
+                        <div class="col-sm-8">
+                            <textarea type="text" class="form-control" formControlName="terms" placeholder="Enter terms and conditions"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Logo</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="file" id="logoImage" (change)=onFileChange($event)>
+                            <p class="help-block">Upload an image for logo on invoice.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right">Save</button>
+                    <button type="button" class="btn btn-default" (click)="revert()">Cancel</button>
+                </div>
+            </form>
+            <form *ngIf="editTemplate" [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" class="form-horizontal ">
+                <div class="box-body">
+                    <!-- <div class="form-group">
+                            <label class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" formControlName="description" placeholder="Description">
+                            </div>
+                        </div> -->
+                    <div class="form-group">
+                        <!-- <label class="col-sm-2 control-label">Address</label> -->
+                        <label class="col-sm-2 control-label">Address Line 1</label>
+                        <label class="col-sm-2 control-label">Address Line 2</label>
+                        <label class="col-sm-2 control-label">City</label>
+                        <label class="col-sm-2 control-label">State</label>
+                        <label class="col-sm-2 control-label">Zipcode</label>
+                        <div class="col-sm-8">
+                            <label class="control-label">{{address.address1}}</label>
+                            <label class=" control-label">{{address.address2}}</label>
+                            <label class=" control-label">{{address.city}}</label>
+                            <label class=" control-label">{{address.state}}</label>
+                            <label class=" control-label">{{address.zipCode}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Terms & Conditions</label>
+                        <div class="col-sm-8">
+                            <label class=" control-label">{{terms}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Logo</label>
+                        <div class="col-sm-8">
+                            <label class="control-label">{{logo}}</label> 
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right">Save</button>
+                    <button type="button" class="btn btn-default" (click)="revert()">Cancel</button>
+                </div>
+            </form>
+
+        </div>
+    </section>
+</div>
