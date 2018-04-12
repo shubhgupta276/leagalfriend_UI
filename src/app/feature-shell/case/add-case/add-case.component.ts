@@ -324,7 +324,7 @@ export class AddCaseComponent implements OnInit {
 
     debugger
     const objEditCase = new EditCase();
-    objEditCase.branch = data.branch[0].id;
+    //objEditCase.branch = data.branch[0].id;
     var userId = parseInt(localStorage.getItem('client_id'));
     objEditCase.userId = userId;
     objEditCase.childCase = data.childCase;

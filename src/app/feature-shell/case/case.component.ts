@@ -150,7 +150,7 @@ export class CaseComponent implements OnInit {
 
         //start Branch1 filter
         $("#ddlCaseBranch1").on("change", function () {
-          debugger;
+          ;
           var status = $(this).val();
           if (status == "All") {
             $('#ddlCaseBranch').val("All");
@@ -200,6 +200,7 @@ export class CaseComponent implements OnInit {
 
           $.fn.dataTableExt.afnFiltering.push(
             function (oSettings, data, iDataIndex) {
+              debugger
               var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
               var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
               var rowDate = new Date(data[5]);
@@ -273,7 +274,7 @@ export class CaseComponent implements OnInit {
     $($.document).ready(function () {
       var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
       var selectedPageLength = 15;
-      debugger
+      
       const $table = $("#example2").DataTable({
         lengthMenu: arLengthMenu,
         pageLength: selectedPageLength,
@@ -402,7 +403,7 @@ export class CaseComponent implements OnInit {
       });
   }
   bindStageDDL() {
-    debugger;
+    
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -424,7 +425,7 @@ export class CaseComponent implements OnInit {
   }
 
   createForm(c) {
-    debugger
+    
     this.editCaseForm = this.fb.group({
 
      // Compliance: [c == null ? null : c.Compliance],
@@ -455,7 +456,7 @@ export class CaseComponent implements OnInit {
   }
 
   showEditModal(c) {
-    debugger
+    
     var $this = this
     var reqData = {
       caseId: c.id,
@@ -463,7 +464,7 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseByCaseId(reqData).subscribe(
 
       result => {
-debugger
+
         this.createForm(result);
         $("#editCaseModal").modal("show");
         console.log(result);
