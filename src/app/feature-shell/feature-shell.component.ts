@@ -27,8 +27,7 @@ export class FeatureShellComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this._sessionStorage.setValue("branchId", null);//clear branchid when page refresh
+    this._sessionStorage.setValue("branchData", null);//clear branchid when page refresh
 
     this.branchConfig = {
       displayKey: "branchName",
@@ -94,8 +93,9 @@ export class FeatureShellComponent implements OnInit {
   }
 
   changeBranch($event) {
-    this._sessionStorage.setValue("branchId", ($event) ? $event.id : $event);
-    this.sharedService.setHeaderBranch(($event) ? $event.id : $event);
+    
+    this._sessionStorage.setValue("branchData", JSON.stringify($event));
+    this.sharedService.setHeaderBranch($event);
   }
 
   showmastermenu() {

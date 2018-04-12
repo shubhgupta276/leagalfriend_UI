@@ -17,11 +17,21 @@ export class AgainstInstitutionComponent implements OnInit {
     arrInvoiceDetails = [];
     arRecourse: any[] = [];
     recourseFitlerId: any;
-
+    branchData: any;
     branchSubscription: Subscription;
+    recourseConfig: any;
+    $table: any;
     constructor(private _recourseService: RecourseService, private _sharedService: SharedService, private _storageService: StorageService) { }
 
     ngOnInit() {
+
+        this.recourseConfig = {
+            displayKey: "recourseName",
+            defaultText: "All Recourses",
+            defaultTextAdd: true,
+            showIcon: false,
+            hideWhenOneItem: false
+        }
 
         this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(message => {
             $("#btnSearch").click();
@@ -32,10 +42,10 @@ export class AgainstInstitutionComponent implements OnInit {
         this.setFilterDropdowns();
         var $this = this;
         $($.document).ready(function () {
-
+            var $table = $this.$table;
             var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
             var selectedPageLength = 15;
-            var $table = $("#example1").DataTable({
+            $this.$table = $("#example1").DataTable({
                 columns: [
                     { name: "", orderable: false },
                     { name: "CaseId", orderable: true },
@@ -78,118 +88,13 @@ export class AgainstInstitutionComponent implements OnInit {
                 }
             });
 
-            $table.columns().every(function () {
-                $('#txtSearch').on('keyup change', function () {
-                    if ($table.search() !== this.value) {
-                        $table.search(this.value).draw();
-                    }
-                });
-
-                //start LastHearingDate filter
-                $("#ddlLastHearingDate").on("change", function () {
-
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(5).search("").draw();
-                    }
-                    else if ($table.columns(5).search() !== this.value) {
-                        $table.columns(5).search(this.value).draw();
-                    }
-                });
-                //end LastHearingDate filter
-
-                //start NextHearingDate filter
-                $("#ddlNextHearingDate").on("change", function () {
-
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(6).search("").draw();
-                    }
-                    else if ($table.columns(6).search() !== this.value) {
-                        $table.columns(6).search(this.value).draw();
-                    }
-                });
-                //end NextHearingDate filter
-
-                $('#btnSearch').click(function () {
-                    filterTable()
-                });
-
-                filterTable();
-
-                function filterTable() {
-
-                    var recourseVal = $('#ddlRecource').val();
-
-                    // start recourse filter
-                    if (recourseVal == "All") {
-                        $table.columns(9).search("").draw();
-                    }
-                    else if ($table.columns(9).search() !== recourseVal) {
-                        $table.columns(9).search(recourseVal).draw();
-                    }
-                    //end recourse filter
-
-                    const branchId = parseInt($this._storageService.getValue("branchId"));
-                    //start branch fitler
-                    if (isNaN(branchId)) {
-                        $table.columns(10).search("").draw();
-                    }
-                    else if ($table.columns(10).search() !== recourseVal) {
-                        $table.columns(10).search(branchId).draw();
-                    }
-                    //end branch fitler
-
-                    $.fn.dataTableExt.afnFiltering.push(
-                        function (oSettings, data, iDataIndex) {
-
-                            if ($("#filterInstitutionModal").is(":visible")) {
-                                var arLastDate = $("#txtLastHearingDateFilter").val().split(" - ");
-                                var lastHearingStartDate = null, lastHearingEndDate = null;
-                                var lastHearingDate = new Date(data[5]);
-                                if (arLastDate.length > 1) {
-                                    lastHearingStartDate = new Date(arLastDate[0]);
-                                    lastHearingEndDate = new Date(arLastDate[1]);
-                                }
-
-                                // var nextHearingStartDate = new Date($('#txtNextHearingDateFilter').data('daterangepicker').startDate.format('MM-DD-YYYY'));
-                                // var nextHearingEndDate = new Date($('#txtNextHearingDateFilter').data('daterangepicker').endDate.format('MM-DD-YYYY'));
-
-
-                                var nextHearingDate = new Date(data[6]);
-                                var arNextDate = $("#txtNextHearingDateFilter").val().split(" - ");
-                                var nextHearingStartDate = null, nextHearingEndDate = null;
-                                if (arNextDate.length > 1) {
-                                    nextHearingStartDate = new Date(arNextDate[0]);
-                                    nextHearingEndDate = new Date(arNextDate[1]);
-                                }
-
-                                if ((arLastDate.length <= 1 && arNextDate.length <= 1) ||
-                                    (lastHearingDate >= lastHearingStartDate && lastHearingDate <= lastHearingEndDate) ||
-                                    (nextHearingDate >= nextHearingStartDate && nextHearingDate <= nextHearingEndDate)
-                                ) {
-                                    return true;
-                                }
-                                else {
-                                    return false;
-                                }
-                            }
-                            else
-                                return true;
-
-                        }
-                    );
-
-                    $table.draw();
-                    $("#closebtnFilter").click();
-                }
-            });
+            $this.filterDatatableData();
 
             $('#btnClearFilter,#btnReset').click(function () {
-                $('#ddlRecource').val("All");
                 $('#txtLastHearingDateFilter').val("");
                 $('#txtNextHearingDateFilter').val("");
-                $table.columns(9).search("").draw();
+                $this.filterDatatableData();
+                //$table.columns(9).search("").draw();
             });
 
             $('#txtLastHearingDateFilter').daterangepicker({
@@ -207,7 +112,111 @@ export class AgainstInstitutionComponent implements OnInit {
         });
     }
 
+    filterDatatableData() {
+        var $table = this.$table;
+        var $this = this;
+        $table.columns().every(function () {
+            $('#txtSearch').on('keyup change', function () {
+                if ($table.search() !== this.value) {
+                    $table.search(this.value).draw();
+                }
+            });
 
+            //start LastHearingDate filter
+            $("#ddlLastHearingDate").on("change", function () {
+
+                var status = $(this).val();
+                if (status == "All") {
+                    $table.columns(5).search("").draw();
+                }
+                else if ($table.columns(5).search() !== this.value) {
+                    $table.columns(5).search(this.value).draw();
+                }
+            });
+            //end LastHearingDate filter
+
+            //start NextHearingDate filter
+            $("#ddlNextHearingDate").on("change", function () {
+
+                var status = $(this).val();
+                if (status == "All") {
+                    $table.columns(6).search("").draw();
+                }
+                else if ($table.columns(6).search() !== this.value) {
+                    $table.columns(6).search(this.value).draw();
+                }
+            });
+            //end NextHearingDate filter
+        });
+
+        filterTable();
+
+        function filterTable() {
+            // start recourse filter
+            if ($this.recourseFitlerId == undefined) {
+                $table.columns(9).search("").draw();
+            }
+            else if ($table.columns(9).search() !== $this.recourseFitlerId) {
+                $table.columns(9).search($this.recourseFitlerId).draw();
+            }
+            //end recourse filter
+
+            $this.branchData = $this._storageService.getValue("branchData");
+            //start branch fitler
+
+            if ($this.branchData == "undefined" || $this.branchData == "null") {
+                $table.columns(10).search("").draw();
+            }
+            else if ($table.columns(10).search() !== $this.branchData.id) {
+                $this.branchData = JSON.parse($this.branchData);
+                $table.columns(10).search($this.branchData.id).draw();
+            }
+            //end branch fitler
+
+            $.fn.dataTableExt.afnFiltering.push(
+                function (oSettings, data, iDataIndex) {
+
+                    if ($("#filterInstitutionModal").is(":visible")) {
+                        var arLastDate = $("#txtLastHearingDateFilter").val().split(" - ");
+                        var lastHearingStartDate = null, lastHearingEndDate = null;
+                        var lastHearingDate = new Date(data[5]);
+                        if (arLastDate.length > 1) {
+                            lastHearingStartDate = new Date(arLastDate[0]);
+                            lastHearingEndDate = new Date(arLastDate[1]);
+                        }
+
+                        // var nextHearingStartDate = new Date($('#txtNextHearingDateFilter').data('daterangepicker').startDate.format('MM-DD-YYYY'));
+                        // var nextHearingEndDate = new Date($('#txtNextHearingDateFilter').data('daterangepicker').endDate.format('MM-DD-YYYY'));
+
+
+                        var nextHearingDate = new Date(data[6]);
+                        var arNextDate = $("#txtNextHearingDateFilter").val().split(" - ");
+                        var nextHearingStartDate = null, nextHearingEndDate = null;
+                        if (arNextDate.length > 1) {
+                            nextHearingStartDate = new Date(arNextDate[0]);
+                            nextHearingEndDate = new Date(arNextDate[1]);
+                        }
+
+                        if ((arLastDate.length <= 1 && arNextDate.length <= 1) ||
+                            (lastHearingDate >= lastHearingStartDate && lastHearingDate <= lastHearingEndDate) ||
+                            (nextHearingDate >= nextHearingStartDate && nextHearingDate <= nextHearingEndDate)
+                        ) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else
+                        return true;
+
+                }
+            );
+
+            $table.draw();
+            $("#closebtnFilter").click();
+        }
+    }
 
     ngOnDestroy() {
         // unsubscribe to ensure no memory leaks
@@ -243,6 +252,11 @@ export class AgainstInstitutionComponent implements OnInit {
         //     if ($.inArray(obj.NextHearingDate, this.arNextHearingDate) < 0)
         //         this.arNextHearingDate.push(obj.NextHearingDate);
         // }
+    }
+
+    changeRecourse(data: any) {
+        this.recourseFitlerId = (data == undefined) ? data : data.id;
+        this.filterDatatableData();
     }
 
     getRecourse() {

@@ -7,6 +7,10 @@
     position: absolute;
 }
 
+.custom-ul-list{
+    text-align: left;
+}
+
 .custom-dropdown-single-select {
     margin-top: 29px;
     border: 1px solid gray;
