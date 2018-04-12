@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
@@ -6,8 +6,8 @@ import { InstitutionService } from '../../../feature-shell/master/institution/in
 import { Institution } from '../../../feature-shell/master/institution/institution';
 import { StorageService } from '../../../shared/services/storage.service';
 import { forEach } from '@angular/router/src/utils/collection';
-import * as swiper from 'swiper';
-
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Routes, RouterModule,Router } from '@angular/router';
 declare let $;
 declare let canvas;
 declare let Swiper;
@@ -27,7 +27,12 @@ export class InvoiceNextFormComponent implements OnInit {
     arrInvoiceDetails = [];
     invoiceNo: any = Math.floor(Math.random() * 90000) + 10000;
     totalAmount: number;
-    constructor(private _institutionService: InstitutionService, private _storageService: StorageService) {
+    p: number = 1;
+    p2:number=1;
+    @Input() id: string;
+    @Input() maxSize: number;
+    @Output() pageChange: EventEmitter<number>;
+    constructor(private _institutionService: InstitutionService, private _storageService: StorageService,private router: Router) {
         Window["InvoiceFormComponent"] = this;
     }
 
@@ -37,8 +42,11 @@ export class InvoiceNextFormComponent implements OnInit {
         this.BindInvoice();
     }
 
-    
-
+    PreviousCheck() {
+        if (this.p2 == 0) {
+            this.router.navigate(['/admin/invoices/invoiceform']);
+        }
+    }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         this.totalAmount = 0;
@@ -47,22 +55,23 @@ export class InvoiceNextFormComponent implements OnInit {
             totalDescription = "";
             totalDescription = totalDescription + (element.caseId + "   " + element.recourse + "   " + element.stage);
             this.arrInvoiceDetails.push({ description: totalDescription, amount: element.amount, quantity: 1 })
-           this.totalAmount+= parseFloat(element.amount);
+            this.totalAmount += parseFloat(element.amount);
         });
-        setTimeout(() => {
-            $('#tblInvoice').DataTable({
-                responsive: true,
-                pagingType: 'simple',
-                searching: false,
-                "bLengthChange": false,
-                "bInfo": false,
-                "pageLength": 10,
-                "bSort": false
-            });
-            $("#NewPaginationContainer").append($(".dataTables_paginate"));
-        }, 10);
-       
-       
+        // setTimeout(() => {
+        //     $('#tblInvoice').DataTable({
+        //         responsive: true,
+        //         pagingType: 'simple',
+        //         searching: false,
+        //         "bLengthChange": false,
+        //         "bInfo": false,
+        //         "pageLength": 10,
+        //         "bSort": false
+        //     });
+        //     $("#NewPaginationContainer").append($(".dataTables_paginate"));
+        //     $('.pagination').css({"margin-top":"0px"});
+        // }, 10);
+
+
     }
     anyForm: any;
     generatepdf() {

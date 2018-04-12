@@ -23,6 +23,45 @@ declare var $;
 })
 export class EditCaseComponent implements OnInit {
 
+  public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
+    'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
+    'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
+    'Düsseldorf', 'Essen', 'Frankfurt', 'Genoa', 'Glasgow', 'Gothenburg',
+    'Hamburg', 'Hannover', 'Helsinki', 'Kraków', 'Leeds', 'Leipzig', 'Lisbon',
+    'London', 'Madrid', 'Manchester', 'Marseille', 'Milan', 'Munich', 'Málaga',
+    'Naples', 'Palermo', 'Paris', 'Poznań', 'Prague', 'Riga', 'Rome',
+    'Rotterdam', 'Seville', 'Sheffield', 'Sofia', 'Stockholm', 'Stuttgart',
+    'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
+    'Zagreb', 'Zaragoza', 'Łódź'];
+
+  private value: any = {};
+  private _disabledV: string = '0';
+  private disabled: boolean = false;
+
+  private get disabledV(): string {
+    return this._disabledV;
+  }
+
+  private set disabledV(value: string) {
+    this._disabledV = value;
+    this.disabled = this._disabledV === '1';
+  }
+
+  public selected(value: any): void {
+    console.log('Selected value is: ', value);
+  }
+
+  public removed(value: any): void {
+    console.log('Removed value is: ', value);
+  }
+
+  public typed(value: any): void {
+    console.log('New search input: ', value);
+  }
+
+  public refreshValue(value: any): void {
+    this.value = value;
+  }
   @Input() editCaseForm: FormGroup;
 
   Resource: any = [];
@@ -66,6 +105,7 @@ export class EditCaseComponent implements OnInit {
   }
 
   GetAllCourt() {
+
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -76,10 +116,10 @@ export class EditCaseComponent implements OnInit {
 
         result.courts.forEach(function (value) {
 
-
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
-          $this.Court.push(value);
-          $this.CourtPlace.push(value);
+          $this.Court.push({ id: value.id, text: value.courtName });
+
+          $this.CourtPlace.push({ id: value.id, text: value.courtName });
         });
         console.log(result);
       },
@@ -87,8 +127,8 @@ export class EditCaseComponent implements OnInit {
         console.log(err);
       });
   }
-
   bindStateDDL() {
+    this.items = [];
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -101,7 +141,10 @@ export class EditCaseComponent implements OnInit {
 
 
           //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
-          $this.State.push(value);
+
+          $this.State.push({ id: value.id, text: value.stateName });
+          // $this.arDdl.push({ id: value.stateName, text: value.stateName});
+
         });
         console.log(result);
       },
@@ -109,70 +152,6 @@ export class EditCaseComponent implements OnInit {
         console.log(err);
       });
   }
-  getBranchDDL() {
-    var $this = this
-    var reqData = {
-      email: this._storageService.getUserEmail(),
-    };
-    this.authService.getBranchDDL(reqData).subscribe(
-
-      result => {
-        result.branches.forEach(function (value) {
-
-          $this.Branch.push(value);
-        });
-        console.log(result);
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
-  bindRecourseDDL() {
-    var $this = this
-    var reqData = {
-      email: this._storageService.getUserEmail(),
-    };
-    this.authService.bindRecourseDDL(reqData).subscribe(
-
-      result => {
-
-        result.recourses.forEach(function (value) {
-
-
-          //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
-          $this.Resource.push(value);
-        });
-        console.log(result);
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
-  bindStageDDL() {
-    var $this = this
-    var reqData = {
-      email: this._storageService.getUserEmail(),
-    };
-    this.authService.bindStageDDL(reqData).subscribe(
-
-      result => {
-        debugger
-        result.stageRecourses.forEach(function (value) {
-
-
-          //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
-          $this.Stage.push(value);
-        });
-        console.log(result);
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
-
   getManagers() {
 
     var $this = this
@@ -188,18 +167,21 @@ export class EditCaseComponent implements OnInit {
           if (value.roles[0].roleName == 'MANAGER') {
             $this.Manager.push(
               {
-                FirstName: value.firstName,
-                id: value.id,
-                //Role:value.roles[0].roleName
+
+
+                id: value.id, text: value.firstName
+
+
               }
             );
           }
-          if (value.roles[0].roleName == 'CLIENT') {
+
+          if (value.roles[0].roleName == 'CUSTOMER') {
             $this.CustomerName.push(
               {
-                FirstName: value.firstName,
-                id: value.id,
-                //Role:value.roles[0].roleName
+
+                id: value.id, text: value.firstName
+
               }
             );
           }
@@ -211,6 +193,74 @@ export class EditCaseComponent implements OnInit {
         console.log(err);
       });
   }
+  getBranchDDL() {
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.authService.getBranchDDL(reqData).subscribe(
+
+      result => {
+
+        result.branches.forEach(function (value) {
+
+          $this.Branch.push({ id: value.id, text: value.branchName });
+        });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  bindRecourseDDL() {
+    this.items = [];
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+
+
+
+    this.authService.bindRecourseDDL(reqData).subscribe(
+
+      result => {
+
+        //  $(".search-container").find(".ng-pristine ng-valid ng-touched").click({
+        result.recourses.forEach(function (value) {
+
+          $this.Resource.push({ id: value.id, text: value.recourseName });
+        });
+
+      },
+      err => {
+        console.log(err);
+      });
+
+  }
+
+  bindStageDDL() {
+
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.authService.bindStageDDL(reqData).subscribe(
+
+      result => {
+
+        result.stageRecourses.forEach(function (value) {
+
+          $this.Stage.push({ id: value.id, text: value.stageName });
+        });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+
 
 
   getEmployee() {
@@ -244,13 +294,32 @@ export class EditCaseComponent implements OnInit {
 
 
 
+  getRunningCase() {
 
+
+    var $this = this
+    var reqData = {
+      userId: this._storageService.getUserId(),
+    };
+    this.authService.getCaseRunning(reqData).subscribe(
+
+      result => {
+
+        result.forEach(function (value) {
+          $this.ParentCases.push({ id: value.parentCaseId, text: value.parentCaseId });
+        });
+        console.log(result);
+      },
+      err => {
+        console.log(err);
+      });
+  }
 
 
 
   submitEditCaseUser(data) {
 
-    
+    debugger
     const objEditCase = new EditCase();
     objEditCase.id = data.caseId;
     objEditCase.courtCaseId = data.courtCaseId;
@@ -258,13 +327,14 @@ export class EditCaseComponent implements OnInit {
     objEditCase.userId = userId;
     objEditCase.branchId = data.branchId;
 
-    objEditCase.stageId = 1;
-    objEditCase.recourseId = data.recourseId;
-    objEditCase.employeeId = data.employeeId;
-    objEditCase.courtId = data.courtId;
-    objEditCase.stateId = data.stateId;
+    objEditCase.stageId = data.stage[0].id;
+    objEditCase.recourseId = data.recourse[0].id;
+    objEditCase.employeeId = data.employee[0].id;
+    objEditCase.courtId = data.court[0].id;
+    objEditCase.stateId = data.state[0].id;
     objEditCase.nextHearingDate = this.datePipe.transform(data.nextHearingDate, "yyyy-MM-dd")
-    objEditCase.customerId = data.customerId;
+    objEditCase.customerId = data.customerName[0].id;
+    objEditCase.managerId = data.manager[0].id;
     objEditCase.filingDate = this.datePipe.transform(data.filingdate, "yyyy-MM-dd");
     objEditCase.oppLawyer = data.oppLawyer;
     objEditCase.childCase = data.childCase;
@@ -284,27 +354,7 @@ export class EditCaseComponent implements OnInit {
   }
 
 
-  getRunningCase() {
-
-    var $this = this
-    var reqData = {
-      userId: this._storageService.getUserId(),
-    };
-    this.authService.getCaseRunning(reqData).subscribe(
-
-      result => {
-
-        result.forEach(function (value) {
-
-        $this.ParentCases.push(
-        {
-          courtCaseId:value.courtCaseId,
-        }
-      );
-      }
-    );
-})
-}
+  
 
 }
 
