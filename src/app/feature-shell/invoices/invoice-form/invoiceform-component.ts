@@ -6,7 +6,7 @@ import { InstitutionService } from '../../../feature-shell/master/institution/in
 import { Institution } from '../../../feature-shell/master/institution/institution';
 import { StorageService } from '../../../shared/services/storage.service';
 import { forEach } from '@angular/router/src/utils/collection';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 declare let $;
 declare let canvas;
 @Component({
