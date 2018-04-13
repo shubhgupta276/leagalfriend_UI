@@ -21,10 +21,12 @@ export class AgainstInstitutionComponent implements OnInit {
     branchSubscription: Subscription;
     recourseConfig: any;
     $table: any;
+    isRowSelected: boolean = false;
+    checkboxCounter: number = 0;
+    againstOpen: boolean = false;
     constructor(private _recourseService: RecourseService, private _sharedService: SharedService, private _storageService: StorageService) { }
 
     ngOnInit() {
-
         this.recourseConfig = {
             displayKey: "recourseName",
             defaultText: "All Recourses",
@@ -160,15 +162,14 @@ export class AgainstInstitutionComponent implements OnInit {
                 $table.columns(9).search($this.recourseFitlerId).draw();
             }
             //end recourse filter
-
-            $this.branchData = $this._storageService.getValue("branchData");
+            $this.branchData = $this._storageService.getBranchData();
             //start branch fitler
-
-            if ($this.branchData == "undefined" || $this.branchData == "null") {
+            debugger
+            if ($this.branchData == null) {
                 $table.columns(10).search("").draw();
             }
             else if ($table.columns(10).search() !== $this.branchData.id) {
-                $this.branchData = JSON.parse($this.branchData);
+                $this.branchData = $this.branchData)
                 $table.columns(10).search($this.branchData.id).draw();
             }
             //end branch fitler
@@ -252,6 +253,15 @@ export class AgainstInstitutionComponent implements OnInit {
         //     if ($.inArray(obj.NextHearingDate, this.arNextHearingDate) < 0)
         //         this.arNextHearingDate.push(obj.NextHearingDate);
         // }
+    }
+
+    checkboxChange(data) {
+        this.checkboxCounter = (data) ? this.checkboxCounter + 1 : this.checkboxCounter - 1;
+        this.isRowSelected = !this.isRowSelected;
+    }
+
+    addClick() {
+        this.againstOpen = !this.againstOpen;
     }
 
     changeRecourse(data: any) {

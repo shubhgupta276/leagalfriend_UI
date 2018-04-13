@@ -27,8 +27,7 @@
                     </select> rows
                   </label> -->
                   <div style="float: left;">
-                    <app-custom-single-select *ngIf="arRecourse.length > 0" 
-                      [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                    <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
                   </div>
                   <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
                   <!-- <button type="button" class="btn btn-default" 
@@ -75,7 +74,7 @@
                 <tr *ngFor="let item of arr" data-toggle="modal" data-target="#modal-default">
                   <td class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
                     style="width: 35px;" aria-sort="ascending">
-                    <input type="checkbox" id="selectAlluserrep">
+                    <input type="checkbox" #rowChecked (change)="checkboxChange(rowChecked.checked)">
                   </td>
                   <td>{{item.CaseId}}</td>
                   <td>{{item.Stage}}</td>
@@ -99,10 +98,19 @@
               </tbody>
 
             </table>
+
+
           </div>
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
+        <div class="export1" *ngIf="checkboxCounter>0">
+          <img src="/assets/dist/img/download1.png" height="40">
+        </div>
+
+        <div class="export2" *ngIf="checkboxCounter>0">
+          <img src="/assets/dist/img/download2.png" height="40">
+        </div>
       </div>
       <!-- /.col -->
     </div>
@@ -112,9 +120,10 @@
 </div>
 
 
-<add-for-institution-modal></add-for-institution-modal>
 
-<div class="favicon">
+<add-for-institution-modal [againstOpen]="againstOpen"></add-for-institution-modal>
+
+<div class="favicon" (click)="addClick()">
   <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
     <span class="tooltip-text">Import Cases</span>
   </div>
@@ -183,7 +192,6 @@
     <!-- /.modal-dialog -->
   </div>
   <!-- Filter case ends -->
-
 
 
   <edit-for-institution-modal></edit-for-institution-modal>
