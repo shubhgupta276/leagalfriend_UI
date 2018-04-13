@@ -22,12 +22,17 @@ const featureConfig = require('./master.config');
 @Injectable()
 export class MasterService {
 
-  constructor(public apiGateWay: ApiGateway) { }
-    
+  constructor(public apiGateWay: ApiGateway) {
+    //
+  }
   createInvoice(invoiceData): Observable<any> {
     return this.apiGateWay.post<any>(
       featureConfig.createInvoiceTemplate,
       JSON.stringify(invoiceData)
     );
   }
+  getInvoiceData(user_id): Observable<any> {
+    const apiUrl = featureConfig.createInvoiceTemplate + '?userId=' + String(user_id);
+    return  this.apiGateWay.get<any>(apiUrl, null);
+   }
 }

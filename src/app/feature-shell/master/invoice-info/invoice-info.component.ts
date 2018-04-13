@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MasterService } from '../master.service';
 
@@ -8,10 +8,33 @@ import { MasterService } from '../master.service';
     providers: [MasterService]
 })
 
-export class InvoiceInfoComponent {
+export class InvoiceInfoComponent implements OnInit {
+    termsCondition: any;
+    address: any;
+    logo: any;
+    photoUrl: any;
+    isShowUpload = true;
     invoiceForm: FormGroup;
     editTemplate = false;
     constructor(private fb: FormBuilder, private masterService: MasterService) {
+        this.getTemplateData();
+        this.createForm();
+    }
+    ngOnInit() {
+        //
+    }
+    getTemplateData() {
+        const client_id = localStorage.getItem('client_id');
+        this.masterService.getInvoiceData(client_id).subscribe(
+            result => {
+                const templateData = result;
+                this.photoUrl = templateData.invoiceHeader.logo;
+                this.address = templateData.invoiceFooter.address;
+                this.termsCondition = templateData.invoiceFooter.termsCondition;
+            }
+        );
+    }
+    createForm() {
         this.invoiceForm = this.fb.group({
             addressLine1: ['', Validators.required],
             addressLine2: ['', Validators.required],
@@ -48,7 +71,7 @@ export class InvoiceInfoComponent {
         this.masterService.createInvoice(invoiceModelData).subscribe(
             result => {
                 console.log(result);
-                this.revert();
+                // this.revert();
             },
             err => {
                 console.log(err.error);
@@ -57,18 +80,21 @@ export class InvoiceInfoComponent {
     }
     revert() {
         this.invoiceForm.reset();
+        this.photoUrl = '';
     }
     onFileChange(event) {
         const reader = new FileReader();
         if (event.target.files && event.target.files.length > 0) {
             const file = event.target.files[0];
             reader.readAsDataURL(file);
-            reader.onload = () => {
+            reader.onload = (e: any) => {
+                this.photoUrl = e.target.result;
                 this.invoiceForm.get('logo').setValue(reader.result.split(',')[1]);
+                // this.photoUrl = event.target.result;
             };
         }
     }
     editInvoice() {
-        // hahah
+        this.editTemplate = true;
     }
 }
