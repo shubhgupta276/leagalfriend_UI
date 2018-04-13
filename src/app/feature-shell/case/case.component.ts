@@ -420,25 +420,6 @@ export class CaseComponent implements OnInit {
       });
   }
 
-  // setDropdownUniqueValues() {
-
-  //   for (var i = 0; i < this.caseRunning.length; i++) {
-  //     var obj = this.caseRunning[i];
-  //     if ($.inArray(obj.Resource.name, this.arrListCaseRecource) < 0) {
-  //       this.arrListCaseRecource.push(obj.Resource.name);
-  //     }
-  //     if ($.inArray(obj.Branch.name, this.arrListCaseBranch) < 0) {
-  //       this.arrListCaseBranch.push(obj.Branch.name);
-  //     }
-
-  //     if ($.inArray(obj.Branch.name, this.arrListCaseBranch1) < 0) {
-  //       this.arrListCaseBranch1.push(obj.Branch.name);
-  //     }
-  //   }
-
-  // }
-
-  //Filter by date ends
   initCaseForm() {
     this.createForm(null);
   }
@@ -447,31 +428,31 @@ export class CaseComponent implements OnInit {
     
     this.editCaseForm = this.fb.group({
 
-      compliance: [c == null ? null : c.Compliance],
+     // Compliance: [c == null ? null : c.Compliance],
       caseId: [c == null ? null : c.id, Validators.required],
 
       courtCaseId: [c == null ? null : c.courtCaseId],
-      recourseId: [c == null ? null : c.recourseId],
-       manager: [c == null ? null : c.managerId],
-       courtId: [c == null ? null : c.courtId],
-       stateId: [c == null ? null : c.stateId],
-       parentCaseId: [c == null ? null : c.parentCaseId],
+      recourse: [c == null ? null : c.recourseId],
+      manager: [c == null ? null : c.managerId],
+      court: [c == null ? null : c.courtId],
+      state: [c == null ? null : c.stateId],
+       parentCase: [c == null ? null : c.parentCaseId],
       nextHearingDate: [c == null ? null : c.nextHearingDate],
-      customerId: [c == null ? null : c.customerId],
+      customerName: [c == null ? null : c.customerId],
       remark: [c == null ? null : c.remark, Validators.required],
       groundforclosingfile: [],
       disposedoffFileNo: [],
-      branchId: [c == null ? null : c.branchId],
+      branch: [c == null ? null : c.branchId],
       filingdate: [c == null ? null : c.filingdate],
-      stageId: [c == null ? null : c.stageId],
-      employeeId: [c == null ? null : c.employeeId],
-      CourtePlace: [c == null ? null : c.courtId],
+      stage: [c == null ? null : c.stageId],
+      employee: [c == null ? null : c.employeeId],
+      courtplace: [c == null ? null : c.courtId],
       oppLawyer: [c == null ? null : c.oppLawyer],
       childCase: [c == null ? null : c.childCase],
       lastHearingDate: [c == null ? null : c.lastHearingDate],
        uploadDocument: [],
       completionDate: [c == null ? null : c.completionDate]
-    });
+   });
   }
 
   showEditModal(c) {

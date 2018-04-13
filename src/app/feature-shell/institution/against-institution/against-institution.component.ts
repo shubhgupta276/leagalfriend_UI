@@ -164,12 +164,11 @@ export class AgainstInstitutionComponent implements OnInit {
             //end recourse filter
             $this.branchData = $this._storageService.getBranchData();
             //start branch fitler
-            debugger
+            
             if ($this.branchData == null) {
                 $table.columns(10).search("").draw();
             }
             else if ($table.columns(10).search() !== $this.branchData.id) {
-                $this.branchData = $this.branchData)
                 $table.columns(10).search($this.branchData.id).draw();
             }
             //end branch fitler
