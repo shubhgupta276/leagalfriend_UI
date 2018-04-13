@@ -11,6 +11,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthService } from '../auth-shell/auth-shell.service';
 import {CommonModule} from '@angular/common';
 import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActive.component';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     // UserModule,
@@ -18,10 +20,13 @@ import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActi
     // CaseModule,
     // MasterModule,
     // InstitutionModule,
+    SelectDropDownModule,
     FeatureShellRoutingModule,
-    CommonModule 
+    CommonModule ,
+    SharedModule
   ],
-  declarations: [FeatureShellComponent, CalendarComponent, DashboardComponent,EmployeeActiveComponent
+  declarations: [FeatureShellComponent, 
+    CalendarComponent, DashboardComponent,EmployeeActiveComponent
   ],
   providers: [AuthService]
 })

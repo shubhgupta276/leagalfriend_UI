@@ -10,12 +10,18 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Routes, RouterModule,Router } from '@angular/router';
 declare let $;
 declare let canvas;
+declare let Swiper;
 @Component({
     selector: 'app-invoicenextform',
     templateUrl: './invoicenextform.html',
 
 })
 export class InvoiceNextFormComponent implements OnInit {
+
+
+
+
+
     arr: Institution[] = [];
     arrInvoice = [];
     arrInvoiceDetails = [];
@@ -34,7 +40,6 @@ export class InvoiceNextFormComponent implements OnInit {
         this.GetAllInstitute();
         this.GetBillFrom();
         this.BindInvoice();
-
     }
 
     PreviousCheck() {

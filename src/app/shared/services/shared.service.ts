@@ -7,23 +7,24 @@ export class SharedService {
     arrCalendarEvents: any = [];
     // Observable string sources
     private emitChangeSource = new Subject<any>();
+    private branchHeader = new Subject<any>();
     // Observable string streams
     changeEmitted$ = this.emitChangeSource.asObservable();
     constructor() {
-        this.arrTodayCalendarEvents = [            
-            { startdate: this.dateFormat(new Date()),endDate: this.dateFormat(new Date()), cssClass: '#0073b7', totalUpcomingEvents: 0 },
-            { startdate: this.dateFormat(new Date()),endDate: this.dateFormat(new Date()), cssClass: '#00c0ef', totalUpcomingEvents: 0 },
-            { startdate: new Date(2018, 1, 1),endDate: this.dateFormat(new Date(2018, 1, 14)), cssClass: '#dd4b39', totalUpcomingEvents: 0 },
-            { startdate: this.dateFormat(new Date(2018, 1, 1)),endDate: this.dateFormat(new Date(2018, 1, 1)), cssClass: '#3c8dbc', totalUpcomingEvents: 0 }
+        this.arrTodayCalendarEvents = [
+            { startdate: this.dateFormat(new Date()), endDate: this.dateFormat(new Date()), cssClass: '#0073b7', totalUpcomingEvents: 0 },
+            { startdate: this.dateFormat(new Date()), endDate: this.dateFormat(new Date()), cssClass: '#00c0ef', totalUpcomingEvents: 0 },
+            { startdate: new Date(2018, 1, 1), endDate: this.dateFormat(new Date(2018, 1, 14)), cssClass: '#dd4b39', totalUpcomingEvents: 0 },
+            { startdate: this.dateFormat(new Date(2018, 1, 1)), endDate: this.dateFormat(new Date(2018, 1, 1)), cssClass: '#3c8dbc', totalUpcomingEvents: 0 }
         ];
         this.GetEventsGroup();
     }
     GetEventsGroup(): any {
         var $this = this;
-        this.arrCalendarEvents=[];
+        this.arrCalendarEvents = [];
         var todayDate = new Date(new Date().setHours(0, 0, 0, 0));
         this.arrTodayCalendarEvents = this.arrTodayCalendarEvents.filter(function (arr) {
-            return (arr.startdate<= todayDate && arr.endDate >=todayDate);
+            return (arr.startdate <= todayDate && arr.endDate >= todayDate);
         });
 
         var source = Observable.from(this.arrTodayCalendarEvents).groupBy(x => x.cssClass)
@@ -35,7 +36,7 @@ export class SharedService {
             function (obs) {
                 $this.arrCalendarEvents.push({ cssClass: obs.cssClass, totalEventCount: obs.totalUpcomingEvents })
             })
-            this.arrCalendarEvents.splice(4)
+        this.arrCalendarEvents.splice(4)
         this.emitChange(this.arrCalendarEvents);
     }
     dateFormat(date) {
@@ -47,11 +48,23 @@ export class SharedService {
     emitChange(change: any) {
         this.emitChangeSource.next(change);
     }
+
+    setHeaderBranch(message: string) {
+        this.branchHeader.next({ text: message });
+    }
+
+    clearHeaderBranch() {
+        this.branchHeader.next();
+    }
+
+    getHeaderBranch(): Observable<any> {
+        return this.branchHeader.asObservable();
+    }
 }
 export interface UpcomingEvents {
 
     startdate: Date;
-    endDate:Date;
+    endDate: Date;
     cssClass: string;
     totalUpcomingEvents: number;
 

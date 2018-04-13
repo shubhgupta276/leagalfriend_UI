@@ -545,3 +545,7 @@ td {
 .invoice-form .btn-edit :hover{
   color: white;
 }
+
+.ui-select-choices.dropdown-menu {
+  display: block;
+  }
