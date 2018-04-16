@@ -23,6 +23,7 @@ declare var System :any;
 )
 export class MasterTemplatesComponent implements OnInit
 {
+   table:any;
    fileIdSelected :string;
     form: FormGroup;
     
@@ -43,14 +44,17 @@ ngOnInit(){
 getUploadedFileInfo(): void {
   this.masterTemplateService.getuploadedFile()
       .subscribe(x => this.arr = x);
+      
 }
+
 arr : FileInfo[];
 GetAllCustomer() {
   
   $($.document).ready(function() {
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
     var selectedPageLength = 15;
-    const $table = $("#example1").DataTable({
+     this.table = $("#example1").DataTable({
+     
       lengthMenu: arLengthMenu,
       pageLength: selectedPageLength,
       oLanguage: {
@@ -87,25 +91,25 @@ GetAllCustomer() {
       }
     });
 
-    $table.columns().every(function() {
+    this.table.columns().every(function() {
       $("#txtSearch").on("keyup change", function() {
-        if ($table.search() !== this.value) {
-          $table.search(this.value).draw();
+        if (this.table.search() !== this.value) {
+          this.table.search(this.value).draw();
         }
       });
     });
 
-    $table.columns().every(function() {
+    this.table.columns().every(function() {
       // user filter
       $("#ddlUserFilter").on("change", function() {
         const status = $(this).val();
         if (status === "All") {
-          $table
+          this.table
             .columns(0)
             .search("")
             .draw();
-        } else if ($table.columns(0).search() !== this.value) {
-          $table
+        } else if (this.table.columns(0).search() !== this.value) {
+          this.table
             .columns(0)
             .search(this.value)
             .draw();
@@ -116,12 +120,12 @@ GetAllCustomer() {
       $("#ddlStatusFilter").on("change", function() {
         const status = $(this).val();
         if (status === "All") {
-          $table
+          this.table
             .columns(2)
             .search("")
             .draw();
-        } else if ($table.columns(2).search() !== this.value) {
-          $table
+        } else if (this.table.columns(2).search() !== this.value) {
+          this.table
             .columns(2)
             .search(this.value)
             .draw();
@@ -177,10 +181,20 @@ onSubmit() {
     this.masterTemplateService.AddUpladedFile(FileInfoObje);
     }
     this.getUploadedFileInfo();
-    FileInfoObje = null;
-    this.reset();
-    $('#addMasterTemplate').modal('hide');
     
+    $('#addMasterTemplate').modal('hide');
+    //var somerows =this.table.rows().data();
+    //this.table.draw();
+    //this.table = $("#example1").DataTable();
+    //this.table.destroy();
+   
+
+    //var rowNode = this.table
+    //.row.add( [ FileInfoObje.FileName, FileInfoObje.Lastupdated, FileInfoObje.LastUpdatedBy,"<a title='Edit' ><i class='fa fa-edit' data-toggle='modal' data-target='#previewFile' (click) = 'setDataToPreview("+ FileInfoObje.Id +") ></i " + " > </a> " ] )
+    //.draw()
+    //.node();
+  FileInfoObje = null;
+  this.reset();
   }
 }
 
