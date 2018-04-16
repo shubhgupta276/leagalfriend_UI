@@ -13,39 +13,43 @@
             <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" class="form-horizontal ">
                 <div class="box-body">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Logo</label>
+                        <label class="col-sm-2 control-label">Logo <span class="required-asterik">*</span></label>
                         <div class="col-sm-10">
                             <div class="logo-image">
-                                <div class="image-area">
-                                    <img *ngIf="photoUrl" [ngClass]="{'change-opacity': !editTemplate}" src="{{photoUrl}}" class="img-fluid" alt="">
+                                <div class="image-area" [ngClass]="{'error-border': invoiceForm.controls['logo'].hasError('required') && submitted}">
+                                    <img *ngIf="photoUrl" [ngClass]="{'change-opacity': editTemplate}" [src]="photoUrl" class="img-fluid" alt="">
                                 </div>
                                 <label class="invoice-logo-upload" *ngIf="editTemplate">
                                     <input class="form-control" type="file" id="logoImage" (change)=onFileChange($event)> Upload
                                 </label>
                             </div>
+                            <p class="error-message" *ngIf="invoiceForm.controls['logo'].hasError('required') && submitted">This is required</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Address</label>
+                        <label class="col-sm-2 control-label">Address <span class="required-asterik">*</span></label>
                         <div *ngIf="editTemplate" class="col-sm-10">
-                            <input type="text" class="form-control" formControlName="addressLine1" placeholder="Address Line 1">
-                            <input type="text" class="form-control" formControlName="addressLine2" placeholder="Address Line 2">
-                            <input type="text" class="form-control" formControlName="city" placeholder="City">
-                            <input type="text" class="form-control" formControlName="state" placeholder="State">
-                            <input type="text" class="form-control" formControlName="zipcode" placeholder="Zipcode">
+                                <!-- [ngClass]="{'error-border': invoiceForm.get('addressLine1').errors.required}" editProjectForm.controls['name'].hasError('required') -->
+                            <input type="text" class="form-control" formControlName="addressLine1" [ngClass]="{'error-border': invoiceForm.controls['addressLine1'].hasError('required') && submitted}" placeholder="Address Line 1">
+                            <p class="error-message" *ngIf="invoiceForm.controls['addressLine1'].hasError('required') && submitted">This is required</p>
+                            <input type="text" class="form-control" formControlName="addressLine2" [ngClass]="{'error-border': invoiceForm.controls['addressLine2'].hasError('required') && submitted}" placeholder="Address Line 2">
+                            <p class="error-message" *ngIf="invoiceForm.controls['addressLine2'].hasError('required') && submitted">This is required</p>
+                            <input type="text" class="form-control" formControlName="city" [ngClass]="{'error-border': invoiceForm.controls['city'].hasError('required') && submitted}" placeholder="City">
+                            <p class="error-message" *ngIf="invoiceForm.controls['city'].hasError('required') && submitted">This is required</p>
+                            <input type="text" class="form-control" formControlName="state" [ngClass]="{'error-border': invoiceForm.controls['state'].hasError('required') && submitted}" placeholder="State">
+                            <p class="error-message" *ngIf="invoiceForm.controls['state'].hasError('required') && submitted">This is required</p>
+                            <input type="text" class="form-control" formControlName="zipcode" [ngClass]="{'error-border': invoiceForm.controls['zipcode'].hasError('required') && submitted}" placeholder="Zipcode">
+                            <p class="error-message" *ngIf="invoiceForm.controls['zipcode'].hasError('required') && submitted">This is required</p>
                         </div>
                         <div *ngIf="!editTemplate && address" class="col-sm-10">
-                            <label class="control-label">{{address.address1}}</label>
-                            <label class=" control-label">{{address.address2}}</label>
-                            <label class=" control-label">{{address.city}}</label>
-                            <label class=" control-label">{{address.state}}</label>
-                            <label class=" control-label">{{address.zipCode}}</label>
+                            <p class="address control-label">{{address.address1}}, {{address.address2}}, {{address.city}}, {{address.state}}, {{address.zipCode}}</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Terms & Conditions</label>
+                        <label class="col-sm-2 control-label">Terms & Conditions <span class="required-asterik">*</span></label>
                         <div class="col-sm-10" *ngIf="editTemplate">
-                            <textarea type="text" class="form-control" formControlName="terms" placeholder="Enter terms and conditions"></textarea>
+                            <textarea type="text" class="form-control" formControlName="terms" [ngClass]="{'error-border': invoiceForm.controls['terms'].hasError('required') && submitted}" placeholder="Enter terms and conditions"></textarea>
+                            <p class="error-message" *ngIf="invoiceForm.controls['terms'].hasError('required') && submitted">This is required</p>
                         </div>
                         <div class="col-sm-10" *ngIf="!editTemplate">
                             <p>{{ termsCondition }}</p>
@@ -57,7 +61,7 @@
                     </div>
                 </div>
             </form>
-            
+
 
         </div>
     </section>

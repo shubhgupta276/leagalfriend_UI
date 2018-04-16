@@ -496,12 +496,11 @@ td {
   border-top-right-radius: 5px;
 }
 .invoice-form .logo-image img{
-  opacity: 0.5;
   height: 100%;
   width: 100%
 }
 .change-opacity{
-  opacity: 1;
+  opacity: 0.5;
 }
 .invoice-form .image-area{
   height: 150px;
@@ -545,7 +544,18 @@ td {
 .invoice-form .btn-edit :hover{
   color: white;
 }
-
+.invoice-form .address{
+  float: left;
+}
+.required-asterik{
+  color: red;
+}
+.error-border, .error-border :hover, .error-border :focus{
+  border-color: red !important;
+}
+.error-message{
+  color: red;
+}
 .ui-select-choices.dropdown-menu {
   display: block;
   }
