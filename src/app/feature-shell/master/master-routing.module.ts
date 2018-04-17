@@ -9,8 +9,9 @@ import { BillingComponent } from './billing/billing.component';
 import { InstitutionComponent } from './institution/institution.component';
 import { ResourceComponent } from './resource/resource.component';
 import { ComplianceComponent } from './compliance/compliance.component';
-import { BranchComponent } from "./branch/branch.component";
+import { BranchComponent } from './branch/branch.component';
 import { MasterTemplatesComponent } from './masterTemplates/masterTemplate.component';
+import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
 const masterRoutes: Routes = [
     { path: 'state', component: StateComponent},
     { path: 'stage', component: StageComponent},
@@ -23,7 +24,8 @@ const masterRoutes: Routes = [
     { path: 'compliance', component: ComplianceComponent},
     { path: 'branch', component: BranchComponent},
     { path: 'templates', component: MasterTemplatesComponent},
-    { path: '', redirectTo:'city', pathMatch: 'full' }
+    { path: 'invoice', component: InvoiceInfoComponent},
+    { path: '', redirectTo: 'city', pathMatch: 'full' }
     ];
 
 @NgModule({

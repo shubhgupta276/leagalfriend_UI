@@ -474,7 +474,88 @@ td {
   }
 .height-200{height: 200px !important;}
 .width-250{width: 250px !important;}
-
+.invoice-form{
+  width: 700px;
+}
+.invoice-form .form-group {
+  margin-bottom: 30px;
+  /* width: 50%;
+  float: left; */
+}
+.invoice-form input{
+  margin-bottom: 5px;
+}
+.invoice-form textarea{
+  height: 150px;
+}
+.invoice-form .box-header{
+  padding-left: 30px;
+  color: white;
+  background-color: #222d32;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.invoice-form .logo-image img{
+  height: 100%;
+  width: 100%
+}
+.change-opacity{
+  opacity: 0.5;
+}
+.invoice-form .image-area{
+  height: 150px;
+  width: 150px;
+  border: 1px solid whitesmoke;
+  float: left;
+  background-color: whitesmoke;
+}
+.invoice-logo-upload {
+  display: inline-block;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: -110px;
+  z-index: 10;
+  position: relative;
+  color: white;
+  background-color: #222d32;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 60px;
+}
+.invoice-logo-upload input{
+  display: none;
+}
+.invoice-form .box-body{
+  padding: 30px;
+  padding-bottom: 10px;
+}
+.invoice-form .btn-default{
+  margin-right: 15px;
+}
+.invoice-form .footer-buttons{
+  margin-bottom: 15px;
+}
+.invoice-form .btn-edit{
+  color: ghostwhite;
+  float: right;
+  margin-right: 10px;
+}
+.invoice-form .btn-edit :hover{
+  color: white;
+}
+.invoice-form .address{
+  float: left;
+}
+.required-asterik{
+  color: red;
+}
+.error-border, .error-border :hover, .error-border :focus{
+  border-color: red !important;
+}
+.error-message{
+  color: red;
+}
 .ui-select-choices.dropdown-menu {
   display: block;
   }

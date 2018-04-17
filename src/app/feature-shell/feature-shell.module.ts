@@ -12,8 +12,7 @@ import { AuthService } from '../auth-shell/auth-shell.service';
 import {CommonModule} from '@angular/common';
 import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActive.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
-import { CustomSingleSelectComponent } from '../shared/custom-single-select/custom-single-select.component';
-import { ClickOutsideModule } from 'ng4-click-outside';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     // UserModule,
@@ -23,11 +22,11 @@ import { ClickOutsideModule } from 'ng4-click-outside';
     // InstitutionModule,
     SelectDropDownModule,
     FeatureShellRoutingModule,
-    ClickOutsideModule,
-    CommonModule 
+    CommonModule ,
+    SharedModule
   ],
   declarations: [FeatureShellComponent, 
-    CalendarComponent, DashboardComponent,EmployeeActiveComponent, CustomSingleSelectComponent
+    CalendarComponent, DashboardComponent,EmployeeActiveComponent
   ],
   providers: [AuthService]
 })

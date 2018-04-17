@@ -122,7 +122,7 @@ export class AuthService {
   }
 
   submitEditCaseUser(customerData: EditCase): Observable<any> {
-    return this.apiGateWay.post<EditCase>(
+    return this.apiGateWay.post<any>(
       'case/add',
       JSON.stringify(customerData)
     );
