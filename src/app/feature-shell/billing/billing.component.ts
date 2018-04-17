@@ -19,16 +19,20 @@ export class BillingComponent implements OnInit {
     arListCaseID: any[] = [];
     arListBranch: any[] = [];
     arrInvoiceDetails = [];
-    constructor() { }
+    JSON: any;
+    constructor() {
+        this.JSON = JSON;
+    }
     $table: any;
     ngOnInit() {
         const self = this;
         this.getBillingData();
         this.setDropdownUniqueValues();
-        this.chaeck();
 
         $($.document).ready(function () {
-
+            $('#chkAllInvoice').change(function () {
+                $('.chkInvoice').prop("checked", $(this).prop('checked'));
+            });
             $('#btnSearch').click(function () {
                 debugger
                 $('#btnFilter').addClass("bgColor");
@@ -78,7 +82,7 @@ export class BillingComponent implements OnInit {
             const $table = $("#example1").DataTable({
 
                 columns: [
-                    { name: "", orderable: true },
+                    { name: "", orderable: false },
                     { name: "#", orderable: true },
                     { name: "Bank", orderable: false },
                     { name: "CaseID", orderable: false },
@@ -224,22 +228,15 @@ export class BillingComponent implements OnInit {
     }
 
 
-    CreateInvoice() {        
+    CreateInvoice() {
         var $this = this;
         $("#example1 tr").each(function (i) {
             var $row = $(this);
             if (i > 0) {
                 if ($row.find("input[type=checkbox]").prop('checked')) {
                     debugger
-                    $this.arrInvoiceDetails.push(
-                        {
-                            caseId: $row.find('#spnCaseId').html(),
-                            recourse: $row.find('#spnRecourse').html(),
-                            stage: $row.find('#spnStage').html(),
-                            invoiceNo: $row.find('#spnInvoiceNo').html(),
-                            amount: $row.find('#spnAmount').html(),
-                            billingDate: $row.find('#spnBillingDate').html(),
-                        })
+                    var item = JSON.parse($row.find('#hfItem').val());
+                    $this.arrInvoiceDetails.push(item);
 
                 }
             }
@@ -275,35 +272,26 @@ export class BillingComponent implements OnInit {
 
     }
 
-    chaeck() {
-        debugger
-
-    }
-
-
-
-
     getBillingData() {
 
         this.arBillingData.push(
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180213-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180215-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300", Billed: "No", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "170213-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180223-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "160213-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180883-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "177213-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5", Billed: "Yes", Branch: "Gujrat", BillingDate: "12-02-2018", InvoiceNumber: "180255-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-           
-            { Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Pune", BillingDate: "12-02-2018", InvoiceNumber: "180223-002" },
+            { BillingId: 1, InstitutionId: 1, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180213-002" },
+            { BillingId: 2, InstitutionId: 2, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180215-002" },
+            { BillingId: 3, InstitutionId: 3, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300", Billed: "No", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "170213-002" },
+            { BillingId: 4, InstitutionId: 4, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180223-002" },
+            { BillingId: 5, InstitutionId: 5, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "160213-002" },
+            { BillingId: 6, InstitutionId: 6, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180883-002" },
+            { BillingId: 7, InstitutionId: 7, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "177213-002" },
+            { BillingId: 8, InstitutionId: 8, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5", Billed: "Yes", Branch: "Gujrat", BillingDate: "12-02-2018", InvoiceNumber: "180255-002" },
+            { BillingId: 9, InstitutionId: 9, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
+            { BillingId: 10, InstitutionId: 10, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
+            { BillingId: 11, InstitutionId: 11, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
+            { BillingId: 12, InstitutionId: 12, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
+            { BillingId: 13, InstitutionId: 13, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
+            { BillingId: 14, InstitutionId: 14, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
+            { BillingId: 15, InstitutionId: 15, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
+            { BillingId: 16, InstitutionId: 16, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
+            { BillingId: 17, InstitutionId: 17, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Pune", BillingDate: "12-02-2018", InvoiceNumber: "180223-002" },
         );
     }
 

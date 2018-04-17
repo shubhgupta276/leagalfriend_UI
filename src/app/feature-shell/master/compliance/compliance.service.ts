@@ -15,10 +15,11 @@ export class ComplianceService {
 
     }
 
-    getCompliances(): Observable<any> {
+    getCompliances(reqData): Observable<any> {
 
         return this.apiGateWay.get<Compliance>(
-            getCompliancesUrl + "?email=" + this._storageService.getUserEmail()
+            
+            'master/compliances'+ '?email='+ reqData.email.replace('"',''), null,
         );
     }
 
