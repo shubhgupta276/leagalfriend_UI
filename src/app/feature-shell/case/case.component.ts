@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { debuglog } from "util";
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
@@ -15,6 +15,7 @@ import {
   CasesCompleted
 } from "../../shared/models/case/case";
 import { forEach } from "@angular/router/src/utils/collection";
+import { EditCaseComponent } from "./edit-case/edit-case.component";
 // import { ALPN_ENABLED } from "constants";
 declare var $;
 
@@ -36,14 +37,13 @@ export class CaseComponent implements OnInit {
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
-  $table:any;
+  @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
+  $table: any;
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
     this.caseRunning = CasesRunning
     this.caseCompleted = CasesCompleted;
     //this.setDropdownUniqueValues();
     this.initCaseForm();
-
-
 
   }
 
@@ -72,7 +72,7 @@ export class CaseComponent implements OnInit {
         console.log(err);
       });
   }
-  
+
 
   ngOnInit() {
     this.getRunningCase();
@@ -81,146 +81,146 @@ export class CaseComponent implements OnInit {
     this.bindRecourseDDL();
     // Running Case DataTable
     $($.document).ready(function () {
-    
-        $("#ddlCaseRecource").change(function () {
 
-          if ($("#ddlCaseRecource").val() !== "All") {
-            self.bindStageDDL();
-          }
-          else {
-            self.arrListCaseStage = [];
-          }
+      $("#ddlCaseRecource").change(function () {
 
-        });
+        if ($("#ddlCaseRecource").val() !== "All") {
+          self.bindStageDDL();
+        }
+        else {
+          self.arrListCaseStage = [];
+        }
 
-        $('#btnReset').click(function () {
+      });
+
+      $('#btnReset').click(function () {
 
 
-          $('#ddlCaseRecource').val("All");
-          self.$table.columns(3).search("").draw();
+        $('#ddlCaseRecource').val("All");
+        self.$table.columns(3).search("").draw();
 
-          $('#ddlCaseStage').val("All");
-          self.$table.columns(4).search("").draw();
+        $('#ddlCaseStage').val("All");
+        self.$table.columns(4).search("").draw();
 
+        $('#ddlCaseBranch').val("All");
+
+        $('#ddlCaseBranch1').val("All");
+        self.$table.columns(6).search("").draw();
+        // $('#reservation').val('');
+        // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
+        // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+        $('#reservation').data('daterangepicker').setStartDate(new Date());
+        $('#reservation').data('daterangepicker').setEndDate(new Date());
+
+        $.fn.dataTableExt.afnFiltering.length = 0;
+        self.$table.columns(5).search("").draw();
+      });
+      //Button Reset FrontEnd
+      $('#btnResetFilter').click(function () {
+        $('#btnFilter').removeClass("bgColor");
+
+        $('#ddlCaseRecource').val("All");
+        self.$table.columns(3).search("").draw();
+
+        $('#ddlCaseStage').val("All");
+        self.$table.columns(4).search("").draw();
+
+        $('#ddlCaseBranch').val("All");
+        $('#ddlCaseBranch1').val("All");
+        self.$table.columns(6).search("").draw();
+        // $('#reservation').val('');
+        // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
+        // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+        $('#reservation').data('daterangepicker').setStartDate(new Date());
+        $('#reservation').data('daterangepicker').setEndDate(new Date());
+
+        $.fn.dataTableExt.afnFiltering.length = 0;
+        self.$table.columns(5).search("").draw();
+      });
+
+      $('#reservation').daterangepicker({
+        autoApply: true,
+        locale: {
+          format: 'MM-DD-YYYY'
+        }
+        // startDate:new Date('01/01/1999'),
+        // endDate:new Date('01/01/2099')
+      });
+      // $('#reservation').val('');
+
+      //start Branch1 filter
+      $("#ddlCaseBranch1").on("change", function () {
+        ;
+        var status = $(this).val();
+        if (status == "All") {
           $('#ddlCaseBranch').val("All");
+          self.$table.columns(6).search("").draw();
+        }
+        else if (self.$table.columns(6).search() !== this.value) {
+          $('#ddlCaseBranch').val($("#ddlCaseBranch1").val());
+          self.$table.columns(6).search(this.value).draw();
+        }
+      });
+      //end Branch1 filter
+      $('#btnSearch').click(function () {
+        $('#btnFilter').addClass("bgColor");
+        var recourseVal = $('#ddlCaseRecource').val();
+        var caseStageVal = $('#ddlCaseStage').val();
+        var caseBranchVal = $('#ddlCaseBranch').val();
 
+
+
+        // start recourse filter
+        if (recourseVal == "All") {
+          self.$table.columns(3).search("").draw();
+        }
+        else if (self.$table.columns(3).search() !== recourseVal) {
+          self.$table.columns(3).search(recourseVal).draw();
+        }
+        //end recourse filter
+
+        // start Case stage filter
+        if (caseStageVal == "All") {
+          self.$table.columns(4).search("").draw();
+        }
+        else if (self.$table.columns(4).search() !== caseStageVal) {
+          self.$table.columns(4).search(caseStageVal).draw();
+        }
+        //end Case stage filter
+
+        // start caseBranchVal filter
+        if (caseBranchVal == "All") {
           $('#ddlCaseBranch1').val("All");
           self.$table.columns(6).search("").draw();
-          // $('#reservation').val('');
-          // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
-          // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
-          $('#reservation').data('daterangepicker').setStartDate(new Date());
-          $('#reservation').data('daterangepicker').setEndDate(new Date());
+        }
+        else if (self.$table.columns(6).search() !== caseBranchVal) {
+          $('#ddlCaseBranch1').val(caseBranchVal);
+          self.$table.columns(6).search(caseBranchVal).draw();
+        }
 
-          $.fn.dataTableExt.afnFiltering.length = 0;
-          self.$table.columns(5).search("").draw();
-        });
-       //Button Reset FrontEnd
-      $('#btnResetFilter').click(function () {
-          $('#btnFilter').removeClass("bgColor");
-          
-            $('#ddlCaseRecource').val("All");
-            self.$table.columns(3).search("").draw();
+        $.fn.dataTableExt.afnFiltering.push(
+          function (oSettings, data, iDataIndex) {
+            debugger
+            var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
+            var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
+            var rowDate = new Date(data[5]);
 
-            $('#ddlCaseStage').val("All");
-            self.$table.columns(4).search("").draw();
-
-            $('#ddlCaseBranch').val("All");
-            $('#ddlCaseBranch1').val("All");
-            self.$table.columns(6).search("").draw();
-            // $('#reservation').val('');
-            // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
-            // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
-            $('#reservation').data('daterangepicker').setStartDate(new Date());
-            $('#reservation').data('daterangepicker').setEndDate(new Date());
-          
-            $.fn.dataTableExt.afnFiltering.length = 0;
-            self.$table.columns(5).search("").draw();
-        });
-
-        $('#reservation').daterangepicker({
-          autoApply: true,
-          locale: {
-            format: 'MM-DD-YYYY'
-          }
-          // startDate:new Date('01/01/1999'),
-          // endDate:new Date('01/01/2099')
-        });
-        // $('#reservation').val('');
-
-        //start Branch1 filter
-        $("#ddlCaseBranch1").on("change", function () {
-          ;
-          var status = $(this).val();
-          if (status == "All") {
-            $('#ddlCaseBranch').val("All");
-            self.$table.columns(6).search("").draw();
-          }
-          else if (self.$table.columns(6).search() !== this.value) {
-            $('#ddlCaseBranch').val($("#ddlCaseBranch1").val());
-            self.$table.columns(6).search(this.value).draw();
-          }
-        });
-        //end Branch1 filter
-        $('#btnSearch').click(function () {
-          $('#btnFilter').addClass("bgColor");
-          var recourseVal = $('#ddlCaseRecource').val();
-          var caseStageVal = $('#ddlCaseStage').val();
-          var caseBranchVal = $('#ddlCaseBranch').val();
-
-
-
-          // start recourse filter
-          if (recourseVal == "All") {
-            self.$table.columns(3).search("").draw();
-          }
-          else if (self.$table.columns(3).search() !== recourseVal) {
-            self.$table.columns(3).search(recourseVal).draw();
-          }
-          //end recourse filter
-
-          // start Case stage filter
-          if (caseStageVal == "All") {
-            self.$table.columns(4).search("").draw();
-          }
-          else if (self.$table.columns(4).search() !== caseStageVal) {
-            self.$table.columns(4).search(caseStageVal).draw();
-          }
-          //end Case stage filter
-
-          // start caseBranchVal filter
-          if (caseBranchVal == "All") {
-            $('#ddlCaseBranch1').val("All");
-            self.$table.columns(6).search("").draw();
-          }
-          else if (self.$table.columns(6).search() !== caseBranchVal) {
-            $('#ddlCaseBranch1').val(caseBranchVal);
-            self.$table.columns(6).search(caseBranchVal).draw();
-          }
-
-          $.fn.dataTableExt.afnFiltering.push(
-            function (oSettings, data, iDataIndex) {
-              debugger
-              var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
-              var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
-              var rowDate = new Date(data[5]);
-
-              if (rowDate >= startDate && rowDate <= endDate) {
-                return true;
-              }
-              else {
-                return false;
-              }
-
+            if (rowDate >= startDate && rowDate <= endDate) {
+              return true;
             }
-          );
+            else {
+              return false;
+            }
 
-          self.$table.draw();
-          $("#closebtnFilter").click();
+          }
+        );
 
-        });
-        setTimeout(() => {
-         
+        self.$table.draw();
+        $("#closebtnFilter").click();
+
+      });
+      setTimeout(() => {
+
         // var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
         // var selectedPageLength = 15;
         // self.$table = $("#example1").DataTable({
@@ -274,7 +274,7 @@ export class CaseComponent implements OnInit {
     $($.document).ready(function () {
       var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
       var selectedPageLength = 15;
-      
+
       const $table = $("#example2").DataTable({
         lengthMenu: arLengthMenu,
         pageLength: selectedPageLength,
@@ -359,7 +359,10 @@ export class CaseComponent implements OnInit {
     });
 
     this.$table.columns().every(function () {
+      debugger
+    
       $('#txtSearch').on('keyup change', function () {
+        
         if (this.$table.search() !== this.value) {
           this.$table.search(this.value).draw();
         }
@@ -367,7 +370,7 @@ export class CaseComponent implements OnInit {
     });
 
   }
-  
+
   getBranchDDL() {
     var $this = this
     var reqData = {
@@ -403,7 +406,7 @@ export class CaseComponent implements OnInit {
       });
   }
   bindStageDDL() {
-    
+
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -421,42 +424,13 @@ export class CaseComponent implements OnInit {
   }
 
   initCaseForm() {
-    this.createForm(null);
-  }
-
-  createForm(c) {
     
-    this.editCaseForm = this.fb.group({
-
-     // Compliance: [c == null ? null : c.Compliance],
-      caseId: [c == null ? null : c.id, Validators.required],
-
-      courtCaseId: [c == null ? null : c.courtCaseId],
-      recourse: [c == null ? null : c.recourseId],
-      manager: [c == null ? null : c.managerId],
-      court: [c == null ? null : c.courtId],
-      state: [c == null ? null : c.stateId],
-       parentCase: [c == null ? null : c.parentCaseId],
-      nextHearingDate: [c == null ? null : c.nextHearingDate],
-      customerName: [c == null ? null : c.customerId],
-      remark: [c == null ? null : c.remark, Validators.required],
-      groundforclosingfile: [],
-      disposedoffFileNo: [],
-      branch: [c == null ? null : c.branchId],
-      filingdate: [c == null ? null : c.filingdate],
-      stage: [c == null ? null : c.stageId],
-      employee: [c == null ? null : c.employeeId],
-      courtplace: [c == null ? null : c.courtId],
-      oppLawyer: [c == null ? null : c.oppLawyer],
-      childCase: [c == null ? null : c.childCase],
-      lastHearingDate: [c == null ? null : c.lastHearingDate],
-       uploadDocument: [],
-      completionDate: [c == null ? null : c.completionDate]
-   });
   }
+
 
   showEditModal(c) {
-    
+    $("#editCaseModal").modal("show");
+
     var $this = this
     var reqData = {
       caseId: c.id,
@@ -464,9 +438,7 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseByCaseId(reqData).subscribe(
 
       result => {
-
-        this.createForm(result);
-        $("#editCaseModal").modal("show");
+        this.editChild.createForm(result);
         console.log(result);
       },
       err => {

@@ -84,7 +84,7 @@ export class BranchComponent implements OnInit {
   GetAllBranch() {
 debugger
 
-    this._branchService.getBraches().subscribe(
+    this._branchService.getBranches().subscribe(
       result => {
         debugger
         if (result.httpCode == 200) {

@@ -121,7 +121,7 @@ export class AuthService {
     );
   }
 
-  submitEditCaseUser(customerData: EditCase): Observable<EditCase> {
+  submitEditCaseUser(customerData: EditCase): Observable<any> {
     return this.apiGateWay.post<EditCase>(
       'case/add',
       JSON.stringify(customerData)

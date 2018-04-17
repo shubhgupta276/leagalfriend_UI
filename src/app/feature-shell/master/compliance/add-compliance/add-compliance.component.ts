@@ -47,13 +47,13 @@ export class AddComplianceMasterComponent implements OnInit {
       statusId: data.status.statusId,
       userId: this._storageService.getUserId()
     };
-
+debugger
     this._complianceService.addCompliance(reqData).subscribe(
       result => {
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
-
+debugger
           
           this.arCompliance.push(
             {
