@@ -345,19 +345,10 @@ export class AddCaseComponent implements OnInit {
     objEditCase.stateId = data.state[0].id;
     objEditCase.parentCaseId = data.parentCase[0].id;
     this.authService.submitEditCaseUser(objEditCase).subscribe(
-
       result => {
-        debugger
-
-
-
-
-        // if (result.body.httpCode == 200) { //success
-
-        //   $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
-
-        // }
-
+        if (result.body.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
+        }
         console.log(result);
       },
       err => {
