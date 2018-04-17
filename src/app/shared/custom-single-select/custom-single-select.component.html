@@ -1,0 +1,18 @@
+<div (clickOutside)="onClickedOutside($event)" id="custom-single-select" *ngIf="config.hideWhenOneItem ==false || (config.hideWhenOneItem && data.length > 1)">
+  <div class="custom-dropdown-button">
+    <label class="custom-selected-text" (click)="selectClick()">
+      <img *ngIf="config.showIcon" src="assets/dist/img/location.png" height="20" style="margin-top: -4px;"> 
+      {{selectedItem}}
+      <i class="fa fa-angle-down"></i>
+    </label>
+
+  </div>
+  <ng-container *ngIf="showDropdown">
+    <div class="custom-dropdown-single-select" >
+      <ul class="custom-ul-list">
+        <li *ngIf="config.defaultTextAdd && config.defaultText && selectedItem !=config.defaultText" (click)="defaultSelect(config.defaultText)">{{config.defaultText}}</li>
+        <li *ngFor="let item of data" (click)="selectItem(item)">{{item[config['displayKey']]}}</li>
+      </ul>
+    </div>
+  </ng-container>
+</div>

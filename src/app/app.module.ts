@@ -10,14 +10,16 @@ import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
 import {MasterTemplateComponentService} from "../app/feature-shell/master/masterTemplates/masterTemplate.component.service";
 import { HttpClientModule } from '@angular/common/http'
-
+import { SharedModule } from './shared/shared.module';
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
+import { StorageService } from './shared/services/storage.service';
 @NgModule({
   imports: [
     BrowserModule,
     FeatureShellModule,
     AuthShellModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule
   ],
   declarations: [
     AppComponent
@@ -27,7 +29,8 @@ import { LFAuthantication } from './shared/services/lfAuthantication-service';
     ApiGateway,
     TokenService,
     MasterTemplateComponentService,
-    LFAuthantication 
+    LFAuthantication ,
+    StorageService
   ],
   bootstrap: [AppComponent]
 })

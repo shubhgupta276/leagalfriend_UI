@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <!-- Main content -->
-  <div class="page-heading" >
+  <div class="page-heading">
     Institutional Clients
   </div>
   <section class="content">
@@ -18,14 +18,23 @@
           <div class="box-body">
             <div>
               <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Against</div>
+                <div class="col-sm-4 heading">For Against</div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                  <label class="custom-label">Show
+                <div class="col-sm-2" style="text-align: right;">
+                  <!-- <label class="custom-label">Show
                     <select class="input-sm" id="ddlLengthMenu">
                     </select> rows
-                  </label>
+                  </label> -->
+                  <div style="float: left;">
+                    <app-custom-single-select *ngIf="arRecourse.length > 0" 
+                      [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                  </div>
+                  <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
+                  <!-- <button type="button" class="btn btn-default" 
+                  data-toggle="modal" data-target="#filterInstitutionModal">Filter</button> &nbsp; -->
+                  <img src="assets/dist/img/reset_filter.png" title="Clear Filter" id="btnClearFilter">
+                  <!-- <button type="button" class="btn btn-default" id="btnClearFilter">Clear Filter</button> -->
                 </div>
                 <div class="col-sm-2">
                   <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
@@ -34,37 +43,61 @@
             </div>
             <table id="example1" class="table table-bordered table-hover">
               <thead>
-              <tr>
-                  <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending" style="width: 35px;" aria-sort="ascending"><input type="checkbox" id="selectAlluserrep"></th>
-                
-                <th>Case ID</th>
-                <th>Stage</th>
-                <th>Court Case Id</th>
-                <th>Legal Case Id</th>
-                <th>Last Hearing Date</th>
-                <th>Next Hearing Date</th>
-                <th>Loan Account No</th>
-                <th>Action</th>
-              </tr>
+                <tr>
+                  <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
+                    style="width: 35px;" aria-sort="ascending">
+                    <input type="checkbox" id="selectAlluserrep">
+                  </th>
+
+                  <th>Case ID</th>
+                  <th>Stage</th>
+                  <th>Court Case Id</th>
+                  <th>Legal Case Id</th>
+                  <th>Last Hearing Date
+                    <!-- <select id="ddlLastHearingDate" class="role input-sm">
+                      <option value="All">All</option>
+                      <option *ngFor="let item of arLastHearingDate" value="{{item}}">{{item}}</option>
+                    </select> -->
+                  </th>
+                  <th>Next Hearing Date
+                    <!-- <select id="ddlNextHearingDate" class="role input-sm">
+                      <option value="All">All</option>
+                      <option *ngFor="let item of arNextHearingDate" value="{{item}}">{{item}}</option>
+                    </select> -->
+                  </th>
+                  <th>Loan Account No</th>
+                  <th>Action</th>
+                  <th style="display: none;">recourseId</th>
+                  <th style="display: none;">branchId</th>
+                </tr>
               </thead>
               <tbody>
-                  <tr *ngFor="let item of arr"data-toggle="modal" data-target="#modal-default" >
-                      <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending" style="width: 35px;" aria-sort="ascending"><input type="checkbox" id="selectAlluserrep"></th>
-                     
-                    <td>{{item.CaseId}}</td>
-                    <td>{{item.Stage}}</td>
-                    <td>{{item.CourtCaseId}}</td>
-                    <td>{{item.LegalCaseId}}</td>
-                    <td>{{item.LastHearingDate}}</td>
-                    <td>{{item.NextHearingDate}}</td>
-                    <td>{{item.LoanAccountNo}}</td>
-                    <td>
-                    <a><i class="fa fa-edit"></i></a><a><i class="fa fa-history"></i></a>
-                      
-                    </td>
-                  </tr>
+                <tr *ngFor="let item of arr" data-toggle="modal" data-target="#modal-default">
+                  <td class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
+                    style="width: 35px;" aria-sort="ascending">
+                    <input type="checkbox" id="selectAlluserrep">
+                  </td>
+                  <td>{{item.CaseId}}</td>
+                  <td>{{item.Stage}}</td>
+                  <td>{{item.CourtCaseId}}</td>
+                  <td>{{item.LegalCaseId}}</td>
+                  <td>{{item.LastHearingDate}}</td>
+                  <td>{{item.NextHearingDate}}</td>
+                  <td>{{item.LoanAccountNo}}</td>
+                  <td>
+                    <a>
+                      <i class="fa fa-edit"></i>
+                    </a>
+                    <a>
+                      <i class="fa fa-history"></i>
+                    </a>
+
+                  </td>
+                  <td style="display: none;">{{item.recourseId}}</td>
+                  <td style="display: none;">{{item.branchId}}</td>
+                </tr>
               </tbody>
-             
+
             </table>
           </div>
           <!-- /.box-body -->
@@ -78,6 +111,9 @@
   <!-- /.content -->
 </div>
 
+
+<add-for-institution-modal></add-for-institution-modal>
+
 <div class="favicon">
   <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
     <span class="tooltip-text">Import Cases</span>
@@ -86,5 +122,68 @@
     <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addForInstitutionModal"></i>
   </a>
 </div>
-<add-for-institution-modal></add-for-institution-modal> 
-<edit-for-institution-modal></edit-for-institution-modal> 
+
+
+<!-- Filter Case Starts -->
+<div class="modal fade" style="z-index: 2001;" id="filterInstitutionModal">
+  <div class="modal-dialog caseModalSearch">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header">
+
+        <button type="button" id="closebtnFilter" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Filter </h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
+        <div class="row caseModalRow">
+          <!-- <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
+            <label>Recourse Type:</label>
+            <select id="ddlRecource" class="form-control" style="width: 150px;">
+              <option value="All">All</option>
+              <option *ngFor="let option of arRecourse" value="{{option.id}}">{{ option.recourseName }}</option>
+            </select>
+
+          </div> -->
+          <div class="col-md-12">
+            <!-- <div class="form-group"> -->
+            <div class="col-md-6">
+              <label class="dateRange">Last Hearing Date Range:</label>
+
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control pull-right" id="txtLastHearingDateFilter">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="dateRange">Next Hearing Date Range:</label>
+
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control pull-right" id="txtNextHearingDateFilter">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer FilterSearch">
+          <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" id="btnSearch" (click)="filterDatatableData()" class="btn btn-default">Search</button>
+        </div>
+
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- Filter case ends -->
+
+
+
+  <edit-for-institution-modal></edit-for-institution-modal>

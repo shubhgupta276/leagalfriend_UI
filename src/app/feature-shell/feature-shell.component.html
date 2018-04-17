@@ -19,10 +19,20 @@
     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
       <span class="sr-only">Toggle navigation</span>
     </a>
+
+
     <!-- Navbar Right Menu -->
     <div class="navbar-custom-menu">
+
       <ul class="nav navbar-nav">
         <!-- Notifications: style can be found in dropdown.less -->
+        <li>
+          <div style="width: 200px;padding: 9px;" *ngIf="arBranches.length > 0">
+            <app-custom-single-select [data]="arBranches" [config]="branchConfig" 
+            (valueChanged)="changeBranch($event)"></app-custom-single-select>
+            <!-- <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown> -->
+          </div>
+        </li>
         <li class="dropdown notifications-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i>
@@ -160,7 +170,9 @@
               <a routerLink="profile">Profile</a>
             </li>
             <li class="profile-li">
-              <a routerLink="../admin/wallet">Wallet <span class="pull-right">₹150.00</span></a>
+              <a routerLink="../admin/wallet">Wallet
+                <span class="pull-right">₹150.00</span>
+              </a>
             </li>
             <li class="profile-li">
               <a routerLink="../admin/Referral">Referal</a>
@@ -319,7 +331,7 @@
           <span>Calendar</span>
           <span class="pull-right-container">
             <ng-container *ngFor="let item of arrTodayEvents">
-                <small class="label pull-right" [style.backgroundColor]="item.cssClass">{{item.totalEventCount}}</small>
+              <small class="label pull-right" [style.backgroundColor]="item.cssClass">{{item.totalEventCount}}</small>
             </ng-container>
             <!-- <small class="label pull-right bg-blue">1</small>
             <small class="label pull-right bg-red">1</small>

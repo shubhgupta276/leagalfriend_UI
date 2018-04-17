@@ -111,6 +111,8 @@
         Invoice
     </div>
     <!-- Main content -->
+    <div id="editor"></div>
+
     <section class="content">
         <div id="templateArea">
             <div class="col-md-12">
@@ -140,10 +142,10 @@
                                         <label>Bill To</label>
                                     </div>
                                     <div class="col-md-5" style="text-align:left">
-                                        <textarea id="companyName" rows="2" class="form-control"></textarea>
+                                        <textarea id="txtBillToAddress" rows="2" class="form-control"></textarea>
                                     </div>
                                     <div class="col-md-5" style="text-align:right">
-                                        <textarea id="companyName" rows="2" class="form-control"></textarea>
+                                        <textarea id="txtcompanyAddress" rows="2" class="form-control"></textarea>
                                     </div>
 
                                 </div>
@@ -154,8 +156,17 @@
                                         <label id=invoiceNo>{{invoiceNo}}</label>
                                     </div>
                                     <div class="col-md-6" style="text-align:right;padding:0px;">
-                                        <label>Date : </label>
-                                        <input type="text" id="date" value="3/28/2018" class="invoice-input" style="width:100px">
+                                        <div style="display: inline-flex">
+                                            <label>Date : </label>
+                                            <!-- <input type="text" id="date" value="3/28/2018" class="invoice-input" style="width:100px"> -->
+                                            <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd" style="width:155px;">
+                                                <input type="text" tabindex="9" id="invoiceDate" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="invoice-input"
+                                                    size="10" value="2017-11-07">
+                                                <div class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -184,17 +195,17 @@
                                     <tbody id="itemsInvoice">
                                         <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td>
-                                                <textarea OnlyString="true" class="form-control productName" type="text" placeholder="Product Name">{{arrInvoiceDetails.totalDescription}}</textarea>
+                                                <textarea style="width:500px;height:40px;" disabled class="form-control productName" type="text" placeholder="Description">{{arrInvoiceDetails.totalDescription}}</textarea>
                                             </td>
                                             <td>
-                                                <input class="form-control quantity" value="{{arrInvoiceDetails.totalQuantity}}" style="width:100px" placeholder="Quantity">
+                                                <input class="form-control quantity" disabled value="{{arrInvoiceDetails.totalQuantity}}" style="width:100px" placeholder="Quantity">
                                             </td>
                                             <!-- <td>
                                                         <input class="form-control unitPrice" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Unit Price">
                                                     </td> -->
 
                                             <td>
-                                                <input class="form-control amount" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()"
+                                                <input class="form-control amount" disabled value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()"
                                                     style="width:100px" placeholder="Amount">
 
                                             </td>
@@ -253,7 +264,7 @@
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <a [routerLink]="['/admin/invoices/invoicenextform']" class="btn btn-default">Next</a>
+                    <a (click)="StoreAddressDetails()" [routerLink]="['/admin/invoices/invoicenextform']" class="btn btn-default">Next</a>
                 </div>
             </div>
 

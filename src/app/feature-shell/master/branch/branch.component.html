@@ -45,11 +45,11 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editBranchMasterModal" >
-                  <td>{{item.BranchName}}</td>
-                  <td>{{item.BranchCode}}</td>
-                  <td>{{item.Address}}</td>
+                  <td>{{item.branchName}}</td>
+                  <td>{{item.branchCode}}</td>
+                  <td>{{item.branchAddress}}</td>
                   <td>{{item.City}}</td>
-                  <td>{{item.Contact}}</td>
+                  <td>{{item.branchContact}}</td>
                   <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
                 </tr>
               
