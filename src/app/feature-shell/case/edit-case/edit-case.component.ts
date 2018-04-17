@@ -47,6 +47,7 @@ export class EditCaseComponent implements OnInit {
   selectedStage: any;
   selectedEmployee: any;
   selectedCourtPlace: any;
+  arrCompliance = [];
   private get disabledV(): string {
     return this._disabledV;
   }
@@ -180,8 +181,14 @@ export class EditCaseComponent implements OnInit {
     this.getEmployee();
     this.bindStageDDL();
     this.getRunningCase();
-  }
+    this.BindCompliance();
 
+  }
+  BindCompliance() {
+    this.arrCompliance = [
+      { Compliance: "Compliance Details", Status: "Verified & Completed" }
+    ]
+  }
   createForm(c) {
 
     if (c != null) {
@@ -195,42 +202,42 @@ export class EditCaseComponent implements OnInit {
       this.courtSelected = [];
       const objCourt = this.Court.filter(x => x.id == c.courtId);
       this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
-      this.selectedCourt=this.courtSelected[0];
+      this.selectedCourt = this.courtSelected[0];
 
       this.stateSelected = [];
       const objstate = this.State.filter(x => x.id == c.stateId);
       this.stateSelected.push({ id: c.stateId, text: objstate[0].text });
-      this.selectedState=this.stateSelected[0];
+      this.selectedState = this.stateSelected[0];
 
       this.branchSelected = [];
       const objBranch = this.Branch.filter(x => x.id == c.branchId);
       this.branchSelected.push({ id: c.branchId, text: objBranch[0].text });
-      this.selectedBranch=this.branchSelected[0];
+      this.selectedBranch = this.branchSelected[0];
       this.stageSelected = [];
       const objStage = this.Stage.filter(x => x.id == c.stageId);
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
-      this.selectedStage=this.stageSelected[0];
+      this.selectedStage = this.stageSelected[0];
       this.parentcaseSelected = [];
       const objParentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
       this.parentcaseSelected.push({ id: c.parentCaseId, text: objParentCase[0].text });
-      this.selectedParentCase=this.parentcaseSelected[0];
+      this.selectedParentCase = this.parentcaseSelected[0];
       this.customerSelected = [];
       const objcustomerSelected = this.CustomerName.filter(x => x.id == c.customerId);
       this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
-     this.selectedCustomerName=this.customerSelected[0];
+      this.selectedCustomerName = this.customerSelected[0];
       this.managerSelected = [];
       const objmanagerSelected = this.Manager.filter(x => x.id == c.managerId);
       this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
-      this.selectedManager=this.managerSelected[0];
+      this.selectedManager = this.managerSelected[0];
       debugger
       this.employeeSelected = [];
       const objemployeeSelected = this.Employee.filter(x => x.id == c.employeeId);
       this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
-      this.selectedEmployee=this.employeeSelected[0];
+      this.selectedEmployee = this.employeeSelected[0];
       this.courtPlaceSelected = [];
       const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id == c.id);
       this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
-      this.selectedCourtPlace=this.courtPlaceSelected[0];
+      this.selectedCourtPlace = this.courtPlaceSelected[0];
     }
 
 
