@@ -5,6 +5,7 @@
           <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+          
           <h4 class="modal-title">Edit Case</h4>
         </div>
         <div style="width:120px;height:10%;background-color:black;"></div>
@@ -29,7 +30,8 @@
                             <!-- <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" onclick="return compliance_single();"> -->
                           </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="tab-pane active" id="activity">
+                        <div class="form-group row" >
                           <label class="col-sm-3 col-form-label createUserLabel">Case Id:
                             <em class="astrick">*</em>
                           </label>
@@ -44,6 +46,7 @@
                             </small>
                           </div>   -->
                         </div>
+                        </div>
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
                             <!-- <em class="astrick">*</em> -->
@@ -57,14 +60,11 @@
                             <em class="astrick">*</em>
                           </label>
                           <div class="col-md-9" *ngIf="Resource.length > 0">
-                            <ng-select [allowClear]="true"   [items]="Resource" [disabled]="disabled" formControlName="recourse"  (data)="refreshValue($event)" (selected)="selected($event)"
+                            <ng-select [allowClear]="true" [active]="recourseSelected"  [items]="Resource" [disabled]="disabled" 
+                              (data)="refreshValue($event)" (selected)="selectedRecourse1($event)" [(ngModel)]="recourseData"
                             (removed)="removed($event)" (typed)="typed($event)" placeholder="No recourse selected">
                           </ng-select>
-                            <!-- <select tabindex="2" formControlName="recourseId" class="form-control select2me">
-                                <option *ngFor="let option of Resource" [ngValue]="option.recourseId">
-                                    {{ option.recourseName }}
-                                  </option>
-                            </select> -->
+                            
                           </div>
                         </div>
                         <div class="form-group row">
@@ -74,7 +74,7 @@
                           <div class="col-md-9" id="divManager" *ngIf="Manager.length > 0">
                             <!-- <ngx-select-dropdown (change)="dropChangeManager(this)" [config]="config" [options]="Manager"  
                                     [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                    <ng-select [allowClear]="true" [items]="Manager" formControlName="manager" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                    <ng-select [allowClear]="true" [items]="Manager" [active]="managerSelected" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectedManager1($event)"
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No manager selected">
                                   </ng-select>
                           </div>
@@ -85,10 +85,8 @@
                           </label>
                           <div class="col-md-9" id="divCourt" *ngIf="Court.length > 0">
 
-                            <!-- <ngx-select-dropdown (change)="dropChangeCourt(this)" [config]="config" [options]="Court"  
-                                        [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
   
-                                        <ng-select [allowClear]="true" [items]="Court" formControlName="court" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                        <ng-select [allowClear]="true" [items]="Court" [active]="courtSelected"  [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectedCourt1($event)"
                                         (removed)="removed($event)" (typed)="typed($event)" placeholder="No court selected">
                                       </ng-select>
                           </div>
@@ -100,7 +98,7 @@
                           <div class="col-md-9" id="divState" *ngIf="State.length > 0">
                             <!-- <ngx-select-dropdown (change)="dropChangeState(this)" [config]="config" [options]="arDdl"  
                                     [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                    <ng-select [allowClear]="true" [items]="State" formControlName="state" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                    <ng-select [allowClear]="true" [items]="State" [active]="stateSelected"  [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectedState1($event)"
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No state selected">
                                   </ng-select>
                           </div>
@@ -113,7 +111,7 @@
 
                             <!-- <ngx-select-dropdown [config]="config" [options]="ParentCases"  
                                     [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                    <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                    <ng-select [allowClear]="true" [items]="ParentCases" [active]="parentcaseSelected" formControlName="parentCase" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectParentCase1($event)"
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No parent case selected">
                                   </ng-select>
                           </div>
@@ -138,8 +136,8 @@
                             <em class="astrick">*</em>
                           </label>
                           <div class="col-md-9"  id="divCustomerName" *ngIf="CustomerName.length > 0">
-                            <ng-select [allowClear]="true" [items]="CustomerName" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                            (removed)="removed($event)" (typed)="typed($event)" placeholder="No customer selected" formControlName="customerName">
+                            <ng-select [allowClear]="true" [items]="CustomerName" [active]="customerSelected" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectedCustomerName1($event)"
+                            (removed)="removed($event)" (typed)="typed($event)" placeholder="No customer selected" >
                           </ng-select>
   
                           </div>
@@ -180,10 +178,9 @@
                               <em class="astrick">*</em>
                             </label>
                             <div class="col-md-9" id="divBranch" *ngIf="Branch.length > 0" >
-                              <!-- <ngx-select-dropdown (change)="dropChangeBranch(this)" [config]="config" [options]="Branch"  
-                                        [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                        <ng-select [allowClear]="true" [items]="Branch" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                                        (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" formControlName="branch">
+                             
+                                        <ng-select [allowClear]="true" [items]="Branch" [active]="branchSelected" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectedBranch1($event)"
+                                        (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" >
                                       </ng-select>
                             </div>
                           </div>
@@ -207,9 +204,8 @@
                               <em class="astrick">*</em>
                             </label>
                             <div class="col-md-9">
-                              <!-- <ngx-select-dropdown [config]="config" [options]="Stage"  
-                                        [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                        <ng-select [allowClear]="true" [items]="Stage" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                            
+                                        <ng-select [allowClear]="true" [items]="Stage" [active]="stageSelected" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectedSatge1($event)"
                                         (removed)="removed($event)" (typed)="typed($event)" placeholder="No stage selected" formControlName="stage">
                                       </ng-select>
                             </div>
@@ -219,10 +215,9 @@
                               <em class="astrick">*</em>
                             </label>
                             <div class="col-md-9" *ngIf="Employee.length>0">
-                              <!-- <ngx-select-dropdown [config]="config" [options]="Employee"  
-                                      [(value)]="configData" [multiple]="true" ></ngx-select-dropdown> -->
-                                      <ng-select [allowClear]="true" [items]="Employee" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                                      (removed)="removed($event)" (typed)="typed($event)" placeholder="No employee selected" formControlName="employee">
+                            
+                                      <ng-select [allowClear]="true" [items]="Employee" [active]="employeeSelected" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selectEmployee1($event)"
+                                      (removed)="removed($event)" (typed)="typed($event)" placeholder="No employee selected" >
                                     </ng-select>
                             </div>
                           </div>
@@ -233,8 +228,8 @@
                             <div class="col-md-9">
                           
 
-                              <ng-select [allowClear]="true" [items]="CourtPlace" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                              (removed)="removed($event)" (typed)="typed($event)" placeholder="No court place selected" formControlName="courtplace">
+                              <ng-select [allowClear]="true" [items]="CourtPlace" [disabled]="disabled" [active]="courtPlaceSelected" (data)="refreshValue($event)" (selected)="selected($event)"
+                              (removed)="removed($event)" (typed)="typed($event)" placeholder="No court place selected" >
                             </ng-select>
                       </div>
                           </div>
@@ -315,13 +310,15 @@
             <!-- </div> -->
           </div>
           <!-- Create User ends -->
-        </div>
+        
         <!-- <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
             
           </div> -->
-  
+         
+      </div>
+     
       </div>
       <!-- /.modal-content -->
     </div>

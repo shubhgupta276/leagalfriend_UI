@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -14,11 +14,14 @@ declare var $;
   templateUrl: '../edit-institution/edit-institution.component.html'
   //template:`<h1>test popup</h1>`
 })
-export class EditInstitutionMasterComponent implements OnInit, OnChanges {
-  @Input() editDetails: Institution;
+export class EditInstitutionMasterComponent {
   @Input() arInstitution: Institution[];
+  editDetails: Institution;
+  @Input() arCity: any[];
   editInstitutionMasterForm: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
+
+  selectedCity: any;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
     this.createForm(null);
   }
@@ -27,9 +30,13 @@ export class EditInstitutionMasterComponent implements OnInit, OnChanges {
 
     var reqData = {
       institutionName: data.institutionName,
+      contactName: data.contactPerson,
+      address: data.address,
+      billingAddr: data.billingAddress,
+      phone: data.contactNo,
+      fkCity: data.city.id,
       id: data.id,
       userId: this._storageService.getUserId()
-
     };
 
     this._institutionService.updateInstitution(reqData).subscribe(
@@ -40,9 +47,15 @@ export class EditInstitutionMasterComponent implements OnInit, OnChanges {
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
 
-
           const objFind = this.arInstitution.find(x => x.id == this.editDetails.id);
           objFind.institutionName = data.institutionName;
+          objFind.contactPerson = data.contactPerson;
+          objFind.city = data.city.cityName;
+          objFind.cityId = data.city.id;
+          objFind.address = data.address;
+          objFind.billingAddress = data.billingAddress;
+          objFind.contactNo = data.contactNo;
+
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -55,18 +68,6 @@ export class EditInstitutionMasterComponent implements OnInit, OnChanges {
 
   closeModal() {
     $('#closeBtn1').click();
-  }
-
-  ngOnInit() {
-
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.editDetails.currentValue !== undefined) {
-      this.createForm(changes.editDetails.currentValue);
-      this.subscriberFields();
-    }
-
   }
 
   subscriberFields() {
@@ -84,7 +85,23 @@ export class EditInstitutionMasterComponent implements OnInit, OnChanges {
   createForm(data: Institution) {
     this.editInstitutionMasterForm = this.fb.group({
       institutionName: [data == null ? null : data.institutionName, Validators.required],
+      contactPerson: [data == null ? null : data.contactPerson, Validators.required],
+      address: [data == null ? null : data.address, Validators.required],
+      city: [data == null ? null : data.city, Validators.required],
+      billingAddress: [data == null ? null : data.billingAddress, Validators.required],
+      contactNo: [data == null ? null : data.contactNo, Validators.required],
       id: [data == null ? null : data.id]
     });
+    if (data != null) {
+      this.isInstitutionAlreadyExists = false;
+      //this.selectedCity = null;
+      setTimeout(() => {
+        //this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
+      }, 100);
+      this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
+      debugger
+      this.editDetails = data;
+      this.subscriberFields();
+    }
   }
 }

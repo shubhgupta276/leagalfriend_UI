@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AddStageMasterComponent } from "./add-stage/add-stage.component";
 import { EditStageMasterComponent } from "./edit-stage/edit-stage.component";
 import { CommonModule } from '@angular/common';
-import { NgModule,ViewChild } from '@angular/core';
+import { NgModule, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Stage } from './stage';
 import { StageService } from './stage.service';
@@ -45,14 +45,13 @@ export class StageComponent implements OnInit {
 
   }
   GetAllStage() {
-    debugger;
+    ;
     this._stageService.getStages().subscribe(
       result => {
 
         if (result.httpCode == 200) {
-          
-          for (var i = 0; i < result.length; i++) {
-            const obj = result[i];
+          for (var i = 0; i < result.stageRecourses.length; i++) {
+            const obj = result.stageRecourses[i];
 
             this.arr.push(
               {

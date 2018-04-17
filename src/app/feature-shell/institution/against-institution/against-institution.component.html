@@ -18,25 +18,24 @@
           <div class="box-body">
             <div>
               <div class="row table-toolbar">
-                <div class="col-sm-4 heading">For Against</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2" style="text-align: right;">
-                  <!-- <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label> -->
-                  <div style="float: left;">
-                    <app-custom-single-select *ngIf="arRecourse.length > 0" 
-                      [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                <div class="col-sm-3 heading">For Against</div>
+                <!-- <div class="col-sm-4" style="padding-left: 339px;">
+                  Institution:
+                  <app-custom-single-select [data]="arInstitutions" [config]="institutionConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                </div> -->
+                <div class="col-sm-7" style="text-align: right;">
+                  <div style="float: left;padding-left: 470px;" *ngIf="arInstitutions.length>0" >
+                    <app-custom-single-select [data]="arInstitutions" [config]="institutionConfig" (valueChanged)="changeInstitution($event)"></app-custom-single-select>
                   </div>
-                  <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
-                  <!-- <button type="button" class="btn btn-default" 
-                  data-toggle="modal" data-target="#filterInstitutionModal">Filter</button> &nbsp; -->
-                  <img src="assets/dist/img/reset_filter.png" title="Clear Filter" id="btnClearFilter">
-                  <!-- <button type="button" class="btn btn-default" id="btnClearFilter">Clear Filter</button> -->
+                  <div style="float: left;padding-left: 603px;" *ngIf="arRecourse.length>0">
+                    <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                  </div>
+                  <div>
+                    <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
+                    <img src="assets/dist/img/reset_filter.png" title="Clear Filter" id="btnClearFilter">
+                  </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="float: right;">
                   <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
                 </div>
               </div>
@@ -69,13 +68,14 @@
                   <th>Action</th>
                   <th style="display: none;">recourseId</th>
                   <th style="display: none;">branchId</th>
+                  <th style="display: none;">institutionId</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of arr" data-toggle="modal" data-target="#modal-default">
                   <td class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
                     style="width: 35px;" aria-sort="ascending">
-                    <input type="checkbox" id="selectAlluserrep">
+                    <input type="checkbox" #rowChecked (change)="checkboxChange(rowChecked.checked)">
                   </td>
                   <td>{{item.CaseId}}</td>
                   <td>{{item.Stage}}</td>
@@ -95,14 +95,24 @@
                   </td>
                   <td style="display: none;">{{item.recourseId}}</td>
                   <td style="display: none;">{{item.branchId}}</td>
+                  <td style="display: none;">{{item.institutionId}}</td>
                 </tr>
               </tbody>
 
             </table>
+
+
           </div>
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
+        <div class="export1" *ngIf="checkboxCounter>0">
+          <img src="/assets/dist/img/download1.png" height="40">
+        </div>
+
+        <div class="export2" *ngIf="checkboxCounter>0">
+          <img src="/assets/dist/img/download2.png" height="40">
+        </div>
       </div>
       <!-- /.col -->
     </div>
@@ -112,9 +122,10 @@
 </div>
 
 
-<add-for-institution-modal></add-for-institution-modal>
 
-<div class="favicon">
+<add-for-institution-modal [againstOpen]="againstOpen"></add-for-institution-modal>
+
+<div class="favicon" (click)="addClick()">
   <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
     <span class="tooltip-text">Import Cases</span>
   </div>
@@ -183,7 +194,6 @@
     <!-- /.modal-dialog -->
   </div>
   <!-- Filter case ends -->
-
 
 
   <edit-for-institution-modal></edit-for-institution-modal>

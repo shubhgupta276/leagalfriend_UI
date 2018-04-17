@@ -5,7 +5,7 @@ export class EditCase
     courtCaseId: string;
     userId: number;
     branchId:number;
-    
+    body:any=[];
     stageId:number;
     recourseId:number;
     employeeId:number;

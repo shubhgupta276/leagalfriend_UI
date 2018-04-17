@@ -50,19 +50,23 @@ export class ComplianceComponent implements OnInit {
     $('#editComplianceMasterModal').modal('show');
   }
   getAllCompliance() {
-    this._complianceService.getCompliances().subscribe(
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this._complianceService.getCompliances(reqData).subscribe(
       result => {
-
+debugger
         if (result.httpCode == 200) {
-          for (var i = 0; i < result.compliances.length; i++) {
-            const obj = result.compliances[i];
+          for (var i = 0; i < result.complianceStageRecourses.length; i++) {
+            const obj = result.complianceStageRecourses[i];
             
             this.arr.push({
               compliance: obj.complianceName,
-              stage: "",
-              stageId: obj.stageId,
-              recourse: "",
-              recourseId: obj.recourseId,
+              stage:  obj.stageCode,
+              stageId: obj.stageCode,
+              recourse: obj.recourseCode,
+              recourseId: obj.recourseCode,
               status: null,
               statusId: obj.statusId,
               id: obj.id
