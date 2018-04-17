@@ -21,7 +21,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
         if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('signup') >= 0)) {
             
-            console.log('inside auth interceptor login');
             return next.handle(req);
         } 
         
@@ -51,8 +50,6 @@ export class AuthInterceptor implements HttpInterceptor {
         } 
         
         else {
-            
-            console.log('inside auth interceptor login');
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
                 headers: req.headers

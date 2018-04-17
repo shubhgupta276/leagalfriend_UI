@@ -151,18 +151,26 @@
                             </table>
 
                             <div class="invoice-address">
-                                    <div class="col-md-12" style="padding:0px;">
-                                            <div class="col-md-6" style="padding:0px;">
-                                                    <label>Invoice No : </label>
-                                                    <label id=invoiceNo>{{invoiceNo}}</label>
+                                <div class="col-md-12" style="padding:0px;">
+                                    <div class="col-md-6" style="padding:0px;">
+                                        <label>Invoice No : </label>
+                                        <label id=invoiceNo>{{invoiceNo}}</label>
+                                    </div>
+                                    <div class="col-md-6" style="text-align:right;padding:0px;">
+                                        <div style="display: inline-flex">
+                                            <label>Date : </label>
+                                            <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd" style="width:155px;">
+                                                <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="invoice-input"
+                                                    size="10" value="2017-11-07">
+                                                <div class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6" style="text-align:right;padding:0px;">
-                                                    <label>Date : </label>
-                                                    <input type="text" id="date" value="3/28/2018" class="invoice-input" style="width:100px">
-                                            </div>
-                                        
                                         </div>
-                               
+                                    </div>
+
+                                </div>
+
                             </div>
 
                             <div>
@@ -188,18 +196,18 @@
 
                                     <tbody id="itemsInvoice">
 
-                                        <tr *ngFor="let item of arrInvoiceDetails |  paginate: { itemsPerPage: 2, currentPage: p2 }" description="Product name" qty="1"
+                                        <tr *ngFor="let item of arrInvoiceDetails |  paginate: { itemsPerPage: 5, currentPage: p2 }" description="Description" qty="1"
                                             unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td>
-                                                <textarea style="width:500px;height:40px;" class="form-control productName" type="text" placeholder="Product Name">{{item.description}}</textarea>
+                                                <textarea style="width:500px;height:40px;" disabled class="form-control productName" type="text" placeholder="Description">{{item.description}}</textarea>
                                             </td>
                                             <td>
-                                                <input class="form-control quantity" value="{{item.quantity}}" style="width:100px" placeholder="Quantity">
+                                                <input class="form-control quantity" disabled value="{{item.quantity}}" style="width:100px" placeholder="Quantity">
                                             </td>
 
 
                                             <td>
-                                                <input class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()"
+                                                <input class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
                                                     style="width:100px" placeholder="Amount">
 
                                             </td>
@@ -207,6 +215,7 @@
                                                 <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </a>
+                                                <input type="hidden" id="hfBillingId" value="{{item.billingId}}">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -228,30 +237,7 @@
                                                 <label id="totalAmount">{{totalAmount}}</label>
                                             </td>
                                         </tr>
-                                        <tr class="totals-row shaped" id="PaidRow" style="display:none">
-                                            <td class="wide-cell" colspan="2">
-                                                <a href="#" class="show-row" id="toggle_paid"></a>
-                                            </td>
-                                            <td>
-                                                <strong>
-                                                    <input type="text" id="label_paid" value="Paid Amount" class="invoice-input" style="font-weight: bold;">
-                                                </strong>
-                                            </td>
-                                            <td colspan="2">
-                                                <input type="text" id="paid" value="" class="invoice-input">
-                                            </td>
-                                        </tr>
-                                        <tr class="totals-row shaped" id="UnpaidRow" style="display:none">
-                                            <td class="wide-cell" colspan="2"></td>
-                                            <td>
-                                                <strong>
-                                                    <input type="text" id="label_unpaid" value="Balance Due" class="invoice-input" style="font-weight: bold;">
-                                                </strong>
-                                            </td>
-                                            <td colspan="2">
-                                                <span id="unpaid">Rs.&nbsp;0</span>
-                                            </td>
-                                        </tr>
+
                                     </tfoot>
                                 </table>
                             </div>
@@ -286,18 +272,13 @@
                 <pagination-template #p="paginationApi" (pageChange)="p2 = $event">
                     <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
                     <div class="custom-pagination">
-                        <div class="pagination-next" [class.disabled]="p.isLastPage()">
+                        <div class="pagination-next" [class.disabled]="p.isLastPage()" (click)="CalculateFinalAmount(null)">
                             <a class="btn btn-default" (click)="p.next()"> Next </a>
                         </div>
                     </div>
 
                 </pagination-template>
             </div>
-
-        </div>
-
-        <div id="hiddenTemplate">
-
 
         </div>
 

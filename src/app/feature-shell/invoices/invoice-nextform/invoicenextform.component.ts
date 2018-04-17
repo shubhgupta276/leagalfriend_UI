@@ -7,7 +7,7 @@ import { Institution } from '../../../feature-shell/master/institution/instituti
 import { StorageService } from '../../../shared/services/storage.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { Routes, RouterModule,Router } from '@angular/router';
+import { Routes, RouterModule, Router } from '@angular/router';
 declare let $;
 declare let canvas;
 declare let Swiper;
@@ -18,59 +18,52 @@ declare let Swiper;
 })
 export class InvoiceNextFormComponent implements OnInit {
 
-
-
-
-
     arr: Institution[] = [];
-    arrInvoice = [];
+    arrSafeInvoice = [];
+    arrLocalInvoiceDetails = [];
     arrInvoiceDetails = [];
     invoiceNo: any = Math.floor(Math.random() * 90000) + 10000;
     totalAmount: number;
     p: number = 1;
-    p2:number=1;
+    p2: number = 1;
     @Input() id: string;
     @Input() maxSize: number;
     @Output() pageChange: EventEmitter<number>;
-    constructor(private _institutionService: InstitutionService, private _storageService: StorageService,private router: Router) {
+    JSON: any;
+    constructor(private _institutionService: InstitutionService, private _storageService: StorageService, private router: Router) {
         Window["InvoiceFormComponent"] = this;
+        this.JSON = JSON;
     }
 
     ngOnInit() {
         this.GetAllInstitute();
         this.GetBillFrom();
         this.BindInvoice();
-    }
 
+
+    }
+    next()
+    {
+        alert();
+    }
     PreviousCheck() {
         if (this.p2 == 0) {
             this.router.navigate(['/admin/invoices/invoiceform']);
         }
+        else
+        this.CalculateFinalAmount(null);
     }
     BindInvoice() {
-        var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+        this.arrLocalInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         this.totalAmount = 0;
         var totalDescription = "";
-        invoiceDetails.forEach(element => {
+        this.arrLocalInvoiceDetails.forEach((element, index) => {
             totalDescription = "";
-            totalDescription = totalDescription + (element.caseId + "   " + element.recourse + "   " + element.stage);
-            this.arrInvoiceDetails.push({ description: totalDescription, amount: element.amount, quantity: 1 })
-            this.totalAmount += parseFloat(element.amount);
+            totalDescription = totalDescription + ("CaseId : " + element.CaseID + "  Recourse : " + element.Recourse + " Stage : " + element.Stage);
+            this.arrInvoiceDetails.push({ billingId: element.BillingId, description: totalDescription, amount: element.Amount, quantity: 1 })
+            if (index < 5)
+                this.totalAmount += parseFloat(element.Amount);
         });
-        // setTimeout(() => {
-        //     $('#tblInvoice').DataTable({
-        //         responsive: true,
-        //         pagingType: 'simple',
-        //         searching: false,
-        //         "bLengthChange": false,
-        //         "bInfo": false,
-        //         "pageLength": 10,
-        //         "bSort": false
-        //     });
-        //     $("#NewPaginationContainer").append($(".dataTables_paginate"));
-        //     $('.pagination').css({"margin-top":"0px"});
-        // }, 10);
-
 
     }
     anyForm: any;
@@ -136,14 +129,13 @@ export class InvoiceNextFormComponent implements OnInit {
     RemoveInvoice(row) {
         if ($('.invoiceRow').length > 1)
             $(row).closest('tr').remove();
-        this.CalculateFinalAmount();
+        this.CalculateFinalAmount(null);
     }
 
-    CalculateFinalAmount() {
+    CalculateFinalAmount(currentRow) {
         var totalAmount = 0;
         $('.invoiceRow').each(function () {
             var $row = $(this);
-            debugger
             //var quantity = $row.find('.quantity').val();
             var amount = parseFloat($row.find('.amount').val());
             // if (quantity > 0) {
@@ -152,7 +144,20 @@ export class InvoiceNextFormComponent implements OnInit {
             //$row.find('.amount').html(amount);
             if (amount > 0)
                 totalAmount = totalAmount + amount;
+
         })
+
+        if (currentRow != null) {
+            currentRow = $(currentRow).closest('tr');
+
+            this.arrLocalInvoiceDetails.filter(
+                book => {
+                    if (book.BillingId == $(currentRow).find('#hfBillingId').val()) {
+                        book.Amount = $(currentRow).find('.amount').val();
+                    }
+                });
+            localStorage.setItem("invoiceDetails", JSON.stringify(this.arrLocalInvoiceDetails));
+        }
         $('#totalAmount').html(totalAmount);
     }
     SaveInvoice() {
@@ -160,17 +165,15 @@ export class InvoiceNextFormComponent implements OnInit {
         var totalAmount = 0;
         $('.invoiceRow').each(function () {
             var $row = $(this);
-            var amount = 0;
+            var amount = $row.find('.amount').val();
             var productName = $row.find('.productName').val();
             var quantity = $row.find('.quantity').val();
-            var unitPrice = $row.find('.unitPrice').val();
-            if (quantity > 0 && unitPrice > 0) {
-                amount = quantity * unitPrice;
-            }
+
             var remarks = $('#remarksInvoice').val();
-            self.arrInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, unitPrice: unitPrice, remarks: remarks })
-            debugger
+            self.arrSafeInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, remarks: remarks })
+
         })
         $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
+        this.router.navigate(['/admin/invoices']);
     }
 }

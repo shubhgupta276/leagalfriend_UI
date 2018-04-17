@@ -54,7 +54,9 @@
             <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th style="display:none" class="chkInvoice"></th>
+                  <th style="display:none" class="chkInvoice">
+                      <input type="checkbox" id="chkAllInvoice" name="" value="">
+                  </th>
                   <th>#</th>
                   <th>Bank
                     <select class="role input-sm" id="ddlBank">
@@ -100,6 +102,9 @@
                   <td style="display:none" class="chkInvoice">
                     <input type="checkbox" class="chkInvoice" name="vehicle" value="">
                     <br>
+                    <input type="hidden" id="hfItem" value="{{JSON.stringify(item)}}">
+                    <input type="hidden" id="hfBillingId" value="{{item.BillingId}}">
+                    <input type="hidden" id="hfinstitutionId" value="{{item.InstitutionId}}">
                   </td>
 
                   <td>{{i+1}}                
