@@ -22,6 +22,7 @@ export let updateRecourseUrl = "master/update/recourse";
 
 export let addStageUrl = "master/add/stage";
 export let getStagesUrl = "master/stages";
+export let getRecourseStagesUrl = "master/recourse/stage";
 export let updateStageUrl = "master/update/stage";
 
 export let addComplianceUrl = "master/add/compliance";

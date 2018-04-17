@@ -39,8 +39,10 @@ export class InstitutionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.GetAllInstitute();
     this.bindCity();
+    setTimeout(() => {
+      this.GetAllInstitute();
+    }, 300);
   }
 
   showEditModal(data) {
@@ -62,7 +64,7 @@ export class InstitutionComponent implements OnInit {
               billingAddress: obj.billingAddr,
               contactNo: obj.phone,
               contactPerson: obj.contactName,
-              city: obj.city,
+              city: this.getCityName(obj.fkCity),
               cityId: obj.fkCity,//todo
               id: obj.id
             });
@@ -81,6 +83,15 @@ export class InstitutionComponent implements OnInit {
         this.arr = [];
 
       });
+  }
+
+  getCityName(cityId): string {
+    //this is used because deepak said that if i will gave city name from backend then it will take more time.
+    const objFind = this.arCity.filter(x => x.id == cityId)[0];
+    if (objFind)
+      return objFind.cityName;
+    else
+      return "";
   }
 
   bindDatatable() {

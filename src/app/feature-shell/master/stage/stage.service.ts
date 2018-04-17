@@ -3,21 +3,29 @@ import { retry } from 'rxjs/operator/retry';
 import { Stage } from './stage'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../../shared/services/api-gateway';
-import { statusUrl, addStageUrl, updateStageUrl , getStagesUrl } from '../master.config'
+import { statusUrl, addStageUrl, updateStageUrl, getStagesUrl, getRecourseStagesUrl } from '../master.config'
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
 import { StorageService } from '../../../shared/services/storage.service';
 @Injectable()
 export class StageService {
-    
-    constructor(private apiGateWay: ApiGateway, private _storageService:StorageService) {
+
+    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService) {
     }
     getStages(): Observable<any> {
 
         return this.apiGateWay.get<Stage>(
-            getStagesUrl+ "?email=" + this._storageService.getUserEmail()
-           
+            getStagesUrl + "?email=" + this._storageService.getUserEmail()
+
+        );
+    }
+
+    getRecourseStages(recourseId: any): Observable<any> {
+
+        return this.apiGateWay.get<Stage>(
+            getRecourseStagesUrl + "?email=" + this._storageService.getUserEmail() + "&recourseId=" + recourseId
+
         );
     }
 
