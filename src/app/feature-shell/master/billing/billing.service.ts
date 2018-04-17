@@ -18,12 +18,11 @@ export class BillingService {
 
     getBilling(): Observable<any> {
         return this.apiGateWay.get<Billing>(
-            getBillingUrl + "?email"+"="+ "puneet.kumar@globallogic.com"
+            getBillingUrl + "?email=" + this._storageService.getUserEmail()
         );
     }
 
     addBilling(reqData: any): Observable<any> {
-        debugger
         return this.apiGateWay.post<Billing>(
             addBillingUrl,
             JSON.stringify(reqData)
