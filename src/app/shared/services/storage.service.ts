@@ -11,4 +11,12 @@ export class StorageService {
     setValue(key: string, value: string) {
         localStorage.setItem(key, value);
     }
+
+    setBranchData(data) {
+        localStorage.setItem("branchData", JSON.stringify(data));
+    }
+
+    getBranchData() {
+        return JSON.parse(this.getValue("branchData"));
+    }
 }

@@ -15,7 +15,28 @@ export class CustomSingleSelectComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.selectedItem = (this.config.defaultText) ? this.config.defaultText : "";
+
+    if (this.config.showFirstSelected && this.data.length > 0) {
+
+      if (this.config.showFirstSelectedKey) {
+
+        if (this.config.showFirstSelectedValue) {
+          this.selectedItem = this.data.filter(x => x[this.config.showFirstSelectedKey]
+            == this.config.showFirstSelectedValue[this.config.showFirstSelectedKey])[0];
+
+          this.selectItem(this.selectedItem);
+        }
+        else
+          this.selectItem(this.data[0]);
+      }
+      else
+        this.selectItem(this.data[0]);
+
+      this.showDropdown = false;
+    }
+    else
+      this.selectedItem = (this.config.defaultText) ? this.config.defaultText : "";
+
   }
 
   selectClick() {
@@ -28,10 +49,11 @@ export class CustomSingleSelectComponent implements OnInit {
     this.valueChanged.emit(data);
   }
 
-  defaultSelect(data){
-    this.selectedItem=data;
+  defaultSelect(data) {
+    this.selectedItem = data;
     this.valueChanged.emit(undefined);
   }
+ 
   onClickedOutside(e: Event) {
     this.showDropdown = false;
   }

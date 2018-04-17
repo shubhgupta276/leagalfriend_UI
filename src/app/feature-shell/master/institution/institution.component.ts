@@ -1,4 +1,4 @@
-import { Component, OnInit,NgModule} from "@angular/core";
+import { Component, OnInit, NgModule, ViewChild } from "@angular/core";
 import { AddInstitutionMasterComponent } from "./add-institution/add-institution.component";
 import { EditInstitutionMasterComponent } from "./edit-institution/edit-institution.component";
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 import { Institution } from './institution';
 import { InstitutionService } from './institution.service';
 import { StorageService } from '../../../shared/services/storage.service';
+import { CityService } from "../city/city.service";
 
 declare let $;
 
@@ -18,7 +19,7 @@ declare let $;
       AddInstitutionMasterComponent,
       EditInstitutionMasterComponent
     ],
-    providers: [InstitutionService, StorageService]
+    providers: [InstitutionService, StorageService, CityService]
   }
 )
 @Component({
@@ -27,38 +28,42 @@ declare let $;
   styleUrls: ["./institution.component.css"]
 })
 export class InstitutionComponent implements OnInit {
- 
-  arr:Institution[] = [];
-  editInstitutionMasterForm: FormGroup;
-  editDetails:any;
-  constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
-    
-  }
 
+  arr: Institution[] = [];
+  editInstitutionMasterForm: FormGroup;
+  editDetails: any;
+  arCity: any[] = [];
+  @ViewChild(EditInstitutionMasterComponent) editChild: EditInstitutionMasterComponent;
+  constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _cityService: CityService, private _storageService: StorageService) {
+
+  }
 
   ngOnInit() {
-    debugger
     this.GetAllInstitute();
-    
+    this.bindCity();
   }
+
   showEditModal(data) {
-    this.editDetails=data;
+    this.editChild.createForm(data);
     $('#editInstitutionMasterModal').modal('show');
-    
   }
-  
+
   GetAllInstitute() {
-    debugger
     this._institutionService.getInstitutions().subscribe(
       result => {
-        debugger
         if (result.httpCode == 200) {
 
           for (var i = 0; i < result.institutions.length; i++) {
             const obj = result.institutions[i];
-            
+
             this.arr.push({
               institutionName: obj.institutionName,
+              address: obj.address,
+              billingAddress: obj.billingAddr,
+              contactNo: obj.phone,
+              contactPerson: obj.contactName,
+              city: obj.city,
+              cityId: obj.fkCity,//todo
               id: obj.id
             });
           }
@@ -78,7 +83,7 @@ export class InstitutionComponent implements OnInit {
       });
   }
 
-   bindDatatable(){
+  bindDatatable() {
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
     var selectedPageLength = 15;
 
@@ -120,7 +125,16 @@ export class InstitutionComponent implements OnInit {
         }
       });
     });
-   }
+  }
 
-  
+  bindCity() {
+    this._cityService.getCities().subscribe(result => {
+      if (result.httpCode == 200) {
+        result.cities.forEach(item => {
+          this.arCity.push(item);
+        });
+      }
+    })
+
+  }
 }
