@@ -84,7 +84,7 @@
                       <td>{{item.stageName}}</td>
                       <td>{{item.amount}}</td>
                       <td>
-                          <a href="javascript:void()" title="Edit;" data-toggle="modal" data-target="#editBillModal"><i class="fa fa-edit"></i></a>
+                          <a href="javascript:void()" (click)="showEditModal(item)" title="Edit;" data-toggle="modal"><i class="fa fa-edit"></i></a>
                       </td>
                       <td style="display: none;">{{item.branch}}</td>
                     </tr>

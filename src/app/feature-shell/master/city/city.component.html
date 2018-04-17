@@ -46,7 +46,7 @@
                 <tr *ngFor="let item of arCityData" (dblclick)="showEditModal(item)" data-target="#editCityMasterModal">
                   <td>{{item.cityName}}</td>
                   <td>
-                    <a title="Edit">
+                    <a title="Edit" (click)="showEditModal(item)">
                       <i class="fa fa-edit"></i>
                     </a>
                   </td>
