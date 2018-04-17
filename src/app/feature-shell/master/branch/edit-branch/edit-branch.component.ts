@@ -60,7 +60,9 @@ export class EditBranchMasterComponent implements OnInit {
   }
 
   createForm(data) {
+    debugger
     this.editBranchMasterForm = this.fb.group({
+      
       branchname: [data == null ? null : data.BranchName, Validators.required],
       branchcode: [data == null ? null : data.BranchCode, Validators.required],
       address: [data == null ? null : data.Address, Validators.required],

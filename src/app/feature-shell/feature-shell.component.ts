@@ -17,7 +17,9 @@ export class FeatureShellComponent implements OnInit {
   arrTodayEvents = [];
   arBranches = [];
   branchConfig: any;
-  constructor(private authService: AuthService, private sharedService: SharedService, private _branchService: BranchService, private _sessionStorage: StorageService) {
+  constructor(private authService: AuthService, private sharedService: SharedService,
+    private _storageService: StorageService,
+    private _branchService: BranchService) {
     sharedService.changeEmitted$.subscribe(Zone.current.wrap(
       text => {
         this.totalUpcomingEvents = text;
@@ -27,13 +29,13 @@ export class FeatureShellComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this._sessionStorage.setValue("branchId", null);//clear branchid when page refresh
-
+    var branchData = this._storageService.getBranchData();
     this.branchConfig = {
       displayKey: "branchName",
-      defaultText: "All Branches",
-      defaultTextAdd: true,
+      showFirstSelected: true,
+      showFirstSelectedValue: branchData,
+      showFirstSelectedKey: "id",
+      defaultTextAdd: false,
       showIcon: true,
       hideWhenOneItem: true
     }
@@ -94,8 +96,8 @@ export class FeatureShellComponent implements OnInit {
   }
 
   changeBranch($event) {
-    this._sessionStorage.setValue("branchId", ($event) ? $event.id : $event);
-    this.sharedService.setHeaderBranch(($event) ? $event.id : $event);
+    this._storageService.setBranchData($event);
+    this.sharedService.setHeaderBranch($event);
   }
 
   showmastermenu() {

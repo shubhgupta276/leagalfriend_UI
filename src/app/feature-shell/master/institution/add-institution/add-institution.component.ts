@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -16,11 +16,17 @@ declare var $;
 })
 export class AddInstitutionMasterComponent implements OnInit {
   @Input() arInstitution: Institution[];
+  @Input() arCity: any[];
   addInstitutionMasterForm: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
   AddInstitutionMaster() {
     this.addInstitutionMasterForm = this.fb.group({
       institutionName: [null, Validators.required],
+      contactPerson: [null, Validators.required],
+      address: [null, Validators.required],
+      city: ["", Validators.required],
+      billingAddress: [null, Validators.required],
+      contactNo: [null, Validators.required],
     });
   }
 
@@ -28,9 +34,14 @@ export class AddInstitutionMasterComponent implements OnInit {
     this.AddInstitutionMaster();
   }
 
-  submitAddInstitutionMaster(data : Institution) {
+  submitAddInstitutionMaster(data: Institution) {
     var reqData = {
       institutionName: data.institutionName,
+      contactName: data.contactPerson,
+      address: data.address,
+      billingAddr: data.billingAddress,
+      fkCity: data.city.id,
+      phone: data.contactNo,
       userId: this._storageService.getUserId()
     };
 
@@ -39,7 +50,16 @@ export class AddInstitutionMasterComponent implements OnInit {
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
-          this.arInstitution.push({ institutionName: data.institutionName, id: _result.id });
+          this.arInstitution.push({
+            institutionName: data.institutionName,
+            address: data.address,
+            billingAddress: data.billingAddress,
+            contactNo: data.contactNo,
+            contactPerson: data.contactPerson,
+            city: data.city.cityName,
+            cityId: data.city.id,
+            id: _result.id
+          });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddInstitutionMaster();
           this.closeModal();
@@ -60,10 +80,11 @@ export class AddInstitutionMasterComponent implements OnInit {
   ngOnInit() {
     this.subscriberFields();
   }
+  
   subscriberFields() {
     this.addInstitutionMasterForm.get('institutionName').valueChanges.subscribe(
       (e) => {
-        if (this.arInstitution.filter(x => x.institutionName.toUpperCase() == e.toUpperCase()).length > 0) 
+        if (this.arInstitution.filter(x => x.institutionName.toUpperCase() == e.toUpperCase()).length > 0)
           this.isInstitutionAlreadyExists = true;
         else
           this.isInstitutionAlreadyExists = false;
