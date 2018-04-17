@@ -3,6 +3,7 @@ import { debuglog } from "util";
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
 import { StorageService } from '../../shared/services/storage.service';
+import { saveAs } from 'file-saver/FileSaver.js';
 import {
   FormGroup,
   FormBuilder,
@@ -30,15 +31,15 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   lstUploadedDocuments: any;
-  caseRunning= [];
-  caseCompleted=[]; f
+  caseRunning = [];
+  caseCompleted = []; f
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
   $table: any;
-  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService,private masterTemplateService : MasterTemplateComponentService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private masterTemplateService: MasterTemplateComponentService) {
     this.caseRunning = CasesRunning;
     this.caseCompleted = CasesCompleted;
     //this.setDropdownUniqueValues();
@@ -506,7 +507,6 @@ export class CaseComponent implements OnInit {
     }
   }
 
-  //lstUploadedDocuments: FileInfo[];
   getUploadedDocuments() {
     this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   }
@@ -526,6 +526,7 @@ export class CaseComponent implements OnInit {
 
     for (var i = 0; i < this.SelectedFileIds.length; i++) {
       var data = this.lstUploadedDocuments.find(x => x.Id === this.SelectedFileIds[i]);
+      const localData = JSON.parse(JSON.stringify(data))
       var selectedCases = this.caseRunning.filter(function (x) {
         return x.IsChecked == true;
       })
@@ -535,13 +536,11 @@ export class CaseComponent implements OnInit {
       selectedCases = selectedCases.concat(selectedCasescompelted);
 
       for (var j = 0; j < selectedCases.length; j++) {
-        data.Value = data.Value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
-        data.Value = data.Value.replace('@CustomerName', ' ' + selectedCases[j].customerFirstName);
-
+        let value = localData.Value;
+        value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
+        value = value.replace('@CustomerName', ' ' + selectedCases[j].customerFirstName);
+        saveAs(new Blob([value], { type: localData.FileType }), localData.FileName);
       }
-      var blob = new Blob([data.Value], { type: data.FileType });
-      var url = window.URL.createObjectURL(blob);
-      window.open(url);
     }
   }
 }
