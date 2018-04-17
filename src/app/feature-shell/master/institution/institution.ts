@@ -1,4 +1,10 @@
 export interface Institution {
-    institutionName: string;
-    id: number;
-  }
+  institutionName: string;
+  contactPerson: string;
+  city: any;
+  cityId: number;
+  address: string;
+  billingAddress: string;
+  contactNo: string;
+  id: number;
+}

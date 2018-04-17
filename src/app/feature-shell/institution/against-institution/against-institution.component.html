@@ -18,24 +18,24 @@
           <div class="box-body">
             <div>
               <div class="row table-toolbar">
-                <div class="col-sm-4 heading">For Against</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2" style="text-align: right;">
-                  <!-- <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label> -->
-                  <div style="float: left;">
+                <div class="col-sm-3 heading">For Against</div>
+                <!-- <div class="col-sm-4" style="padding-left: 339px;">
+                  Institution:
+                  <app-custom-single-select [data]="arInstitutions" [config]="institutionConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                </div> -->
+                <div class="col-sm-7" style="text-align: right;">
+                  <div style="float: left;padding-left: 470px;" *ngIf="arInstitutions.length>0" >
+                    <app-custom-single-select [data]="arInstitutions" [config]="institutionConfig" (valueChanged)="changeInstitution($event)"></app-custom-single-select>
+                  </div>
+                  <div style="float: left;padding-left: 603px;" *ngIf="arRecourse.length>0">
                     <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
                   </div>
-                  <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
-                  <!-- <button type="button" class="btn btn-default" 
-                  data-toggle="modal" data-target="#filterInstitutionModal">Filter</button> &nbsp; -->
-                  <img src="assets/dist/img/reset_filter.png" title="Clear Filter" id="btnClearFilter">
-                  <!-- <button type="button" class="btn btn-default" id="btnClearFilter">Clear Filter</button> -->
+                  <div>
+                    <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterInstitutionModal">
+                    <img src="assets/dist/img/reset_filter.png" title="Clear Filter" id="btnClearFilter">
+                  </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="float: right;">
                   <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
                 </div>
               </div>
@@ -68,6 +68,7 @@
                   <th>Action</th>
                   <th style="display: none;">recourseId</th>
                   <th style="display: none;">branchId</th>
+                  <th style="display: none;">institutionId</th>
                 </tr>
               </thead>
               <tbody>
@@ -94,6 +95,7 @@
                   </td>
                   <td style="display: none;">{{item.recourseId}}</td>
                   <td style="display: none;">{{item.branchId}}</td>
+                  <td style="display: none;">{{item.institutionId}}</td>
                 </tr>
               </tbody>
 
