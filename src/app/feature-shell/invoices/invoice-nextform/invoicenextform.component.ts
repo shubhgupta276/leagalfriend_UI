@@ -151,9 +151,9 @@ export class InvoiceNextFormComponent implements OnInit {
             currentRow = $(currentRow).closest('tr');
 
             this.arrLocalInvoiceDetails.filter(
-                book => {
-                    if (book.BillingId == $(currentRow).find('#hfBillingId').val()) {
-                        book.Amount = $(currentRow).find('.amount').val();
+                invoiceDetails => {
+                    if (invoiceDetails.BillingId == $(currentRow).find('#hfBillingId').val()) {
+                        invoiceDetails.Amount = $(currentRow).find('.amount').val();
                     }
                 });
             localStorage.setItem("invoiceDetails", JSON.stringify(this.arrLocalInvoiceDetails));
