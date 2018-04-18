@@ -68,21 +68,36 @@ export class AddBillingComponent implements OnInit {
   }
 
   submitAddBill(data: Billing) {
+    const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
+    const objStage = this.arListStage.find(x => x.id == data.stageId);
 
     var reqData = {
-      bankName: data.bankName,
-      recourseId: data.recourseId,
-      stageId: data.stageId,
       amount: data.amount,
+      bankName: data.bankName,
+      recourse: {
+        id: objRecourse.id,
+        recourseCode: objRecourse.recourseCode,
+        recourseDesc: objRecourse.recourseDesc,
+        recourseName: objRecourse.recourseName,
+        userId: objRecourse.userId
+      },
+      stage: {
+        id: objStage.id,
+        recourseId: objStage.recourseId,
+        stageCode: objStage.stageCode,
+        stageName: objStage.stageName,
+        statusId: objStage.stageStatusId,
+        userId: objStage.userId
+      },
       userId: this._storageservice.getUserId()
     };
+    
     this._billingservice.addBilling(reqData).subscribe(
       result => {
 
         var _result = result.body;
         if (_result.httpCode == 200) { //success
-          const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
-          const objStage = this.arListStage.find(x => x.id == data.stageId);
+
           this.arbillingData.push({
             id: _result.id, bankName: data.bankName, recourseId: data.recourseId,
             recourseName: objRecourse.recourseName, stageName: objStage.stageName,

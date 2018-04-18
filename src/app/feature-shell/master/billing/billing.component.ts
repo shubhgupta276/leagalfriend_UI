@@ -182,14 +182,15 @@ export class BillingComponent implements OnInit {
         if (result.httpCode == 200) {
           for (var i = 0; i < result.billings.length; i++) {
             const obj = result.billings[i];
+            
             this.arBillingData.push({
               id: obj.id,
               bankName: obj.bankName,
               amount: obj.amount,
-              recourseName: "",
-              recourseId: obj.recourseId,
-              stageId: obj.stageId,
-              stageName: "",
+              recourseName: obj.recourse.recourseName,
+              recourseId: obj.recourse.id,
+              stageId: obj.stage.id,
+              stageName: obj.stage.stageName,
               userId: obj.userId
             })
           }
