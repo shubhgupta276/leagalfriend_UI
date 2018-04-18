@@ -21,7 +21,7 @@ export class BranchService {
         );
     }
 
-    addCity(reqData: any): Observable<any> {
+    addBranch(reqData: any): Observable<any> {
 
         return this.apiGateWay.post<Branch>(
             addBranchUrl,
@@ -29,7 +29,7 @@ export class BranchService {
         );
     }
 
-    updateCity(reqData: any): Observable<any> {
+    updateBranch(reqData: any): Observable<any> {
         return this.apiGateWay.post<Branch>(
             updateBranchUrl,
             JSON.stringify(reqData)

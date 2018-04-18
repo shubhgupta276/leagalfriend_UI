@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { AddBranchMasterComponent } from "./add-branch/add-branch.component";
 import { EditBranchMasterComponent } from "./edit-branch/edit-branch.component";
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BranchService } from './branch.service';
 import { StorageService } from '../../../shared/services/storage.service';
+import { CityService } from "../city/city.service";
 declare let $;
 
 @NgModule(
@@ -24,15 +25,18 @@ declare let $;
   templateUrl: './branch.component.html',
   styleUrls: ['./branch.component.css']
 })
+
 export class BranchComponent implements OnInit {
-  arr= [];
+  arrBranch= [];
   editBranchMasterForm: FormGroup;
   editDetails:any;
-
-  constructor(private fb: FormBuilder,private _branchService: BranchService,) {
+  arCity=[];
+  @ViewChild(EditBranchMasterComponent) editChild : EditBranchMasterComponent;
+  constructor(private fb: FormBuilder,private _branchService: BranchService, private _cityService: CityService) {
     }
   ngOnInit() {
-    this.GetAllBranch();
+    this.bindCity();
+    
     // $($.document).ready(function () {
 
     //   var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
@@ -80,23 +84,21 @@ export class BranchComponent implements OnInit {
     // });
   }
   
-
   GetAllBranch() {
-debugger
-
     this._branchService.getBranches().subscribe(
       result => {
-        debugger
         if (result.httpCode == 200) {
           for (var i = 0; i < result.branches.length; i++) {
             const obj = result.branches[i];
 
-            this.arr.push({
+            this.arrBranch.push({
               branchName: obj.branchName,
               branchCode:obj.branchCode,
               branchAddress:obj.branchAddress,
               branchContact:obj.branchContact,
               cityId:obj.cityId,
+              cityName:this.getCityName(obj.cityId),
+              id:obj.id
             });
           }
           setTimeout(() => {
@@ -107,6 +109,7 @@ debugger
         else {
           console.log(result);
         }
+        
       },
       err => {
         console.log(err);
@@ -178,8 +181,33 @@ debugger
 
   showEditModal(data) {
     this.editDetails=data;
+    this.editChild.createForm(data);
     $('#editBranchMasterModal').modal('show');
   }
-  
+  bindCity() {
+    var $this = this;
+    this._cityService.getCities()
+    .map(res => res)
+    .finally(() => {
+        $this.GetAllBranch();
+    })
+    .subscribe(
+      data => {
+        data.cities.forEach(item => {
+          this.arCity.push(item);
+        });
+      },
+      error => console.log(error)
+    );
+
+  }
+  getCityName(cityId): string {
+    const objFind = this.arCity.filter(x => x.id == cityId)[0];
+    if (objFind)
+      return objFind.cityName;
+    else
+      return "";
+      
+  }
 
 }
