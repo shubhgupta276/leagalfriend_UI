@@ -4,15 +4,6 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { BranchService } from '../branch.service';
 import { StorageService } from '../../../../shared/services/storage.service';
-
-export interface KeyValue {
-  id: number;
-  name: string;
-}
-
-export const Cities: KeyValue[] = [{ id: 1, name: "Jaipur" }, { id: 2, name: "Delhi" }, { id: 3, name: "Chennai" }];
-
-
 declare var $;
 
 @Component({
@@ -22,11 +13,15 @@ declare var $;
 })
 export class AddBranchMasterComponent implements OnInit {
   addBranchMasterForm: FormGroup;
-  City: KeyValue[] = Cities;
   isBranchcodeAlreadyExists: boolean = false;
   finalData: any = {};
   @Input() arCity = [];
   @Input() arrBranch = [];
+  private value: any = {};
+  private _disabledV: string = '0';
+  private disabled: boolean = false;
+  citySelected: Array<any> = [];
+  selectedCity: any;
   AddBranchMaster() {
     this.addBranchMasterForm = this.fb.group({
       branchname: [null, Validators.required],
@@ -36,7 +31,7 @@ export class AddBranchMasterComponent implements OnInit {
       contact: [null, Validators.required],
     });
   }
-
+  
   constructor(private fb: FormBuilder, private _branchService: BranchService, private _storageService: StorageService) {
     this.AddBranchMaster();
   }
@@ -68,7 +63,7 @@ export class AddBranchMasterComponent implements OnInit {
     this.finalData.branchCode = data.branchcode;
     this.finalData.branchContact = data.contact;
     this.finalData.branchName = data.branchname;
-    this.finalData.cityId = data.city;
+    this.finalData.cityId = this.selectedCity.id;
     this.finalData.id = data.id;
     this.finalData.userId = this._storageService.getUserId();
     return this.finalData;
@@ -80,8 +75,8 @@ export class AddBranchMasterComponent implements OnInit {
     this.finalData.branchCode = data.branchcode;
     this.finalData.branchAddress = data.address;
     this.finalData.branchContact = data.contact;
-    this.finalData.cityId = data.city;
-    this.finalData.cityName = this.getCityName(data.city);
+    this.finalData.cityId =  this.selectedCity.id;
+    this.finalData.cityName = this.selectedCity.text;
     this.finalData.id = id;
     this.arrBranch.push(this.finalData);
 
@@ -103,12 +98,32 @@ export class AddBranchMasterComponent implements OnInit {
       }
     );
   }
-  getCityName(cityId): string {
-    const objFind = this.arCity.filter(x => x.id == cityId)[0];
-    if (objFind)
-      return objFind.cityName;
-    else
-      return "";
+  private get disabledV(): string {
+    return this._disabledV;
+  }
 
+  private set disabledV(value: string) {
+    this._disabledV = value;
+    this.disabled = this._disabledV === '1';
+  }
+
+  public selected(value: any): void {
+    console.log('Selected value is: ', value);
+  }
+
+
+  public removed(value: any): void {
+    console.log('Removed value is: ', value);
+  }
+
+  public typed(value: any): void {
+    console.log('New search input: ', value);
+  }
+
+  public refreshValue(value: any): void {
+    this.value = value;
+  }
+  public selectedCity1(value: any): void {
+    this.selectedCity = value;
   }
 }
