@@ -70,8 +70,8 @@
                                   <div class="col-md-9">
                                     <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
                                     <select name="city" tabindex="3" class="form-control select2me" id="city" formControlName="city">
-                                        <option *ngFor="let option of City" [ngValue]="option.id">
-                                            {{ option.name }}
+                                        <option *ngFor="let option of arCity" [ngValue]="option.id">
+                                            {{ option.cityName }}
                                           </option>
                                     </select>
                                   </div>
