@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 import { Stage } from './stage';
 import { StageService } from './stage.service';
 import { StorageService } from '../../../shared/services/storage.service';
-import { KeyValue } from '../branch/add-branch/add-branch.component';
 import { RecourseService } from '../resource/recourse.service';
 
 declare let $;

@@ -7,15 +7,16 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 import { BranchService } from './branch.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { CityService } from "../city/city.service";
+import {SelectModule} from 'ng2-select';
 declare let $;
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, SelectModule],
     declarations: [
       BranchComponent,
       AddBranchMasterComponent,
-      EditBranchMasterComponent,
+      EditBranchMasterComponent      
     ],
     providers: [BranchService, StorageService]
   }
@@ -88,6 +89,7 @@ export class BranchComponent implements OnInit {
     this._branchService.getBranches().subscribe(
       result => {
         if (result.httpCode == 200) {
+          
           for (var i = 0; i < result.branches.length; i++) {
             const obj = result.branches[i];
 
@@ -193,8 +195,9 @@ export class BranchComponent implements OnInit {
     })
     .subscribe(
       data => {
+        
         data.cities.forEach(item => {
-          this.arCity.push(item);
+          this.arCity.push({ id: item.id, text: item.cityName });
         });
       },
       error => console.log(error)
@@ -202,9 +205,10 @@ export class BranchComponent implements OnInit {
 
   }
   getCityName(cityId): string {
+    debugger
     const objFind = this.arCity.filter(x => x.id == cityId)[0];
     if (objFind)
-      return objFind.cityName;
+      return objFind.text;
     else
       return "";
       
