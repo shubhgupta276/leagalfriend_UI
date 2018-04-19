@@ -348,17 +348,25 @@ export class AddCaseComponent implements OnInit {
 
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
+       
+        if (result.body.httpCode == 200) { //success
 
-        if (result.body.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
+          debugger
+          $('#addCaseModal').modal('hide');
+          this.closeModal();
         }
-        console.log(result);
+       
 
+        
       },
       err => {
         console.log(err);
       });
 
+  }
+  closeModal() {
+    $("#closebtn1").click();
   }
   
 

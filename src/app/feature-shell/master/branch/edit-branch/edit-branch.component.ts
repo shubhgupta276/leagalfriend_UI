@@ -29,7 +29,6 @@ export class EditBranchMasterComponent implements OnInit {
   }
 
   submitEditBranchMaster(data) {
-    debugger
     var finalData = this.GetBranchData(data);
     this._branchService.updateBranch(finalData).subscribe(
       result => {
