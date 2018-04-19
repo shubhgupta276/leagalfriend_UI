@@ -25,8 +25,8 @@ export class ComplianceService {
 
     addCompliance(reqData: any): Observable<any> {
 
-        return this.apiGateWay.post<Compliance>(
-            addComplianceUrl,
+        return this.apiGateWay.post<any>(
+            'master/add/compliance',
             JSON.stringify(reqData)
         );
     }

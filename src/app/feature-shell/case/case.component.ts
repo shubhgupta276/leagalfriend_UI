@@ -16,6 +16,7 @@ import {
 } from "../../shared/models/case/case";
 import { forEach } from "@angular/router/src/utils/collection";
 import { EditCaseComponent } from "./edit-case/edit-case.component";
+import { Compliance } from "../master/compliance/compliance";
 // import { ALPN_ENABLED } from "constants";
 declare var $;
 
@@ -56,7 +57,7 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
-
+debugger
         result.forEach(function (value) {
 
           $this.caseRunning.push(value);
@@ -221,52 +222,7 @@ export class CaseComponent implements OnInit {
       });
       setTimeout(() => {
 
-        // var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-        // var selectedPageLength = 15;
-        // self.$table = $("#example1").DataTable({
-        //   lengthMenu: arLengthMenu,
-        //   pageLength: selectedPageLength,
-        //   oLanguage: {
-        //     sLengthMenu: "Show _MENU_ rows",
-        //     sSearch: "",
-        //     sSearchPlaceholder: "Search..."
-        //   },
-        //   initComplete: function () {
-        //     var tableid = "example1";
-        //     var $rowSearching = $("#" + tableid + "_wrapper");
-        //     $rowSearching.find(".row:eq(0)").hide();
-
-        //     for (var i = 0; i < arLengthMenu[0].length; i++) {
-
-        //       var selectText =
-        //         arLengthMenu[0][i] == selectedPageLength ? "selected" : "";
-        //       $("#ddlLengthMenu").append(
-        //         "<option " +
-        //         selectText +
-        //         " value=" +
-        //         arLengthMenu[0][i] +
-        //         ">" +
-        //         arLengthMenu[1][i] +
-        //         "</option>"
-        //       );
-        //     }
-
-        //     $("#ddlLengthMenu").on("change", function () {
-        //       $rowSearching
-        //         .find(".row:eq(0)")
-        //         .find("select")
-        //         .val($(this).val())
-        //         .change();
-        //     });
-        //   }
-        // });
-        // self.$table.columns().every(function () {
-        //   $("#txtSearch").on("keyup change", function () {
-        //     if (self.$table.search() !== this.value) {
-        //       self.$table.search(this.value).draw();
-        //     }
-        //   });
-        // });
+       
       });
     }, 1000)
 
@@ -435,6 +391,9 @@ export class CaseComponent implements OnInit {
     var reqData = {
       caseId: c.id,
     };
+    debugger
+    if(c.compliance==false)
+    {
     this.authService.getCaseByCaseId(reqData).subscribe(
 
       result => {
@@ -444,6 +403,19 @@ export class CaseComponent implements OnInit {
       err => {
         console.log(err);
       });
+    }
+    else{
+      this.authService.getCaseCompliance(reqData).subscribe(
+
+        result => {
+          debugger
+          this.editChild.createForm(result);
+          console.log(result);
+        },
+        err => {
+          console.log(err);
+        });
+    }
 
   }
 

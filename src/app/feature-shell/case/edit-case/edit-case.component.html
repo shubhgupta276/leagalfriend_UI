@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-content" style="border-radius: 5px;">
       <div class="modal-header modal-header-addedit">
-        <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+        <button type="button" id="closebtn1" class="close close-addedit" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
 
@@ -37,8 +37,8 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9">
-                                <!-- <input type="checkbox" formControlName="compliance"> -->
-                                <!-- <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" onclick="return compliance_single();"> -->
+                              
+                                <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" (click)="compliance();">
                               </div>
                             </div>
                             <div class="tab-pane active" id="activity">
@@ -48,14 +48,9 @@
                                 </label>
 
                                 <div class="col-md-9" [class.has-error]="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
-                                  <input class="form-control" placeholder="Case Id" formControlName="caseId">
+                                  <input class="form-control" placeholder="Case Id" formControlName="caseId" [readonly]="true">
                                 </div>
 
-                                <!-- <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
-                            <small class="text-danger">
-                              <span>Case Id is required.</span>
-                            </small>
-                          </div>   -->
                               </div>
                             </div>
                             <div class="form-group row">
@@ -83,8 +78,7 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9" id="divManager" *ngIf="Manager.length > 0">
-                                <!-- <ngx-select-dropdown (change)="dropChangeManager(this)" [config]="config" [options]="Manager"  
-                                    [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
+                              
                                 <ng-select [allowClear]="true" [items]="Manager" [active]="managerSelected" [disabled]="disabled" (data)="refreshValue($event)"
                                   (selected)="selectedManager1($event)" (removed)="removed($event)" (typed)="typed($event)"
                                   placeholder="No manager selected">
@@ -108,8 +102,7 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9" id="divState" *ngIf="State.length > 0">
-                                <!-- <ngx-select-dropdown (change)="dropChangeState(this)" [config]="config" [options]="arDdl"  
-                                    [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
+                               
                                 <ng-select [allowClear]="true" [items]="State" [active]="stateSelected" [disabled]="disabled" (data)="refreshValue($event)"
                                   (selected)="selectedState1($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No state selected">
                                 </ng-select>
@@ -121,8 +114,7 @@
                               </label>
                               <div class="col-md-9" *ngIf="ParentCases.length > 0">
 
-                                <!-- <ngx-select-dropdown [config]="config" [options]="ParentCases"  
-                                    [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
+                              
                                 <ng-select [allowClear]="true" [items]="ParentCases" [active]="parentcaseSelected" formControlName="parentCase" [disabled]="disabled"
                                   (data)="refreshValue($event)" (selected)="selectParentCase1($event)" (removed)="removed($event)"
                                   (typed)="typed($event)" placeholder="No parent case selected">
@@ -134,7 +126,7 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Next Hearing Date" formControlName="nextHearingDate"> -->
+                           
                                 <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                                   <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
                                     size="10" value="2017-12-22" formControlName="nextHearingDate">
@@ -161,7 +153,7 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9" [class.has-error]="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
-                                <!-- <input class="form-control" placeholder="Remark" formControlName="remark"> -->
+                              
                                 <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
                               </div>
                               <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
@@ -172,7 +164,7 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
-                                <!-- <em class="astrick">*</em> -->
+                               
                               </label>
                               <div class="col-md-9">
                                 <!-- <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingfile"> -->
@@ -181,7 +173,7 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No.:
-                                <!-- <em class="astrick">*</em> -->
+                              
                               </label>
                               <div class="col-md-9">
                                 <input class="form-control" placeholder="Disposed off File No." formControlName="disposedoffFileNo">
@@ -204,7 +196,7 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Filing date" formControlName="filingdate"> -->
+                               
                                 <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                                   <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
                                     size="10" value="2017-11-07" formControlName="filingdate">
@@ -252,7 +244,7 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Opp Lawyer:
-                                <!-- <em class="astrick">*</em> -->
+                             
                               </label>
                               <div class="col-md-9">
                                 <input class="form-control" placeholder="Opp Lawyer" formControlName="oppLawyer">
@@ -260,7 +252,7 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Child Case:
-                                <!-- <em class="astrick">*</em> -->
+                              
                               </label>
                               <div class="col-md-9">
                                 <input class="form-control" placeholder="Child Case" formControlName="childCase">
@@ -268,10 +260,10 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
-                                <!-- <em class="astrick">*</em> -->
+                            
                               </label>
                               <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Last Hearing Date" formControlName="lastHearingDate"> -->
+                              
                                 <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                                   <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
                                     size="10" value="2017-12-04" formControlName="lastHearingDate">
@@ -283,19 +275,19 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
-                                <!-- <em class="astrick">*</em> -->
+                             
                               </label>
                               <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Upload Document" formControlName="uploadDocument"> -->
+                             
                                 <input type="file" name="upload_document" id="upload_document" class="form-control" formControlName="uploadDocument">
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Completion Date:
-                                <!-- <em class="astrick">*</em> -->
+                              
                               </label>
                               <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Completion Date" formControlName="completionDate"> -->
+                               
                                 <div class="input-group date" name="completionDate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                                   <input type="text" tabindex="15" id="completionDate" name="completionDate" readonly="" placeholder="yyyy-mm-dd" class="form-control"
                                     size="10" value="" formControlName="completionDate">
@@ -335,11 +327,14 @@
                         <tr *ngFor="let item of arrCompliance">
                           <td>{{item.Compliance}}</td>
                           <td>
-                            <a>{{item.Status}}</a>
+                            <a href="">{{item.Status}}</a>
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                  
+                      <a class="btn btn-modal-addedit"  href="/admin/case">Back</a>
+              
                   </div>
                 </div>
               </div>
@@ -361,3 +356,4 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+  <divid="content"/>
