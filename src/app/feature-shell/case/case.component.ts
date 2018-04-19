@@ -3,6 +3,7 @@ import { debuglog } from "util";
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
 import { StorageService } from '../../shared/services/storage.service';
+import { saveAs } from 'file-saver/FileSaver.js';
 import {
   FormGroup,
   FormBuilder,
@@ -15,6 +16,7 @@ import {
   CasesCompleted
 } from "../../shared/models/case/case";
 import { forEach } from "@angular/router/src/utils/collection";
+import { MasterTemplateComponentService } from "../master/masterTemplates/masterTemplate.component.service";
 import { EditCaseComponent } from "./edit-case/edit-case.component";
 import { Compliance } from "../master/compliance/compliance";
 // import { ALPN_ENABLED } from "constants";
@@ -31,8 +33,8 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   lstUploadedDocuments: any;
-  caseRunning: Case[];
-  caseCompleted: Case[]; f
+  caseRunning = [];
+  caseCompleted = []; f
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
@@ -40,12 +42,16 @@ export class CaseComponent implements OnInit {
   arrListCaseBranch1: any[] = [];
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
-  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
-    this.caseRunning = CasesRunning
+  constructor (private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService,
+     private masterTemplateService: MasterTemplateComponentService) {
+    this.caseRunning = CasesRunning;
     this.caseCompleted = CasesCompleted;
-    //this.setDropdownUniqueValues();
+    // this.setDropdownUniqueValues();
     this.initCaseForm();
-
+    this.updateCheckedOptions(this.caseRunning);
+    if (!this.IsPrintable) {
+      this.updateCheckedOptions(this.caseCompleted);
+    }
   }
 
   getRunningCase() {
@@ -448,10 +454,9 @@ debugger
     }
   }
 
-  // lstUploadedDocuments : FileInfo[];
-  //getUploadedDocuments(){
-  //   this.masterTemplateService.getuploadedFile().subscribe(x=>this.lstUploadedDocuments = x);
-  //}
+  getUploadedDocuments() {
+    this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+  }
   SelectedFileIds = [];
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
@@ -468,6 +473,7 @@ debugger
 
     for (var i = 0; i < this.SelectedFileIds.length; i++) {
       var data = this.lstUploadedDocuments.find(x => x.Id === this.SelectedFileIds[i]);
+      const localData = JSON.parse(JSON.stringify(data))
       var selectedCases = this.caseRunning.filter(function (x) {
         return x.IsChecked == true;
       })
@@ -477,13 +483,11 @@ debugger
       selectedCases = selectedCases.concat(selectedCasescompelted);
 
       for (var j = 0; j < selectedCases.length; j++) {
-        data.Value = data.Value.replace('@CourtCaseId', selectedCases[j].CourtCaseId.toString());
-        data.Value = data.Value.replace('@CustomerName', ' ' + selectedCases[j].CustomerName.name);
-
+        let value = localData.Value;
+        value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
+        value = value.replace('@CustomerName', ' ' + selectedCases[j].customerFirstName);
+        saveAs(new Blob([value], { type: localData.FileType }), localData.FileName);
       }
-      var blob = new Blob([data.Value], { type: data.FileType });
-      var url = window.URL.createObjectURL(blob);
-      window.open(url);
     }
   }
 }
