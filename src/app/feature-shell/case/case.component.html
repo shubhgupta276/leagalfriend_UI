@@ -85,8 +85,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let items of caseRunning" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
-                        <td>{{items.id}}</td>
+                      <tr *ngFor="let items of caseRunning;let i=index" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
+                        <td>{{i+1}}</td>
                         <td>{{items.courtCaseId}}</td>
                         <td>{{items.customerFirstName}}</td>
                         <td>{{items.recourseCode}}</td>

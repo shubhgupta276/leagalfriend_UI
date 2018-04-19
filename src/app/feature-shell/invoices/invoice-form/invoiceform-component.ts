@@ -6,7 +6,7 @@ import { InstitutionService } from '../../../feature-shell/master/institution/in
 import { Institution } from '../../../feature-shell/master/institution/institution';
 import { StorageService } from '../../../shared/services/storage.service';
 import { forEach } from '@angular/router/src/utils/collection';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 declare let $;
 declare let canvas;
 @Component({
@@ -19,7 +19,11 @@ export class InvoiceFormComponent implements OnInit {
     arrInvoiceDetails = {};
     invoiceNo: string = '333333';
     template: string = ``;
-    
+    addressInfo = {
+        billToAddress: "",
+        CompanyAddress: "",
+        Date: null
+    }
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService) {
         Window["InvoiceFormComponent"] = this;
     }
@@ -27,16 +31,22 @@ export class InvoiceFormComponent implements OnInit {
     ngOnInit() {
         this.GetAllInstitute();
         this.GetBillFrom();
-        this.BindInvoice();      
+        this.BindInvoice();
         // this.arrInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+    }
+    StoreAddressDetails() {
+        this.addressInfo.billToAddress = $('#txtBillToAddress').val();
+        this.addressInfo.CompanyAddress = $('#txtcompanyAddress').val();
+        this.addressInfo.Date = $('#invoiceDate').val();
+        localStorage.setItem("addressDetails",JSON.stringify(this.addressInfo));
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         var totalAmount = 0;
         var totalDescription = "";
         invoiceDetails.forEach(element => {
-            totalAmount = totalAmount + parseFloat(element.amount);
-            totalDescription = totalDescription + (element.caseId + "   " + element.recourse + "   " + element.stage);
+            totalAmount = totalAmount + parseFloat(element.Amount);
+            totalDescription = totalDescription + ("CaseId : " + element.CaseID + "  Recourse : " + element.Recourse + " Stage : " + element.Stage);
         });
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
@@ -44,7 +54,7 @@ export class InvoiceFormComponent implements OnInit {
             totalQuantity: invoiceDetails.length,
             invoiceNo: Math.floor(Math.random() * 90000) + 10000
         };
-      
+
     }
     anyForm: any;
     generatepdf() {
@@ -157,5 +167,5 @@ export class InvoiceFormComponent implements OnInit {
         })
         $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
     }
-    
+
 }

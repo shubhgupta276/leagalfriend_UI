@@ -352,6 +352,9 @@ export class AddCaseComponent implements OnInit {
         if (result.body.httpCode == 200) { //success
 
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
+          debugger
+          $('#addCaseModal').modal('hide');
+          this.closeModal();
         }
        
 
@@ -361,6 +364,9 @@ export class AddCaseComponent implements OnInit {
         console.log(err);
       });
 
+  }
+  closeModal() {
+    $("#closebtn1").click();
   }
   
 

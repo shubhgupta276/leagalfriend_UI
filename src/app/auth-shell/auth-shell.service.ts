@@ -109,7 +109,7 @@ export class AuthService {
     );
   }
   bindRecourseDDL(reqData): Observable<any> {    
-    return this.apiGateWay.get<Recourse>(
+    return this.apiGateWay.get<any>(
       'master/recourses'+ '?email='+ reqData.email.replace('"',''), null,
       
     );
@@ -122,7 +122,7 @@ export class AuthService {
   }
 
   submitEditCaseUser(customerData: EditCase): Observable<any> {
-    return this.apiGateWay.post<EditCase>(
+    return this.apiGateWay.post<any>(
       'case/add',
       JSON.stringify(customerData)
     );
@@ -146,6 +146,12 @@ export class AuthService {
       
     );
   }
+  getCaseCompliance(reqData): Observable<any> {    
+    return this.apiGateWay.get<Recourse>(
+      'case/compliance'+ '?caseId='+ reqData.caseId,null,
+      
+    );
+  }
 
   saveEvent(customerData: Calender): Observable<Calender> {
     return this.apiGateWay.post<Calender>(
@@ -160,7 +166,13 @@ export class AuthService {
       
     );
   }
+  getCompliances(reqData): Observable<any> {
 
+    return this.apiGateWay.get<any>(
+        
+        'master/compliances'+ '?email='+ reqData.email.replace('"',''), null,
+    );
+}
 
   listUsers(reqData): Observable<any> {    
     return this.apiGateWay.get<Recourse>(
