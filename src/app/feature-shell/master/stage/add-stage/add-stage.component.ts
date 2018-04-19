@@ -41,7 +41,6 @@ export class AddStageMasterComponent implements OnInit {
   }
 
   submitAddStageMaster(data) {
-    debugger;
     var reqData = {
       recourseId: data.recourse.id,
       stageCode: data.stageCode,

@@ -15,17 +15,18 @@ export class ComplianceService {
 
     }
 
-    getCompliances(): Observable<any> {
+    getCompliances(reqData): Observable<any> {
 
         return this.apiGateWay.get<Compliance>(
-            getCompliancesUrl + "?email=" + this._storageService.getUserEmail()
+            
+            'master/compliances'+ '?email='+ reqData.email.replace('"',''), null,
         );
     }
 
     addCompliance(reqData: any): Observable<any> {
 
-        return this.apiGateWay.post<Compliance>(
-            addComplianceUrl,
+        return this.apiGateWay.post<any>(
+            'master/add/compliance',
             JSON.stringify(reqData)
         );
     }

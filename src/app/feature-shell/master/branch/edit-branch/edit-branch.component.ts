@@ -2,15 +2,9 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
-
-export interface KeyValue {
-  id: number;
-  name: string;
-}
-
-export const Cities: KeyValue[] = [{ id: 1, name: "Jaipur" }, { id: 2, name: "Delhi" }, { id: 3, name: "Chennai" }];
-
-
+import { BranchService } from '../branch.service';
+import { StorageService } from '../../../../shared/services/storage.service';
+import {SelectModule} from 'ng2-select';
 declare var $;
 
 @Component({
@@ -18,20 +12,65 @@ declare var $;
   templateUrl: '../edit-branch/edit-branch.component.html'
   //template:`<h1>test popup</h1>`
 })
-export class EditBranchMasterComponent implements OnInit {
+export class EditBranchMasterComponent implements OnInit {  
   @Input() editDetails: any;
   editBranchMasterForm: FormGroup;
-  City: KeyValue[] = Cities;
   isBranchcodeAlreadyExists: boolean = false;
-  constructor(private fb: FormBuilder) {
+  finalData: any = {};
+  @Input() arCity = [];
+  @Input() arrBranch = [];
+  private value: any = {};
+  private _disabledV: string = '0';
+  private disabled: boolean = false;
+  citySelected: Array<any> = [];
+  selectedCity: any;
+  constructor(private fb: FormBuilder, private _branchService: BranchService, private _storageService: StorageService) {
     this.createForm(null);
   }
-
+  
   submitEditBranchMaster(data) {
-    $.toaster({ priority: 'success', title: 'Success', message: 'Branch Updated successfully' });
+    var finalData = this.GetBranchData(data);
+    this._branchService.updateBranch(finalData).subscribe(
+      result => {
+        if (result.body.httpCode == 200) {
+          this.BindBranchGridOnEdit(data);
+          $.toaster({ priority: 'success', title: 'Success', message: 'Branch updated successfully' });
+        }
+        else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      });
+
     this.closeModal();
   }
+  GetBranchData(data): any {
+    this.finalData.branchAddress = data.address;
+    this.finalData.branchCode = data.branchcode;
+    this.finalData.branchContact = data.contact;
+    this.finalData.branchName = data.branchname;
+    this.finalData.cityId = this.selectedCity.id;
+    this.finalData.id = data.id;
+    this.finalData.userId = this._storageService.getUserId();
+    return this.finalData;
+  }
+  BindBranchGridOnEdit(data) {
+    this.arrBranch.filter(
+      branch => {
+        if (branch.id == data.id) {
+          branch.branchName = data.branchname;
+          branch.branchCode = data.branchcode;
+          branch.branchAddress = data.address;
+          branch.branchContact = data.contact;
+          branch.cityId = this.selectedCity.id;;
+          branch.cityName = this.selectedCity.text;
+        }
+      });
+      
 
+  }
   closeModal() {
     $('#closebtn1').click();
   }
@@ -58,14 +97,50 @@ export class EditBranchMasterComponent implements OnInit {
       }
     );
   }
-
+ 
   createForm(data) {
+    if(data!=null)
+    {
+    this.citySelected = [];
+      const objFilter = this.arCity.filter(x => x.id ==data.cityId);
+      this.citySelected.push({ id: data.id, text: objFilter[0].text });
+      this.selectedCity = this.citySelected[0];
+    }
     this.editBranchMasterForm = this.fb.group({
-      branchname: [data == null ? null : data.BranchName, Validators.required],
-      branchcode: [data == null ? null : data.BranchCode, Validators.required],
-      address: [data == null ? null : data.Address, Validators.required],
-      city: [1],
-      contact: [data == null ? null : data.Contact, Validators.required],
+      branchname: [data == null ? null : data.branchName, Validators.required],
+      branchcode: [data == null ? null : data.branchCode, Validators.required],
+      address: [data == null ? null : data.branchAddress, Validators.required],
+      city: [data == null ? 1 : data.cityId, Validators.required],
+      contact: [data == null ? null : data.branchContact, Validators.required],
+      id: [data == null ? null : data.id, Validators.nullValidator],
     });
+  }
+  private get disabledV(): string {
+    return this._disabledV;
+  }
+
+  private set disabledV(value: string) {
+    this._disabledV = value;
+    this.disabled = this._disabledV === '1';
+  }
+
+  public selected(value: any): void {
+    console.log('Selected value is: ', value);
+  }
+
+
+  public removed(value: any): void {
+    console.log('Removed value is: ', value);
+  }
+
+  public typed(value: any): void {
+    console.log('New search input: ', value);
+  }
+
+  public refreshValue(value: any): void {
+    this.value = value;
+  }
+  public selectedCity1(value: any): void {
+    this.selectedCity = value;
   }
 }

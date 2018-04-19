@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { debuglog } from "util";
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
@@ -17,6 +17,8 @@ import {
 } from "../../shared/models/case/case";
 import { forEach } from "@angular/router/src/utils/collection";
 import { MasterTemplateComponentService } from "../master/masterTemplates/masterTemplate.component.service";
+import { EditCaseComponent } from "./edit-case/edit-case.component";
+import { Compliance } from "../master/compliance/compliance";
 // import { ALPN_ENABLED } from "constants";
 declare var $;
 
@@ -38,11 +40,13 @@ export class CaseComponent implements OnInit {
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
+  @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
-  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private masterTemplateService: MasterTemplateComponentService) {
+  constructor (private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService,
+     private masterTemplateService: MasterTemplateComponentService) {
     this.caseRunning = CasesRunning;
     this.caseCompleted = CasesCompleted;
-    //this.setDropdownUniqueValues();
+    // this.setDropdownUniqueValues();
     this.initCaseForm();
     this.updateCheckedOptions(this.caseRunning);
     if (!this.IsPrintable) {
@@ -59,7 +63,7 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
-
+debugger
         result.forEach(function (value) {
 
           $this.caseRunning.push(value);
@@ -224,52 +228,7 @@ export class CaseComponent implements OnInit {
       });
       setTimeout(() => {
 
-        // var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-        // var selectedPageLength = 15;
-        // self.$table = $("#example1").DataTable({
-        //   lengthMenu: arLengthMenu,
-        //   pageLength: selectedPageLength,
-        //   oLanguage: {
-        //     sLengthMenu: "Show _MENU_ rows",
-        //     sSearch: "",
-        //     sSearchPlaceholder: "Search..."
-        //   },
-        //   initComplete: function () {
-        //     var tableid = "example1";
-        //     var $rowSearching = $("#" + tableid + "_wrapper");
-        //     $rowSearching.find(".row:eq(0)").hide();
-
-        //     for (var i = 0; i < arLengthMenu[0].length; i++) {
-
-        //       var selectText =
-        //         arLengthMenu[0][i] == selectedPageLength ? "selected" : "";
-        //       $("#ddlLengthMenu").append(
-        //         "<option " +
-        //         selectText +
-        //         " value=" +
-        //         arLengthMenu[0][i] +
-        //         ">" +
-        //         arLengthMenu[1][i] +
-        //         "</option>"
-        //       );
-        //     }
-
-        //     $("#ddlLengthMenu").on("change", function () {
-        //       $rowSearching
-        //         .find(".row:eq(0)")
-        //         .find("select")
-        //         .val($(this).val())
-        //         .change();
-        //     });
-        //   }
-        // });
-        // self.$table.columns().every(function () {
-        //   $("#txtSearch").on("keyup change", function () {
-        //     if (self.$table.search() !== this.value) {
-        //       self.$table.search(this.value).draw();
-        //     }
-        //   });
-        // });
+       
       });
     }, 1000)
 
@@ -362,7 +321,10 @@ export class CaseComponent implements OnInit {
     });
 
     this.$table.columns().every(function () {
+      debugger
+    
       $('#txtSearch').on('keyup change', function () {
+        
         if (this.$table.search() !== this.value) {
           this.$table.search(this.value).draw();
         }
@@ -424,57 +386,42 @@ export class CaseComponent implements OnInit {
   }
 
   initCaseForm() {
-    this.createForm(null);
+    
   }
 
-  createForm(c) {
-
-    this.editCaseForm = this.fb.group({
-
-      // Compliance: [c == null ? null : c.Compliance],
-      caseId: [c == null ? null : c.id, Validators.required],
-
-      courtCaseId: [c == null ? null : c.courtCaseId],
-      recourse: [c == null ? null : c.recourseId],
-      manager: [c == null ? null : c.managerId],
-      court: [c == null ? null : c.courtId],
-      state: [c == null ? null : c.stateId],
-      parentCase: [c == null ? null : c.parentCaseId],
-      nextHearingDate: [c == null ? null : c.nextHearingDate],
-      customerName: [c == null ? null : c.customerId],
-      remark: [c == null ? null : c.remark, Validators.required],
-      groundforclosingfile: [],
-      disposedoffFileNo: [],
-      branch: [c == null ? null : c.branchId],
-      filingdate: [c == null ? null : c.filingdate],
-      stage: [c == null ? null : c.stageId],
-      employee: [c == null ? null : c.employeeId],
-      courtplace: [c == null ? null : c.courtId],
-      oppLawyer: [c == null ? null : c.oppLawyer],
-      childCase: [c == null ? null : c.childCase],
-      lastHearingDate: [c == null ? null : c.lastHearingDate],
-      uploadDocument: [],
-      completionDate: [c == null ? null : c.completionDate]
-    });
-  }
 
   showEditModal(c) {
+    $("#editCaseModal").modal("show");
 
     var $this = this
     var reqData = {
       caseId: c.id,
     };
+    debugger
+    if(c.compliance==false)
+    {
     this.authService.getCaseByCaseId(reqData).subscribe(
 
       result => {
-
-        this.createForm(result);
-        $("#editCaseModal").modal("show");
+        this.editChild.createForm(result);
         console.log(result);
       },
       err => {
         console.log(err);
       });
+    }
+    else{
+      this.authService.getCaseCompliance(reqData).subscribe(
+
+        result => {
+          debugger
+          this.editChild.createForm(result);
+          console.log(result);
+        },
+        err => {
+          console.log(err);
+        });
+    }
 
   }
 

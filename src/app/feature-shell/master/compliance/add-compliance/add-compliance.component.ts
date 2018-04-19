@@ -39,7 +39,7 @@ export class AddComplianceMasterComponent implements OnInit {
   }
 
   submitAddComplianceMaster(data) {
-    
+    debugger
     var reqData = {
       recourseId: data.recourse.id,
       stageId: data.stage.id,
@@ -47,26 +47,27 @@ export class AddComplianceMasterComponent implements OnInit {
       statusId: data.status.statusId,
       userId: this._storageService.getUserId()
     };
-
+debugger
     this._complianceService.addCompliance(reqData).subscribe(
       result => {
+        debugger
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
-
+debugger
           
-          this.arCompliance.push(
-            {
-              recourse: data.recourse.recourseCode,
-              stage: data.stage.stageCode,
-              status: data.status.statusName,
-              recourseId: data.recourse, stageId: data.stage, compliance: data.compliance,
-              statusId: data.status, id: _result.id
-            });
-          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
-          this.AddComplianceMaster();
+          // this.arCompliance.push(
+          //   {
+          //     recourse: data.recourse.recourseCode,
+          //     stage: data.stage.stageCode,
+          //     status: data.status.statusName,
+          //     recourseId: data.recourse, stageId: data.stage, compliance: data.compliance,
+          //     statusId: data.status, id: _result.id
+          //   });
+           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          // this.AddComplianceMaster();
           this.closeModal();
-          this.subscriberFields();
+          //this.subscriberFields();
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });

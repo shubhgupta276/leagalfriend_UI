@@ -1,10 +1,12 @@
 
 export class Billing {
-  id:number;
+  id: number;
   //branch:1;
   bankName: string;
-  amount:number;
-  recourseId:number;
-  stageId:number;
-  userId:string;
+  amount: number;
+  recourseName: string;
+  recourseId: number;
+  stageId: number;
+  stageName: string;
+  userId: string;
 }

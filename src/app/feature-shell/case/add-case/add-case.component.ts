@@ -324,7 +324,7 @@ export class AddCaseComponent implements OnInit {
 
     debugger
     const objEditCase = new EditCase();
-    //objEditCase.branch = data.branch[0].id;
+    objEditCase.branchId = data.branch[0].id;
     var userId = parseInt(localStorage.getItem('client_id'));
     objEditCase.userId = userId;
     objEditCase.childCase = data.childCase;
@@ -344,21 +344,34 @@ export class AddCaseComponent implements OnInit {
     objEditCase.managerId = data.manager[0].id;
     objEditCase.stateId = data.state[0].id;
     objEditCase.parentCaseId = data.parentCase[0].id;
+   
+
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
-        if (result.body.httpCode == 200) {
+       
+        if (result.body.httpCode == 200) { //success
+
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
+          debugger
+          $('#addCaseModal').modal('hide');
+          this.closeModal();
         }
-        console.log(result);
+       
+
+        
       },
       err => {
         console.log(err);
       });
 
   }
+  closeModal() {
+    $("#closebtn1").click();
+  }
+  
 
   ngOnInit() {
-    // (<any>this.Resource).open()
+    
     const self = this;
     $(document).ready(function () {
       $('.input-group.date').datepicker().on('changeDate', function (ev) {
