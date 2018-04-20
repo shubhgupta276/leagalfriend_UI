@@ -4,18 +4,16 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 @Injectable()
 export class MasterTemplateComponentService {
-    FileList : FileInfo[];
+  FileList: FileInfo[];
 
-    
-  constructor() { 
+  constructor() {
     this.FileList = [];
   }
-  getuploadedFile():  Observable<FileInfo[]> {
+  getuploadedFile(): Observable<FileInfo[]> {
     return of(this.FileList);
   }
-
-  AddUpladedFile(AdObj:FileInfo): void {
-     this.FileList.push(AdObj);
+  AddUpladedFile(AdObj: FileInfo): void {
+    this.FileList.push(AdObj);
   }
-  
+
 }
