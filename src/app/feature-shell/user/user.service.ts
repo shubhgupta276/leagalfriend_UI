@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Headers, RequestOptions, Response, URLSearchParams } from '@angular/http';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { HttpClient, HttpRequest, HttpResponse, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { addUser, editUser, listUsers, listRoles, listStatus } from './user.config';
+import { addUser, editUser, listUsers, listRoles, listStatus, getUser } from './user.config';
 import { UserModel } from '../../shared/models/user/user.model';
 import { RoleModel } from '../../shared/models/auth/role.model';
 import { StatusModel } from '../../shared/models/auth/status.model';
@@ -32,5 +32,8 @@ export class UserService {
 
     listStatus(): Observable<StatusModel[]> {
         return this.apiGateWay.get<StatusModel[]>(listStatus);
+    }
+    getUser(userId: string): Observable<UserModel> {
+        return this.apiGateWay.get<UserModel>(getUser + userId);
     }
 }
