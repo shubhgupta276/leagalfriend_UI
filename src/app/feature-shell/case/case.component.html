@@ -1,18 +1,21 @@
 <style>
-      .bgColor{
-        background-color:#dd4b39;
-      }
-      .dateRange{
-        font-weight: 400;
-      }
-      .marbtn{
-        margin-left: -100px;
-        margin-right: 10px;
-      }
-      .imgColor {
-      -webkit-filter: saturate(8);
-      filter: saturate(8);
-    }
+  .bgColor {
+    background-color: #dd4b39;
+  }
+
+  .dateRange {
+    font-weight: 400;
+  }
+
+  .marbtn {
+    margin-left: -100px;
+    margin-right: 10px;
+  }
+
+  .imgColor {
+    -webkit-filter: saturate(8);
+    filter: saturate(8);
+  }
 </style>
 <div class="content-wrapper">
   <div class="page-heading">
@@ -28,10 +31,10 @@
             <div class="nav-tabs-custom">
               <div>
                 <div class="row case-table-toolbar">
-                  <div class="col-sm-8 pr-zero">
+                  <div class="col-sm-4 pr-zero">
                     <ul class="nav nav-tabs">
                       <li class="active">
-                         
+
                         <a href="#tab_running" (click)="runningTools()" data-toggle="tab">Running Cases</a>
                       </li>
                       <li>
@@ -39,16 +42,25 @@
                       </li>
                     </ul>
                   </div>
+                  <div class="col-sm-1">
+                    <button *ngIf="IsPrintable" type="button" class="btn btn-modal-addedit pull-right" data-toggle="modal" data-target="#lstUploadedDocument"
+                      (click)="getUploadedDocuments()">
+                      <span class="glyphicon glyphicon-print"></span>
+                    </button>
+                  </div>
+                  <div class="col-sm-3">
+                    <div style="margin-bottom: -35px;float:  right;">
+                      <label style="font-weight: 400;">Branch:</label>
+                      <select id="ddlCaseBranch1" class="caseFilterDropDown1">
+                        <option value="All">All</option>
+                        <option *ngFor="let item of arrListCaseBranch1" [ngValue]="item.id">{{item.branchName}}</option>
+                      </select>
+                    </div>
+                    <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button">Reset</button>
+                    <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
+                  </div>
                   <div id="pageLength1" class="col-sm-2 case-pagelength">
-                      <div style="margin-left:-315px;margin-bottom: -35px;">
-                          <label style="width:85px" class="caseSearchLabel">Branch:</label>
-                          <select id="ddlCaseBranch1" class="caseFilterDropDown1">
-                            <option value="All">All</option>
-                            <option *ngFor="let item of arrListCaseBranch1" [ngValue]="item.id" >{{item.branchName}}</option>
-                          </select>
-                        </div>
-                       <button _ngcontent-c2="" class="btn btn-default marbtn" data-dismiss="modal" id="btnResetFilter" type="button">Reset</button> 
-                       <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
+
                     <label class="custom-label">Show
                       <select class="input-sm" id="ddlLengthMenu">
                       </select> rows
@@ -73,6 +85,7 @@
                   <table id="example1" class="table table-bordered table-hover">
                     <thead>
                       <tr>
+                        <th>Select</th>
                         <th>Case ID</th>
                         <th>Court Case ID</th>
                         <th>Customer Name</th>
@@ -86,6 +99,10 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let items of caseRunning" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
+                        <td>
+                          <input type="checkbox" name="caseCompleted" value="{{items.IsChecked}}" [(ngModel)]="items.IsChecked" (change)="updateCheckedOptions(caseRunning)"
+                          />
+                        </td>
                         <td>{{items.id}}</td>
                         <td>{{items.courtCaseId}}</td>
                         <td>{{items.customerFirstName}}</td>
@@ -110,6 +127,7 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
+                        <th>Select</th>
                         <th>Court Case ID</th>
                         <th>Case ID</th>
                         <th>Filling Date</th>
@@ -122,6 +140,10 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let items of caseCompleted" (dblclick)="showEditModal(items)">
+                        <td>
+                          <input type="checkbox" name="caseCompleted" value="{{items.IsChecked}}" [(ngModel)]="items.IsChecked" (change)="updateCheckedOptions(caseCompleted)"
+                          />
+                        </td>
                         <td>{{items.CourtCaseId}}</td>
                         <td>{{items.CaseId}}</td>
                         <td>{{items.FillingDate}}</td>
@@ -167,7 +189,7 @@
             <label style="width:85px" class="caseSearchLabel">Branch:</label>
             <select id="ddlCaseBranch" class="caseFilterDropDown1">
               <option value="All">All</option>
-              <option *ngFor="let item of arrListCaseBranch" [ngValue]="item.id" >{{item.branchName}}</option>
+              <option *ngFor="let item of arrListCaseBranch" [ngValue]="item.id">{{item.branchName}}</option>
             </select>
           </div>
         </div>
@@ -214,8 +236,8 @@
       <!-- /.modal-dialog -->
     </div>
     <!-- Filter case ends -->
-    
-    
+
+
   </div>
   <div class="favicon" data-toggle="modal" data-target="#addCaseModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
@@ -225,5 +247,64 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-case></app-add-case> 
-  <!-- <app-edit-case></app-edit-case>  -->
+  <app-add-case></app-add-case>
+
+  <div class="modal fade" id="lstUploadedDocument">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border-radius: 5px;">
+        <div class="modal-header modal-header-addedit">
+          <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Select from List Of Documents</h4>
+        </div>
+
+
+        <div class="modal-body">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">List Of Documents</h3>
+
+              <div class="box-tools">
+                <!-- <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tr>
+                  <th class="padding-bottom">Select</th>
+                  <th class="padding-bottom">File Name</th>
+                  <th class="padding-bottom">Last Updated</th>
+                  <th class="padding-bottom">Last Updated By</th>
+                </tr>
+                <tr *ngFor="let file of lstUploadedDocuments; let i=index">
+                  <td>
+                    <input type="checkbox" (change)="getSelectedDocument($event,file.Id)" />
+                  </td>
+                  <td>{{file.FileName}}</td>
+                  <td>{{file.Lastupdated}}</td>
+                  <td>{{file.LastUpdatedBy}}</td>
+                </tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="getMappingFilesTodownload()">Submit</button>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- <app-edit-case></app-edit-case>  -->

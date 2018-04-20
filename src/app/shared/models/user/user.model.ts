@@ -2,6 +2,7 @@ export class UserModel {
     id: number;
     firstName: string;
     lastName: string;
+    name: string;
     organization: string;
     email: string;
     isClient: boolean;
@@ -18,5 +19,7 @@ export class UserModel {
     role: string;
     status: any = [];
     roles: any = [];
-    address:any=[];
+    address: any = [];
+    login = {};
+
 }
