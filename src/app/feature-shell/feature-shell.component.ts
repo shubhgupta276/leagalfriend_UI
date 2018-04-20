@@ -3,23 +3,28 @@ import { AuthService } from '../auth-shell/auth-shell.service';
 import { SharedService } from '../shared/services/shared.service'
 import { BranchService } from './master/branch/branch.service';
 import { StorageService } from '../shared/services/storage.service';
-
+import { UserService } from './user/user.service';
 declare var $;
 declare let Zone: any;
 @Component({
   selector: 'app-feature-shell',
   templateUrl: './feature-shell.component.html',
   styleUrls: ['./feature-shell.component.css'],
-  providers: [SharedService, BranchService]
+  providers: [SharedService, BranchService,UserService]
 })
 export class FeatureShellComponent implements OnInit {
   totalUpcomingEvents = 4;
   arrTodayEvents = [];
   arBranches = [];
   branchConfig: any;
+  userDetails = {
+    Name: "",
+    profile: null
+  }
   constructor(private authService: AuthService, private sharedService: SharedService,
     private _storageService: StorageService,
-    private _branchService: BranchService) {
+    private _branchService: BranchService,
+    private userService: UserService) {
     sharedService.changeEmitted$.subscribe(Zone.current.wrap(
       text => {
         this.totalUpcomingEvents = text;
@@ -41,6 +46,7 @@ export class FeatureShellComponent implements OnInit {
     }
 
     this.GetAllBranch();
+    this.GetLoggedInUserDetails();
     $(window.document).ready(function () {
       if ($("skin-black")[0]) {
       } else {
@@ -103,6 +109,18 @@ export class FeatureShellComponent implements OnInit {
   showmastermenu() {
     $("#limastermenu").toggle();
   }
-
+GetLoggedInUserDetails()
+{
+  var $this = this;
+  var client = '?userId=' + localStorage.getItem('client_id');
+  this.userService.getUser(client)
+    .subscribe(
+      data => {        
+        $this.userDetails.Name = data.firstName + " " + data.lastName;
+        debugger
+      },
+      error => console.log(error)
+    );
+}
 }
 

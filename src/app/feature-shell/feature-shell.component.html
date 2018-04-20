@@ -33,7 +33,7 @@
             <!-- <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown> -->
           </div>
         </li>
-        <li class="dropdown notifications-menu">
+        <li class="dropdown notifications-menu" style="display: none">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i>
             <span class="label label-warning">10</span>
@@ -76,7 +76,7 @@
           </ul>
         </li>
         <!-- Tasks: style can be found in dropdown.less -->
-        <li class="dropdown tasks-menu">
+        <li class="dropdown tasks-menu" style="display: none">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-flag-o"></i>
             <span class="label label-danger">9</span>
@@ -158,12 +158,8 @@
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-            <span class="hidden-xs">Alexander Pierce</span>
+            <span  class="hidden-xs">{{userDetails.Name}}</span>
           </a>
-
-
-
-
           <ul class="dropdown-menu" style="width:173px;">
 
             <li class="profile-li">
