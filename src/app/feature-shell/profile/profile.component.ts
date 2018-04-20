@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { UserService } from '../user/user.service';
+import { UserModel } from '../../shared/models/user/user.model';
 declare var $;
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  providers: [UserService]
 })
 export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
-  arrEditProfileInfo: any;
+  arrEditProfileInfo: any = [];
   arrSaveProfileInfo: any;
   isEditMode: boolean = false;
   emailValidationMessage: string = "Email address is required.";
@@ -16,33 +19,50 @@ export class ProfileComponent implements OnInit {
   isShowUpload: boolean = false;
   isPhotoChange: boolean = false;
   prevPhotoUrl: string = "assets/dist/img/user2-160x160.jpg";
-  upComingEvents:number;
-  constructor(private fb: FormBuilder) {
-    this.arrEditProfileInfo =
-      {
-        UserName: 'Anup.Dubey1', Email: 'anup.dubey1@globallogic.com', FirstName: 'Anup', LastName: 'Dubey', Organisation: 'GlobalLogic',
-        AddressLine1: 'Delhi', AddressLine2: 'Noida', PostalCode: '110091', Mobile: '9540084026'
-      };
+  upComingEvents: number;
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.arrSaveProfileInfo = {
       Save_UserName: 'Anup.Dubey1', Save_Email: 'anup.dubey1@globallogic.com', Save_FirstName: 'Anup', Save_LastName: 'Dubey', Save_Organisation: 'GlobalLogic',
       Save_AddressLine1: 'Delhi', Save_AddressLine2: 'Noida', Save_PostalCode: '110091', Save_Mobile: '9540084026'
     };
-    this.ProfileDetails();
+    this.BindProfileDetails();
   }
   ngOnInit() {
   }
-  ProfileDetails() {
-    this.profileForm = this.fb.group({
-      // UserName: [null, Validators.required],
-      // Email:[null,Validators.required],
-      FirstName: [null, Validators.required],
-      LastName: [null, Validators.required],
-      Organisation: [null, Validators.required],
-      AddressLine1: [null, Validators.required],
-      AddressLine2: [null, Validators.required],
-      PostalCode: [null, Validators.required],
-      Mobile: [null, Validators.required],
-    });
+  BindProfileDetails() {
+    var $this = this;
+    var client = '?userId=' + localStorage.getItem('client_id');
+    this.userService.getUser(client)
+      .map(res => res)
+      .finally(() => {
+        
+        this.profileForm = this.fb.group({
+          firstName: [$this.arrEditProfileInfo[0].firstName, Validators.required],
+          lastName: [$this.arrEditProfileInfo[0].lastName, Validators.required],
+          organization: [$this.arrEditProfileInfo[0].organization, Validators.required],
+          addressLine1: [$this.arrEditProfileInfo[0].address == null ? null : $this.arrEditProfileInfo[0].address.address1, Validators.required],
+          addressLine2: [$this.arrEditProfileInfo[0].address == null ? null : $this.arrEditProfileInfo[0].address.address2, Validators.required],
+          postcode: [$this.arrEditProfileInfo[0].address == null ? null : $this.arrEditProfileInfo[0].address.zipCode, Validators.required],
+          mobileNumber: [$this.arrEditProfileInfo[0].mobileNumber, Validators.required],
+          userId: [$this.arrEditProfileInfo[0].id, Validators.nullValidator],
+          roles: [$this.arrEditProfileInfo[0].roles, Validators.nullValidator],
+          status: [$this.arrEditProfileInfo[0].status, Validators.nullValidator],
+          email: [$this.arrEditProfileInfo[0].email, Validators.nullValidator],
+          login: [$this.arrEditProfileInfo[0].login, Validators.nullValidator],
+          password: [$this.arrEditProfileInfo[0].password, Validators.nullValidator],
+        });
+        
+      })
+      .subscribe(
+        data => {
+          data.name = data.firstName + " " + data.lastName;
+          $this.arrEditProfileInfo[0] = data;
+
+        },
+        error => console.log(error)
+      );
+
+
   }
 
 
@@ -50,33 +70,61 @@ export class ProfileComponent implements OnInit {
     this.isEditMode = true;
   }
   CancelEditProfile() {
-    this.arrSaveProfileInfo.Save_UserName = this.arrEditProfileInfo.UserName;
-    this.arrSaveProfileInfo.Save_Email = this.arrEditProfileInfo.Email;
-    this.arrSaveProfileInfo.Save_FirstName = this.arrEditProfileInfo.FirstName;
-    this.arrSaveProfileInfo.Save_LastName = this.arrEditProfileInfo.LastName;
-    this.arrSaveProfileInfo.Save_Organisation = this.arrEditProfileInfo.Organisation;
-    this.arrSaveProfileInfo.Save_AddressLine1 = this.arrEditProfileInfo.AddressLine1;
-    this.arrSaveProfileInfo.Save_AddressLine2 = this.arrEditProfileInfo.AddressLine2;
-    this.arrSaveProfileInfo.Save_PostalCode = this.arrEditProfileInfo.PostalCode;
-    this.arrSaveProfileInfo.Save_Mobile = this.arrEditProfileInfo.Mobile;
-    // this.photoUrl = this.prevPhotoUrl;
     this.isEditMode = false;
   }
   SaveProfileData(form: NgForm) {
-    this.arrEditProfileInfo.UserName = this.arrSaveProfileInfo.Save_UserName;
-    this.arrEditProfileInfo.Email = this.arrSaveProfileInfo.Save_Email;
-    this.arrEditProfileInfo.FirstName = this.arrSaveProfileInfo.Save_FirstName;
-    this.arrEditProfileInfo.LastName = this.arrSaveProfileInfo.Save_LastName;
-    this.arrEditProfileInfo.Organisation = this.arrSaveProfileInfo.Save_Organisation;
-    this.arrEditProfileInfo.AddressLine1 = this.arrSaveProfileInfo.Save_AddressLine1;
-    this.arrEditProfileInfo.AddressLine2 = this.arrSaveProfileInfo.Save_AddressLine2;
-    this.arrEditProfileInfo.PostalCode = this.arrSaveProfileInfo.Save_PostalCode;
-    this.arrEditProfileInfo.Mobile = this.arrSaveProfileInfo.Save_Mobile;
+    const finalData = this.GetUserEditData(form);
+    this.userService.editUser(finalData).subscribe(
+      result => {
+        if (result.body.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: 'Profile updated successfully' });
+          this.bindProfileDataAfterEdit(finalData);
+        }
+        else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      });
     this.isEditMode = false;
     // this.prevPhotoUrl = this.photoUrl;
+  }
+  bindProfileDataAfterEdit(data) {
+    this.arrEditProfileInfo[0].organization = data.organization;
+    this.arrEditProfileInfo[0].address.address1 = data.address.address1;
+    this.arrEditProfileInfo[0].address.address2 = data.address.address2;
+    this.arrEditProfileInfo[0].address.zipCode = data.address.zipCode
+    this.arrEditProfileInfo[0].mobileNumber = data.mobileNumber;
+    this.arrEditProfileInfo[0].email = data.email;
 
-    $.toaster({ priority: 'success', title: 'Success', message: 'Profile updated successfully' });
-
+  }
+  GetUserEditData(data): UserModel {
+    const userdata = new UserModel();
+    userdata.id = data.userId;
+    userdata.firstName = data.firstName;
+    userdata.lastName = data.lastName;
+    userdata.organization = data.organization;
+    userdata.addressLine1 = data.addressLine1;
+    userdata.addressLine2 = data.addressLine2;
+    userdata.email = data.email;
+    userdata.mobileNumber = data.mobileNumber;
+    userdata.roles = data.roles;
+    userdata.address =
+      {
+        address1: data.addressLine1,
+        address2: data.addressLine2,
+        city: '',
+        state: '',
+        zipCode: data.postcode
+      }
+      ;
+    userdata.status = data.status;
+    userdata.isClient = false;
+    userdata.clientId = Number(localStorage.getItem('client_id'));
+    userdata.login = data.login;
+    userdata.password = data.password;
+    return userdata;
   }
   ShowProfileUpload() {
     this.isShowUpload = true;
@@ -86,12 +134,12 @@ export class ProfileComponent implements OnInit {
   }
   SaveProfileUpload() {
     this.isShowUpload = false;
-    this.isPhotoChange=false;
+    this.isPhotoChange = false;
     this.prevPhotoUrl = this.photoUrl;
     $.toaster({ priority: 'success', title: 'Success', message: 'Profile updated successfully' });
   }
   CancelProfileUpload() {
-    this.isPhotoChange=false;
+    this.isPhotoChange = false;
     this.photoUrl = this.prevPhotoUrl;
   }
   readPhotoUrl(event: any) {

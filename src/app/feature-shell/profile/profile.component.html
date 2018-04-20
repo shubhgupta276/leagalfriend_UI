@@ -1,4 +1,3 @@
-
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
@@ -15,12 +14,12 @@
             <div class="col-md-4 col-lg-3">
               <div class="profile-pic-box">
                 <label class="content-left-label">Your Profile Photo
-                    <a *ngIf="!isShowUpload" title="Edit Photo" (click)="ShowProfileUpload()" class="btn-edit">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                      </a>
-                      <a *ngIf="isShowUpload" title="Cancel" (click)="HideProfileUpload()" class="btn-close">
-                          <span class="glyphicon glyphicon-remove"></span>
-                        </a>
+                  <a *ngIf="!isShowUpload" title="Edit Photo" (click)="ShowProfileUpload()" class="btn-edit">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                  <a *ngIf="isShowUpload" title="Cancel" (click)="HideProfileUpload()" class="btn-close">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </a>
                 </label>
                 <figure class="edit-profile-photo" style="height:300px">
                   <img width="100%" height="100%" src="{{photoUrl}}" class="img-fluid" alt="">
@@ -33,35 +32,19 @@
                   </figcaption>
                 </figure>
                 <div *ngIf="isPhotoChange" class="content-left-label" style="padding:4px;">
-                    <button type="button" class="btn btn-default btn-sm" (click)="CancelProfileUpload()" >
-                        Cancel
-                      </button>
-                      <button type="submit"  style="float:right" class="btn btn-default btn-sm" (click)="SaveProfileUpload()">
-                        Save
-                      </button>
+                  <button type="button" class="btn btn-default btn-sm" (click)="CancelProfileUpload()">
+                    Cancel
+                  </button>
+                  <button type="submit" style="float:right" class="btn btn-default btn-sm" (click)="SaveProfileUpload()">
+                    Save
+                  </button>
                 </div>
               </div>
             </div>
-            <div class="col-md-8 col-lg-9 mg-t-30 mg-md-t-0">
+            <div class="col-md-8 col-lg-9 mg-t-30 mg-md-t-0" *ngIf="arrEditProfileInfo.length>0">
               <form [formGroup]="profileForm" class="form-horizontal" (ngSubmit)="SaveProfileData(profileForm.value)">
                 <div class="form-body">
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">Login Information</div>
-                    <div class="panel-body">
-                      <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">Username:
-                        </label>
-                        <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.UserName}}
-                        </label>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">Email:
-                        </label>
-                        <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Email}}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+                 
                   <div class="panel panel-primary">
                     <div class="panel-heading">
                       Personal Information
@@ -72,44 +55,49 @@
                     <div *ngIf="!isEditMode" class="panel-body">
                       <div class="edit-profile-form">
                         <div class="form-group row">
-                          <label class="col-sm-3 form-control-label">Firstname:</label>
-                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.FirstName}}
+                          <label class="col-sm-3 form-control-label">First Name:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].firstName}}
                           </label>
                         </div>
-                        <!-- form-group -->
                         <div class="form-group row">
-                          <label class="col-sm-3 form-control-label">Lastname:</label>
-                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.LastName}}
+                          <label class="col-sm-3 form-control-label">Last Name:</label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].lastName}}
+                          </label>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Email:
+                          </label>
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].email}}
                           </label>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Organisation:</label>
-                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Organisation}}
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].organization}}
                           </label>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Address Line 1:</label>
-                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.AddressLine1}}
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].address.address1}}
                           </label>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Address Line 2:</label>
-                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.AddressLine2}}
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].address.address2}}
                           </label>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Postal Code:</label>
-                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.PostalCode}}
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].address.zipCode}}
                           </label>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Mobile:</label>
-                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo.Mobile}}
+                          <label class="col-sm-4 form-control-label">{{arrEditProfileInfo[0].mobileNumber}}
                           </label>
                         </div>
                       </div>
@@ -117,54 +105,57 @@
                     <div *ngIf="isEditMode" class="panel-body">
                       <div class="edit-profile-form">
                         <div class="form-group row">
-                          <label class="col-sm-3 form-control-label">Firstname:</label>
-                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('FirstName').invalid &&  profileForm.get('FirstName').touched">
-                            <input class="form-control" name="Save_FirstName" formControlName="FirstName" placeholder="Enter firstname" type="text" [(ngModel)]="arrSaveProfileInfo.Save_FirstName">
+                          <label class="col-sm-3 form-control-label">First Name:</label>
+                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('firstName').invalid &&  profileForm.get('firstName').touched">
+                            <input class="form-control" disabled formControlName="firstName" placeholder="Enter firstname" type="text">
                           </div>
                         </div>
-                        <!-- form-group -->
                         <div class="form-group row">
-                          <label class="col-sm-3 form-control-label">Lastname:</label>
-                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('LastName').invalid &&  profileForm.get('LastName').touched">
-                            <input class="form-control" name="Save_LastName" formControlName="LastName" placeholder="Enter lastname" type="text" [(ngModel)]="arrSaveProfileInfo.Save_LastName">
+                          <label class="col-sm-3 form-control-label">Last Name:</label>
+                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('lastName').invalid &&  profileForm.get('lastName').touched">
+                            <input class="form-control" disabled formControlName="lastName" placeholder="Enter firstname" type="text">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">Email:</label>
+                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('email').invalid &&  profileForm.get('email').touched">
+                            <input class="form-control" disabled formControlName="email" placeholder="Enter email" type="text">
                           </div>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Organisation:</label>
-                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('Organisation').invalid &&  profileForm.get('Organisation').touched">
-                            <input class="form-control" name="Save_Organisation" formControlName="Organisation" placeholder="Enter location" type="text"
-                              [(ngModel)]="arrSaveProfileInfo.Save_Organisation">
+                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('organization').invalid &&  profileForm.get('organization').touched">
+                            <input class="form-control" name="Save_Organisation" formControlName="organization" placeholder="Enter location" type="text">
                           </div>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row">
                           <label class="col-sm-3 form-control-label">Address Line 1:</label>
-                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('AddressLine1').invalid &&  profileForm.get('AddressLine1').touched">
-                            <textarea class="form-control" name="Save_AddressLine1" formControlName="AddressLine1" placeholder="Enter some description of yourself"
-                              rows="3" [(ngModel)]="arrSaveProfileInfo.Save_AddressLine1"></textarea>
+                          <div class="col-sm-4 col-xl-6 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('addressLine1').invalid &&  profileForm.get('addressLine1').touched">
+                            <textarea class="form-control" name="Save_AddressLine1" formControlName="addressLine1" placeholder="Enter some description of yourself"
+                              rows="3"></textarea>
                           </div>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row mg-b-0">
                           <label class="col-sm-3 form-control-label">Address Line 2:</label>
-                          <div class="col-sm-4 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('AddressLine2').invalid &&  profileForm.get('AddressLine2').touched">
-                            <textarea class="form-control" name="Save_AddressLine2" formControlName="AddressLine2" placeholder="Enter some description of yourself"
-                              rows="3" [(ngModel)]="arrSaveProfileInfo.Save_AddressLine2"></textarea>
+                          <div class="col-sm-4 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('addressLine2').invalid &&  profileForm.get('addressLine2').touched">
+                            <textarea class="form-control" name="Save_AddressLine2" formControlName="addressLine2" placeholder="Enter some description of yourself"
+                              rows="3"></textarea>
                           </div>
                         </div>
                         <!-- form-group -->
                         <div class="form-group row mg-b-0">
                           <label class="col-sm-3 form-control-label">Postal Code:</label>
-                          <div class="col-sm-4 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('PostalCode').invalid &&  profileForm.get('PostalCode').touched">
-                            <input class="form-control" name="Save_PostalCode" formControlName="PostalCode" placeholder="Enter location" type="text"
-                              [(ngModel)]="arrSaveProfileInfo.Save_PostalCode">
+                          <div class="col-sm-4 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('postcode').invalid &&  profileForm.get('postcode').touched">
+                            <input class="form-control" name="Save_PostalCode" formControlName="postcode" placeholder="Enter location" type="text">
                           </div>
                         </div>
                         <div class="form-group row mg-b-0">
                           <label class="col-sm-3 form-control-label">Mobile:</label>
-                          <div class="col-sm-4 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('Mobile').invalid &&  profileForm.get('Mobile').touched">
-                            <input class="form-control" name="Save_Mobile" formControlName="Mobile" placeholder="Enter location" type="text" [(ngModel)]="arrSaveProfileInfo.Save_Mobile">
+                          <div class="col-sm-4 col-xl-8 mg-t-10 mg-sm-t-0" [class.has-error]="profileForm.get('mobileNumber').invalid &&  profileForm.get('mobileNumber').touched">
+                            <input class="form-control" name="Save_Mobile" formControlName="mobileNumber" placeholder="Enter location" type="text">
                           </div>
                         </div>
                         <div class="form-group row">
