@@ -20,7 +20,7 @@
                 <div class="row table-toolbar">
                   <div class="col-sm-4 heading">Billing</div>
                   <div class="col-sm-2"></div>
-                  <div class="col-sm-2">
+                  <!-- <div class="col-sm-2">
                       <label class="custom-label">Branch
                           <select class="input-sm" id="ddlBranch">
                               <option  value="All">All</option>
@@ -29,14 +29,14 @@
                               </option>
                           </select>
                       </label>
-                    </div>
-                  <div class="col-sm-2">
+                    </div> -->
+                  <!-- <div class="col-sm-2">
                     <label class="custom-label">Show
                       <select class="input-sm" id="ddlLengthMenu">
                       </select> rows
                     </label>
-                  </div>
-                  <div class="col-sm-2">
+                  </div> -->
+                  <div class="col-sm-6">
                     <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
                   </div>
                 </div>
@@ -47,7 +47,7 @@
                   <tr>
                      
                     <th>#</th>
-                      <th>Bank
+                      <th>Institution
                         <select class="role input-sm" id="ddlBank"> 
                           <option value="All">All</option>
                           <option *ngFor="let item of arListBanks" value="{{item}}">{{item}}</option>
@@ -84,7 +84,7 @@
                       <td>{{item.stageName}}</td>
                       <td>{{item.amount}}</td>
                       <td>
-                          <a href="javascript:void()" title="Edit;" data-toggle="modal" data-target="#editBillModal"><i class="fa fa-edit"></i></a>
+                          <a href="javascript:void()" (click)="showEditModal(item)" title="Edit;" data-toggle="modal"><i class="fa fa-edit"></i></a>
                       </td>
                       <td style="display: none;">{{item.branch}}</td>
                     </tr>

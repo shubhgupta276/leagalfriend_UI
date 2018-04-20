@@ -162,11 +162,11 @@ export class BillingComponent implements OnInit {
       if ($.inArray(obj.bankName, this.arListBanks) < 0)
         this.arListBanks.push(obj.bankName);
 
-      if ($.inArray(obj.recourseId, this.arListRecourse) < 0)
-        this.arListRecourse.push(obj.recourseId);
+      if ($.inArray(obj.recourseName, this.arListRecourse) < 0)
+        this.arListRecourse.push(obj.recourseName);
 
-      if ($.inArray(obj.stageId, this.arListStage) < 0)
-        this.arListStage.push(obj.stageId);
+      if ($.inArray(obj.stageName, this.arListStage) < 0)
+        this.arListStage.push(obj.stageName);
 
       if ($.inArray(obj.amount, this.arListAmount) < 0)
         this.arListAmount.push(obj.amount);
@@ -182,14 +182,15 @@ export class BillingComponent implements OnInit {
         if (result.httpCode == 200) {
           for (var i = 0; i < result.billings.length; i++) {
             const obj = result.billings[i];
+            
             this.arBillingData.push({
               id: obj.id,
               bankName: obj.bankName,
               amount: obj.amount,
-              recourseName: "",
-              recourseId: obj.recourseId,
-              stageId: obj.stageId,
-              stageName: "",
+              recourseName: obj.recourse.recourseName,
+              recourseId: obj.recourse.id,
+              stageId: obj.stage.id,
+              stageName: obj.stage.stageName,
               userId: obj.userId
             })
           }

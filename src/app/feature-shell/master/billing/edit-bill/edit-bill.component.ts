@@ -58,16 +58,31 @@ export class EditBillingComponent implements OnInit {
   }
 
   submitEditBill(data) {
+    const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
+    const objStage = this.arListStage.find(x => x.id == data.stage);
 
     var reqData = {
       id: data.id,
       bankName: data.bank,
-      recourseId: data.recourse,
-      stageId: data.stage,
+      recourse: {
+        id: objRecourse.id,
+        recourseCode: objRecourse.recourseCode,
+        recourseDesc: objRecourse.recourseDesc,
+        recourseName: objRecourse.recourseName,
+        userId: objRecourse.userId
+      },
+      stage: {
+        id: objStage.id,
+        recourseId: objStage.recourseId,
+        stageCode: objStage.stageCode,
+        stageName: objStage.stageName,
+        statusId: objStage.stageStatusId,
+        userId: objStage.userId
+      },
       amount: data.amount,
       userId: this._storageservice.getUserId()
     };
-
+    
     this._billingservice.updateBilling(reqData).subscribe(
 
       result => {
@@ -75,10 +90,8 @@ export class EditBillingComponent implements OnInit {
         if (_result.httpCode == 200) { //success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-          
+
           const objFind = this.arbillingData.find(x => x.id == this.editDetails.id);
-          const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
-          const objStage = this.arListStage.find(x => x.id == data.stage);
           objFind.recourseName = objRecourse.recourseName;
           objFind.stageName = objStage.stageName;
           objFind.bankName = data.bank;

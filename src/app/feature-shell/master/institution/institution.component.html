@@ -41,7 +41,6 @@
                   <th>City</th>
                   <th>Contact No.</th>
                   <th>Action</th>
-
                 </tr>
               </thead>
               <tbody>
@@ -53,7 +52,7 @@
                   <td>{{item.contactNo}}</td>
 
                   <td>
-                    <a title="Edit">
+                    <a title="Edit" (click)="showEditModal(item)">
                       <i class="fa fa-edit"></i>
                     </a>
                   </td>

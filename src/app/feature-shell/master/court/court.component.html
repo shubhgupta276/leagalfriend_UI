@@ -45,7 +45,7 @@
                 <td>{{item.courtName}}</td>
                 <td>{{item.courtDesc}}
                 </td>
-                <td><a   title="Edit"><i class="fa fa-edit"></i></a></td>
+                <td><a title="Edit" (click)="showEditModal(item)"><i class="fa fa-edit"></i></a></td>
                
               </tr>
               <tr *ngIf="!arr || arr.length==0">
