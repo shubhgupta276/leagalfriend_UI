@@ -60,10 +60,13 @@ export class EditBillingComponent implements OnInit {
   submitEditBill(data) {
     const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
     const objStage = this.arListStage.find(x => x.id == data.stage);
+    const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
 
     var reqData = {
       id: data.id,
-      bankName: data.bank,
+      institution: {
+        id: data.institutionId
+      },
       recourse: {
         id: objRecourse.id,
         recourseCode: objRecourse.recourseCode,
@@ -82,7 +85,7 @@ export class EditBillingComponent implements OnInit {
       amount: data.amount,
       userId: this._storageservice.getUserId()
     };
-    
+    debugger
     this._billingservice.updateBilling(reqData).subscribe(
 
       result => {
@@ -94,7 +97,8 @@ export class EditBillingComponent implements OnInit {
           const objFind = this.arbillingData.find(x => x.id == this.editDetails.id);
           objFind.recourseName = objRecourse.recourseName;
           objFind.stageName = objStage.stageName;
-          objFind.bankName = data.bank;
+          objFind.institutionName = objInstitution.institutionName;
+          objFind.institutionId = objInstitution.institutionId;
           objFind.recourseId = data.recourse;
           objFind.stageId = data.stage;
           objFind.amount = data.amount;
@@ -123,7 +127,7 @@ export class EditBillingComponent implements OnInit {
     }
     this.editForm = this.fb.group({
       id: [data == null ? null : data.id, null],
-      bank: [data == null ? null : data.bankName, Validators.required],
+      institutionId: [data == null ? null : data.institutionId, Validators.required],
       recourse: [data == null ? null : data.recourseId, Validators.required],
       stage: [data == null ? null : data.stageId, Validators.required],
       amount: [data == null ? null : data.amount, Validators.required],
