@@ -2,8 +2,10 @@ import { Component, OnInit, ElementRef, ViewChild, NgModule } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileInfo } from '../../../shared/models/master/FileInfo';
-import { MasterTemplateComponentService } from "../masterTemplates/masterTemplate.component.service";
-
+import { MasterTemplateComponentService } from '../masterTemplates/masterTemplate.component.service';
+import { saveAs } from 'file-saver/FileSaver.js';
+import { DocumentTemplateModel } from '../../../shared/models/master/documentTemplateModel';
+import { MasterService } from '../master.service';
 declare var $;
 declare var myExtObject;
 declare var System: any;
@@ -17,7 +19,8 @@ declare var System: any;
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   declarations: [
     MasterTemplatesComponent
-  ]
+  ],
+  providers: [MasterService]
 }
 
 )
@@ -26,7 +29,8 @@ export class MasterTemplatesComponent implements OnInit {
   fileIdSelected: string;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private masterTemplateService: MasterTemplateComponentService) {
+  constructor(private fb: FormBuilder, private masterTemplateService: MasterTemplateComponentService,
+  private masterService: MasterService) {
     this.createForm();
     // $($.document).ready(function () {
     //   //$('#previewFile').on('show.bs.modal', function (e) {
@@ -156,7 +160,7 @@ export class MasterTemplatesComponent implements OnInit {
           filetype: file.type,
           Lastupdated: file.lastModifiedDate,
           value: reader.result.split(',')[1]
-        })
+        });
       };
     }
   }
@@ -176,22 +180,34 @@ export class MasterTemplatesComponent implements OnInit {
       FileInfoObje.LastUpdatedBy = "priyanka";
       FileInfoObje.Value = decodedString;
       FileInfoObje.FileType = formModel.avatar.filetype;
+
+      // saveAs(new Blob([decodedString], { type: FileInfoObje.FileType }), FileInfoObje.FileName);
+      // post api
+      const documentTemplateModel = new DocumentTemplateModel();
+      documentTemplateModel.createdDate = formModel.avatar.Lastupdated;
+      documentTemplateModel.description = formModel.avatar.filename;
+      documentTemplateModel.document = formModel.avatar.value;
+      documentTemplateModel.id = Math.floor((1 + Math.random()) * 0x10000);
+      documentTemplateModel.updatedBy = 1;
+      // tslint:disable-next-line:radix
+      documentTemplateModel.userId = parseInt(localStorage.getItem('client_id'));
+      documentTemplateModel.updatedDate = formModel.avatar.Lastupdated;
+      this.masterService.saveDocumentTemplate(documentTemplateModel).subscribe(
+        result => {
+          console.log('document saved successfully.');
+          console.log(documentTemplateModel);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+
       if (!!FileInfoObje) {
         this.masterTemplateService.AddUpladedFile(FileInfoObje);
       }
       this.getUploadedFileInfo();
 
       $('#addMasterTemplate').modal('hide');
-      //var somerows =this.table.rows().data();
-      //this.table.draw();
-      //this.table = $("#example1").DataTable();
-      //this.table.destroy();
-
-
-      //var rowNode = this.table
-      //.row.add( [ FileInfoObje.FileName, FileInfoObje.Lastupdated, FileInfoObje.LastUpdatedBy,"<a title='Edit' ><i class='fa fa-edit' data-toggle='modal' data-target='#previewFile' (click) = 'setDataToPreview("+ FileInfoObje.Id +") ></i " + " > </a> " ] )
-      //.draw()
-      //.node();
       FileInfoObje = null;
       this.reset();
     }

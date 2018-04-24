@@ -7,7 +7,7 @@ import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActi
 import { LFAuthantication } from '../shared/services/lfAuthantication-service'
 const featureShellRoutes: Routes = [
     {
-        path: 'admin', canActivate: [LFAuthantication], component: FeatureShellComponent, children: [
+        path: 'admin', component: FeatureShellComponent, children: [
             { path: 'user', loadChildren: 'app/feature-shell/user/user.module#UserModule' },
             { path: 'billing', loadChildren: 'app/feature-shell/billing/billing.module#BillingModule' },
             { path: 'case', loadChildren: 'app/feature-shell/case/case.module#CaseModule' },

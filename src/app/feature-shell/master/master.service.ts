@@ -33,4 +33,15 @@ export class MasterService {
     const apiUrl = featureConfig.createInvoiceTemplate + '?userId=' + String(user_id);
     return this.apiGateWay.get<any>(apiUrl, null);
   }
+
+  saveDocumentTemplate(documentModel): Observable<any> {
+    return this.apiGateWay.post<any>(
+      featureConfig.saveDocumentTemplate,
+      JSON.stringify(documentModel)
+    );
+  }
+
+  getDocumentTemplates(): Observable<any> {
+    return this.apiGateWay.get<any>(featureConfig.saveDocumentTemplate, null);
+  }
 }

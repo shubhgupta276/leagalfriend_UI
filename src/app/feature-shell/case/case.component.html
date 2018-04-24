@@ -288,11 +288,11 @@
                 </tr>
                 <tr *ngFor="let file of lstUploadedDocuments; let i=index">
                   <td>
-                    <input type="checkbox" (change)="getSelectedDocument($event,file.Id)" />
+                    <input type="checkbox" (change)="getSelectedDocument($event,file.id)" />
                   </td>
-                  <td>{{file.FileName}}</td>
-                  <td>{{file.Lastupdated}}</td>
-                  <td>{{file.LastUpdatedBy}}</td>
+                  <td>{{file.description}}</td>
+                  <td>{{file.updatedDate}}</td>
+                  <td>{{file.firstName}}</td>
                 </tr>
               </table>
             </div>

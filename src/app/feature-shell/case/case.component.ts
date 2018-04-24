@@ -19,6 +19,7 @@ import { forEach } from "@angular/router/src/utils/collection";
 import { MasterTemplateComponentService } from "../master/masterTemplates/masterTemplate.component.service";
 import { EditCaseComponent } from "./edit-case/edit-case.component";
 import { Compliance } from "../master/compliance/compliance";
+import { MasterService } from "../master/master.service";
 // import { ALPN_ENABLED } from "constants";
 declare var $;
 
@@ -26,7 +27,7 @@ declare var $;
   selector: "app-case",
   templateUrl: "./case.component.html",
   styleUrls: ["./case.component.css"],
-  providers: [AuthService, StorageService],
+  providers: [AuthService, StorageService, MasterService],
   "styles": [
     "../node_modules/ngx-select-dropdown/dist/assets/style.css"
   ],
@@ -43,7 +44,7 @@ export class CaseComponent implements OnInit {
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
   constructor (private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService,
-     private masterTemplateService: MasterTemplateComponentService) {
+     private masterTemplateService: MasterTemplateComponentService, private masterService: MasterService) {
     this.caseRunning = CasesRunning;
     this.caseCompleted = CasesCompleted;
     // this.setDropdownUniqueValues();
@@ -455,7 +456,12 @@ debugger
   }
 
   getUploadedDocuments() {
-    this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+    // this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+    this.masterService.getDocumentTemplates().subscribe(
+      result => {
+        this.lstUploadedDocuments = result;
+      }
+    );
   }
   SelectedFileIds = [];
   getSelectedDocument(IsChecked, FileId) {
@@ -472,8 +478,8 @@ debugger
   getMappingFilesTodownload() {
 
     for (var i = 0; i < this.SelectedFileIds.length; i++) {
-      var data = this.lstUploadedDocuments.find(x => x.Id === this.SelectedFileIds[i]);
-      const localData = JSON.parse(JSON.stringify(data))
+      var data = this.lstUploadedDocuments.find(x => x.id === this.SelectedFileIds[i]);
+      const localData = JSON.parse(JSON.stringify(data));
       var selectedCases = this.caseRunning.filter(function (x) {
         return x.IsChecked == true;
       })
@@ -483,10 +489,10 @@ debugger
       selectedCases = selectedCases.concat(selectedCasescompelted);
 
       for (var j = 0; j < selectedCases.length; j++) {
-        let value = localData.Value;
+        let value = localData.document;
         value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
         value = value.replace('@CustomerName', ' ' + selectedCases[j].customerFirstName);
-        saveAs(new Blob([value], { type: localData.FileType }), localData.FileName);
+        saveAs(new Blob([value], { type: 'application/msword' }), localData.description);
       }
     }
   }

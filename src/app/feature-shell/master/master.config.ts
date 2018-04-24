@@ -47,3 +47,4 @@ export let getBillingUrl = "master/billings";
 export let updateBillingUrl = "master/update/billing";
 
 export let createInvoiceTemplate = 'invoice/template';
+export let saveDocumentTemplate = 'document/template';
