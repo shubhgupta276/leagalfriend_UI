@@ -1,8 +1,9 @@
 
 export class Billing {
   id: number;
+  institutionId:number;
   //branch:1;
-  bankName: string;
+  institutionName: string;
   amount: number;
   recourseName: string;
   recourseId: number;

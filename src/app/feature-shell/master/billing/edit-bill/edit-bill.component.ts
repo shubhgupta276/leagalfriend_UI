@@ -58,16 +58,34 @@ export class EditBillingComponent implements OnInit {
   }
 
   submitEditBill(data) {
+    const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
+    const objStage = this.arListStage.find(x => x.id == data.stage);
+    const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
 
     var reqData = {
       id: data.id,
-      bankName: data.bank,
-      recourseId: data.recourse,
-      stageId: data.stage,
+      institution: {
+        id: data.institutionId
+      },
+      recourse: {
+        id: objRecourse.id,
+        recourseCode: objRecourse.recourseCode,
+        recourseDesc: objRecourse.recourseDesc,
+        recourseName: objRecourse.recourseName,
+        userId: objRecourse.userId
+      },
+      stage: {
+        id: objStage.id,
+        recourseId: objStage.recourseId,
+        stageCode: objStage.stageCode,
+        stageName: objStage.stageName,
+        statusId: objStage.stageStatusId,
+        userId: objStage.userId
+      },
       amount: data.amount,
       userId: this._storageservice.getUserId()
     };
-
+    debugger
     this._billingservice.updateBilling(reqData).subscribe(
 
       result => {
@@ -75,13 +93,12 @@ export class EditBillingComponent implements OnInit {
         if (_result.httpCode == 200) { //success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-          
+
           const objFind = this.arbillingData.find(x => x.id == this.editDetails.id);
-          const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
-          const objStage = this.arListStage.find(x => x.id == data.stage);
           objFind.recourseName = objRecourse.recourseName;
           objFind.stageName = objStage.stageName;
-          objFind.bankName = data.bank;
+          objFind.institutionName = objInstitution.institutionName;
+          objFind.institutionId = objInstitution.institutionId;
           objFind.recourseId = data.recourse;
           objFind.stageId = data.stage;
           objFind.amount = data.amount;
@@ -110,7 +127,7 @@ export class EditBillingComponent implements OnInit {
     }
     this.editForm = this.fb.group({
       id: [data == null ? null : data.id, null],
-      bank: [data == null ? null : data.bankName, Validators.required],
+      institutionId: [data == null ? null : data.institutionId, Validators.required],
       recourse: [data == null ? null : data.recourseId, Validators.required],
       stage: [data == null ? null : data.stageId, Validators.required],
       amount: [data == null ? null : data.amount, Validators.required],
