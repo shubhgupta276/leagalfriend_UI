@@ -70,15 +70,15 @@ export const CasesCompleted: Case[] = [
         IsChecked: false,Id: 6, CaseId: 'I/DRT/4', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
         NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 1, name: 'Delhi' },
-        FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 1, name: 'Delhi' },
-        OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
+        FillingDate: '10-Feb-2018', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 1, name: 'Delhi' },
+        OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '10-Feb-2018', Compliance: false
     },
     {
         IsChecked: false,Id: 7, CaseId: 'I/DRT/5', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },
         Court: { id: null, name: null }, State: { id: null, name: null }, ParentCase: { id: null, name: null },
         NextHearingDate: '10-Feb-2018', CustomerName: { id: 3, name: 'Govind' }, Remark: '', Branch: { id: 2, name: 'Nagpur' },
-        FillingDate: '', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 2, name: 'Nagpur' },
-        OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '', Compliance: false
+        FillingDate: '10-Feb-2018', CaseStage: { id: 3, name: 'Award' }, Employee: { id: 3, name: 'Manoj' }, CourtePlace: { id: 2, name: 'Nagpur' },
+        OppLawyer: '', ChaildCase: '', LastHearingDate: '', CompletionDate: '10-Feb-2018', Compliance: false
     },
     {
         IsChecked: false,Id: 8, CaseId: 'I/DRT/6', CourtCaseId: null, Resource: { id: 3, name: 'RRC' }, Manager: { id: null, name: null },

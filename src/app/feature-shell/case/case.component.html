@@ -1,21 +1,25 @@
 <style>
-  .bgColor {
-    background-color: #dd4b39;
-  }
-
-  .dateRange {
-    font-weight: 400;
-  }
-
-  .marbtn {
-    margin-left: -100px;
-    margin-right: 10px;
-  }
-
-  .imgColor {
-    -webkit-filter: saturate(8);
-    filter: saturate(8);
-  }
+      .bgColor{
+        background-color:#dd4b39;
+      }
+      .complianceColor{
+        background-color:orange;
+      }
+      .compliancefalse{
+        background-color:white;
+      }
+      .dateRange{
+        font-weight: 400;
+      }
+      .marbtn{
+        margin-left: -100px;
+        margin-right: 10px;
+      }
+      .imgColor {
+      -webkit-filter: saturate(8);
+      filter: saturate(8);
+    }
+    
 </style>
 <div class="content-wrapper">
   <div class="page-heading">
@@ -85,7 +89,7 @@
                   <table id="example1" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Select</th>
+                        <!-- <th>Select</th> -->
                         <th>Case ID</th>
                         <th>Court Case ID</th>
                         <th>Customer Name</th>
@@ -98,12 +102,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let items of caseRunning" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
-                        <td>
-                          <input type="checkbox" name="caseCompleted" value="{{items.IsChecked}}" [(ngModel)]="items.IsChecked" (change)="updateCheckedOptions(caseRunning)"
-                          />
-                        </td>
-                        <td>{{items.id}}</td>
+                      <tr *ngFor="let items of caseRunning;let i=index" [ngClass]="{'complianceColor': items.compliance}" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
+                        <td>{{i+1}}</td>
                         <td>{{items.courtCaseId}}</td>
                         <td>{{items.customerFirstName}}</td>
                         <td>{{items.recourseCode}}</td>
@@ -155,7 +155,7 @@
                           <a title="Edit">
                             <i class="fa fa-edit"></i>
                           </a> /
-                          <a data-toggle="modal" data-target="#modal-default1" href="#">
+                          <a data-toggle="modal" data-target="#modal-default1" href="#" >
                             <i class="fa fa-history"></i>
                           </a>
                         </td>
@@ -171,7 +171,7 @@
       </div>
     </div>
   </section>
-  <app-edit-case ></app-edit-case>
+  <app-edit-case [caseRunning]="caseRunning"></app-edit-case>
     <app-add-case></app-add-case>
     <app-history-case></app-history-case>
   <!-- /.content -->

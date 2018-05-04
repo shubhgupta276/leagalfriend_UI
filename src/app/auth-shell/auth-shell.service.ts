@@ -133,6 +133,20 @@ export class AuthService {
       JSON.stringify(customerData)
     );
   }
+
+  caseUpdateCompliance(customerData: any): Observable<EditCase> {
+    return this.apiGateWay.post<any>(
+      'case/update/compliance',
+      JSON.stringify(customerData)
+    );
+  }
+
+  closeCase(id): Observable<any> {
+    return this.apiGateWay.put<any>(
+      'case/compliance'+ '?caseComplianceId='+id,null,
+     
+    );
+  }
   getCaseRunning(reqData): Observable<any> {    
     return this.apiGateWay.get<Recourse>(
       'case/caseList'+ '?userId='+ reqData.userId,null,

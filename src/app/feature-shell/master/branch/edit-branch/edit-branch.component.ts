@@ -57,6 +57,7 @@ export class EditBranchMasterComponent implements OnInit {
     return this.finalData;
   }
   BindBranchGridOnEdit(data) {
+    debugger
     this.arrBranch.filter(
       branch => {
         if (branch.id == data.id) {

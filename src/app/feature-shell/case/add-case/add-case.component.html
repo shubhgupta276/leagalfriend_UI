@@ -43,7 +43,7 @@
                         <div class="col-md-9 " id="divRecourse" *ngIf="Resource.length > 0">
 
 
-                          <ng-select [allowClear]="true" [items]="Resource" [disabled]="disabled" formControlName="recourse"  (data)="refreshValue($event)" (selected)="selected($event)"
+                          <ng-select [allowClear]="true" [items]="Resource" [attr.disabled]="disabled" formControlName="recourse"  (data)="refreshValue($event)" (selected)="selected($event)"
                             (removed)="removed($event)" (typed)="typed($event)" placeholder="No recourse selected">
                           </ng-select>
 
@@ -59,7 +59,7 @@
                         <div class="col-md-9" id="divManager" *ngIf="Manager.length > 0">
                           <!-- <ngx-select-dropdown (change)="dropChangeManager(this)" [config]="config" [options]="Manager"  
                                   [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                  <ng-select [allowClear]="true" [items]="Manager" formControlName="manager" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                  <ng-select [allowClear]="true" [items]="Manager" formControlName="manager" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No manager selected">
                                 </ng-select>
                         </div>
@@ -73,7 +73,7 @@
                           <!-- <ngx-select-dropdown (change)="dropChangeCourt(this)" [config]="config" [options]="Court"  
                                       [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
 
-                                      <ng-select [allowClear]="true" [items]="Court" formControlName="court" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                      <ng-select [allowClear]="true" [items]="Court" formControlName="court" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                       (removed)="removed($event)" (typed)="typed($event)" placeholder="No court selected">
                                     </ng-select>
                         </div>
@@ -85,7 +85,7 @@
                         <div class="col-md-9" id="divState" *ngIf="State.length > 0">
                           <!-- <ngx-select-dropdown (change)="dropChangeState(this)" [config]="config" [options]="arDdl"  
                                   [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                  <ng-select [allowClear]="true" [items]="State" formControlName="state" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                  <ng-select [allowClear]="true" [items]="State" formControlName="state" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No state selected">
                                 </ng-select>
                         </div>
@@ -98,7 +98,7 @@
 
                           <!-- <ngx-select-dropdown [config]="config" [options]="ParentCases"  
                                   [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                  <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                  <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No parent case selected">
                                 </ng-select>
                         </div>
@@ -123,7 +123,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9"  id="divCustomerName" *ngIf="CustomerName.length > 0">
-                          <ng-select [allowClear]="true" [items]="CustomerName" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                          <ng-select [allowClear]="true" [items]="CustomerName" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                           (removed)="removed($event)" (typed)="typed($event)" placeholder="No customer selected" formControlName="customerName">
                         </ng-select>
 
@@ -150,7 +150,7 @@
                         <div class="col-md-9" id="divBranch" *ngIf="Branch.length > 0" >
                           <!-- <ngx-select-dropdown (change)="dropChangeBranch(this)" [config]="config" [options]="Branch"  
                                     [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                    <ng-select [allowClear]="true" [items]="Branch" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                    <ng-select [allowClear]="true" [items]="Branch" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" formControlName="branch">
                                   </ng-select>
                         </div>
@@ -177,7 +177,7 @@
                         <div class="col-md-9">
                           <!-- <ngx-select-dropdown [config]="config" [options]="Stage"  
                                     [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                    <ng-select [allowClear]="true" [items]="Stage" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                    <ng-select [allowClear]="true" [items]="Stage" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No stage selected" formControlName="stage">
                                   </ng-select>
                         </div>
@@ -189,7 +189,7 @@
                         <div class="col-md-9" *ngIf="Employee.length>0">
                           <!-- <ngx-select-dropdown [config]="config" [options]="Employee"  
                                   [(value)]="configData" [multiple]="true" ></ngx-select-dropdown> -->
-                                  <ng-select [allowClear]="true" [items]="Employee" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                  <ng-select [allowClear]="true" [items]="Employee" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No employee selected" formControlName="employee">
                                 </ng-select>
                         </div>
@@ -201,7 +201,7 @@
                         <div class="col-md-9">
                           
 
-                                <ng-select [allowClear]="true" [items]="CourtPlace" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                                <ng-select [allowClear]="true" [items]="CourtPlace" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                 (removed)="removed($event)" (typed)="typed($event)" placeholder="No court place selected" formControlName="courtplace">
                               </ng-select>
                         </div>

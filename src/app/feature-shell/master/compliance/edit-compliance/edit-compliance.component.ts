@@ -57,12 +57,19 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
 
   submitEditComplianceMaster(data) {
     var reqData = {
-      recourseId: data.recourse,
-      stageId: data.stage,
+      id:data.id,
+      recourse:{
+        id:data.recourse.id,
+      },
+    
+      stage:{
+        id:data.stage.id,
+      },
+       
       complianceName: data.compliance,
-      statusId: data.status,
-      userId: this._storageService.getUserId(),
-      id:data.id
+      statusId: data.status.statusId,
+  
+      userId: this._storageService.getUserId()
     };
     
     this._complianceService.updateCompliance(reqData).subscribe(

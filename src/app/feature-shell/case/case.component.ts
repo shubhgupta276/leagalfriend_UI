@@ -19,6 +19,7 @@ import { forEach } from "@angular/router/src/utils/collection";
 import { MasterTemplateComponentService } from "../master/masterTemplates/masterTemplate.component.service";
 import { EditCaseComponent } from "./edit-case/edit-case.component";
 import { Compliance } from "../master/compliance/compliance";
+import { debounce } from "rxjs/operators/debounce";
 // import { ALPN_ENABLED } from "constants";
 declare var $;
 
@@ -33,8 +34,8 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   lstUploadedDocuments: any;
-  caseRunning = [];
-  caseCompleted = []; f
+  caseRunning: Case[]=[];
+  caseCompleted: Case[]; 
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
@@ -42,35 +43,29 @@ export class CaseComponent implements OnInit {
   arrListCaseBranch1: any[] = [];
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
-  constructor (private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService,
-     private masterTemplateService: MasterTemplateComponentService) {
-    this.caseRunning = CasesRunning;
+  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
+    //this.caseRunning = CasesRunning
     this.caseCompleted = CasesCompleted;
-    // this.setDropdownUniqueValues();
-    this.initCaseForm();
-    this.updateCheckedOptions(this.caseRunning);
-    if (!this.IsPrintable) {
-      this.updateCheckedOptions(this.caseCompleted);
-    }
+    //this.setDropdownUniqueValues();
+
   }
 
   getRunningCase() {
 
-    var $this = this
+    var $this = this;
     var reqData = {
       userId: this._storageService.getUserId(),
     };
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
-debugger
-        result.forEach(function (value) {
 
+        result.forEach(function (value) {
           $this.caseRunning.push(value);
 
 
         });
-        console.log(result);
+       
         setTimeout(() => {
           this.bindDatatable();
         }, 1);
@@ -113,16 +108,14 @@ debugger
 
         $('#ddlCaseBranch1').val("All");
         self.$table.columns(6).search("").draw();
-        // $('#reservation').val('');
-        // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
-        // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+        
         $('#reservation').data('daterangepicker').setStartDate(new Date());
         $('#reservation').data('daterangepicker').setEndDate(new Date());
 
         $.fn.dataTableExt.afnFiltering.length = 0;
         self.$table.columns(5).search("").draw();
       });
-      //Button Reset FrontEnd
+      
       $('#btnResetFilter').click(function () {
         $('#btnFilter').removeClass("bgColor");
 
@@ -135,9 +128,7 @@ debugger
         $('#ddlCaseBranch').val("All");
         $('#ddlCaseBranch1').val("All");
         self.$table.columns(6).search("").draw();
-        // $('#reservation').val('');
-        // $('#reservation').data('daterangepicker').setStartDate(new Date('01/01/1999'));
-        // $('#reservation').data('daterangepicker').setEndDate(new Date('01/01/2099'));
+       
         $('#reservation').data('daterangepicker').setStartDate(new Date());
         $('#reservation').data('daterangepicker').setEndDate(new Date());
 
@@ -150,8 +141,7 @@ debugger
         locale: {
           format: 'MM-DD-YYYY'
         }
-        // startDate:new Date('01/01/1999'),
-        // endDate:new Date('01/01/2099')
+       
       });
       // $('#reservation').val('');
 
@@ -207,7 +197,7 @@ debugger
 
         $.fn.dataTableExt.afnFiltering.push(
           function (oSettings, data, iDataIndex) {
-            debugger
+            
             var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
             var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
             var rowDate = new Date(data[5]);
@@ -230,67 +220,19 @@ debugger
 
        
       });
-    }, 1000)
+    }, 100)
 
-    // Completed Case DataTable
-    $($.document).ready(function () {
-      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-      var selectedPageLength = 15;
-
-      const $table = $("#example2").DataTable({
-        lengthMenu: arLengthMenu,
-        pageLength: selectedPageLength,
-        oLanguage: {
-          sLengthMenu: "Show _MENU_ rows",
-          sSearch: "",
-          sSearchPlaceholder: "Search..."
-        },
-        initComplete: function () {
-          var tableid = "example2";
-          var $rowSearching = $("#" + tableid + "_wrapper");
-          $rowSearching.find(".row:eq(0)").hide();
-
-          for (var i = 0; i < arLengthMenu[0].length; i++) {
-            $("#ddlLengthMenu2").append(
-              "<option value=" +
-              arLengthMenu[0][i] +
-              ">" +
-              arLengthMenu[1][i] +
-              "</option>"
-            );
-          }
-          $("#ddlLengthMenu2").val(selectedPageLength);
-
-          $("#ddlLengthMenu2").on("change", function () {
-            $rowSearching
-              .find(".row:eq(0)")
-              .find("select")
-              .val($(this).val())
-              .change();
-          });
-        }
-      });
-      $table.columns().every(function () {
-        $("#txtSearch2").on("keyup change", function () {
-          if ($table.search() !== this.value) {
-            $table.search(this.value).draw();
-          }
-        });
-      });
-    });
-
-
-
-  }
+  
+   }
 
 
 
   bindDatatable() {
 
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-    var selectedPageLength = 15;
+    var selectedPageLength = 10;
 
-    this.$table = $("#example1").DataTable({
+    this.$table = $("#example1,#example2").DataTable({
       paging: true,
       lengthChange: true,
       searching: true,
@@ -321,7 +263,7 @@ debugger
     });
 
     this.$table.columns().every(function () {
-      debugger
+      
     
       $('#txtSearch').on('keyup change', function () {
         
@@ -346,7 +288,7 @@ debugger
           $this.arrListCaseBranch1.push(value);
           $this.arrListCaseBranch.push(value);
         });
-        console.log(result);
+       
       },
       err => {
         console.log(err);
@@ -378,45 +320,55 @@ debugger
         result.stageRecourses.forEach(function (value) {
           $this.arrListCaseStage.push(value);
         });
-        console.log(result);
+       
       },
       err => {
         console.log(err);
       });
   }
 
-  initCaseForm() {
-    
-  }
-
-
   showEditModal(c) {
-    $("#editCaseModal").modal("show");
+     $("#editCaseModal").modal("show");
+
 
     var $this = this
     var reqData = {
       caseId: c.id,
     };
-    debugger
+    
     if(c.compliance==false)
     {
     this.authService.getCaseByCaseId(reqData).subscribe(
 
       result => {
+        $("#caseLi a").click();
+        
+         $("#complianceDiv").show();
+       
+         $("#compLi").hide();
         this.editChild.createForm(result);
-        console.log(result);
+        
       },
       err => {
         console.log(err);
       });
     }
     else{
+
       this.authService.getCaseCompliance(reqData).subscribe(
 
         result => {
-          debugger
-          this.editChild.createForm(result);
-          console.log(result);
+          
+          $("#compLi a").click();
+       
+          $('#form1 input,textarea').attr('readonly', 'readonly');
+          // $('#divRecourse').attr('disabled','disabled');
+          
+          
+          $("#complianceDiv").hide();
+          $('#compLi').show();
+          this.editChild.createFormforcompliance(result);
+          
         },
         err => {
           console.log(err);
