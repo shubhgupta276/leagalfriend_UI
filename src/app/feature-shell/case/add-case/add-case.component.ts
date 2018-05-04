@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
@@ -18,7 +18,8 @@ declare var $;
 
 })
 export class AddCaseComponent implements OnInit {
-
+  @Input() caseRunning = [];
+  finalData: any = {};
   public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
     'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
     'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
@@ -29,7 +30,7 @@ export class AddCaseComponent implements OnInit {
     'Rotterdam', 'Seville', 'Sheffield', 'Sofia', 'Stockholm', 'Stuttgart',
     'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
     'Zagreb', 'Zaragoza', 'Łódź'];
-
+   
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
@@ -133,7 +134,7 @@ export class AddCaseComponent implements OnInit {
 
           $this.CourtPlace.push({ id: value.id, text: value.courtName });
         });
-        console.log(result);
+        
       },
       err => {
         console.log(err);
@@ -153,7 +154,7 @@ export class AddCaseComponent implements OnInit {
 
           $this.Branch.push({ id: value.id, text: value.branchName });
         });
-        console.log(result);
+        
       },
       err => {
         console.log(err);
@@ -179,7 +180,7 @@ export class AddCaseComponent implements OnInit {
           // $this.arDdl.push({ id: value.stateName, text: value.stateName});
 
         });
-        console.log(result);
+        
       },
       err => {
         console.log(err);
@@ -271,7 +272,7 @@ export class AddCaseComponent implements OnInit {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
         });
-        console.log(result);
+       
       },
       err => {
         console.log(err);
@@ -293,7 +294,7 @@ export class AddCaseComponent implements OnInit {
 
           $this.Stage.push({ id: value.id, text: value.stageName });
         });
-        console.log(result);
+        
       },
       err => {
         console.log(err);
@@ -312,9 +313,9 @@ export class AddCaseComponent implements OnInit {
       result => {
 
         result.forEach(function (value) {
-          $this.ParentCases.push({ id: value.parentCaseId, text: value.parentCaseId });
+          $this.ParentCases.push({ id: value.id, text: value.id });
         });
-        console.log(result);
+        
       },
       err => {
         console.log(err);
@@ -350,8 +351,9 @@ export class AddCaseComponent implements OnInit {
       result => {
        
         if (result.body.httpCode == 200) { //success
-
+         // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
+          $(window.location.href="/admin/case");
           debugger
           $('#addCaseModal').modal('hide');
           this.closeModal();
@@ -363,6 +365,20 @@ export class AddCaseComponent implements OnInit {
       err => {
         console.log(err);
       });
+
+  }
+  BindCaseGridOnEdit(data) {
+    // debugger
+    // this.finalData = {};
+    // finalData.branch.caseId = data.caseId;
+    // finalData.branch.childCase = data.childCase;
+    //       debugger
+    //       finalData.branch.recourseCode=data.recourse[0].id
+    //       finalData.branch.customerFirstName=data.customerName[0].id;
+    //       finalData.branch.stageName=data.stage[0].id;
+    //       finalData.branch.nextHearingDate=data.nextHearingDate;
+    //       finalData.branch.empFirstName=data.employee[0].id;
+ 
 
   }
   closeModal() {

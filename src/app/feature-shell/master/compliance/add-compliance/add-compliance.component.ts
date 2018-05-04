@@ -41,20 +41,26 @@ export class AddComplianceMasterComponent implements OnInit {
   submitAddComplianceMaster(data) {
     debugger
     var reqData = {
-      recourseId: data.recourse.id,
-      stageId: data.stage.id,
+      recourse:{
+        id:data.recourse.id,
+      },
+    
+      stage:{
+        id:data.stage.id,
+      },
+       
       complianceName: data.compliance,
       statusId: data.status.statusId,
       userId: this._storageService.getUserId()
     };
-debugger
+
     this._complianceService.addCompliance(reqData).subscribe(
       result => {
         debugger
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
-debugger
+
           
           // this.arCompliance.push(
           //   {
@@ -67,6 +73,7 @@ debugger
            $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           // this.AddComplianceMaster();
           this.closeModal();
+          window.location.href="/admin/master/compliance"
           //this.subscriberFields();
         }
         else

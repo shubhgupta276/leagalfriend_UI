@@ -64,9 +64,9 @@ debugger
             this.arr.push({
               compliance: obj.complianceName,
               stage:  obj.stageCode,
-              stageId: obj.stageCode,
+              stageId: obj.stageId,
               recourse: obj.recourseCode,
-              recourseId: obj.recourseCode,
+              recourseId: obj.recourseId,
               status: null,
               statusId: obj.statusId,
               id: obj.id

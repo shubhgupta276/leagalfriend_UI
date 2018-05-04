@@ -31,6 +31,14 @@ export class ApiGateway {
                 return Observable.throw(initialError);
             });
     }
+    public put<T>(apiPath: string, body): Observable<any> {
+        console.log(apiPath);
+        const _url: string = this.createApiUrl(apiPath);
+        return this._httpClient.put<T>(_url, body, { observe: 'response' })
+            .catch(initialError => {
+                return Observable.throw(initialError);
+            });
+    }
 
     public postWithParam<T>(apiPath: string, urlParam): Observable<any> {
         console.log(apiPath);

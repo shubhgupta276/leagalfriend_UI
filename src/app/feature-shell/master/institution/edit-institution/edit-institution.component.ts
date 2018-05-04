@@ -94,12 +94,12 @@ export class EditInstitutionMasterComponent {
     });
     if (data != null) {
       this.isInstitutionAlreadyExists = false;
-      //this.selectedCity = null;
+      this.selectedCity = null;
       setTimeout(() => {
-        //this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
+        this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
       }, 100);
-      this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
-      debugger
+      //this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
+      //debugger
       this.editDetails = data;
       this.subscriberFields();
     }

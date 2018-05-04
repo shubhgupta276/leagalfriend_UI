@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule,ViewChild} from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
 import { AddBillingComponent } from "./add-bill/add-bill.component";
 import { EditBillingComponent } from "./edit-bill/edit-bill.component";
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 import { BillingService } from './billing.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { Billing } from '../billing/billing';
+import { RecourseService } from '../resource/recourse.service';
+import { InstitutionService } from '../institution/institution.service';
 
 declare let $;
 
@@ -18,7 +20,7 @@ declare let $;
       AddBillingComponent,
       EditBillingComponent,
     ],
-    providers: [BillingService, StorageService]
+    providers: [BillingService, StorageService, InstitutionService]
   }
 )
 @Component({
@@ -36,20 +38,18 @@ export class BillingComponent implements OnInit {
   editForm: FormGroup;
   editDetails: any;
   arListBranch: KeyValue[] = ListBranch;
-   @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
-  constructor(private fb: FormBuilder,private _billingservice:BillingService,private _storageservice:StorageService) {
+  arAllRecourses: any[] = [];
+  arAllInstitution: any = [];
+  @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
+  constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
   }
 
   ngOnInit() {
+    this.getAllRecourses();
+    this.getAllInstitutions();
     this.getBillingData();
-    this.setDropdownUniqueValues();
-    var $this = this;
-    $($.document).ready(function () {
-     // $this.bindBillingGridPaging();
-    });
   }
   bindBillingGridPaging() {
-    debugger
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
     var selectedPageLength = 15;
 
@@ -154,6 +154,7 @@ export class BillingComponent implements OnInit {
 
 
   }
+
   setDropdownUniqueValues() {
     for (var i = 0; i < this.arBillingData.length; i++) {
       var obj = this.arBillingData[i];
@@ -173,59 +174,65 @@ export class BillingComponent implements OnInit {
     }
 
   }
+
   getBillingData() {
-    // this.arBillingData = [];
-    // this.arBillingData.push(
-    //   { Branch: "Delhi", Bank: "DCB BANK LTD.", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100" },
-    //   { Branch: "Delhi", Bank: "DCB BANK LTD.", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11" },
-    //   { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300" },
-    //   { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-    //   { Branch: "Delhi", Bank: "HDFC BANK Ltd.", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300" },
-    //   { Branch: "Delhi", Bank: "RBS BANK", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588" },
-    //   { Branch: "Delhi", Bank: "RBS BANK", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100" },
-    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5" },
-    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-    //   { Branch: "Mumbai", Bank: "HDFC BANK Ltd.", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100" },
-    // );
+
     this._billingservice.getBilling().subscribe(
-      result=>{
-        debugger
-        if(result.httpCode==200)
-        {
-          for(var i = 0; i < result.billings.length; i++)
-          {
-            const obj=result.billings[i];
+      result => {
+        if (result.httpCode == 200) {
+          for (var i = 0; i < result.billings.length; i++) {
+            const obj = result.billings[i];
             this.arBillingData.push({
-              id:obj.id,
-              //branch:obj.branch,
+              id: obj.id,
               bankName: obj.bankName,
-              amount:obj.amount,
-              recourseId:obj.recourseId,
-              stageId:obj.stageId,
-              userId:obj.userId
+              amount: obj.amount,
+              recourseName: "",
+              recourseId: obj.recourseId,
+              stageId: obj.stageId,
+              stageName: "",
+              userId: obj.userId
             })
-            debugger
           }
-            setTimeout(() => {
-              this.bindBillingGridPaging();
-            }, 1);
-          }
-          else {
-            console.log(result);
-          }
-        },
-        err => {
-          console.log(err);
-          this.arBillingData = [];
-  
-        });
-    }
-        
-  
+          this.setDropdownUniqueValues();
+          setTimeout(() => {
+            this.bindBillingGridPaging();
+          }, 1);
+        }
+        else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+        this.arBillingData = [];
+
+      });
+  }
+
+  getAllInstitutions() {
+
+    this._institutionService.getInstitutions().subscribe(
+      result => {
+        if (result.httpCode == 200) {
+          result.institutions.forEach(element => {
+            this.arAllInstitution.push(element);
+          });
+        }
+      })
+  }
+
+  getAllRecourses() {
+    this._recourseService.getResources().subscribe(
+      result => {
+        if (result.httpCode == 200) {
+          result.recourses.forEach(element => {
+            this.arAllRecourses.push(element);
+          });
+        }
+      })
+  }
 
   showEditModal(data) {
-    debugger
     this.editChild.createForm(data);
     // this.editDetails = data;
     $('#editBillModal').modal('show');

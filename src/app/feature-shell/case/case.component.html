@@ -2,6 +2,12 @@
       .bgColor{
         background-color:#dd4b39;
       }
+      .complianceColor{
+        background-color:orange;
+      }
+      .compliancefalse{
+        background-color:white;
+      }
       .dateRange{
         font-weight: 400;
       }
@@ -13,6 +19,7 @@
       -webkit-filter: saturate(8);
       filter: saturate(8);
     }
+    
 </style>
 <div class="content-wrapper">
   <div class="page-heading">
@@ -85,7 +92,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let items of caseRunning;let i=index" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
+                      <tr *ngFor="let items of caseRunning;let i=index" [ngClass]="{'complianceColor': items.compliance}" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
                         <td>{{i+1}}</td>
                         <td>{{items.courtCaseId}}</td>
                         <td>{{items.customerFirstName}}</td>
@@ -133,7 +140,7 @@
                           <a title="Edit">
                             <i class="fa fa-edit"></i>
                           </a> /
-                          <a data-toggle="modal" data-target="#modal-default1" href="#">
+                          <a data-toggle="modal" data-target="#modal-default1" href="#" >
                             <i class="fa fa-history"></i>
                           </a>
                         </td>
@@ -149,7 +156,7 @@
       </div>
     </div>
   </section>
-  <app-edit-case ></app-edit-case>
+  <app-edit-case [caseRunning]="caseRunning"></app-edit-case>
     <app-add-case></app-add-case>
     <app-history-case></app-history-case>
   <!-- /.content -->
