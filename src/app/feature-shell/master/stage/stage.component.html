@@ -47,7 +47,7 @@
                   <td>{{item.recourseCode}}</td>
                   <td>{{item.stageCode}}</td>
                   <td>{{item.stageName}}</td>
-                  <td><a title="Edit"><i class="fa fa-edit"></i></a></td>
+                  <td><a title="Edit" (click)="showEditModal(item)"><i class="fa fa-edit"></i></a></td>
                 </tr>
                 <tr *ngIf="!arr || arr.length==0">
                   <td colspan="4"> No Record Found...!</td>

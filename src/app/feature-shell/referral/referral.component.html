@@ -4,14 +4,79 @@
   </div>
   <!-- Main content -->
   <section class="content">
+
     <div class="row">
       <div class="col-xs-12">
         <!-- /.box -->
         <div class="box">
           <div class="box-body">
+            <form [formGroup]="referFriendForm" (ngSubmit)="submitReferFriend(referFriendForm.value.referFriend)">
+
+              <div class="row table-toolbar refer-friend">
+                <div class="col-sm-11 heading">Refer Friend</div>
+                <div class="col-sm-1 heading" (click)="toggleReferFriend()" style="text-align: right;">
+
+                  <img *ngIf="showReferFriend" src="/assets/dist/img/toggle.png" height="20" [style.transform]="" style="margin-bottom: 5px; transform:  rotate(180deg);">
+                  <img *ngIf="!showReferFriend" src="/assets/dist/img/toggle.png" height="20" [style.transform]="" style="margin-bottom: 5px;">
+                </div>
+                <ng-container *ngIf="showReferFriend">
+                  <br>
+                  <br>
+                  <br>
+                </ng-container>
+
+                <div class="row" *ngIf="showReferFriend" formArrayName="referFriend">
+                  <div *ngFor="let item of referFriendForm.controls.referFriend.controls; let i = index">
+                    <div class="refere-friend-row" [formGroupName]="i">
+                      <div class="col-sm-1">&nbsp;</div>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="Name" formControlName="name" [ngClass]="{'error-border':item.controls['name'].invalid && item.controls['name'].touched}">
+
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="email" class="form-control" placeholder="Email ID" formControlName="emailId" [ngClass]="{'error-border':item.controls['emailId'].invalid && item.controls['emailId'].touched}">
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="Mobile No." formControlName="mobileNo" [ngClass]="{'error-border':item.controls['mobileNo'].invalid && item.controls['mobileNo'].touched}">
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="Message" formControlName="message" [ngClass]="{'error-border':item.controls['message'].invalid && item.controls['message'].touched}">
+                      </div>
+                      <div class="col-sm-3">
+
+                        <div *ngIf="i==referFriendForm.controls['referFriend'].length-1; else cancelReferFriend" (click)="addReferFriendRow()">
+                          <img src="/assets/dist/img/toggle_plus.png" height="20" style="margin-top: 6px;">
+                        </div>
+                        <ng-template #cancelReferFriend>
+                          <div (click)="removeReferFriendRow(i)">
+                            <img src="/assets/dist/img/toggle_minus.png" height="20" style="margin-top: 6px;">
+                          </div>
+                        </ng-template>
+                      </div>
+                      <div style="clear: both;"></div>
+                      <br>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-1">&nbsp;</div>
+                  <div class="col-sm-11">
+                    <button type="submit" [disabled]="referFriendForm.invalid" class="btn btn-modal-addedit" style="margin-left: 0px !important;">Submit</button>
+                  </div>
+
+                </div>
+
+
+                <ng-container *ngIf="showReferFriend">
+                  <br>
+                  <br>
+                </ng-container>
+              </div>
+
+            </form>
+
             <div>
               <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Referrel Users</div>
+                <div class="col-sm-4 heading">Referred Users</div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2">
@@ -25,39 +90,35 @@
                 </div>
               </div>
             </div>
-            <table id="referreltable" class="table table-bordered table-hover">
+            <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th class="padding-bottom">Id</th>
                   <th class="padding-bottom">Name</th>
                   <th class="padding-bottom">Email</th>
-                  <th class="padding-bottom">Phone</th>
-                  <th class="padding-bottom">Referrel Date</th>
-                  <th class="padding-bottom">Joining Date</th>
-                  <th>Status
+                  <th class="padding-bottom">Referrel Expiry Date</th>
+                  <th class="padding-bottom">Refer Date</th>
+                  <!-- <th>Status
                     <select id="ddlStatusFilter" class="status input-sm">
                       <option value="All">All</option>
                       <option value="Joined">Joined</option>
                       <option value="Not Joined">Not Joined</option>
-                      
+
                     </select>
-                  </th>
+                  </th> -->
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let refrrel of arr; let i=index">
-                  <td>{{i+1}}</td>
-                  <td>{{refrrel.Name}}</td>
-                  <td>{{refrrel.Email}}</td>
-                  <td>{{refrrel.MobileNumber}}</td>
-                  <td>{{refrrel.ReferrelDate}}</td>
-                  <td>{{refrrel.JoiningDate}}</td>
-                  <td *ngIf="refrrel.Status==='Joined'">
+                <tr *ngFor="let item of arReferals; let i=index">
+                  <td>{{item.name}}</td>
+                  <td>{{item.email}}</td>
+                  <td>{{item.referralExpiryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{item.createdDate | date: 'dd/MM/yyyy'}}</td>
+                  <!-- <td *ngIf="item.Status==='Joined'">
                     <button class="btn btn-block btn-success btn-xs btn2" style="width:80px;font-size:small;cursor:auto">{{refrrel.Status}}</button>
                   </td>
-                  <td *ngIf="refrrel.Status==='Not Joined'">
+                  <td *ngIf="item.Status==='Not Joined'">
                     <button class="btn btn-block btn-danger btn-xs btn4" style="width:80px;font-size:small;cursor:auto">{{refrrel.Status}}</button>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
 
@@ -88,7 +149,7 @@
           <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
           <div>
             <div class="box-body widget-content">
-              <form [formGroup]="referrelForm" class="form-horizontal" (ngSubmit)="sendreferrelmail(referrelForm.value)">
+              <!-- <form [formGroup]="referrelForm" class="form-horizontal" (ngSubmit)="sendreferrelmail(referrelForm.value)">
                 <div class="form-body">
                   <div class="tab-content">
                     <div class="tab-pane active">
@@ -129,7 +190,7 @@
                   <button type="button" class="btn btn-default btn-default-add-edit" data-dismiss="modal">Close</button>
                   <button type="submit" [disabled]="referrelForm.invalid || isEmailAlreadyExists" class="btn btn-modal-addedit">Send</button>
                 </div>
-              </form>
+              </form> -->
             </div>
           </div>
         </div>
@@ -137,7 +198,7 @@
     </div>
   </div>
 </div>
-
+<!-- 
 <div class="favicon" data-toggle="modal" data-target="#addreferrelModal">
   <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
     <span class="tooltip-text">Add User</span>
@@ -145,4 +206,4 @@
   <a>
     <i class="fa fa-plus" type="button"></i>
   </a>
-</div>
+</div> -->

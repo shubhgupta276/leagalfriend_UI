@@ -25,19 +25,18 @@
                                                 <label class="col-sm-3 col-form-label createUserLabel">Institution Name:
                                                     <em class="astrick">*</em>
                                                 </label>
-                                                <div class="col-md-9" [class.has-error]="addForm.get('bankName').invalid 
-                                              &&  addForm.get('bankName').touched">
-                                                    <!-- <input class="form-control" placeholder="Bank" formControlName="bank"> -->
-                                                    <select class="form-control" formControlName="bankName" (change)="changeCombinations()">
+                                                <div class="col-md-9" [class.has-error]="addForm.get('institutionId').invalid 
+                                              &&  addForm.get('institutionId').touched">
+                                                    <select class="form-control" formControlName="institutionId" (change)="changeCombinations()">
                                                         <option value="">Select Institution</option>
-                                                        <option *ngFor="let item of arAllInstitution" value="{{item.institutionName}}">
+                                                        <option *ngFor="let item of arAllInstitution" value="{{item.id}}">
                                                             {{item.institutionName}}
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('bankName').invalid &&  addForm.get('bankName').touched">
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm.get('institutionId').invalid &&  addForm.get('institutionId').touched">
                                                     <small class="text-danger">
-                                                        <span>Bank name is required.</span>
+                                                        <span>Institution name is required.</span>
                                                     </small>
                                                 </div>
                                             </div>

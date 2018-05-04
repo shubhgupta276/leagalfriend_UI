@@ -38,7 +38,7 @@ export class AddBillingComponent implements OnInit {
   addBillForm() {
     this.addForm = this.fb.group({
       //branch: ["", Validators.required],
-      bankName: ["", Validators.required],
+      institutionId: ["", Validators.required],
       recourseId: ["", Validators.required],
       stageId: ["", Validators.required],
       amount: [null, Validators.required]
@@ -67,24 +67,42 @@ export class AddBillingComponent implements OnInit {
       })
   }
 
-  submitAddBill(data: Billing) {
-
+  submitAddBill(data: any) {
+    const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
+    const objStage = this.arListStage.find(x => x.id == data.stageId);
+    const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
+    
     var reqData = {
-      bankName: data.bankName,
-      recourseId: data.recourseId,
-      stageId: data.stageId,
       amount: data.amount,
+      institution: {
+        id: data.institutionId
+      },
+      recourse: {
+        id: objRecourse.id,
+        recourseCode: objRecourse.recourseCode,
+        recourseDesc: objRecourse.recourseDesc,
+        recourseName: objRecourse.recourseName,
+        userId: objRecourse.userId
+      },
+      stage: {
+        id: objStage.id,
+        recourseId: objStage.recourseId,
+        stageCode: objStage.stageCode,
+        stageName: objStage.stageName,
+        statusId: objStage.stageStatusId,
+        userId: objStage.userId
+      },
       userId: this._storageservice.getUserId()
     };
+    debugger
     this._billingservice.addBilling(reqData).subscribe(
       result => {
-
+        
         var _result = result.body;
         if (_result.httpCode == 200) { //success
-          const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
-          const objStage = this.arListStage.find(x => x.id == data.stageId);
+          
           this.arbillingData.push({
-            id: _result.id, bankName: data.bankName, recourseId: data.recourseId,
+            id: _result.id, institutionId:objInstitution.id, institutionName: objInstitution.institutionName, recourseId: data.recourseId,
             recourseName: objRecourse.recourseName, stageName: objStage.stageName,
             stageId: data.stageId, amount: data.amount, userId: data.userId
           });
