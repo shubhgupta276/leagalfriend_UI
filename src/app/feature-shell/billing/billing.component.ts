@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { parse } from 'url';
 import { Jsonp } from '@angular/http/src/http';
-
+import { BillingService } from './billing.service';
+import { EditBillingComponent } from './edit-bill/edit-bill.component'
+import { RecourseService } from '../master/resource/recourse.service';
+import { InstitutionService } from '../master/institution/institution.service';
 declare var $;
 
 @Component({
     selector: 'app-billing',
     templateUrl: './billing.component.html',
-    styleUrls: ['./billing.component.css']
+    styleUrls: ['./billing.component.css'],
+    // providers: [BillingService]
 })
 export class BillingComponent implements OnInit {
 
@@ -19,8 +23,12 @@ export class BillingComponent implements OnInit {
     arListCaseID: any[] = [];
     arListBranch: any[] = [];
     arrInvoiceDetails = [];
+    arAllRecourses: any[] = [];
+    arAllInstitution: any = [];
     JSON: any;
-    constructor() {
+    @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
+
+    constructor(private _billingservice: BillingService, private _institutionService: InstitutionService, private _recourseService: RecourseService, ) {
         this.JSON = JSON;
     }
     $table: any;
@@ -28,205 +36,69 @@ export class BillingComponent implements OnInit {
         const self = this;
         this.getBillingData();
         this.setDropdownUniqueValues();
-
+        this.getAllInstitutions();
+        this.getAllRecourses();
         $($.document).ready(function () {
             $('#chkAllInvoice').change(function () {
                 $('.chkInvoice').prop("checked", $(this).prop('checked'));
             });
-            $('#btnSearch').click(function () {
-                debugger
-                $('#btnFilter').addClass("bgColor");
-                var bankVal = $('#ddlBank1').val();
-
-
-
-
-                // start recourse filter
-                if (bankVal == "All") {
-                    $table.columns(2).search("").draw();
-                }
-                else if ($table.columns(2).search() !== bankVal) {
-
-                    $table.columns(2).search(bankVal).draw();
-                }
-                //end recourse filter
-
-
-                $.fn.dataTableExt.afnFiltering.push(
-                    function (oSettings, data, iDataIndex) {
-                        debugger
-                        var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('DD-MM-YYYY'));
-                        var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('DD-MM-YYYY'));
-                        var rowDate = new Date(data[7]);
-
-                        if (rowDate >= startDate && rowDate <= endDate) {
-                            $(".chkInvoice").show();
-                            $("#btncreateInvoice").show();
-                            return true;
-
-                        }
-                        else {
-                            return false;
-                        }
-
-                    }
-                );
-                // $("#chkInvoice").show();
-                $table.draw();
-                $("#closebtnFilter").click();
-
-            });
-
-            var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-            var selectedPageLength = 15;
-            const $table = $("#example1").DataTable({
-
-                columns: [
-                    { name: "", orderable: false },
-                    { name: "#", orderable: true },
-                    { name: "Bank", orderable: false },
-                    { name: "CaseID", orderable: false },
-                    { name: "Recourse", orderable: false },
-                    { name: "Stage", orderable: false },
-                    { name: "Amount", orderable: true },
-                    { name: "BillingDate", orderable: true },
-                    { name: "Action", orderable: false },
-                    { name: "Branch", orderable: false },
-                    { name: "Billed", orderable: false },
-                    { name: "InvoiceNumber", orderable: false }
-                ],
-
-                lengthMenu: arLengthMenu,
-                pageLength: selectedPageLength,
-                oLanguage: {
-                    sLengthMenu: "Show _MENU_ rows",
-                    sSearch: "",
-                    sSearchPlaceholder: "Search..."
-                },
-
-                initComplete: function () {
-
-                    var tableid = "example1";
-                    var $rowSearching = $("#" + tableid + "_wrapper");
-                    $rowSearching.find(".row:eq(0)").hide();
-
-                    for (var i = 0; i < arLengthMenu[0].length; i++) {
-                        var selectText = (arLengthMenu[0][i] == selectedPageLength) ? 'selected' : '';
-
-                        $("#ddlLengthMenu").append(
-
-
-                            "<option " + selectText + " value=" +
-                            arLengthMenu[0][i] +
-                            ">" +
-                            arLengthMenu[1][i] +
-                            "</option>"
-                        );
-                    }
-                    // $("#ddlLengthMenu").val(selectedPageLength);
-
-                    $("#ddlLengthMenu").on("change", function () {
-                        $rowSearching
-                            .find(".row:eq(0)")
-                            .find("select")
-                            .val($(this).val())
-                            .change();
-                    });
-                }
-            });
+            
             $('#reservation').daterangepicker({
                 autoApply: true,
                 locale: {
                     format: 'MM-DD-YYYY'
                 }
-                // startDate:new Date('01/01/1999'),
-                // endDate:new Date('01/01/2099')
+                
             });
-            $table.columns().every(function () {
-
-                $("#txtSearch").on("keyup change", function () {
-                    if ($table.search() !== this.value) {
-                        $table.search(this.value).draw();
-                    }
-                });
-
-                //start bank filter
-                $("#ddlBank").on("change", function () {
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(2).search("").draw();
-                    }
-                    else if ($table.columns(2).search() !== this.value) {
-                        $table.columns(2).search(this.value).draw();
-                    }
-                });
-                //end bank filter
-
-                // start caseid filter
-                $("#ddlCaseID").on("change", function () {
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(3).search("").draw();
-                    }
-                    else if ($table.columns(3).search() !== this.value) {
-                        $table.columns(3).search(this.value).draw();
-                    }
-                });
-                //end caseid filter
-
-                //start Recourse filter
-                $("#ddlRecourse").on("change", function () {
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(4).search("").draw();
-                    }
-                    else if ($table.columns(4).search() !== this.value) {
-                        $table.columns(4).search(this.value).draw();
-                    }
-                });
-                //end Recourse filter
-
-                //start Stage filter
-                $("#ddlStage").on("change", function () {
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(5).search("").draw();
-                    }
-                    else if ($table.columns(5).search() !== this.value) {
-                        $table.columns(5).search(this.value).draw();
-                    }
-                });
-                //end Stage filter
-
-                //Amount bank filter
-                $("#ddlAmount").on("change", function () {
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(5).search("").draw();
-                    }
-                    else if ($table.columns(5).search() !== this.value) {
-                        $table.columns(5).search(this.value).draw();
-                    }
-                });
-                //end Amount filter
-                //Branch filter
-                $("#ddlBillingBranch").on("change", function () {
-                    var status = $(this).val();
-                    if (status == "All") {
-                        $table.columns(8).search("").draw();
-                    }
-                    else if ($table.columns(8).search() !== this.value) {
-                        $table.columns(8).search(this.value).draw();
-                    }
-                });
-                //end Branch filter
-
-            });
+           
 
         });
 
     }
+    bindDatatable() {
 
+        var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
+        var selectedPageLength = 15;
+    
+        var $table = $("#example1").DataTable({
+          paging: true,
+          lengthChange: true,
+          searching: true,
+          ordering: true,
+          info: true,
+          autoWidth: false,
+          lengthMenu: arLengthMenu,
+          pageLength: selectedPageLength,
+          oLanguage: {
+            sLengthMenu: "Show _MENU_ rows",
+            sSearch: "",
+            sSearchPlaceholder: "Search..."
+          },
+          initComplete: function () {
+            var tableid = "example1";
+            var $rowSearching = $("#" + tableid + "_wrapper");
+            $rowSearching.find(".row:eq(0)").hide();
+    
+            for (var i = 0; i < arLengthMenu[0].length; i++) {
+              $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+            }
+            $("#ddlLengthMenu").val(selectedPageLength);
+    
+            $("#ddlLengthMenu").on("change", function () {
+              $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+            });
+          }
+        });
+    
+        $table.columns().every(function () {
+          $('#txtSearch').on('keyup change', function () {
+            if ($table.search() !== this.value) {
+              $table.search(this.value).draw();
+            }
+          });
+        });
+    
+      }
 
     CreateInvoice() {
         var $this = this;
@@ -234,7 +106,6 @@ export class BillingComponent implements OnInit {
             var $row = $(this);
             if (i > 0) {
                 if ($row.find("input[type=checkbox]").prop('checked')) {
-                    debugger
                     var item = JSON.parse($row.find('#hfItem').val());
                     $this.arrInvoiceDetails.push(item);
 
@@ -273,26 +144,85 @@ export class BillingComponent implements OnInit {
     }
 
     getBillingData() {
+        
+        this._billingservice.getBilling().subscribe(
+            result => {
+                
+                if (result.length > 0) {
+                    debugger
+                    for (var i = 0; i < result.length; i++) {
+                        const obj = result[i];
+                        this.arBillingData.push({
+                            id: obj.id,
+                            institutionId: obj.institution.id,
+                            institutionName: obj.institution.institutionName,
+                            amount: obj.amount,
+                            recourseName: obj.recourse.recourseName,
+                            recourseId: obj.recourse.id,
+                            stageId: obj.stage.id,
+                            stageName: obj.stage.stageName,
+                            userId: obj.userId,
+                            caseId:obj.caseId,
+                            billingDate:new Date(obj.billingDate)
+                        })
+                    }
+                    this.setDropdownUniqueValues();
+                    setTimeout(() => {
+                         //this.bindBillingGridPaging();
+                         this.bindDatatable();
+                    }, 1);
+                }
+                else {
+                    console.log(result);
+                }
+            },
+            err => {
+                console.log(err);
+                this.arBillingData = [];
 
-        this.arBillingData.push(
-            { BillingId: 1, InstitutionId: 1, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180213-002" },
-            { BillingId: 2, InstitutionId: 2, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "CRI_CASE", Stage: "APPLIED FOR VEHICLE CUSTODY", Amount: "11", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180215-002" },
-            { BillingId: 3, InstitutionId: 3, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC_25C", Stage: "CASE FILED", Amount: "300", Billed: "No", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "170213-002" },
-            { BillingId: 4, InstitutionId: 4, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180223-002" },
-            { BillingId: 5, InstitutionId: 5, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "1ST NOTICE BY ARBITRATOR", Amount: "300", Billed: "Yes", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "160213-002" },
-            { BillingId: 6, InstitutionId: 6, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "RODA", Stage: "ARGUMENTS", Amount: "2588", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180883-002" },
-            { BillingId: 7, InstitutionId: 7, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "ARB", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "177213-002" },
-            { BillingId: 8, InstitutionId: 8, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "5", Billed: "Yes", Branch: "Gujrat", BillingDate: "12-02-2018", InvoiceNumber: "180255-002" },
-            { BillingId: 9, InstitutionId: 9, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { BillingId: 10, InstitutionId: 10, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-            { BillingId: 11, InstitutionId: 11, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { BillingId: 12, InstitutionId: 12, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-            { BillingId: 13, InstitutionId: 13, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { BillingId: 14, InstitutionId: 14, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-            { BillingId: 15, InstitutionId: 15, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Delhi", BillingDate: "12-02-2018", InvoiceNumber: "180266-002" },
-            { BillingId: 16, InstitutionId: 16, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "No", Branch: "Mumbai", BillingDate: "12-02-2018", InvoiceNumber: "180277-002" },
-            { BillingId: 17, InstitutionId: 17, Bank: "DCB BANK LTD.", CaseID: "O_SEC9_31527", Recourse: "SEC9 RO", Stage: "ARGUMENTS", Amount: "100", Billed: "Yes", Branch: "Pune", BillingDate: "12-02-2018", InvoiceNumber: "180223-002" },
-        );
+            });
+       
     }
+    getAllRecourses() {
+        this._recourseService.getResources().subscribe(
+            result => {
+                if (result.httpCode == 200) {
+                    result.recourses.forEach(element => {
+                        this.arAllRecourses.push(element);
+                    });
+                }
+            })
+    }
+    getAllInstitutions() {
 
+        this._institutionService.getInstitutions().subscribe(
+            result => {
+                if (result.httpCode == 200) {
+                    result.institutions.forEach(element => {
+                        this.arAllInstitution.push(element);
+                    });
+
+                }
+            })
+    }
+    RemoveBilling(item) {
+        if(!confirm("Are you sure you want to delete this record?")) {
+           return false;
+          }
+        var billingId = '?billingId =' + item.id;
+        // this._billingservice.deleteBilling(billingId)
+        //     .map(res => res)
+        //     .subscribe(
+        //         data => {
+        //             $.toaster({ priority: 'success', title: 'Success', message: "Record deleted successfully." });
+        //         },
+        //         error => console.log(error)
+        //     );
+        
+    }
+    showEditModal(data) {
+        this.editChild.createForm(data);
+        // this.editDetails = data;
+        $('#editBillModal').modal('show');
+    }
 }

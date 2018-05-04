@@ -44,6 +44,7 @@ export let updateInstitutionUrl = "master/update/institution";
 
 export let addBillingUrl = "master/add/billing";
 export let getBillingUrl = "master/billings";
+export let deleteBillingUrl = "billings";
 export let updateBillingUrl = "master/update/billing";
 
 export let createInvoiceTemplate = 'invoice/template';

@@ -36,6 +36,8 @@ export class DashboardComponent implements OnInit {
     this.RecourseGraph();
     this.MostActiveEmployeeList();
     this.CaseUpdateList();
+    this.BillingChart(null,null);
+    this.ReceiptChart(null,null);
     $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter').daterangepicker({
       autoApply: true,
       locale: {
@@ -609,5 +611,149 @@ export class DashboardComponent implements OnInit {
       }
     });
 
+  }
+  BillingChart(start, end) {
+    var $this = this;
+    var data = [
+      { x: '2015-01', y: 0, },
+      { x: '2015-02', y: 54, },
+      { x: '2015-03', y: 243, },
+      { x: '2015-04', y: 206, },
+      { x: '2015-05', y: 161, },
+      { x: '2015-06', y: 187, },
+      { x: '2015-07', y: 210, },
+      { x: '2015-08', y: 204, },
+      { x: '2015-09', y: 224, },
+      { x: '2015-10', y: 301, },
+      { x: '2015-11', y: 262, },
+      { x: '2015-12', y: 199, },
+    ];
+    var config = {
+      type: 'line',
+      data: {
+        labels:  data,
+        datasets: [{
+          label: "Total Billing Per Month",
+          data: data,
+          backgroundColor: '#3c8dbc',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }],
+
+      },
+
+      options: {
+        scales: {
+          xAxes: [{
+            type: this.graphMode.dailyLoginMode == this.mode.Weekly ? undefined : "time",
+            time: {
+              displayFormats: {
+                'millisecond': 'MMM DD',
+                'second': 'MMM DD',
+                'minute': 'MMM DD',
+                'hour': 'MMM DD',
+                'day': 'MMM DD',
+                'week': 'MMM DD',
+                'month': 'MMM',
+                'quarter': 'MMM DD',
+                'year': 'MMM DD',
+              },
+              unit: this.graphMode.dailyLoginMode == this.mode.monthly ? "month" : ""
+            },
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }],
+        },
+      }
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('billing-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    new Chart(ctx, config);
+  }
+  ReceiptChart(start, end) {
+    var $this = this;
+    var data = [
+      { x: '2015-01', y: 0, },
+      { x: '2015-02', y: 54, },
+      { x: '2015-03', y: 243, },
+      { x: '2015-04', y: 206, },
+      { x: '2015-05', y: 161, },
+      { x: '2015-06', y: 187, },
+      { x: '2015-07', y: 210, },
+      { x: '2015-08', y: 204, },
+      { x: '2015-09', y: 224, },
+      { x: '2015-10', y: 301, },
+      { x: '2015-11', y: 262, },
+      { x: '2015-12', y: 199, },
+    ];
+    var config = {
+      type: 'line',
+      data: {
+        labels:  data,
+        datasets: [{
+          label: "Total Receipt Per Month",
+          data: data,
+          backgroundColor: '#3c8dbc',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }],
+
+      },
+
+      options: {
+        scales: {
+          xAxes: [{
+            type: this.graphMode.dailyLoginMode == this.mode.Weekly ? undefined : "time",
+            time: {
+              displayFormats: {
+                'millisecond': 'MMM DD',
+                'second': 'MMM DD',
+                'minute': 'MMM DD',
+                'hour': 'MMM DD',
+                'day': 'MMM DD',
+                'week': 'MMM DD',
+                'month': 'MMM',
+                'quarter': 'MMM DD',
+                'year': 'MMM DD',
+              },
+              unit: this.graphMode.dailyLoginMode == this.mode.monthly ? "month" : ""
+            },
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }],
+        },
+      }
+    };
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('receipt-chart');
+    var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    new Chart(ctx, config);
   }
 }
