@@ -117,7 +117,6 @@ GetLoggedInUserDetails()
     .subscribe(
       data => {        
         $this.userDetails.Name = data.firstName + " " + data.lastName;
-        debugger
       },
       error => console.log(error)
     );

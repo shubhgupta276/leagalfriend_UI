@@ -3,7 +3,7 @@ import { retry } from 'rxjs/operator/retry';
 import { Billing } from './billing'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../../shared/services/api-gateway';
-import { addBillingUrl, updateBillingUrl, getBillingUrl } from '../master.config'
+import { addBillingUrl, updateBillingUrl, getBillingUrl,deleteBillingUrl } from '../master.config'
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
@@ -32,6 +32,12 @@ export class BillingService {
     updateBilling(reqData: any): Observable<any> {
         return this.apiGateWay.post<Billing>(
             updateBillingUrl,
+            JSON.stringify(reqData)
+        );
+    }
+    deleteBilling(reqData: any): Observable<any> {
+        return this.apiGateWay.delete<Billing>(
+            deleteBillingUrl,
             JSON.stringify(reqData)
         );
     }

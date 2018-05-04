@@ -39,7 +39,10 @@ export class ApiGateway {
                 return Observable.throw(initialError);
             });
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b31d98ac0fabdbd2b970e5792793cab09fad7430
     public postWithParam<T>(apiPath: string, urlParam): Observable<any> {
         console.log(apiPath);
         const _url: string = this.createApiUrl(apiPath);
