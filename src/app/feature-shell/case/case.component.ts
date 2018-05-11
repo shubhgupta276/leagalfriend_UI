@@ -407,7 +407,7 @@ export class CaseComponent implements OnInit {
   }
 
   getUploadedDocuments() {
-    this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+    //this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   }
   SelectedFileIds = [];
   getSelectedDocument(IsChecked, FileId) {
@@ -436,8 +436,8 @@ export class CaseComponent implements OnInit {
 
       for (var j = 0; j < selectedCases.length; j++) {
         let value = localData.Value;
-        value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
-        value = value.replace('@CustomerName', ' ' + selectedCases[j].customerFirstName);
+        // value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
+        // value = value.replace('@CustomerName', ' ' + selectedCases[j].customerFirstName);
         saveAs(new Blob([value], { type: localData.FileType }), localData.FileName);
       }
     }

@@ -4,6 +4,8 @@ import { SharedService } from '../shared/services/shared.service'
 import { BranchService } from './master/branch/branch.service';
 import { StorageService } from '../shared/services/storage.service';
 import { UserService } from './user/user.service';
+import { NgxPermissionsService,NgxRolesService } from 'ngx-permissions';
+import 'rxjs/add/observable/of';
 declare var $;
 declare let Zone: any;
 @Component({
@@ -24,7 +26,9 @@ export class FeatureShellComponent implements OnInit {
   constructor(private authService: AuthService, private sharedService: SharedService,
     private _storageService: StorageService,
     private _branchService: BranchService,
-    private userService: UserService) {
+    private userService: UserService,
+    private permissionsService: NgxPermissionsService,
+    private rolesService: NgxRolesService) {
     sharedService.changeEmitted$.subscribe(Zone.current.wrap(
       text => {
         this.totalUpcomingEvents = text;
@@ -33,7 +37,8 @@ export class FeatureShellComponent implements OnInit {
     sharedService.GetEventsGroup();
   }
 
-  ngOnInit() {
+  ngOnInit() {   
+
     var branchData = this._storageService.getBranchData();
     this.branchConfig = {
       displayKey: "branchName",
@@ -109,6 +114,10 @@ export class FeatureShellComponent implements OnInit {
   showmastermenu() {
     $("#limastermenu").toggle();
   }
+  showinstitutionalmenu()
+  {
+    $("#liinstitutionalmenu").toggle();
+  }
 GetLoggedInUserDetails()
 {
   var $this = this;
@@ -117,6 +126,7 @@ GetLoggedInUserDetails()
     .subscribe(
       data => {        
         $this.userDetails.Name = data.firstName + " " + data.lastName;
+        $this.permissionsService.loadPermissions([data.roles[0].roleName]);
       },
       error => console.log(error)
     );
