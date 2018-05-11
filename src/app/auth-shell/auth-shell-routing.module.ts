@@ -8,18 +8,20 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { SignupComponent } from './signup/signup.component';
 import { VerifyEmailComponent } from './VerifyEmail/VerifyEmail.component';
 import { changepasswordComponent } from './changepassword/changepassword.component';
+import {HomeComponent} from './home/home.component';
 const authShellRoutes: Routes = [
     { path: '', component: AuthShellComponent, children:[
         { path: 'login', component: LoginComponent },
         { path: 'forgotpassword', component: ForgotPasswordComponent },
         { path: 'resetpassword', component: ResetPasswordComponent },
         { path: 'signup', component: SignupComponent },
-        { path: '', redirectTo: 'login', pathMatch: 'full' },
-        { path: 'verifyemail', component: VerifyEmailComponent },
+        { path: '', redirectTo: 'home', pathMatch: 'full' },
+        // { path: 'verifyemail', component: VerifyEmailComponent },
         { path: 'resetpwd', component: VerifyEmailComponent },
         { path: 'updatePassword/:id', component: ResetPasswordComponent },
         { path: 'changepassword', component: changepasswordComponent },
-        { path: 'verifyemail/:id', component: VerifyEmailComponent },
+        { path: 'verifyEmail/:id', component: VerifyEmailComponent },
+        { path: 'home', component: HomeComponent },
         
        
        

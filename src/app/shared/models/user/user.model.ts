@@ -21,5 +21,8 @@ export class UserModel {
     roles: any = [];
     address: any = [];
     login = {};
+    subscriptionEnded:boolean;
+    subscriptionEndDate:string;
+    daysLeftForRenew:number
 
 }
