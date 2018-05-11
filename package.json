@@ -39,10 +39,12 @@
     "ng2-select": "^2.0.0",
     "ng4-click-outside": "^1.0.1",
     "ngx-pagination": "^3.1.0",
+    "ngx-permissions": "^5.0.0",
     "ngx-select-dropdown": "^0.1.0",
     "npm": "^5.8.0",
     "rtf-parser": "^1.1.0",
-    "rxjs": "^5.5.2",
+    "rxjs": "^6.1.0",
+    "rxjs-compat": "^6.1.0",
     "swiper": "^4.2.2",
     "zone.js": "^0.8.14"
   },

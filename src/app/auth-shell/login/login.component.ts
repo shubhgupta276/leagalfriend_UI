@@ -104,10 +104,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('access_token', accessToken);
           localStorage.setItem('client_id', clientId);
           localStorage.setItem('user_id', data.email);
-/////////////////////////////for role based authentication////////////////////
-
-
-          this.router.navigate(['admin/user']);
+          this.router.navigate(['admin/dashboard']);
         }
       },
       err => {

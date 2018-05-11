@@ -4,7 +4,7 @@ import { OnlyString } from './Directives/OnlyString';
 import { CustomSingleSelectComponent } from './custom-single-select/custom-single-select.component';
 import { CommonModule } from '@angular/common';
 import { ClickOutsideModule } from 'ng4-click-outside';
-
+import { NgxPermissionsModule } from 'ngx-permissions';
 @NgModule({
     imports: [CommonModule, ClickOutsideModule],
     declarations: [
@@ -15,6 +15,7 @@ import { ClickOutsideModule } from 'ng4-click-outside';
     exports: [
         OnlyNumber,
         OnlyString,
-        CustomSingleSelectComponent]
+        CustomSingleSelectComponent,
+        NgxPermissionsModule]
 })
 export class SharedModule { }
