@@ -9,15 +9,6 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 
 declare let $;
 
-// @NgModule(
-//   {
-//     imports: [CommonModule,FormsModule, ReactiveFormsModule],
-//     declarations: [
-//         VerifyEmailComponent
-
-//     ]
-//   }
-// )
 
 @Component({
   selector: "app-VerifyEmail",
@@ -50,11 +41,11 @@ this.verifyEmailPageLayout();
     const tokenDetails = new TokenModel();
     tokenDetails.token = token;
 
-debugger
+
     this.authService.verifyemail(token).subscribe(
 
       result => {
-       debugger
+       
         if (result.body.successMessage === null) {
           this.message = result.body.failureReason;
           this.isSuccess = false;
@@ -69,7 +60,7 @@ debugger
   }
 
   getColor() {
-    debugger
+    
     if (this.isSuccess) {
       return 'green';
     } else {

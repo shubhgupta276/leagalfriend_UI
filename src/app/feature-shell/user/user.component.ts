@@ -20,6 +20,7 @@ import { RoleModel } from '../../shared/models/auth/role.model';
 import { StatusModel } from '../../shared/models/auth/status.model';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { AddUserComponent } from './add-user/add-user.component';
+
 declare var $;
 
 @Component({
@@ -29,6 +30,7 @@ declare var $;
   providers: [UserService]
 })
 export class UserComponent implements OnInit {
+  isDisplayPopup = false;
   arrUsers: any = [];
   userRoles: RoleModel[];
   userStatus: StatusModel[];
@@ -42,7 +44,9 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUsers();    
+    this.getUsers();
+    this.GetLoggedInUserDetails();
+
   }
 
   bindDataTable() {
@@ -114,7 +118,7 @@ export class UserComponent implements OnInit {
           var query = "((  )|^)" + regex_escape(this.value) + "((  )|$)";
           $this.$table
             .columns(4)
-            .search(query,true,false)
+            .search(query, true, false)
             .draw();
         } else {
         }
@@ -131,7 +135,7 @@ export class UserComponent implements OnInit {
           var query = "((  )|^)" + regex_escape(this.value) + "((  )|$)";
           $this.$table
             .columns(5)
-            .search(query,true,false)
+            .search(query, true, false)
             .draw();
         } else {
         }
@@ -153,10 +157,10 @@ export class UserComponent implements OnInit {
         }, 5);
       })
       .subscribe(
-        data => {
-          this.arrUsers = data
-        },
-        error => console.log(error)
+      data => {
+        this.arrUsers = data
+      },
+      error => console.log(error)
       );
 
   };
@@ -198,5 +202,42 @@ export class UserComponent implements OnInit {
       err => {
         this.userStatus = null;
       });
+  }
+
+
+  GetLoggedInUserDetails() {
+    debugger
+    var $this = this;
+    var client = '?userId=' + localStorage.getItem('client_id');
+    this.userService.getUser(client).subscribe(
+      data => {
+        debugger
+        $this.isDisplayPopup = data.subscriptionEnded;
+        if(data.daysLeftForRenew<=5)
+        {
+          $('#subscriptionWarningModal').modal("show");
+        }
+        else{
+          $('#subscriptionWarningModal').modal("hide");
+        }
+        if (data.subscriptionEnded == true) {
+          $('#subscriptionModal').modal({
+            backdrop: 'static',
+            keyboard: false,
+            closeOnEscape: false,
+            open: function(event, ui) {
+              $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+          }
+          })
+          //$("#subscriptionModal").modal("show");
+        }
+        else {
+          $("#subscriptionModal").modal("hide");
+        }
+
+      },
+      error => console.log(error)
+    );
+
   }
 }

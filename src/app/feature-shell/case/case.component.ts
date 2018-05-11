@@ -406,10 +406,10 @@ export class CaseComponent implements OnInit {
     }
   }
 
-  getUploadedDocuments() {
-    //this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
-  }
-  SelectedFileIds = [];
+  // getUploadedDocuments() {
+  //   this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+  // }
+   SelectedFileIds = [];
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
       this.SelectedFileIds.push(FileId);

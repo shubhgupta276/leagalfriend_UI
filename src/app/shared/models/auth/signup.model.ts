@@ -7,11 +7,15 @@ export class SignUpModel {
     address1: string;
     address2: string;
     postcode: number;
-    mobile: number;
+    mobileNumber: number;
     password: string;
+    userType: UserType;
     roles: any[];
     status: Status;
     login: LoginCredential;
+    subscriptionId:number;
+    clientId:number;
+    address:Address
 }
 
 export class LoginCredential {
@@ -21,7 +25,17 @@ export class LoginCredential {
 export class Roles {
     id: number
 }
+export class Address {
+    address1: string;
+    address2:string;
+    city:string;
+    state:string;
+    zipCode:string
+}
 export class Status{
     statusId: number;
+}
+export class UserType{
+    id: number;
 }
 
