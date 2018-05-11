@@ -124,13 +124,20 @@ export class FeatureShellComponent implements OnInit {
   }
 GetLoggedInUserDetails()
 {
-  debugger
+  
   var $this = this;
   var client = '?userId=' + localStorage.getItem('client_id');
   this.userService.getUser(client).subscribe(
       data => {   
       
-         
+         if(data.showSubscriptionFlash==true)
+         {
+           $("#flash").show();
+         }
+         else
+         {
+          $("#flash").hide();
+         }
         $this.userDetails.Name = data.firstName + " " + data.lastName;
         $this.subscriptionEndDate.subscriptionEndDate=this.datePipe.transform(data.subscriptionEndDate,"yyyy-MM-dd");
       },

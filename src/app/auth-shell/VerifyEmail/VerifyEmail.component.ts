@@ -35,14 +35,25 @@ this.verifyEmailPageLayout();
   }
 
   verifyEmail() {
-
+debugger
+var isReferral;
+var str1 = window.location.href.slice(window.location.href.indexOf('/'));
+var str2 = "verifyReferralEmail";
+if(str1.indexOf(str2) != -1){
+  isReferral="Y"
+}
+else{
+  isReferral="N"
+}
     var token = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
+    
     
     const tokenDetails = new TokenModel();
     tokenDetails.token = token;
+    tokenDetails.isReferral=isReferral;
 
 
-    this.authService.verifyemail(token).subscribe(
+    this.authService.verifyemail(token,isReferral).subscribe(
 
       result => {
        

@@ -75,9 +75,9 @@ export class AuthService {
     );
   }
 
-  verifyemail(token): Observable<any> {
+  verifyemail(token,isReferral): Observable<any> {
     return this.apiGateWay.post<any>(
-      verifyEmail + '?token=' + token+'&isReferral='+ "N", null
+      verifyEmail + '?token=' + token+'&isReferral='+ isReferral, null
     );
   }
   forgot_password(email): Observable<any> {
