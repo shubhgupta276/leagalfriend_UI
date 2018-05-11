@@ -37,7 +37,7 @@
 <header class="main-header">
 
   <!-- Logo -->
-  <a href="index2.html" class="logo">
+  <a routerLink="dashboard" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini">
       <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
@@ -374,7 +374,8 @@
       <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CUSTOMER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="invoices">
-            <i class="glyphicon glyphicon-file"></i>
+            <!-- <i class="glyphicon glyphicon-file"></i> -->
+            <img src="/assets/dist/img/invoice.png">
             <span>Invoices</span>
           </a>
         </li>
