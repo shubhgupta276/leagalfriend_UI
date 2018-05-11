@@ -4,13 +4,14 @@ import { SharedService } from '../shared/services/shared.service'
 import { BranchService } from './master/branch/branch.service';
 import { StorageService } from '../shared/services/storage.service';
 import { UserService } from './user/user.service';
+import { DatePipe } from '@angular/common';
 declare var $;
 declare let Zone: any;
 @Component({
   selector: 'app-feature-shell',
   templateUrl: './feature-shell.component.html',
   styleUrls: ['./feature-shell.component.css'],
-  providers: [SharedService, BranchService,UserService]
+  providers: [SharedService, BranchService,UserService,DatePipe]
 })
 export class FeatureShellComponent implements OnInit {
   totalUpcomingEvents = 4;
@@ -21,10 +22,14 @@ export class FeatureShellComponent implements OnInit {
     Name: "",
     profile: null
   }
+  subscriptionEndDate={
+    subscriptionEndDate:""
+  }
+  
   constructor(private authService: AuthService, private sharedService: SharedService,
     private _storageService: StorageService,
     private _branchService: BranchService,
-    private userService: UserService) {
+    private userService: UserService,private datePipe: DatePipe) {
     sharedService.changeEmitted$.subscribe(Zone.current.wrap(
       text => {
         this.totalUpcomingEvents = text;
@@ -34,6 +39,7 @@ export class FeatureShellComponent implements OnInit {
   }
 
   ngOnInit() {
+   
     var branchData = this._storageService.getBranchData();
     this.branchConfig = {
       displayKey: "branchName",
@@ -43,8 +49,11 @@ export class FeatureShellComponent implements OnInit {
       defaultTextAdd: false,
       showIcon: true,
       hideWhenOneItem: true
+      
+      
     }
-
+    this.blinker();
+   
     this.GetAllBranch();
     this.GetLoggedInUserDetails();
     $(window.document).ready(function () {
@@ -83,6 +92,10 @@ export class FeatureShellComponent implements OnInit {
   signOutButton() {
     this.authService.signOut();
   }
+   blinker() {
+    $('.blink_me').fadeOut(500);
+    $('.blink_me').fadeIn(500);
+}
 
   GetAllBranch() {
 
@@ -111,15 +124,19 @@ export class FeatureShellComponent implements OnInit {
   }
 GetLoggedInUserDetails()
 {
+  debugger
   var $this = this;
   var client = '?userId=' + localStorage.getItem('client_id');
-  this.userService.getUser(client)
-    .subscribe(
-      data => {        
+  this.userService.getUser(client).subscribe(
+      data => {   
+      
+         
         $this.userDetails.Name = data.firstName + " " + data.lastName;
+        $this.subscriptionEndDate.subscriptionEndDate=this.datePipe.transform(data.subscriptionEndDate,"yyyy-MM-dd");
       },
       error => console.log(error)
     );
+    
 }
 }
 

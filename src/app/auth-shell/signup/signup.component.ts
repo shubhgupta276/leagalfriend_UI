@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute,Params } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue } from '../../shared/Utility/util-common';
 import { matchValidator } from '../../shared/Utility/util-custom.validation';
@@ -12,12 +12,14 @@ import {
   HttpParams
 } from '@angular/common/http';
 import { UserModel } from '../../shared/models/user/user.model';
-import { SignUpModel, LoginCredential, Roles } from '../../shared/models/auth/signup.model';
+import { SignUpModel, LoginCredential, Roles,Address,UserType } from '../../shared/models/auth/signup.model';
 import { AuthService } from '../auth-shell.service';
 import { validateConfig } from '@angular/router/src/config';
 import { CHECKBOX_REQUIRED_VALIDATOR } from '@angular/forms/src/directives/validators';
+import { parse } from 'url';
 
 declare let $;
+declare let subscriptionId;
 
 @Component({
   selector: 'app-signup',
@@ -36,13 +38,24 @@ export class SignupComponent implements OnInit {
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
   public isMailSent = false;
-
+  Subscription:any=[];
+  UserType:any=[];
+subscriptionId:number;
   constructor(private router: Router, private fb: FormBuilder, private _httpClient: HttpClient,
-    private authService: AuthService) {
-    this.createSignup();
+    private authService: AuthService,private activatedRoute: ActivatedRoute) {
+      this.activatedRoute.queryParams.subscribe((params: Params) => {
+        this.subscriptionId = params['subscription'];
+       
+      });
+    this.createSignup( this.subscriptionId);
+   
   }
 
   ngOnInit() {
+    
+    
+   this.getUserSubscription();
+   this.getusersType();
     this.signupPageLayout();
     this.signupForm.get('email').valueChanges.subscribe(
       (e) => {
@@ -103,7 +116,8 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  createSignup() {
+  createSignup(subscriptionId) {
+    
     this.signupForm = this.fb.group({
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
@@ -116,64 +130,90 @@ export class SignupComponent implements OnInit {
       Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
       confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
-      role: [1],
-      status: [1],
+    role: [1],
+     // status: [1],
+      subscription:[parseInt(subscriptionId), Validators.required],
       termsAndCondition: [false, Validators.pattern('true')]
     });
   }
 
+
+  getUserSubscription()
+  {
+    debugger
+    var $this=this;
+    this.authService.getUserSubscription().subscribe(
+
+      result => {
+        
+      result.forEach(function(value)
+      {
+        
+      
+        $this.Subscription.push(value);
+      });
+      },
+      err => {
+        console.log(err);
+      });
+  }
+  getusersType()
+  {
+    var $this=this;
+    this.authService.getusersType().subscribe(
+
+      result => {
+        
+      result.forEach(function(value)
+      {
+        
+      
+        $this.UserType.push(value);
+      });
+      },
+      err => {
+        console.log(err);
+      });
+  }
   registerUser(data) {
 
     const signUpDetails = new SignUpModel();
+    {
+      signUpDetails.address= {
+        address1: data.address1,
+        address2: data.address2,
+        city: "test",
+        state: "UP",
+        zipCode: "201301"
+      },
+      signUpDetails.clientId=1;
     signUpDetails.email = data.email;
-    signUpDetails.organization = data.organisation;
-    signUpDetails.password = data.password;
     signUpDetails.firstName = data.firstName;
+    signUpDetails.isClient = 1;
     signUpDetails.lastName = data.lastName;
-
-
-
-    // signUpDetails.address1 = data.address1;
-
-    signUpDetails.status = {
-      statusId: 1,
-    };
-
-    signUpDetails.roles = [{
-      id: 1,
-
-    }];
-
     signUpDetails.login = {
       userLoginId: data.email,
       password: data.password
     };
+    signUpDetails.mobileNumber=data.mobileNumber;
+    signUpDetails.organization = data.organisation;
+    signUpDetails.password = data.password;
+  
+  
+    signUpDetails.status = {
+      statusId: 1,
+    };
+    signUpDetails.subscriptionId=data.subscription;
+    
+    signUpDetails.userType = {
+      id: data.role,
 
-
-    signUpDetails.isClient = 1;
-
-    // const testData = {
-    //   "email": "puneet.kumar@globallogic.com",
-    //   "organization": "gl",
-    //   "password": "Global@123",
-    //   "firstName": "Puneet", "lastName": "Kumar",
-    //   "status": {
-    //     "statusId": 1
-    //   },
-    //   "roles": [{
-    //     "id": 1
-    //   }],
-    //   "login": {
-    //     "userLoginId": "anup.debey1@globallogic.com",
-    //     "password": "Global@123"
-    //   },
-    //   "isClient": 1
-    // }
+    };
 
     this.authService.signup(signUpDetails).subscribe(
 
       result => {
-        debugger;
+        debugger
         console.log(result);
         this._signup = result;
         this.isMailSent = true;
@@ -182,8 +222,10 @@ export class SignupComponent implements OnInit {
       err => {
         console.log(err);
       });
-    debugger
+    
   }
+}
+
 
   redirectToLogin() {
     this.router.navigate(['login']);

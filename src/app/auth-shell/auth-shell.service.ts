@@ -54,7 +54,19 @@ export class AuthService {
   //     const remberedUser = { 'email': email, 'remberMe': remberMe };
   //     localStorage.setItem('remberedMe.user', JSON.stringify(remberedUser));
   // }
-
+  
+  getUserSubscription(): Observable<any> {    
+    return this.apiGateWay.get<any>(
+      'users/subscription',
+      
+    );
+  }
+  getusersType(): Observable<any> {    
+    return this.apiGateWay.get<any>(
+      'users/type',
+      
+    );
+  }
   signup(customerData: SignUpModel): Observable<SignUpModel> {
     debugger
     return this.apiGateWay.post<SignUpModel>(
@@ -65,7 +77,7 @@ export class AuthService {
 
   verifyemail(token): Observable<any> {
     return this.apiGateWay.post<any>(
-      verifyEmail + '?token=' + token, null
+      verifyEmail + '?token=' + token+'&isReferral='+ "N", null
     );
   }
   forgot_password(email): Observable<any> {

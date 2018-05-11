@@ -96,7 +96,7 @@ export class LoginComponent implements OnInit {
     loginDetails.password = data.password;
     this.authService.login(loginDetails).subscribe(
       result => {
-        // console.log(result);
+        debugger
         this._login = result;
         const accessToken = this._login.body.token;
         const clientId = this._login.body.clientId;
@@ -104,6 +104,9 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('access_token', accessToken);
           localStorage.setItem('client_id', clientId);
           localStorage.setItem('user_id', data.email);
+/////////////////////////////for role based authentication////////////////////
+
+
           this.router.navigate(['admin/user']);
         }
       },
