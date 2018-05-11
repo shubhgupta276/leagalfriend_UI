@@ -23,6 +23,7 @@ export class UserModel {
     login = {};
     subscriptionEnded:boolean;
     subscriptionEndDate:string;
-    daysLeftForRenew:number
+    daysLeftForRenew:number;
+    showSubscriptionFlash:boolean
 
 }
