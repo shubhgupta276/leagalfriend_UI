@@ -95,7 +95,7 @@ export class AddCaseComponent implements OnInit {
       manager: [null, Validators.required],
       court: [null, Validators.required],
       state: [null, Validators.required],
-      parentCase: [null, Validators.required],
+      parentCase: [null],
       nextHearingDate: [null, Validators.required],
       customerName: [null, Validators.required],
       remark: [null, Validators.required],
@@ -159,7 +159,11 @@ export class AddCaseComponent implements OnInit {
     this.authService.getBranchDDL(reqData).subscribe(
 
       result => {
-
+        
+        if(result.branches.length==0)
+        {
+        $("#spnBranch").show();
+        }
         result.branches.forEach(function (value) {
 
           $this.Branch.push({ id: value.id, text: value.branchName });
@@ -225,7 +229,7 @@ export class AddCaseComponent implements OnInit {
 
 
   getManagers() {
-debugger
+    
     var $this = this
     var reqData = {
       clientId: localStorage.getItem('client_id'),
@@ -233,9 +237,21 @@ debugger
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-
+        
+        if(result.length==0)
+        {
+          $("#spnCustomer").show();
+          $("#spnManager").show();
+         
+        }
+        
         result.forEach(function (value) {
-
+          
+          if(value.roles[0].roleName != 'MANAGER')
+          {
+            
+            $("#spnManager").show();
+          }
           if (value.roles[0].roleName == 'MANAGER') {
             $this.Manager.push(
               {
@@ -248,10 +264,11 @@ debugger
             );
           }
           
-          // if(value.roles[0].roleName != 'CUSTOMER')
-          // {
-          //   $("#customerModalWarning").modal("show");
-          // }
+          if(value.roles[0].roleName != 'CUSTOMER')
+          {
+            
+            $("#spnCustomer").show();
+          }
           if (value.roles[0].roleName == 'CUSTOMER') {
             
             $this.CustomerName.push(
@@ -281,7 +298,10 @@ debugger
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-
+if(result==0)
+{
+  $("#spnEmployee").show();
+}
         result.forEach(function (value) {
           if (value.roles[0].roleName == 'EMPLOYEE') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
@@ -344,7 +364,7 @@ debugger
   }
   submitAddCaseUser(data) {
 
-    debugger
+    
     const objEditCase = new EditCase();
     objEditCase.branchId = data.branch[0].id;
     var userId = parseInt(localStorage.getItem('client_id'));
@@ -375,7 +395,7 @@ debugger
          // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
           $(window.location.href="/admin/case");
-          debugger
+          
           $('#addCaseModal').modal('hide');
           this.closeModal();
         }

@@ -140,12 +140,12 @@ subscriptionId:number;
 
   getUserSubscription()
   {
-    debugger
+    
     var $this=this;
     this.authService.getUserSubscription().subscribe(
 
       result => {
-        debugger
+        
       result.forEach(function(value)
       {
         
@@ -214,7 +214,7 @@ subscriptionId:number;
     this.authService.signup(signUpDetails).subscribe(
 
       result => {
-        debugger
+        
         console.log(result);
         this._signup = result;
         this.isMailSent = true;

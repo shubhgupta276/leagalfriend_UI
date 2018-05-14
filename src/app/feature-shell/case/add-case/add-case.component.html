@@ -72,6 +72,7 @@
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No manager selected">
                                 </ng-select>
                         </div>
+                        <span style="color:red;display:none;margin-left:20px" id="spnManager">Please create Manager first</span>
                       </div>
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Employee:
@@ -83,6 +84,7 @@
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No employee selected" formControlName="employee">
                                   </ng-select>
                           </div>
+                          <span style="color:red;display:none;margin-left:20px" id="spnEmployee">Please create Employee first</span>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
@@ -92,8 +94,9 @@
                               <ng-select [allowClear]="true" [items]="CustomerName" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                               (removed)="removed($event)" (typed)="typed($event)" placeholder="No customer selected" formControlName="customerName">
                             </ng-select>
-    
+  
                             </div>
+                            <span style="color:red;display:none;margin-left:20px" id="spnCustomer">Please create Customer first</span>
                           </div>
                       <div class="form-group row" >
                         <label class="col-sm-3 col-form-label createUserLabel">Court:
@@ -121,7 +124,7 @@
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
-                          <em class="astrick">*</em>
+                          <!-- <em class="astrick">*</em> -->
                         </label>
                         <div class="col-md-9" *ngIf="ParentCases.length > 0">
 
@@ -173,6 +176,7 @@
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" formControlName="branch">
                                   </ng-select>
                         </div>
+                        <span style="color:red;display:none;margin-left:20px" id="spnBranch">Please create Branch first</span>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Filing date:
@@ -276,68 +280,3 @@
 </div>
 
 
-
-<div class="modal fade" id="customerModalWarning" >
-    <div class="modal-dialog">
-      <div class="modal-content" style="border-radius: 5px;">
-        <div class="modal-header modal-header-addedit">
-          <button type="button" id="closebtn" class="close close-addedit"  >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title">LegalFriend Subscription</h4>
-        </div>
-        <div style="background-color: #f44242; color: white; border-color: #ddd; border-radius: 5px;
-        height:99px ">
-        <img src="/assets/dist/img/warning.png" style="width:70px;margin-left:250px" />
-      
-     
-     
-    </div>
-        <div style="width:120px;height:10%;background-color:black;"></div>
-        <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
-           
-          <div class="row">
-            <!-- <div class="col-md-12"> -->
-            <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-            <div>
-              <div class="box-body widget-content">
-                 
-                  <form  class="form-horizontal" >
-                      <div class="form-body">
-                      
-                        <div class="tab-content">
-                            
-                          <div class="tab-pane active">
-                              
-                            <div class="form-group row">
-                                
-                              <h2 style="margin-left:100px">You are required to create a customer</h2>
-                              
-                            <div class="form-group row">
-                              <div class="col-md-4">
-                                
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- <div style="margin-left:215px">
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Trial User</button>
-                          <a class="btn btn-success" href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>Continue</a>
-                      </div> -->
-                      </div>
-                    </form>
-              </div>
-            </div>
-            <!-- </div> -->
-          </div>
-          <!-- Create User ends -->
-        </div>
-        
-  
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-    
-  </div>
