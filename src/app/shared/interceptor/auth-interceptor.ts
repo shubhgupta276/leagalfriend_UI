@@ -18,12 +18,19 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private auth: TokenService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        debugger
-        if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0) || (req.url.indexOf('users/user') >= 0)) {
+        
+        if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0)) {
             
             return next.handle(req);
         } 
-        
+        else if (req.url.indexOf('users/user') >= 0) {
+            
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+            return next.handle(verifyEmailReq);
+        }
+
         else if (req.url.indexOf('subscription') >= 0) {
             
             const verifyEmailReq = req.clone({
