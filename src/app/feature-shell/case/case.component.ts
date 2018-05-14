@@ -59,7 +59,7 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
-
+debugger
         result.forEach(function (value) {
           $this.caseRunning.push(value);
 
@@ -77,7 +77,7 @@ export class CaseComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getRunningCase();
+    //this.getRunningCase();
     const self = this;
     this.getBranchDDL();
     this.bindRecourseDDL();
