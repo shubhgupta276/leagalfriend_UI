@@ -147,6 +147,7 @@ GetLoggedInUserDetails()
          {
           $("#flash").hide();
          }
+         debugger
         $this.userDetails.Name = data.firstName + " " + data.lastName;
         $this.permissionsService.loadPermissions([data.roles[0].roleName]);
         $this.subscriptionEndDate.subscriptionEndDate=this.datePipe.transform(data.subscriptionEndDate,"yyyy-MM-dd");

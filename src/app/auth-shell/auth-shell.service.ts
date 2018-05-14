@@ -43,6 +43,9 @@ export class AuthService {
     });
   }
 
+ 
+ 
+
   login(customerData: LoginModel): Observable<LoginModel> {
     return this.apiGateWay.post<LoginModel>(
       login,
@@ -54,16 +57,12 @@ export class AuthService {
   //     const remberedUser = { 'email': email, 'remberMe': remberMe };
   //     localStorage.setItem('remberedMe.user', JSON.stringify(remberedUser));
   // }
-  
-  getUserSubscription(): Observable<any> {    
-    return this.apiGateWay.get<any>(
-      'users/subscription',
-      
-    );
-  }
+  getUserSubscription(): Observable<any> {
+    return this.apiGateWay.get<any>('users/subscription');
+}
   getusersType(): Observable<any> {    
     return this.apiGateWay.get<any>(
-      'users/type',
+      'users/type',null
       
     );
   }
@@ -72,7 +71,9 @@ export class AuthService {
     return this.apiGateWay.post<SignUpModel>(
       signup,
       JSON.stringify(customerData)
+      
     );
+    
   }
 
   verifyemail(token,isReferral): Observable<any> {
