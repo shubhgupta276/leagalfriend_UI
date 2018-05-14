@@ -145,7 +145,7 @@ subscriptionId:number;
     this.authService.getUserSubscription().subscribe(
 
       result => {
-        
+        debugger
       result.forEach(function(value)
       {
         
@@ -154,6 +154,7 @@ subscriptionId:number;
       });
       },
       err => {
+        alert(err)
         console.log(err);
       });
   }
@@ -186,7 +187,7 @@ subscriptionId:number;
         state: "UP",
         zipCode: "201301"
       },
-      signUpDetails.clientId=1;
+      //signUpDetails.clientId=1;
     signUpDetails.email = data.email;
     signUpDetails.firstName = data.firstName;
     signUpDetails.isClient = 1;

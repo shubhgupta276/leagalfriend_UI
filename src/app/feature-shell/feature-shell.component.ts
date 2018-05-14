@@ -138,6 +138,7 @@ GetLoggedInUserDetails()
          {
           $("#flash").hide();
          }
+         debugger
         $this.userDetails.Name = data.firstName + " " + data.lastName;
         $this.subscriptionEndDate.subscriptionEndDate=this.datePipe.transform(data.subscriptionEndDate,"yyyy-MM-dd");
       },

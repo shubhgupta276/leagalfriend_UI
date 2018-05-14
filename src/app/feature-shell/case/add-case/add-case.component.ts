@@ -45,7 +45,17 @@ export class AddCaseComponent implements OnInit {
   }
 
   public selected(value: any): void {
+    
     console.log('Selected value is: ', value);
+  }
+  public selectedRecourse1(value: any): void {
+    debugger
+    
+      $("#ddls").show()
+    
+    this.selectedRecourse = value;
+
+
   }
 
   public removed(value: any): void {
@@ -62,7 +72,7 @@ export class AddCaseComponent implements OnInit {
 
 
   addCaseForm: FormGroup;
-
+  selectedRecourse: any;
   Resource: any = [];
   Manager: any = [];
   Court: any = [];
@@ -111,7 +121,7 @@ export class AddCaseComponent implements OnInit {
     this.getManagers();
     this.getEmployee();
     this.bindStageDDL();
-    this.getRunningCase();
+    //this.getRunningCase();
     this.getEmployee();
 
   }
@@ -215,7 +225,7 @@ export class AddCaseComponent implements OnInit {
 
 
   getManagers() {
-
+debugger
     var $this = this
     var reqData = {
       clientId: localStorage.getItem('client_id'),
@@ -237,8 +247,13 @@ export class AddCaseComponent implements OnInit {
               }
             );
           }
-
+          
+          // if(value.roles[0].roleName != 'CUSTOMER')
+          // {
+          //   $("#customerModalWarning").modal("show");
+          // }
           if (value.roles[0].roleName == 'CUSTOMER') {
+            
             $this.CustomerName.push(
               {
 
@@ -269,6 +284,12 @@ export class AddCaseComponent implements OnInit {
 
         result.forEach(function (value) {
           if (value.roles[0].roleName == 'EMPLOYEE') {
+            $this.Employee.push({ id: value.id, text: value.firstName, });
+          }
+          if (value.roles[0].roleName == 'ADMIN') {
+            $this.Employee.push({ id: value.id, text: value.firstName, });
+          }
+          if (value.roles[0].roleName == 'MANAGER') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
         });
@@ -397,6 +418,7 @@ export class AddCaseComponent implements OnInit {
       });
     });
 
+    }
 
 
   }
