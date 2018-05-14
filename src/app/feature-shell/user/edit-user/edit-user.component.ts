@@ -40,6 +40,7 @@ export class EditUserComponent {
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
   }
   submitEditUser(data) {
+    debugger
     if (this.isStatusChange)
       data.statusName = this.selectedStatus;
     if (this.isRoleChange)

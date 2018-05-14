@@ -11,43 +11,23 @@ import 'rxjs/add/observable/throw';
 const featureShellRoutes: Routes = [
     {
         path: 'admin',
-        component: FeatureShellComponent, children: [
+        component: FeatureShellComponent, canActivate: [LFAuthantication], children: [
             {
-                path: 'user', loadChildren: 'app/feature-shell/user/user.module#UserModule', canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN', 'MANAGER']
-                    }
-                }
+                path: 'user', loadChildren: 'app/feature-shell/user/user.module#UserModule'
             },
             {
-                path: 'feedback', loadChildren: 'app/feature-shell/feedback/feedback.module#FeedbackModule', 
+                path: 'feedback', loadChildren: 'app/feature-shell/feedback/feedback.module#FeedbackModule',
             },
             {
-                path: 'billing', loadChildren: 'app/feature-shell/billing/billing.module#BillingModule', canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN', 'MANAGER']
-                    }
-                }
+                path: 'billing', loadChildren: 'app/feature-shell/billing/billing.module#BillingModule'
             },
             { path: 'case', loadChildren: 'app/feature-shell/case/case.module#CaseModule' },
             {
                 path: 'master',
-                loadChildren: 'app/feature-shell/master/master.module#MasterModule', canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN']
-                    }
-                },
+                loadChildren: 'app/feature-shell/master/master.module#MasterModule'
             },
             {
-                path: 'institution', loadChildren: 'app/feature-shell/institution/institution.module#InstitutionModule', canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
-                    }
-                },
+                path: 'institution', loadChildren: 'app/feature-shell/institution/institution.module#InstitutionModule'
             },
             { path: 'profile', loadChildren: 'app/feature-shell/profile/profile.module#ProfileModule' },
             { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },
@@ -55,22 +35,12 @@ const featureShellRoutes: Routes = [
             { path: 'wallet', loadChildren: 'app/feature-shell/wallet/wallet.module#WalletModule' },
             { path: 'dashboard', component: DashboardComponent },
             {
-                path: 'calendar', component: CalendarComponent, canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
-                    }
-                },
+                path: 'calendar', component: CalendarComponent
             },
             { path: 'employeeactive', component: EmployeeActiveComponent },
             { path: '', redirectTo: 'user', pathMatch: 'full' },
             {
-                path: 'invoices', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule', canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
-                    }
-                },
+                path: 'invoices', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule'
             },
         ]
     },
