@@ -22,7 +22,12 @@ export class FeedbackComponent implements OnInit {
   FeebackForm() {
     this.feedbackeForm = this.fb.group({
       subject: [null, Validators.required],
-      feedback: [null, Validators.required]
+      feedback: [null, Validators.required],
+      evaluationType:["FEEDBACK",Validators.nullValidator]
     });
+  }
+  submitFeedback(data)
+  {
+    debugger
   }
 }

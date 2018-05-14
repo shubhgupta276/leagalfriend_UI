@@ -206,12 +206,10 @@ export class UserComponent implements OnInit {
 
 
   GetLoggedInUserDetails() {
-    debugger
     var $this = this;
     var client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(
       data => {
-        debugger
         $this.isDisplayPopup = data.subscriptionEnded;
         if(data.daysLeftForRenew<=5)
         {

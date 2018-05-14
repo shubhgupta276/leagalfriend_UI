@@ -138,7 +138,7 @@ GetLoggedInUserDetails()
   var client = '?userId=' + localStorage.getItem('client_id');
   this.userService.getUser(client).subscribe(
       data => {   
-      
+      debugger
          if(data.showSubscriptionFlash==true)
          {
            $("#flash").show();

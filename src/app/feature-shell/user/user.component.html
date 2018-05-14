@@ -65,7 +65,7 @@
                   <td>{{user.roles[0].roleName}}</td>
                   <td >
                     <button *ngIf="user.status.statusName==='ACTIVE'" class="btn btn-block btn-success btn-xs btn2" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
-                    <button *ngIf="user.status.statusName==='SUSPENDED'" class="btn btn-block btn-warning btn-xs btn3" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
+                    <button *ngIf="user.status.statusName==='SUSPEND'" class="btn btn-block btn-warning btn-xs btn3" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
                     <button  *ngIf="user.status.statusName==='DEACTIVE'" class="btn btn-block btn-danger btn-xs btn4" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
                   </td>
                 
