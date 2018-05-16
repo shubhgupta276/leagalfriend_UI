@@ -1,3 +1,46 @@
+<style>
+  .completer-dropdown {
+        border-color: #ececec;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 2px;
+        width: 250px;
+        padding: 6px;
+        cursor: pointer;
+        z-index: 9999;
+        position: absolute;
+        margin-top: -6px;
+        background-color: #ffffff;
+    }
+    .completer-row {
+        padding: 5px;
+        color: #000000;
+        margin-bottom: 4px;
+        clear: both;
+        display: inline-block;
+        width: 103%;
+    }
+    .completer-selected-row {
+        background-color: lightblue;
+        color: #ffffff;
+    }
+    .completer-description {
+        font-size: 14px;
+    }
+    .completer-image-default {
+        width: 16px;
+        height: 16px;
+        background-image: url("demo/res/img/default.png");
+    }
+    .completer-image-holder {
+        float: left;
+        width: 10%;
+    }
+    .completer-item-text-image {
+        float: right;
+        width: 90%;
+    }
+</style>
 <div class="content-wrapper">
 
   <div class="page-heading">
@@ -18,7 +61,7 @@
 
                     </div>
                     <div class="col-sm-2">
-                      <input type="radio" formControlName="evaluationType"  name="evaluationType" value="FEEDBACK">
+                      <input type="radio" formControlName="evaluationType" name="evaluationType" value="FEEDBACK">
                       <label>Feedback</label>
                     </div>
                     <div class="col-sm-2">
@@ -52,8 +95,8 @@
                       <textarea rows="6" class="form-control" placeholder="Feedback / Suggestion" formControlName="feedback"></textarea>
                     </div>
                     <div class="col-sm-3" *ngIf="feedbackeForm.get('feedback').invalid &&  feedbackeForm.get('feedback').touched">
-                      
-                      </div>
+
+                    </div>
                     <div class="col-sm-9 " *ngIf="feedbackeForm.get('feedback').invalid &&  feedbackeForm.get('feedback').touched">
                       <small class="text-danger">
                         <span>Feedback / Suggestion is required.</span>
