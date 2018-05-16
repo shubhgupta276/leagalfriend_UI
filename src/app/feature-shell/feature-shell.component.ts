@@ -133,12 +133,12 @@ export class FeatureShellComponent implements OnInit {
   }
 GetLoggedInUserDetails()
 {
-  
-  var $this = this;
+   
+  var $this = this;  
   var client = '?userId=' + localStorage.getItem('client_id');
   this.userService.getUser(client).subscribe(
       data => {   
-      debugger
+      
          if(data.showSubscriptionFlash==true)
          {
            $("#flash").show();
@@ -147,9 +147,10 @@ GetLoggedInUserDetails()
          {
           $("#flash").hide();
          }
-         debugger
+         
         $this.userDetails.Name = data.firstName + " " + data.lastName;
         $this.permissionsService.loadPermissions([data.roles[0].roleName]);
+        localStorage.setItem("userRole",data.roles[0].roleName);
         $this.subscriptionEndDate.subscriptionEndDate=this.datePipe.transform(data.subscriptionEndDate,"yyyy-MM-dd");
       },
       error => console.log(error)
