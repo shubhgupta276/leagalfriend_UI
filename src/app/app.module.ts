@@ -13,13 +13,16 @@ import { HttpClientModule } from '@angular/common/http'
 import { SharedModule } from './shared/shared.module';
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
 import { StorageService } from './shared/services/storage.service';
+import { Ng2CompleterModule } from "ng2-completer";
+
 @NgModule({
   imports: [
     BrowserModule,
     FeatureShellModule,
     AuthShellModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    Ng2CompleterModule
   ],
   declarations: [
     AppComponent
