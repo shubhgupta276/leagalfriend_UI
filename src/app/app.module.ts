@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http'
 import { SharedModule } from './shared/shared.module';
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
 import { StorageService } from './shared/services/storage.service';
+import { Ng2CompleterModule } from "ng2-completer";
+
 import { NgxPermissionsModule } from 'ngx-permissions';
 @NgModule({
   imports: [
@@ -21,6 +23,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     AuthShellModule,
     AppRoutingModule,
     SharedModule,
+    Ng2CompleterModule,
     NgxPermissionsModule.forRoot()
   ],
   declarations: [

@@ -8,12 +8,14 @@ import { AuthService } from '../../../auth-shell/auth-shell.service';
 import { ApiGateway } from '../../../shared/services/api-gateway';
 import { StorageService } from "../../../shared/services/storage.service";
 import { HttpResponse } from 'selenium-webdriver/http';
+import { CompleterService, CompleterData } from 'ng2-completer';
 
 declare var $;
 @Component({
   selector: 'app-add-case',
   templateUrl: '../add-case/add-case.component.html',
   providers: [StorageService, AuthService, DatePipe],
+  styles: [':host(.completer-dropdown-holder) { position: absolute; background-color: red; }']
 
 
 })
@@ -71,6 +73,21 @@ export class AddCaseComponent implements OnInit {
   }
 
 
+
+ 
+  onSelect(item: any) {
+    this.selectedItem = item;
+  }
+ 
+  onInputChangedEvent(val: string) {
+    this.inputChanged = val;
+  }
+ 
+  search (term: string) {
+    this.service.search(term).subscribe(e => this.wikiItems = e, error => console.log(error));
+  }
+  ///////////////////////////////////end////////////////////////////////////////////////////
+
   addCaseForm: FormGroup;
   selectedRecourse: any;
   Resource: any = [];
@@ -110,9 +127,23 @@ export class AddCaseComponent implements OnInit {
       uploadDocument: [],
     });
   }
+  protected searchStr: string;
+  protected captain: string;
+  protected dataService: CompleterData;
+  protected searchData = [
+    { color: 'red', value: '#f00' },
+    { color: 'green', value: '#0f0' },
+    { color: 'blue', value: '#00f' },
+    { color: 'cyan', value: '#0ff' },
+    { color: 'magenta', value: '#f0f' },
+    { color: 'yellow', value: '#ff0' },
+    { color: 'black', value: '#000' }
+  ];
+  protected captains = ['James T. Kirk', 'Benjamin Sisko', 'Jean-Luc Picard', 'Spock', 'Jonathan Archer', 'Hikaru Sulu', 'Christopher Pike', 'Rachel Garrett' ];
+ 
 
-  constructor(private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
-
+  constructor(private completerService: CompleterService,private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
+    // this.dataService = completerService.local(this.ParentCases, 'id', 'id');
     this.AddCaseUser();
     this.GetAllCourt();
     this.bindStateDDL();
@@ -121,11 +152,10 @@ export class AddCaseComponent implements OnInit {
     this.getManagers();
     this.getEmployee();
     this.bindStageDDL();
-    //this.getRunningCase();
+    this.getRunningCase();
     this.getEmployee();
 
   }
-
 
   GetAllCourt() {
 
@@ -247,11 +277,11 @@ export class AddCaseComponent implements OnInit {
         
         result.forEach(function (value) {
           
-          if(value.roles[0].roleName != 'MANAGER')
-          {
+          // if(value.roles[0].roleName != 'MANAGER')
+          // {
             
-            $("#spnManager").show();
-          }
+          //   $("#spnManager").show();
+          // }
           if (value.roles[0].roleName == 'MANAGER') {
             $this.Manager.push(
               {
@@ -264,11 +294,11 @@ export class AddCaseComponent implements OnInit {
             );
           }
           
-          if(value.roles[0].roleName != 'CUSTOMER')
-          {
+          // if(value.roles[0].roleName != 'CUSTOMER')
+          // {
             
-            $("#spnCustomer").show();
-          }
+          //   $("#spnCustomer").show();
+          // }
           if (value.roles[0].roleName == 'CUSTOMER') {
             
             $this.CustomerName.push(
@@ -320,7 +350,6 @@ if(result==0)
       });
   }
 
-
   bindStageDDL() {
 
     var $this = this
@@ -354,9 +383,10 @@ if(result==0)
       result => {
 
         result.forEach(function (value) {
-          $this.ParentCases.push({ id: value.id, text: value.id });
+          $this.ParentCases.push({ id: value.courtCaseId, text: value.courtCaseId });
         });
-        
+        alert()
+        $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'id');
       },
       err => {
         console.log(err);
@@ -385,8 +415,8 @@ if(result==0)
 
     objEditCase.managerId = data.manager[0].id;
     objEditCase.stateId = data.state[0].id;
-    objEditCase.parentCaseId = data.parentCase[0].id;
-   
+    // objEditCase.parentCaseId = data.parentCase[0].id;
+   console.log(objEditCase);
 
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {

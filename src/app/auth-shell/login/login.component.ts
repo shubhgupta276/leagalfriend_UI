@@ -94,6 +94,7 @@ export class LoginComponent implements OnInit {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
+    debugger
     this.authService.login(loginDetails).subscribe(
       result => {
         debugger
@@ -108,7 +109,7 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
-        console.log(err);
+        
       });
   }
 

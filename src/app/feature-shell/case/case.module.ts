@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectDropDownModule } from 'ngx-select-dropdown'
 import {SelectModule} from 'ng2-select';
+import { Ng2CompleterModule } from "ng2-completer";
 
 @NgModule(
     {
@@ -17,7 +18,8 @@ import {SelectModule} from 'ng2-select';
             ReactiveFormsModule,
             FormsModule,
             SelectDropDownModule,
-            SelectModule
+            SelectModule,
+            Ng2CompleterModule,
         ],
         declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent,CaseHistoryComponent ]
     }

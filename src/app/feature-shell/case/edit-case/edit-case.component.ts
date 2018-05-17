@@ -190,6 +190,7 @@ export class EditCaseComponent implements OnInit {
   }
   createForm(c) {
     if (c != null) {
+      debugger
       // this.recourseId = c.recourseId;
       // this.stageId = c.stageId;
       this.caseId=c.id;
