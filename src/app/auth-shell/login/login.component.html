@@ -1,3 +1,9 @@
+<style>
+    .error {
+        color: red;
+        text-align: center;
+    }
+</style>
 <!-- <div class="wrapper-page animated fadeInDown">
     <div class="panel panel-color panel-primary">
         <div class="panel-heading"> 
@@ -62,19 +68,14 @@
     <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
         <div class="form-group has-feedback">
             <input type="email" class="form-control" placeholder="Username" formControlName="email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-            <div class="error" *ngIf="loginForm.get('email')==='kaushal.ng12'">
-                <p class="error-block">
-                    <span>Invalid Username</span>
-                </p>
-            </div>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>            
         </div>
         <div class="form-group has-feedback">
             <input type="password" class="form-control" placeholder="Password" formControlName="password">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            <div class="error" *ngIf="!loginForm.get('password')=='kaushal@1234'">
+            <div class="error" *ngIf="!isLoggedIn">
                 <p class="error-block">
-                    <span>Invalid Password</span>
+                    <span>Invalid username or password</span>
                 </p>
             </div>
         </div>

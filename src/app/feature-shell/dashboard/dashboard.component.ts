@@ -2,12 +2,16 @@ import { Component, OnInit } from '@angular/core';
 //import 'chart.piecelabel.js';
 import 'chartjs-plugin-datalabels';
 import Chart from 'chart.js';
+import { BranchService } from '../master/branch/branch.service';
+import { InstitutionService } from '../master/institution/institution.service';
+import { CityService } from '../master/city/city.service';
 declare let $;
 // declare var Chart: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  providers: [BranchService, InstitutionService,CityService]
 })
 export class DashboardComponent implements OnInit {
   arrMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -24,10 +28,14 @@ export class DashboardComponent implements OnInit {
   }
   arrActiveEmployeeList = [];
   arrCaseList = [];
-  constructor() { }
+  arCity = [];
+  branchPopupBody: string;
+  constructor(private _branchService: BranchService, private _institutionService: InstitutionService, private _cityService: CityService) { }
 
   ngOnInit() {
     var $this = this;
+    // this.bindCity();
+    // this.CheckBranchPopup();
     this.DailyChart(null, null);
     this.CustomerChart(null, null);
     this.CaseChart(null, null);
@@ -36,8 +44,8 @@ export class DashboardComponent implements OnInit {
     this.RecourseGraph();
     this.MostActiveEmployeeList();
     this.CaseUpdateList();
-    this.BillingChart(null,null);
-    this.ReceiptChart(null,null);
+    this.BillingChart(null, null);
+    this.ReceiptChart(null, null);
     $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter').daterangepicker({
       autoApply: true,
       locale: {
@@ -631,7 +639,7 @@ export class DashboardComponent implements OnInit {
     var config = {
       type: 'line',
       data: {
-        labels:  data,
+        labels: data,
         datasets: [{
           label: "Total Billing Per Month",
           data: data,
@@ -703,7 +711,7 @@ export class DashboardComponent implements OnInit {
     var config = {
       type: 'line',
       data: {
-        labels:  data,
+        labels: data,
         datasets: [{
           label: "Total Receipt Per Month",
           data: data,
@@ -755,5 +763,63 @@ export class DashboardComponent implements OnInit {
     var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('receipt-chart');
     var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
     new Chart(ctx, config);
+  }
+  ShowPopup() {
+
+    $('#subscriptionWarningModal').modal({
+      backdrop: 'static',
+      keyboard: false,
+      closeOnEscape: false,
+      open: function (event, ui) {
+        $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+      }
+    });
+  }
+  ShowBranchPopup() {
+    $('#subscriptionWarningModal').modal('hide');
+    $('#addBranchMasterModal').modal({
+    });
+    $('#addInstitutionMasterModal').modal({
+    });
+  }
+  CheckBranchPopup() {
+    var isNoBranch = false;
+    var isNoInsitituion = false;
+    this._branchService.getBranches().subscribe(
+      result => {
+        if (result.httpCode == 200) {
+          if (result.branches.length == 0) {
+            isNoBranch = true;
+            this.branchPopupBody = "Thank you for registration please fill further details for setup.";
+            //this.branchPopupBody = "Please create atleast one branch";
+            this.ShowPopup();
+          }
+        }
+      });
+    this._institutionService.getInstitutions().subscribe(
+      result => {
+        if (result.httpCode == 200) {
+          if (result.institutions.length == 0) {
+            if (isNoBranch)
+              this.branchPopupBody += " and institutions";
+            else {
+              this.branchPopupBody += "Please create atleast one institutions";
+              this.ShowPopup();
+            }
+            isNoInsitituion = true;
+
+          }
+        }
+      })
+  }
+  bindCity() {
+    this._cityService.getCities().subscribe(result => {
+      if (result.httpCode == 200) {
+        result.cities.forEach(item => {
+          this.arCity.push(item);
+        });
+      }
+    })
+
   }
 }

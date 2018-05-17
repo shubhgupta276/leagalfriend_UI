@@ -63,7 +63,7 @@
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a  class="small-box-footer">More info
+          <a class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -80,7 +80,7 @@
           <div class="icon">
             <i class="ion ion-person-add"></i>
           </div>
-          <a  class="small-box-footer">More info
+          <a class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -174,7 +174,7 @@
         <div class="box box-info">
           <div class="box-header">
             <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Total Billing</h3>            
+            <h3 class="box-title">Total Billing</h3>
           </div>
           <div class="box-body">
             <!-- <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div> -->
@@ -220,7 +220,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
+                  <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
                     <tr *ngIf="i<5">
                       <td>{{i+1}}</td>
                       <td>{{item.Name}}</td>
@@ -308,61 +308,113 @@
 
         </div>
         <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Recently Updated Cases</h3>
-  
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                  <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove">
-                  <i class="fa fa-times"></i>
-                </button>
-              </div>
+          <div class="box-header with-border">
+            <h3 class="box-title">Recently Updated Cases</h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+              </button>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                    <tr>
-                      <th>CaseId</th>
-                      <th>Name</th>
-                      <th>Resource Type</th>
-                      <th>Near Hearing Date</th>
-                      <th>Branch</th>
-                      <th>Employee</th>
-                      <th>Last Update</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      <ng-template ngFor let-item [ngForOf]="arrCaseList" let-i="index">
-                      <tr *ngIf="i<5">
-                        <td>{{item.CaseId}}</td>
-                        <td>{{item.Name}}</td>
-                        <td>{{item.ResourceType}}</td>
-                        <td>{{item.NearHearingDate | date}}</td>
-                        <td>{{item.Branch}}</td>
-                        <td>{{item.Employee}}</td>
-                        <td>{{item.LastUpdate | date}}</td>
-                      </tr>
-                    </ng-template>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix" style="text-align:center">
-              <a routerLink="/admin/case" class="btn btn-sm btn-default btn-flat">View More</a>
-            </div>
-            <!-- /.box-footer -->
           </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table no-margin">
+                <thead>
+                  <tr>
+                    <th>CaseId</th>
+                    <th>Name</th>
+                    <th>Resource Type</th>
+                    <th>Near Hearing Date</th>
+                    <th>Branch</th>
+                    <th>Employee</th>
+                    <th>Last Update</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-template ngFor let-item [ngForOf]="arrCaseList" let-i="index">
+                    <tr *ngIf="i<5">
+                      <td>{{item.CaseId}}</td>
+                      <td>{{item.Name}}</td>
+                      <td>{{item.ResourceType}}</td>
+                      <td>{{item.NearHearingDate | date}}</td>
+                      <td>{{item.Branch}}</td>
+                      <td>{{item.Employee}}</td>
+                      <td>{{item.LastUpdate | date}}</td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix" style="text-align:center">
+            <a routerLink="/admin/case" class="btn btn-sm btn-default btn-flat">View More</a>
+          </div>
+          <!-- /.box-footer -->
+        </div>
       </section>
       <!-- right col -->
     </div>
     <!-- /.row (main row) -->
-
+    <!-- Popup Start -->
+    <div class="modal fade" id="subscriptionWarningModal">
+      <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 5px;">
+          <div class="modal-header modal-header-addedit">
+            <button type="button" id="closebtn" class="close close-addedit">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">User Onboarding</h4>
+          </div>
+          <div style="background-color:#ffd42a; color: white; border-color: #ddd; border-radius: 5px;
+        height:99px ">
+            <img src="/assets/dist/img/warning.png" style="width:70px;margin-left:250px" />
+          </div>
+          <div style="width:120px;height:10%;background-color:black;"></div>
+          <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+            <div class="row">
+              <!-- <div class="col-md-12"> -->
+              <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+              <div>
+                <div class="box-body widget-content">
+                  <form class="form-horizontal">
+                    <div class="form-body">
+                      <div class="tab-content">
+                        <div class="tab-pane active">
+                          <div class="form-group row" style="text-align: center">
+                            <h2>{{branchPopupBody}}</h2>
+                            <div class="form-group row">
+                              <div class="col-md-4">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div style="text-align: right">
+                        <a class="btn btn-success" (click)="ShowBranchPopup()">Next</a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- </div> -->
+            </div>
+            <!-- Create User ends -->
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+<!-- Popup End -->
+<app-add-branch [arCity]="arCity"></app-add-branch>
+<app-add-institution [arCity]="arCity"></app-add-institution>
   </section>
   <!-- /.content -->
 </div>

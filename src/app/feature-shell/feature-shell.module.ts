@@ -26,7 +26,7 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule
   ],
   declarations: [FeatureShellComponent, 
-    CalendarComponent, DashboardComponent,EmployeeActiveComponent
+    CalendarComponent, EmployeeActiveComponent
   ],
   providers: [AuthService]
 })
