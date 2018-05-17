@@ -50,9 +50,8 @@ export class AddInstitutionDashboardComponent implements OnInit {
 
         if (_result.httpCode == 200) { 
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          $('#addInstitutionMasterModal').modal('hide');
           this.AddInstitutionMaster();
-          this.closeModal();
-          this.subscriberFields();
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -62,19 +61,7 @@ export class AddInstitutionDashboardComponent implements OnInit {
       });
   }
 
-  closeModal() {
-    $('#closebtn').click();
-  }
-
   ngOnInit() {
-    this.subscriberFields();
   }
   
-  subscriberFields() {
-    this.addInstitutionMasterForm.get('institutionName').valueChanges.subscribe(
-      (e) => {
-      
-      }
-    );
-  }
 }

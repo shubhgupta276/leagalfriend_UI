@@ -1,3 +1,8 @@
+<style>
+    .modal-dialog .close {
+      display: none !important;
+    }
+  </style>
 <div class="modal fade" id="addInstitutionMasterModal">
   <div class="modal-dialog">
     <div class="modal-content" style="border-radius: 5px;">
@@ -103,7 +108,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addInstitutionMasterForm.get('contactNo').invalid &&  addInstitutionMasterForm.get('contactNo').touched">
-                          <input class="form-control" OnlyString="true" placeholder="Contact No" formControlName="contactNo">
+                          <input class="form-control" OnlyNumber="true" placeholder="Contact No" formControlName="contactNo">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="addInstitutionMasterForm.get('contactNo').invalid &&  addInstitutionMasterForm.get('contactNo').touched">
                           <small class="text-danger">
@@ -121,8 +126,8 @@
                   </div>
                 </div>
                 <div class="modal-footer modal-footer-addedit">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" [disabled]="addInstitutionMasterForm.invalid || isInstitutionAlreadyExists" class="btn btn-modal-addedit">Submit</button>
+                  <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                  <button type="submit" [disabled]="addInstitutionMasterForm.invalid" class="btn btn-modal-addedit">Finish</button>
                 </div>
               </form>
             </div>
