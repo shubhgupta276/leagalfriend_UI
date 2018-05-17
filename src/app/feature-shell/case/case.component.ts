@@ -51,7 +51,7 @@ export class CaseComponent implements OnInit {
   }
 
   getRunningCase() {
-
+debugger
     var $this = this;
     var reqData = {
       userId: this._storageService.getUserId(),
@@ -77,7 +77,7 @@ debugger
 
 
   ngOnInit() {
-    //this.getRunningCase();
+    this.getRunningCase();
     const self = this;
     this.getBranchDDL();
     this.bindRecourseDDL();

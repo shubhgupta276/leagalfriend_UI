@@ -94,6 +94,7 @@ export class LoginComponent implements OnInit {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
+    debugger
     this.authService.login(loginDetails).subscribe(
       result => {        
         this._login = result;
@@ -108,12 +109,8 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
-        this.isLoggedIn=false;
         console.log(err);
       });
-  }
-
-  forgotPassword(): void {    
     this.router.navigate(['forgotpassword']);
   }
 }
