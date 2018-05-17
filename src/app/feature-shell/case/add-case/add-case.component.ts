@@ -385,7 +385,7 @@ if(result==0)
         result.forEach(function (value) {
           $this.ParentCases.push({ id: value.courtCaseId, text: value.courtCaseId });
         });
-        alert()
+    
         $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'id');
       },
       err => {
@@ -415,8 +415,9 @@ if(result==0)
 
     objEditCase.managerId = data.manager[0].id;
     objEditCase.stateId = data.state[0].id;
-    // objEditCase.parentCaseId = data.parentCase[0].id;
-   console.log(objEditCase);
+    debugger
+     objEditCase.parentCaseId = data.parentCase;
+   
 
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
