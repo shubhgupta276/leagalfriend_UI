@@ -125,12 +125,13 @@
                                 <em class="astrick">*</em>
                               </label>
                               <div class="col-md-9" *ngIf="ParentCases.length > 0">
+                                  <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+                         
 
-
-                                <ng-select [allowClear]="true" [items]="ParentCases" [active]="parentcaseSelected" formControlName="parentCase" [disabled]="disabled"
+                                <!-- <ng-select [allowClear]="true" [items]="ParentCases" [active]="parentcaseSelected" formControlName="parentCase" [disabled]="disabled"
                                   (data)="refreshValue($event)" (selected)="selectParentCase1($event)" (removed)="removed($event)"
                                   (typed)="typed($event)" placeholder="No parent case selected">
-                                </ng-select>
+                                </ng-select> -->
                               </div>
                             </div>
                             <div class="form-group row">

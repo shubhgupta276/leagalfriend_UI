@@ -75,17 +75,17 @@ export class AddCaseComponent implements OnInit {
 
 
  
-  onSelect(item: any) {
-    this.selectedItem = item;
-  }
+  // onSelect(item: any) {
+  //   this.selectedItem = item;
+  // }
  
-  onInputChangedEvent(val: string) {
-    this.inputChanged = val;
-  }
+  // onInputChangedEvent(val: string) {
+  //   this.inputChanged = val;
+  // }
  
-  search (term: string) {
-    this.service.search(term).subscribe(e => this.wikiItems = e, error => console.log(error));
-  }
+  // search (term: string) {
+  //   this.service.search(term).subscribe(e => this.wikiItems = e, error => console.log(error));
+  // }
   ///////////////////////////////////end////////////////////////////////////////////////////
 
   addCaseForm: FormGroup;

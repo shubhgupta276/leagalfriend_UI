@@ -5,7 +5,7 @@
 </div>
 
 <div class="register-box-body">
-  <p class="login-box-msg">Register a new membership</p>
+  <p class="login-box-msg" id="registermsg">Register a new membership</p>
   <!-- form container start -->
   <ng-container *ngIf="!isMailSent">
     <form [formGroup]="signupForm" (ngSubmit)="registerUser(signupForm.value)">
@@ -135,17 +135,15 @@
         <!-- </div> -->
       </div>
     </form>
+  
+    <!-- <div [ngBusy]="{busy: busy, message: 'Loading...', backdrop: false, delay: 1000, minDuration: 600}"></div> -->
+    <div class="my-container">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+       
+    </div>
 
-    <!-- <div class="social-auth-links text-center">
-    <p>- OR -</p>
-    <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-      <i class="fa fa-facebook"></i> Sign up using Facebook
-    </a>
-    <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-      <i class="fa fa-google-plus"></i> Sign up using Google+
-    </a>
-  </div> -->
-
+   
+    
     <a routerLink="/login" class="text-center">I already have a membership</a>
   </ng-container>
   <!-- end form container -->
@@ -155,7 +153,6 @@
       <p>We have sent a verification mail in you email. Please check you inbox and confirm.</p>
     </div>
     <div class="center">
-
       <button type="submit" class="btn btn-primary btn-flat" (click)="redirectToLogin()">Login</button>
     </div>
   </ng-container>
