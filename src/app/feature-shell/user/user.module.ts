@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 
+
 @NgModule(
     {
         imports: [
@@ -14,7 +15,8 @@ import { SharedModule } from '../../shared/shared.module';
             FormsModule,
             ReactiveFormsModule,
             CommonModule,
-            SharedModule
+            SharedModule,
+          
         ],
         declarations: [ UserComponent, AddUserComponent, EditUserComponent ]
     }

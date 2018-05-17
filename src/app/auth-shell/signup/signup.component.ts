@@ -3,6 +3,7 @@ import { Router,ActivatedRoute,Params } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue } from '../../shared/Utility/util-common';
 import { matchValidator } from '../../shared/Utility/util-custom.validation';
+import {Subscription} from 'rxjs';
 import {
   HttpClient,
   HttpRequest,
@@ -11,6 +12,7 @@ import {
   HttpErrorResponse,
   HttpParams
 } from '@angular/common/http';
+import {Http} from '@angular/http';
 import { UserModel } from '../../shared/models/user/user.model';
 import { SignUpModel, LoginCredential, Roles,Address,UserType } from '../../shared/models/auth/signup.model';
 import { AuthService } from '../auth-shell.service';
@@ -29,6 +31,9 @@ declare let subscriptionId;
 })
 
 export class SignupComponent implements OnInit {
+  //busy: Promise<any>;
+  busy: Subscription;
+  public loading = false;
   signupForm: FormGroup;
   public _signup: any;
   Roles: KeyValue[] = UserRoles;
@@ -41,7 +46,7 @@ export class SignupComponent implements OnInit {
   Subscription:any=[];
   UserType:any=[];
 subscriptionId:number;
-  constructor(private router: Router, private fb: FormBuilder, private _httpClient: HttpClient,
+  constructor(private http: Http,private router: Router, private fb: FormBuilder, private _httpClient: HttpClient,
     private authService: AuthService,private activatedRoute: ActivatedRoute) {
       this.activatedRoute.queryParams.subscribe((params: Params) => {
         this.subscriptionId = params['subscription'];
@@ -50,9 +55,7 @@ subscriptionId:number;
     this.createSignup( this.subscriptionId);
    
   }
-
   ngOnInit() {
-    
     
    this.getUserSubscription();
    this.getusersType();
@@ -177,7 +180,7 @@ subscriptionId:number;
       });
   }
   registerUser(data) {
-
+    this.loading = true;
     const signUpDetails = new SignUpModel();
     {
       signUpDetails.address= {
@@ -215,13 +218,14 @@ subscriptionId:number;
 
       result => {
         
-        console.log(result);
+        this.loading = false;
         this._signup = result;
         this.isMailSent = true;
-        // this.router.navigate(['/']);
+       $('#registermsg').hide();
       },
       err => {
         console.log(err);
+        this.loading = false;
       });
     
   }

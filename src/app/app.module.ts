@@ -14,6 +14,8 @@ import { SharedModule } from './shared/shared.module';
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
 import { StorageService } from './shared/services/storage.service';
 import { Ng2CompleterModule } from "ng2-completer";
+import {BusyModule} from 'angular2-busy';
+
 
 import { NgxPermissionsModule } from 'ngx-permissions';
 @NgModule({
@@ -24,7 +26,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     AppRoutingModule,
     SharedModule,
     Ng2CompleterModule,
-    NgxPermissionsModule.forRoot()
+    NgxPermissionsModule.forRoot(),
+    BusyModule
   ],
   declarations: [
     AppComponent

@@ -130,7 +130,7 @@
                         <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
                           <!-- <em class="astrick">*</em> -->
                         </label>
-                        <div class="col-md-9" *ngIf="ParentCases.length>0" >
+                        <div class="col-md-9" >
 
                             <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
                          

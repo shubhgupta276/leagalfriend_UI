@@ -14,6 +14,9 @@ import {TokenModel} from '../shared/models/auth/token.model';
 import { changepasswordComponent } from './changepassword/changepassword.component';
 import { HomeComponent } from './home/home.component';
 
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+
+
 
 @NgModule({
     imports: [
@@ -22,7 +25,16 @@ import { HomeComponent } from './home/home.component';
       FormsModule,
       ReactiveFormsModule,
       AuthShellRoutingModule,
-      SharedModule
+      SharedModule,
+   
+      LoadingModule.forRoot({
+        animationType: ANIMATION_TYPES.wanderingCubes,
+        backdropBackgroundColour: 'rgba(0,0,0,0.5)', 
+        backdropBorderRadius: '4px',
+        primaryColour: '#blue', 
+        secondaryColour: '#ffffff', 
+        tertiaryColour: '#ffffff'
+    })
      ],
 
    declarations: [

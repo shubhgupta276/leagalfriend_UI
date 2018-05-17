@@ -219,11 +219,11 @@ export class EditCaseComponent implements OnInit {
       const objStage = this.Stage.filter(x => x.id == c.stageId);
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
-      this.parentcaseSelected = [];
+      // this.parentcaseSelected = [];
       
-      const objParentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
-      this.parentcaseSelected.push({ id: c.parentCaseId, text: objParentCase[0].text });
-      this.selectedParentCase = this.parentcaseSelected[0];
+      // const objParentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
+      // this.parentcaseSelected.push({ id: c.parentCaseId, text: objParentCase[0].text });
+      // this.selectedParentCase = this.parentcaseSelected[0];
       this.customerSelected = [];
       const objcustomerSelected = this.CustomerName.filter(x => x.id == c.customerId);
       this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -232,7 +232,7 @@ export class EditCaseComponent implements OnInit {
       const objmanagerSelected = this.Manager.filter(x => x.id == c.managerId);
       this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
       this.selectedManager = this.managerSelected[0];
-      
+      debugger
       this.employeeSelected = [];
       const objemployeeSelected = this.Employee.filter(x => x.id == c.employeeId);
       this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
@@ -270,6 +270,7 @@ export class EditCaseComponent implements OnInit {
       courtplace: [c == null ? null : c.courtId],
       oppLawyer: [c == null ? null : c.oppLawyer],
       childCase: [c == null ? null : c.childCase],
+    
       lastHearingDate: [c == null ? null : this.datePipe.transform(c.lastHearingDate, "yyyy-MM-dd")],
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, "yyyy-MM-dd")]
@@ -315,10 +316,7 @@ export class EditCaseComponent implements OnInit {
           const objStage = this.Stage.filter(x => x.id == c[0].legalCase.stageId);
           this.stageSelected.push({ id: c[0].legalCase.stageId, text: objStage[0].text });
           this.selectedStage = this.stageSelected[0];
-          this.parentcaseSelected = [];
-          const objParentCase = this.ParentCases.filter(x => x.id == c[0].legalCase.parentCaseId);
-          this.parentcaseSelected.push({ id: c[0].legalCase.parentCaseId, text: objParentCase[0].text });
-          this.selectedParentCase = this.parentcaseSelected[0];
+         
           this.customerSelected = [];
           const objcustomerSelected = this.CustomerName.filter(x => x.id == c[0].legalCase.customerId);
           this.customerSelected.push({ id: c[0].legalCase.customerId, text: objcustomerSelected[0].text });
@@ -639,8 +637,6 @@ export class EditCaseComponent implements OnInit {
       
       result => {
 
-        //if (result.body.httpCode == 200) { //success
-         
           $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
           $('#editCaseModal').modal('hide');
           $(window.location.href="/admin/case");
@@ -657,7 +653,7 @@ export class EditCaseComponent implements OnInit {
   
 
   submitEditCaseUser(data) {
-
+debugger
 
     const objEditCase = new EditCase();
     objEditCase.id = data.caseId;
@@ -679,7 +675,7 @@ export class EditCaseComponent implements OnInit {
     objEditCase.childCase = data.childCase;
     objEditCase.lastHearingDate = this.datePipe.transform(data.lastHearingDate, "yyyy-MM-dd");
     objEditCase.remark = data.remark;
-    objEditCase.parentCaseId=this.selectedParentCase.id;
+    objEditCase.parentCaseId=data.parentCase;
 
     this.authService.updateEditCaseUser(objEditCase).subscribe(
 
