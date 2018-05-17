@@ -26,12 +26,12 @@ export class BillingComponent implements OnInit {
     arAllRecourses: any[] = [];
     arAllInstitution: any = [];
     JSON: any;
+    $table: any;
     @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
 
     constructor(private _billingservice: BillingService, private _institutionService: InstitutionService, private _recourseService: RecourseService, ) {
         this.JSON = JSON;
     }
-    $table: any;
     ngOnInit() {
         const self = this;
         this.getBillingData();
@@ -42,63 +42,78 @@ export class BillingComponent implements OnInit {
             $('#chkAllInvoice').change(function () {
                 $('.chkInvoice').prop("checked", $(this).prop('checked'));
             });
-            
+
             $('#reservation').daterangepicker({
                 autoApply: true,
                 locale: {
                     format: 'MM-DD-YYYY'
                 }
-                
+
             });
-           
+
 
         });
+    }
+    SearchFilter() {
+        var self = this;
+        var bankVal = $('#ddlBank1').val();
+        // start recourse filter
+        if (bankVal == "All") {
+            self.$table.columns(2).search("").draw();
+        }
+        else if (self.$table.columns(2).search() !== bankVal) {
+            self.$table.columns(2).search(bankVal).draw();
+        }
+        //     //end recourse filter
+        $("#chkInvoice").show();
+        self.$table.draw();
+        $("#closebtnFilter").click();
 
     }
     bindDatatable() {
-
+        var self = this;
         var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
         var selectedPageLength = 15;
-    
-        var $table = $("#example1").DataTable({
-          paging: true,
-          lengthChange: true,
-          searching: true,
-          ordering: true,
-          info: true,
-          autoWidth: false,
-          lengthMenu: arLengthMenu,
-          pageLength: selectedPageLength,
-          oLanguage: {
-            sLengthMenu: "Show _MENU_ rows",
-            sSearch: "",
-            sSearchPlaceholder: "Search..."
-          },
-          initComplete: function () {
-            var tableid = "example1";
-            var $rowSearching = $("#" + tableid + "_wrapper");
-            $rowSearching.find(".row:eq(0)").hide();
-    
-            for (var i = 0; i < arLengthMenu[0].length; i++) {
-              $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+
+        this.$table = $("#example1").DataTable({
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            autoWidth: false,
+            lengthMenu: arLengthMenu,
+            pageLength: selectedPageLength,
+            oLanguage: {
+                sLengthMenu: "Show _MENU_ rows",
+                sSearch: "",
+                sSearchPlaceholder: "Search..."
+            },
+            initComplete: function () {
+                var tableid = "example1";
+                var $rowSearching = $("#" + tableid + "_wrapper");
+                $rowSearching.find(".row:eq(0)").hide();
+
+                for (var i = 0; i < arLengthMenu[0].length; i++) {
+                    $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+                }
+                $("#ddlLengthMenu").val(selectedPageLength);
+
+                $("#ddlLengthMenu").on("change", function () {
+                    $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+                });
             }
-            $("#ddlLengthMenu").val(selectedPageLength);
-    
-            $("#ddlLengthMenu").on("change", function () {
-              $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+        });
+
+        self.$table.columns().every(function () {
+            $('#txtSearch').on('keyup change', function () {
+                if (self.$table.search() !== this.value) {
+                    self.$table.search(this.value).draw();
+                }
             });
-          }
         });
-    
-        $table.columns().every(function () {
-          $('#txtSearch').on('keyup change', function () {
-            if ($table.search() !== this.value) {
-              $table.search(this.value).draw();
-            }
-          });
-        });
-    
-      }
+
+    }
 
     CreateInvoice() {
         var $this = this;
@@ -144,10 +159,10 @@ export class BillingComponent implements OnInit {
     }
 
     getBillingData() {
-        
+
         this._billingservice.getBilling().subscribe(
             result => {
-                
+
                 if (result.length > 0) {
                     debugger
                     for (var i = 0; i < result.length; i++) {
@@ -162,14 +177,14 @@ export class BillingComponent implements OnInit {
                             stageId: obj.stage.id,
                             stageName: obj.stage.stageName,
                             userId: obj.userId,
-                            caseId:obj.caseId,
-                            billingDate:new Date(obj.billingDate)
+                            caseId: obj.caseId,
+                            billingDate: new Date(obj.billingDate)
                         })
                     }
                     this.setDropdownUniqueValues();
                     setTimeout(() => {
-                         //this.bindBillingGridPaging();
-                         this.bindDatatable();
+                        //this.bindBillingGridPaging();
+                        this.bindDatatable();
                     }, 1);
                 }
                 else {
@@ -181,7 +196,7 @@ export class BillingComponent implements OnInit {
                 this.arBillingData = [];
 
             });
-       
+
     }
     getAllRecourses() {
         this._recourseService.getResources().subscribe(
@@ -206,19 +221,19 @@ export class BillingComponent implements OnInit {
             })
     }
     RemoveBilling(item) {
-        if(!confirm("Are you sure you want to delete this record?")) {
-           return false;
-          }
+        if (!confirm("Are you sure you want to delete this record?")) {
+            return false;
+        }
         var billingId = '?billingId =' + item.id;
-        // this._billingservice.deleteBilling(billingId)
-        //     .map(res => res)
-        //     .subscribe(
-        //         data => {
-        //             $.toaster({ priority: 'success', title: 'Success', message: "Record deleted successfully." });
-        //         },
-        //         error => console.log(error)
-        //     );
-        
+        this._billingservice.deleteBilling(billingId)
+            .map(res => res)
+            .subscribe(
+                data => {
+                    $.toaster({ priority: 'success', title: 'Success', message: "Record deleted successfully." });
+                },
+                error => console.log(error)
+            );
+
     }
     showEditModal(data) {
         this.editChild.createForm(data);

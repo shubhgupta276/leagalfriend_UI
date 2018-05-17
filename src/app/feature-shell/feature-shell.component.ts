@@ -4,6 +4,8 @@ import { SharedService } from '../shared/services/shared.service'
 import { BranchService } from './master/branch/branch.service';
 import { StorageService } from '../shared/services/storage.service';
 import { UserService } from './user/user.service';
+import { NgxPermissionsService,NgxRolesService } from 'ngx-permissions';
+import 'rxjs/add/observable/of';
 import { DatePipe } from '@angular/common';
 declare var $;
 declare let Zone: any;
@@ -29,7 +31,10 @@ export class FeatureShellComponent implements OnInit {
   constructor(private authService: AuthService, private sharedService: SharedService,
     private _storageService: StorageService,
     private _branchService: BranchService,
-    private userService: UserService,private datePipe: DatePipe) {
+    private userService: UserService,
+    private permissionsService: NgxPermissionsService,
+    private rolesService: NgxRolesService,
+    private datePipe: DatePipe) {
     sharedService.changeEmitted$.subscribe(Zone.current.wrap(
       text => {
         this.totalUpcomingEvents = text;
@@ -38,8 +43,8 @@ export class FeatureShellComponent implements OnInit {
     sharedService.GetEventsGroup();
   }
 
-  ngOnInit() {
-   
+  ngOnInit() {   
+
     var branchData = this._storageService.getBranchData();
     this.branchConfig = {
       displayKey: "branchName",
@@ -122,6 +127,10 @@ export class FeatureShellComponent implements OnInit {
   showmastermenu() {
     $("#limastermenu").toggle();
   }
+  showinstitutionalmenu()
+  {
+    $("#liinstitutionalmenu").toggle();
+  }
 GetLoggedInUserDetails()
 {
   
@@ -129,7 +138,7 @@ GetLoggedInUserDetails()
   var client = '?userId=' + localStorage.getItem('client_id');
   this.userService.getUser(client).subscribe(
       data => {   
-      
+      debugger
          if(data.showSubscriptionFlash==true)
          {
            $("#flash").show();
@@ -140,6 +149,7 @@ GetLoggedInUserDetails()
          }
          debugger
         $this.userDetails.Name = data.firstName + " " + data.lastName;
+        $this.permissionsService.loadPermissions([data.roles[0].roleName]);
         $this.subscriptionEndDate.subscriptionEndDate=this.datePipe.transform(data.subscriptionEndDate,"yyyy-MM-dd");
       },
       error => console.log(error)

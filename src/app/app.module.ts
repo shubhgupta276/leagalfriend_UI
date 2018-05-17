@@ -15,6 +15,7 @@ import { LFAuthantication } from './shared/services/lfAuthantication-service';
 import { StorageService } from './shared/services/storage.service';
 import { Ng2CompleterModule } from "ng2-completer";
 
+import { NgxPermissionsModule } from 'ngx-permissions';
 @NgModule({
   imports: [
     BrowserModule,
@@ -22,7 +23,8 @@ import { Ng2CompleterModule } from "ng2-completer";
     AuthShellModule,
     AppRoutingModule,
     SharedModule,
-    Ng2CompleterModule
+    Ng2CompleterModule,
+    NgxPermissionsModule.forRoot()
   ],
   declarations: [
     AppComponent

@@ -42,7 +42,7 @@ export class AddUserComponent implements OnInit {
       Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
       confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
-      role: [1],
+      role: [2],
       status: [1]
     });
   }
@@ -60,19 +60,21 @@ export class AddUserComponent implements OnInit {
     userDetails.mobileNumber = data.mobileNumber;
     userDetails.roles = [
       {
-        id: data.role
+        id: data.role,
+        roleName: this.getRoleName(data.role)
       }
     ];
-    userDetails.address = 
+    userDetails.address =
       {
         address1: data.addressLine1,
-        address2:data.addressLine2,
-        city:'',
-        state:'',
-        zipCode:data.postalCode
+        address2: data.addressLine2,
+        city: '',
+        state: '',
+        zipCode: data.postalCode
       };
     userDetails.status = {
-      statusId: data.status
+      statusId: data.status,
+      statusName: this.getStatusName(data.status)
     };
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
@@ -133,5 +135,21 @@ export class AddUserComponent implements OnInit {
         }
       }
     );
+  }
+  getRoleName(roleId): string {
+    const objFind = this.Roles.filter(x => x.id == roleId)[0];
+    if (objFind)
+      return objFind.roleName;
+    else
+      return "";
+
+  }
+  getStatusName(statusId): string {
+    const objFind = this.Status.filter(x => x.statusId == statusId)[0];
+    if (objFind)
+      return objFind.statusName;
+    else
+      return "";
+
   }
 }

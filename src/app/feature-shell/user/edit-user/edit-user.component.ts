@@ -40,6 +40,7 @@ export class EditUserComponent {
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
   }
   submitEditUser(data) {
+    debugger
     if (this.isStatusChange)
       data.statusName = this.selectedStatus;
     if (this.isRoleChange)
@@ -127,7 +128,6 @@ export class EditUserComponent {
     return userdata;
   }
   createForm(user) {
-    debugger
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],

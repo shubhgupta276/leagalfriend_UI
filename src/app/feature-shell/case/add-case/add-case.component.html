@@ -130,13 +130,13 @@
                         <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
                           <!-- <em class="astrick">*</em> -->
                         </label>
-                        <div class="col-md-9" *ngIf="ParentCases.length > 0">
+                        <div class="col-md-9" *ngIf="ParentCases.length>0" >
 
-                          <!-- <ngx-select-dropdown [config]="config" [options]="ParentCases"  
-                                  [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                  <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                            <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+                         
+                                  <!-- <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No parent case selected">
-                                </ng-select>
+                                </ng-select> -->
                         </div>
                       </div>
                       <div class="form-group row">
