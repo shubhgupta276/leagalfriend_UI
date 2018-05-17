@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   emailValidationMessage: string = "Email address is required.";
   public _login: any;
-  isLoggedIn=true;
+  isLoggedInError=false;
   public submitted: boolean;
   public events: any[] = [];
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
@@ -105,12 +105,12 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('client_id', clientId);
           localStorage.setItem('user_id', data.email);
           this.router.navigate(['admin/dashboard']);
-          this.isLoggedIn=true;
+          this.isLoggedInError=false;
         }
       },
       err => {
+        this.isLoggedInError=true;
         console.log(err);
       });
-    this.router.navigate(['forgotpassword']);
   }
 }

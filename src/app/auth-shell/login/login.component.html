@@ -73,7 +73,7 @@
         <div class="form-group has-feedback">
             <input type="password" class="form-control" placeholder="Password" formControlName="password">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            <div class="error" *ngIf="!isLoggedIn">
+            <div class="error" *ngIf="isLoggedInError">
                 <p class="error-block">
                     <span>Invalid username or password</span>
                 </p>
