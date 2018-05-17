@@ -1,0 +1,145 @@
+<div class="modal fade" id="addInstitutionMasterModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Add Institution</h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+        <!-- Edit Case Starts -->
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+              <form [formGroup]="addInstitutionMasterForm" class="form-horizontal" (ngSubmit)="submitAddInstitutionMaster(addInstitutionMasterForm.value)">
+                <div class="form-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel" style="padding-left: 18px;">Institution Name:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addInstitutionMasterForm.get('institutionName').invalid &&  addInstitutionMasterForm.get('institutionName').touched">
+                          <input class="form-control" OnlyString="true" placeholder="Institution Name" formControlName="institutionName">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addInstitutionMasterForm.get('institutionName').invalid &&  addInstitutionMasterForm.get('institutionName').touched">
+                          <small class="text-danger">
+                            <span>Institution is required.</span>
+                          </small>
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="isInstitutionAlreadyExists">
+                          <small class="text-danger">
+                            <span>Institution already exists.</span>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel" style="padding-left: 18px;">Contact Person:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addInstitutionMasterForm.get('contactPerson').invalid &&  addInstitutionMasterForm.get('contactPerson').touched">
+                          <input class="form-control" OnlyString="true" placeholder="contact Person" formControlName="contactPerson">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addInstitutionMasterForm.get('contactPerson').invalid &&  addInstitutionMasterForm.get('contactPerson').touched">
+                          <small class="text-danger">
+                            <span>Contact Person is required.</span>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel" style="padding-left: 18px;">City:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addInstitutionMasterForm.get('city').invalid &&  addInstitutionMasterForm.get('city').touched">
+                          <select class="form-control" formControlName="city">
+                            <option value="">Select City</option>
+                            <option *ngFor="let item of arCity"  [ngValue]="item"> {{item.cityName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addInstitutionMasterForm.get('city').invalid &&  addInstitutionMasterForm.get('city').touched">
+                          <small class="text-danger">
+                            <span>City is required.</span>
+                          </small>
+                        </div>
+                      </div>
+
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel" style="padding-left: 18px;">Address:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addInstitutionMasterForm.get('address').invalid &&  addInstitutionMasterForm.get('address').touched">
+                          <input class="form-control" OnlyString="true" placeholder="Address" formControlName="address">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addInstitutionMasterForm.get('address').invalid &&  addInstitutionMasterForm.get('address').touched">
+                          <small class="text-danger">
+                            <span>Address is required.</span>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel" style="padding-left: 18px;">Billing Address:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addInstitutionMasterForm.get('billingAddress').invalid &&  addInstitutionMasterForm.get('billingAddress').touched">
+                          <input class="form-control" OnlyString="true" placeholder="Billing Address" formControlName="billingAddress">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addInstitutionMasterForm.get('billingAddress').invalid &&  addInstitutionMasterForm.get('billingAddress').touched">
+                          <small class="text-danger">
+                            <span>Billing Address is required.</span>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel" style="padding-left: 18px;">Contact No.:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addInstitutionMasterForm.get('contactNo').invalid &&  addInstitutionMasterForm.get('contactNo').touched">
+                          <input class="form-control" OnlyString="true" placeholder="Contact No" formControlName="contactNo">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addInstitutionMasterForm.get('contactNo').invalid &&  addInstitutionMasterForm.get('contactNo').touched">
+                          <small class="text-danger">
+                            <span>Contact No. is required.</span>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-4">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer modal-footer-addedit">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" [disabled]="addInstitutionMasterForm.invalid || isInstitutionAlreadyExists" class="btn btn-modal-addedit">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+        <!-- Create User ends -->
+      </div>
+      <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+                
+              </div> -->
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+
+</div>
