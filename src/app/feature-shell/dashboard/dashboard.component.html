@@ -12,6 +12,10 @@
     padding: 7px;
     font-weight: 600;
   }
+
+  .modal-dialog .close {
+    display: none !important;
+  }
 </style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -372,10 +376,10 @@
             </button>
             <h4 class="modal-title">User Onboarding</h4>
           </div>
-          <div style="background-color:#ffd42a; color: white; border-color: #ddd; border-radius: 5px;
+          <!-- <div style="background-color:#ffd42a; color: white; border-color: #ddd; border-radius: 5px;
         height:99px ">
             <img src="/assets/dist/img/warning.png" style="width:70px;margin-left:250px" />
-          </div>
+          </div> -->
           <div style="width:120px;height:10%;background-color:black;"></div>
           <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
             <div class="row">
@@ -388,16 +392,13 @@
                       <div class="tab-content">
                         <div class="tab-pane active">
                           <div class="form-group row" style="text-align: center">
-                            <h2>{{branchPopupBody}}</h2>
-                            <div class="form-group row">
-                              <div class="col-md-4">
-                              </div>
-                            </div>
+                            <!-- <h2>{{branchPopupBody}}</h2> -->
+                            <h4 style="color: green">Thank you for registration. Please fill further details for setup.</h4>                           
                           </div>
                         </div>
                       </div>
                       <div style="text-align: right">
-                        <a class="btn btn-success" (click)="ShowBranchPopup()">Next</a>
+                          <a type="submit" (click)="ShowBranchPopup()" class="btn btn-modal-addedit">Next</a>
                       </div>
                     </div>
                   </form>
@@ -412,9 +413,9 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-<!-- Popup End -->
-<app-add-branch [arCity]="arCity"></app-add-branch>
-<app-add-institution [arCity]="arCity"></app-add-institution>
+    <!-- Popup End -->
+    <app-add-branch [arCity]="arCity"></app-add-branch>
+    <app-add-institution [arCity]="arCity"></app-add-institution>
   </section>
   <!-- /.content -->
 </div>

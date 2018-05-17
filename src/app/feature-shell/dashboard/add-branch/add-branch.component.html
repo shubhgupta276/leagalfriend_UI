@@ -1,3 +1,8 @@
+<style>
+    .modal-dialog .close {
+      display: none !important;
+    }
+  </style>
 <div class="modal fade" id="addBranchMasterModal">
   <div class="modal-dialog">
     <div class="modal-content" style="border-radius: 5px;">
@@ -73,13 +78,18 @@
                                 <option *ngFor="let item of arCity"  [ngValue]="item"> {{item.cityName}}</option>
                               </select>
                         </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addBranchMasterForm.get('city').invalid &&  addBranchMasterForm.get('city').touched">
+                            <small class="text-danger">
+                              <span>City is required.</span>
+                            </small>
+                          </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Contact:
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addBranchMasterForm.get('contact').invalid &&  addBranchMasterForm.get('contact').touched">
-                          <input class="form-control" placeholder="Contact" formControlName="contact">
+                          <input class="form-control" OnlyNumber="true" placeholder="Contact" formControlName="contact">
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="addBranchMasterForm.get('contact').invalid &&  addBranchMasterForm.get('contact').touched">
                           <small class="text-danger">
@@ -99,8 +109,8 @@
                   </div>
                 </div>
                 <div class="modal-footer modal-footer-addedit">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" [disabled]="addBranchMasterForm.invalid || isBranchcodeAlreadyExists" class="btn btn-modal-addedit">Submit</button>
+                  <!-- <button type="submit" [disabled]="addBranchMasterForm.invalid" class="btn btn-modal-addedit">Next</button> -->
+                  <button type="submit" [disabled]="addBranchMasterForm.invalid" class="btn btn-modal-addedit">Next</button>
                 </div>
               </form>
             </div>
