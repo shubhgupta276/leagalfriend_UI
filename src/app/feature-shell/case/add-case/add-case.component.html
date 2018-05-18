@@ -2,6 +2,10 @@
   .ui-select-choices.dropdown-menu {
     display: block;
   }
+  .completer-dropdown-holder
+  {
+   background-color:red;
+  }
 </style>
 <div class="modal fade" id="addCaseModal">
   <div class="modal-dialog">
@@ -72,7 +76,7 @@
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No manager selected">
                                 </ng-select>
                         </div>
-                        <span style="color:red;display:none;margin-left:20px" id="spnManager">Please create Manager first</span>
+                        <span style="color:red;display:none;margin-left:20px" id="spnManager">Please create Manager first in User Management</span>
                       </div>
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label createUserLabel">Employee:
@@ -84,7 +88,7 @@
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No employee selected" formControlName="employee">
                                   </ng-select>
                           </div>
-                          <span style="color:red;display:none;margin-left:20px" id="spnEmployee">Please create Employee first</span>
+                          <span style="color:red;display:none;margin-left:20px" id="spnEmployee">Please create Employee first in User Management</span>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
@@ -96,7 +100,7 @@
                             </ng-select>
   
                             </div>
-                            <span style="color:red;display:none;margin-left:20px" id="spnCustomer">Please create Customer first</span>
+                            <span style="color:red;display:none;margin-left:20px" id="spnCustomer">Please create Customer first in User Management</span>
                           </div>
                       <div class="form-group row" >
                         <label class="col-sm-3 col-form-label createUserLabel">Court:
@@ -126,13 +130,13 @@
                         <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
                           <!-- <em class="astrick">*</em> -->
                         </label>
-                        <div class="col-md-9" *ngIf="ParentCases.length > 0">
+                        <div class="col-md-9" >
 
-                          <!-- <ngx-select-dropdown [config]="config" [options]="ParentCases"  
-                                  [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                                  <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                            <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+                         
+                                  <!-- <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                   (removed)="removed($event)" (typed)="typed($event)" placeholder="No parent case selected">
-                                </ng-select>
+                                </ng-select> -->
                         </div>
                       </div>
                       <div class="form-group row">
@@ -176,7 +180,7 @@
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" formControlName="branch">
                                   </ng-select>
                         </div>
-                        <span style="color:red;display:none;margin-left:20px" id="spnBranch">Please create Branch first</span>
+                        <span style="color:red;display:none;margin-left:20px" id="spnBranch">Please create Branch first in Master</span>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Filing date:
@@ -220,9 +224,17 @@
                           <!-- <em class="astrick">*</em> -->
                         </label>
                         <div class="col-md-9">
-                          <input class="form-control" placeholder="Child Case" formControlName="childCase">
+                          <!-- <input class="form-control" placeholder="Child Case" formControlName="childCase"> -->
+                          <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+                         
                         </div>
                       </div>
+
+                     
+                        
+                      
+                      
+                          
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
                           <!-- <em class="astrick">*</em> -->

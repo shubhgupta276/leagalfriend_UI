@@ -13,6 +13,9 @@ import {CommonModule} from '@angular/common';
 import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActive.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { SharedModule } from '../shared/shared.module';
+// import { Ng2CompleterModule } from "ng2-completer";
+
+
 @NgModule({
   imports: [
     // UserModule,
@@ -23,10 +26,11 @@ import { SharedModule } from '../shared/shared.module';
     SelectDropDownModule,
     FeatureShellRoutingModule,
     CommonModule ,
-    SharedModule
+    SharedModule,
+    
   ],
   declarations: [FeatureShellComponent, 
-    CalendarComponent, DashboardComponent,EmployeeActiveComponent
+    CalendarComponent, EmployeeActiveComponent
   ],
   providers: [AuthService]
 })
