@@ -1,7 +1,7 @@
 <div id="divContentInstitution" class="content-wrapper">
   <!-- Content Header (Page header) -->
   <!-- Main content -->
-  <div class="page-heading" >
+  <div class="page-heading">
     Institutional Clients
   </div>
   <section class="content">
@@ -18,22 +18,20 @@
           <div class="box-body">
             <div>
               <div class="row table-toolbar">
-                <div class="col-sm-2 heading">For</div>
-                <div class="col-sm-4">
-                  <select tabindex="3" class="form-control select2me input-sm" (change)="GetInstitutionDrpValue($event.target.value)">
-                      <!-- <option value="">Select Institution</option> -->
-                      <option *ngFor="let option of arInstitution" [ngValue]="option.institutionName">
-                        {{ option.institutionName }}
-                      </option>
+                <div class="col-sm-2 heading"></div>
+                <div class="col-sm-2" *ngIf="arInstitution.length>0">
+                  <select tabindex="3" class="form-control select2me input-sm" (change)="changeInstitution()" [(ngModel)]="InstitutionValue">
+                    <!-- <option value="">Select Institution</option> -->
+                    <option *ngFor="let option of arInstitution" [ngValue]="option">
+                      {{ option.institutionName }}
+                    </option>
                   </select>
                 </div>
+               
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" (change)="GetBranchDrpValue($event.target.value)">
-                        <!-- <option  value="">Select Branch</option> -->
-                        <option *ngFor="let item of arListBranch" value="{{item.name}}">
-                            {{item.name}}
-                        </option>
-                    </select>
+                  <div *ngIf="arRecourse.length>0">
+                    <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                  </div>
                 </div>
                 <div class="col-sm-2">
                   <label class="custom-label">Show
@@ -46,11 +44,14 @@
                 </div>
               </div>
             </div>
-              <table id="example1" class="table table-bordered table-hover">
-                <thead>
+            <table id="example1" class="table table-bordered table-hover">
+              <thead>
                 <tr>
-                    <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending" style="width: 35px;" aria-sort="ascending"><input type="checkbox" id="selectAlluserrep"></th>
-                   
+                  <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
+                    style="width: 35px;" aria-sort="ascending">
+                    <input type="checkbox" id="selectAlluserrep">
+                  </th>
+
                   <th>Case ID</th>
                   <th>Stage</th>
                   <th>Court Case Id</th>
@@ -59,51 +60,71 @@
                   <th>Next Hearing Date</th>
                   <th>Loan Account No</th>
                   <th>Action</th>
+                  <th style="display: none;">Recourse</th>
                 </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of arr" data-toggle="modal" (dblclick)="showEditInstitutionModal()" >
-                    <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending" style="width: 35px;" aria-sort="ascending"><input type="checkbox" id="selectAlluserrep"></th>
-                   
-                  <td>{{item.CaseId}}</td>
-                  <td>{{item.Stage}}</td>
-                  <td>{{item.CourtCaseId}}</td>
-                  <td>{{item.LegalCaseId}}</td>
-                  <td>{{item.LastHearingDate}}</td>
-                  <td>{{item.NextHearingDate}}</td>
-                  <td>{{item.LoanAccountNo}}</td>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of arr" data-toggle="modal" (dblclick)="showEditInstitutionModal()">
+                  <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
+                    style="width: 35px;" aria-sort="ascending">
+                    <input type="checkbox"  #rowChecked (change)="checkboxChange(rowChecked.checked)">
+                  </th>
+
+                  <td>{{item.caseId}}</td>
+                  <td>{{item.caseStage}}</td>
+                  <td>{{item.courtCaseId}}</td>
+                  <td>{{item.legalCaseId}}</td>
+                  <td>{{item.previousHearingDate}}</td>
+                  <td>{{item.nextHearingDate}}</td>
+                  <td>{{item.loanAccountNumber}}</td>
                   <td>
-                  <a><i class="fa fa-edit"></i></a><a><i class="fa fa-history"></i></a>
-                    
+                    <a>
+                      <i class="fa fa-edit"></i>
+                    </a>
+                    <a>
+                      <i class="fa fa-history"></i>
+                    </a>
+
                   </td>
+                  <td style="display: none;">{{item.recourse}}</td>
                 </tr>
                 <tr *ngIf="!arr || arr.length == 0">
                   <td colspan="9">No Record Found...!</td>
                 </tr>
-                </tbody>
-               
-              </table>
-            </div>
-            <!-- /.box-body -->
+              </tbody>
+
+            </table>
           </div>
-          <!-- /.box -->
+          <!-- /.box-body -->
         </div>
-        <!-- /.col -->
+        <!-- /.box -->
+        <ng-container *ngIf="checkboxCounter>0">
+          <div class="export1">
+            <img src="/assets/dist/img/download1.png" height="40">
+          </div>
+
+          <div class="export2">
+            <img src="/assets/dist/img/download2.png" height="40">
+          </div>
+        </ng-container>
       </div>
-      <!-- /.row -->
-    </section>
+      <!-- /.col -->
+    </div>
+
+    <!-- /.row -->
+  </section>
   <!-- /.content -->
 </div>
 
-<div class="favicon">
-    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
-      <span class="tooltip-text">Import Cases</span>
-    </div>
-    <a>
-      <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addForInstitutionModal"></i>
-    </a>
+
+
+<div class="favicon" (click)="openPopup()">
+  <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+    <span class="tooltip-text" >Import Cases</span>
   </div>
-  <add-for-institution-modal [InstitutiondrpValue] = "InstitutionValue" [BranchdrpValue]="BranchValue"></add-for-institution-modal> 
-  <edit-for-institution-modal></edit-for-institution-modal> 
-  
-  
+  <a>
+    <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addForInstitutionModal"></i>
+  </a>
+</div>
+<add-for-institution-modal [Institution]="InstitutionValue"></add-for-institution-modal>
+<edit-for-institution-modal></edit-for-institution-modal>
