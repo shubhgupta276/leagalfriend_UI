@@ -30,7 +30,7 @@ import { SharedModule } from '../shared/shared.module';
     
   ],
   declarations: [FeatureShellComponent, 
-    CalendarComponent, DashboardComponent,EmployeeActiveComponent
+    CalendarComponent, EmployeeActiveComponent
   ],
   providers: [AuthService]
 })

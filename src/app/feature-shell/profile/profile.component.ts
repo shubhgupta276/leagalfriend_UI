@@ -20,11 +20,7 @@ export class ProfileComponent implements OnInit {
   isPhotoChange: boolean = false;
   prevPhotoUrl: string = "assets/dist/img/user2-160x160.jpg";
   upComingEvents: number;
-  constructor(private fb: FormBuilder, private userService: UserService) {
-    this.arrSaveProfileInfo = {
-      Save_UserName: 'Anup.Dubey1', Save_Email: 'anup.dubey1@globallogic.com', Save_FirstName: 'Anup', Save_LastName: 'Dubey', Save_Organisation: 'GlobalLogic',
-      Save_AddressLine1: 'Delhi', Save_AddressLine2: 'Noida', Save_PostalCode: '110091', Save_Mobile: '9540084026'
-    };
+  constructor(private fb: FormBuilder, private userService: UserService) {    
     this.BindProfileDetails();
   }
   ngOnInit() {

@@ -5,15 +5,17 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
+import { FeedBackService } from './feedback.service';
 declare var $;
 
 @Component({
   selector: 'app-feedback',
   templateUrl: './feedback.component.html',
+  providers:[FeedBackService]
 })
 export class FeedbackComponent implements OnInit {
   feedbackeForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private feedbackService: FeedBackService) {
     this.FeebackForm();
   }
 
@@ -28,6 +30,18 @@ export class FeedbackComponent implements OnInit {
   }
   submitFeedback(data)
   {
+    this.feedbackService.addNewFeedback(data).subscribe(
+      result => {
+        if (result.body.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: 'Feedback added successfully' });
+        }
+        else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      });
     debugger
   }
 }

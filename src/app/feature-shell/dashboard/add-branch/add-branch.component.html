@@ -1,0 +1,133 @@
+<style>
+    .modal-dialog .close {
+      display: none !important;
+    }
+  </style>
+<div class="modal fade" id="addBranchMasterModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Add Branch</h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+        <!-- Edit Case Starts -->
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+              <form [formGroup]="addBranchMasterForm" class="form-horizontal" (ngSubmit)="submitAddBranchMaster(addBranchMasterForm.value)">
+                <div class="form-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Branch Name:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addBranchMasterForm.get('branchname').invalid &&  addBranchMasterForm.get('branchname').touched">
+                          <input class="form-control" placeholder="Branch Name" formControlName="branchname">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addBranchMasterForm.get('branchname').invalid &&  addBranchMasterForm.get('branchname').touched">
+                          <small class="text-danger">
+                            <span>Branch Name is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Branch Code:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addBranchMasterForm.get('branchcode').invalid &&  addBranchMasterForm.get('branchcode').touched">
+                          <input class="form-control" placeholder="Branch Code" formControlName="branchcode">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addBranchMasterForm.get('branchcode').invalid &&  addBranchMasterForm.get('branchcode').touched">
+                          <small class="text-danger">
+                            <span>Branch Code is required.</span>
+                          </small>
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="isBranchcodeAlreadyExists">
+                          <small class="text-danger">
+                            <span>Branch Code already exists.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Address:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addBranchMasterForm.get('address').invalid &&  addBranchMasterForm.get('address').touched">
+                          <input class="form-control" placeholder="Address" formControlName="address">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addBranchMasterForm.get('address').invalid &&  addBranchMasterForm.get('address').touched">
+                          <small class="text-danger">
+                            <span>Address is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">City:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                            <select class="form-control" formControlName="city">
+                                <option value="">Select City</option>
+                                <option *ngFor="let item of arCity"  [ngValue]="item"> {{item.cityName}}</option>
+                              </select>
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addBranchMasterForm.get('city').invalid &&  addBranchMasterForm.get('city').touched">
+                            <small class="text-danger">
+                              <span>City is required.</span>
+                            </small>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Contact:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9" [class.has-error]="addBranchMasterForm.get('contact').invalid &&  addBranchMasterForm.get('contact').touched">
+                          <input class="form-control" OnlyNumber="true" placeholder="Contact" formControlName="contact">
+                        </div>
+                        <div class="col-sm-9 valodation-padding" *ngIf="addBranchMasterForm.get('contact').invalid &&  addBranchMasterForm.get('contact').touched">
+                          <small class="text-danger">
+                            <span>Contact is required.</span>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-md-4">
+                          <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+                            Submit
+                            <i class="m-icon-swapright m-icon-white"></i>
+                          </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer modal-footer-addedit">
+                  <!-- <button type="submit" [disabled]="addBranchMasterForm.invalid" class="btn btn-modal-addedit">Next</button> -->
+                  <button type="submit" [disabled]="addBranchMasterForm.invalid" class="btn btn-modal-addedit">Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+        <!-- Create User ends -->
+      </div>
+      <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+                
+              </div> -->
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+
+</div>
