@@ -9,6 +9,8 @@ import { ApiGateway } from '../../../shared/services/api-gateway';
 import { StorageService } from "../../../shared/services/storage.service";
 import { HttpResponse } from 'selenium-webdriver/http';
 import { CompleterService, CompleterData } from 'ng2-completer';
+import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
+ 
 
 declare var $;
 @Component({
@@ -22,6 +24,8 @@ declare var $;
 export class AddCaseComponent implements OnInit {
   @Input() caseRunning = [];
   finalData: any = {};
+  process: number[] = [];
+  fileData: File;
   public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
     'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
     'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
@@ -73,20 +77,6 @@ export class AddCaseComponent implements OnInit {
   }
 
 
-
- 
-  // onSelect(item: any) {
-  //   this.selectedItem = item;
-  // }
- 
-  // onInputChangedEvent(val: string) {
-  //   this.inputChanged = val;
-  // }
- 
-  // search (term: string) {
-  //   this.service.search(term).subscribe(e => this.wikiItems = e, error => console.log(error));
-  // }
-  ///////////////////////////////////end////////////////////////////////////////////////////
 
   addCaseForm: FormGroup;
   selectedRecourse: any;
@@ -142,7 +132,7 @@ export class AddCaseComponent implements OnInit {
   protected captains = ['James T. Kirk', 'Benjamin Sisko', 'Jean-Luc Picard', 'Spock', 'Jonathan Archer', 'Hikaru Sulu', 'Christopher Pike', 'Rachel Garrett' ];
  
 
-  constructor(private completerService: CompleterService,private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
+  constructor(private Upload: NgxfUploaderService,private completerService: CompleterService,private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
     // this.dataService = completerService.local(this.ParentCases, 'id', 'id');
     this.AddCaseUser();
     this.GetAllCourt();
@@ -156,6 +146,42 @@ export class AddCaseComponent implements OnInit {
     this.getEmployee();
 
   }
+  
+  // multiple, return  File[]
+  uploadFileList(files: File[]): void {
+    alert();
+    debugger
+    if (!(files instanceof Array)) {
+     // this.alertError(files);
+      return;
+    }
+ 
+    this.Upload.upload({
+      url: 'your upload url',
+      headers: { Authorization: 'some-token' },
+      params: { test: 'aaa', test2: 'bbb' },
+      fields: {
+        toUrl: 'device'
+      },
+      files: files,      
+      filesKey: ['key1','key2','key3'],
+      process: true
+    }).subscribe(
+      (event: UploadEvent) => {
+        if (event.status === UploadStatus.Uploading) {
+          console.log(event.percent);
+        }else{
+          console.log(event);
+        }
+      },
+      (err) => {
+        console.log(err);
+      },
+      () => {
+        console.log('complete');
+      });
+  }
+ 
 
   GetAllCourt() {
 

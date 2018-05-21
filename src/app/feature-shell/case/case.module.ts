@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { SelectDropDownModule } from 'ngx-select-dropdown'
 import {SelectModule} from 'ng2-select';
 import { Ng2CompleterModule } from "ng2-completer";
+import { NgxfUploaderModule } from 'ngxf-uploader';
 
 @NgModule(
     {
@@ -20,6 +21,7 @@ import { Ng2CompleterModule } from "ng2-completer";
             SelectDropDownModule,
             SelectModule,
             Ng2CompleterModule,
+            NgxfUploaderModule.forRoot(),
         ],
         declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent,CaseHistoryComponent ]
     }

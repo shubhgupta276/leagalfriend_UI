@@ -6,6 +6,7 @@
   {
    background-color:red;
   }
+  
 </style>
 <div class="modal fade" id="addCaseModal">
   <div class="modal-dialog">
@@ -258,6 +259,14 @@
                           <!-- <input class="form-control" placeholder="Upload Document" formControlName="uploadDocument"> -->
                           <input type="file" name="upload_document" id="upload_document" class="form-control" formControlName="uploadDocument">
                         </div>
+
+
+
+
+                       
+
+
+
                       </div>
 
                       <div class="form-group row">
@@ -290,5 +299,31 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+<!-- <div class="block"
+(ngxf-drop)="uploadFileList($event)"
+drop-class="drop"
+accept="image/*,.svg"
+multiple
+[ngxf-validate]="{ size: { min: 50000, max:1000000 } }">
+<label class="upload-button">
+<input type="file"
+     (ngxf-select)="uploadFile($event)"
+     [ngxf-validate]="{ size: { min: 50000, max:1000000 } }"
+     accept="image/*,.svg,.ttt" >
+choice file.
+</label>
+
+<label class="upload-button">
+<input type="file" (ngxf-select)="uploadFileList($event)" multiple accept="image/*,.mp3">
+choic files
+</label>
+</div>
+<div class="block"
+(ngxf-drop)="uploadFileList($event)"
+drop-class="drop"
+accept="image/*,.svg"
+multiple
+[ngxf-validate]="{ size: { min: 50000, max:1000000 } }">Drop Area</div> -->
 
 
