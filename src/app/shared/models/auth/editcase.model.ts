@@ -12,6 +12,7 @@ export class EditCase
     courtId:number;
     stateId:number;
     nextHearingDate:string;
+    completionDate:string;
     customerId:number;
     filingDate: string;
     oppLawyer:string;

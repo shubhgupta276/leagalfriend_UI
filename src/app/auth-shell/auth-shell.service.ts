@@ -114,6 +114,12 @@ export class AuthService {
       
     );
   }
+  GetAllCity(reqData): Observable<any> {    
+    return this.apiGateWay.get<any>(
+      'master/cities'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
 
   bindStateDDL(reqData): Observable<any> {    
     return this.apiGateWay.get<any>(
@@ -129,7 +135,7 @@ export class AuthService {
   }
   bindStageDDL(reqData): Observable<any> {    
     return this.apiGateWay.get<Recourse>(
-      'master/stages'+ '?email='+ reqData.email.replace('"',''), null,
+      'master/stages'+ '?email='+ reqData.email+ '&recourseId='+reqData.recourseId, null,
       
     );
   }

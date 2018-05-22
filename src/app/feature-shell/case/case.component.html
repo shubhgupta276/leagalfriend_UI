@@ -93,7 +93,7 @@
                         <th>Case ID</th>
                         <th>Court Case ID</th>
                         <th>Customer Name</th>
-                        <th>Resource Type</th>
+                        <th>Recourse</th>
                         <th>Case Stage</th>
                         <th>Next Hearing Date</th>
                         <th>Branch</th>
@@ -103,7 +103,8 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let items of caseRunning;let i=index" [ngClass]="{'complianceColor': items.compliance}" (dblclick)="showEditModal(items)" data-target="#editCaseModal">
-                        <td>{{i+1}}</td>
+                        <!-- <td>{{i+1}}</td> -->
+                        <td>{{items.caseId}}</td>
                         <td>{{items.courtCaseId}}</td>
                         <td>{{items.customerFirstName}}</td>
                         <td>{{items.recourseCode}}</td>
@@ -127,34 +128,40 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Select</th>
+                        <!-- <th>Select</th> -->
                         <th>Court Case ID</th>
                         <th>Case ID</th>
                         <th>Filling Date</th>
+                        
+                        
                         <th>Completion Date</th>
+                        <th>stage</th>
+                        
+                        <th>Employee</th>
                         <th>Branch Name</th>
-                        <th>Court</th>
-                        <th>Manager</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let items of caseCompleted" (dblclick)="showEditModal(items)">
-                        <td>
+                        <!-- <td>
                           <input type="checkbox" name="caseCompleted" value="{{items.IsChecked}}" [(ngModel)]="items.IsChecked" (change)="updateCheckedOptions(caseCompleted)"
                           />
-                        </td>
-                        <td>{{items.CourtCaseId}}</td>
-                        <td>{{items.CaseId}}</td>
-                        <td>{{items.FillingDate}}</td>
-                        <td>{{items.CompletionDate}}</td>
-                        <td>{{items.Branch.name}}</td>
-                        <td>{{items.Court.name}}</td>
-                        <td>{{items.Manager.name}}</td>
+                        </td> -->
+                        <td>{{items.courtCaseId}}</td>
+                        <td>{{items.caseId}}</td>
+                        <td>{{items.filingDate}}</td>
+                       
+                        
+                        <td>{{items.completionDate}}</td>
+                        <td>{{items.stageName}}</td>
+                        
+                        <td>{{items.empFirstName}}</td>
+                        <td>{{items.branchName}}</td>
                         <td>
-                          <a title="Edit">
+                          <!-- <a title="Edit">
                             <i class="fa fa-edit"></i>
-                          </a> /
+                          </a> / -->
                           <a data-toggle="modal" data-target="#modal-default1" href="#" >
                             <i class="fa fa-history"></i>
                           </a>

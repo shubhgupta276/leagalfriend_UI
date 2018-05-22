@@ -57,9 +57,11 @@ export class AddCaseComponent implements OnInit {
   public selectedRecourse1(value: any): void {
     debugger
     
-      $("#ddls").show()
-    
+     
+    var a=value.id;
     this.selectedRecourse = value;
+    //this.bindStageDDL(value);
+    this.bindStageDDL(a);
 
 
   }
@@ -105,12 +107,12 @@ export class AddCaseComponent implements OnInit {
       parentCase: [null],
       nextHearingDate: [null, Validators.required],
       customerName: [null, Validators.required],
-      remark: [null, Validators.required],
+      remark: [null],
       branch: [null, Validators.required],
       filingdate: [],
       stage: [null, Validators.required],
       employee: [null, Validators.required],
-      courtplace: [null, Validators.required],
+      courtplace: [null],
       oppLawyer: [],
       childCase: [],
       lastHearingDate: [null, Validators.required],
@@ -141,16 +143,17 @@ export class AddCaseComponent implements OnInit {
     this.bindRecourseDDL();
     this.getManagers();
     this.getEmployee();
-    this.bindStageDDL();
+   // this.bindStageDDL();
     this.getRunningCase();
     this.getEmployee();
+    this.GetAllCity();
 
   }
   
   // multiple, return  File[]
   uploadFileList(files: File[]): void {
     alert();
-    debugger
+    
     if (!(files instanceof Array)) {
      // this.alertError(files);
       return;
@@ -195,10 +198,10 @@ export class AddCaseComponent implements OnInit {
 
         result.courts.forEach(function (value) {
 
-          //$this.arrListCaseBranch1.push({id:value.id,branchName:value.branchName});
+         
           $this.Court.push({ id: value.id, text: value.courtName });
 
-          $this.CourtPlace.push({ id: value.id, text: value.courtName });
+          
         });
         
       },
@@ -206,7 +209,30 @@ export class AddCaseComponent implements OnInit {
         console.log(err);
       });
   }
-
+  
+  GetAllCity() {
+    
+        var $this = this
+        var reqData = {
+          email: this._storageService.getUserEmail(),
+        };
+        this.authService.GetAllCity(reqData).subscribe(
+    
+          result => {
+            
+            result.cities.forEach(function (value) {
+    
+    
+              $this.CourtPlace.push({ id: value.id, text: value.cityName });
+    
+              //$this.CourtPlace.push({ id: value.id, text: value.courtName });
+            });
+            
+          },
+          err => {
+            console.log(err);
+          });
+      }
   getBranchDDL() {
     var $this = this
     var reqData = {
@@ -302,12 +328,7 @@ export class AddCaseComponent implements OnInit {
         }
         
         result.forEach(function (value) {
-          
-          // if(value.roles[0].roleName != 'MANAGER')
-          // {
-            
-          //   $("#spnManager").show();
-          // }
+         
           if (value.roles[0].roleName == 'MANAGER') {
             $this.Manager.push(
               {
@@ -319,12 +340,7 @@ export class AddCaseComponent implements OnInit {
               }
             );
           }
-          
-          // if(value.roles[0].roleName != 'CUSTOMER')
-          // {
-            
-          //   $("#spnCustomer").show();
-          // }
+        
           if (value.roles[0].roleName == 'CUSTOMER') {
             
             $this.CustomerName.push(
@@ -376,16 +392,17 @@ if(result==0)
       });
   }
 
-  bindStageDDL() {
+  bindStageDDL(a) {
 
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
+      recourseId:a
     };
     this.authService.bindStageDDL(reqData).subscribe(
 
       result => {
-
+      
         result.stageRecourses.forEach(function (value) {
 
           $this.Stage.push({ id: value.id, text: value.stageName });
@@ -399,7 +416,7 @@ if(result==0)
 
   getRunningCase() {
 
-
+debugger
     var $this = this
     var reqData = {
       userId: this._storageService.getUserId(),
@@ -409,10 +426,11 @@ if(result==0)
       result => {
 
         result.forEach(function (value) {
-          $this.ParentCases.push({ id: value.courtCaseId, text: value.courtCaseId });
+          debugger
+          $this.ParentCases.push({ id: value.id, text: value.caseId });
         });
-    
-        $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'id');
+    debugger
+        $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
       },
       err => {
         console.log(err);
@@ -420,17 +438,19 @@ if(result==0)
   }
   submitAddCaseUser(data) {
 
-    
+    debugger
     const objEditCase = new EditCase();
     objEditCase.branchId = data.branch[0].id;
     var userId = parseInt(localStorage.getItem('client_id'));
     objEditCase.userId = userId;
-    objEditCase.childCase = data.childCase;
+    
+    var myStringCHILD = data.childCase.substr(data.childCase.lastIndexOf("/")+1)
+    objEditCase.childCase = myStringCHILD
     objEditCase.courtCaseId = data.courtCaseId;
     objEditCase.courtId = data.court[0].id;
     objEditCase.customerId = data.customerName[0].id;
     objEditCase.filingDate = this.datePipe.transform(data.filingdate, "yyyy-MM-dd");
-    //objEditCase.caseid=data.caseId;
+  
     objEditCase.lastHearingDate = this.datePipe.transform(data.lastHearingDate, "yyyy-MM-dd");
     objEditCase.nextHearingDate = this.datePipe.transform(data.nextHearingDate, "yyyy-MM-dd")
     objEditCase.oppLawyer = data.oppLawyer;
@@ -442,12 +462,14 @@ if(result==0)
     objEditCase.managerId = data.manager[0].id;
     objEditCase.stateId = data.state[0].id;
     debugger
-     objEditCase.parentCaseId = data.parentCase;
+    var myString = data.parentCase.substr(data.parentCase.lastIndexOf("/")+1)
+
+     objEditCase.parentCaseId = myString;
    
 
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
-       
+       debugger
         if (result.body.httpCode == 200) { //success
          // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });

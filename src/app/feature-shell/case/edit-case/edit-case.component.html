@@ -122,16 +122,11 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
-                                <em class="astrick">*</em>
+                                <!-- <em class="astrick">*</em> -->
                               </label>
                               <div class="col-md-9" *ngIf="ParentCases.length > 0">
                                   <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
                          
-
-                                <!-- <ng-select [allowClear]="true" [items]="ParentCases" [active]="parentcaseSelected" formControlName="parentCase" [disabled]="disabled"
-                                  (data)="refreshValue($event)" (selected)="selectParentCase1($event)" (removed)="removed($event)"
-                                  (typed)="typed($event)" placeholder="No parent case selected">
-                                </ng-select> -->
                               </div>
                             </div>
                             <div class="form-group row">
@@ -163,7 +158,7 @@
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Remark:
-                                <em class="astrick">*</em>
+                                <!-- <em class="astrick">*</em> -->
                               </label>
                               <div class="col-md-9" [class.has-error]="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
 
@@ -175,23 +170,7 @@
                                 </small>
                               </div>
                             </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
-
-                              </label>
-                              <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingfile"> -->
-                                <textarea name="GROUND_OF_CLOSING" tabindex="17" id="GROUND_OF_CLOSING" class="form-control" formControlName="groundforclosingfile"></textarea>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No.:
-
-                              </label>
-                              <div class="col-md-9">
-                                <input class="form-control" placeholder="Disposed off File No." formControlName="disposedoffFileNo">
-                              </div>
-                            </div>
+                            
                             <div class="form-group row" *ngIf="Branch.length > 0">
                               <label class="col-sm-3 col-form-label createUserLabel">Branch:
                                 <em class="astrick">*</em>
@@ -257,8 +236,9 @@
 
                               </label>
                               <div class="col-md-9">
-                                <input class="form-control" placeholder="Child Case" formControlName="childCase">
-                              </div>
+                                <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+                       
+                            </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
@@ -299,13 +279,27 @@
                                 </div>
                               </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
+  
+                                </label>
+                                <div class="col-md-9">
+                                  <!-- <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingfile"> -->
+                                  <textarea name="GROUND_OF_CLOSING" tabindex="17" id="GROUND_OF_CLOSING" class="form-control" formControlName="groundforclosingfile"></textarea>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No.:
+  
+                                </label>
+                                <div class="col-md-9">
+                                  <input class="form-control" placeholder="Disposed off File No." formControlName="disposedoffFileNo">
+                                </div>
+                              </div>
 
                             <div class="form-group row">
                               <div class="col-md-4">
-                                <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
-                        Submit
-                        <i class="m-icon-swapright m-icon-white"></i>
-                      </button> -->
+                               
                               </div>
                             </div>
                           </div>

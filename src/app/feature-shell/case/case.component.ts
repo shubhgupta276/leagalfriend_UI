@@ -34,8 +34,8 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   lstUploadedDocuments: any;
-  caseRunning: Case[]=[];
-  caseCompleted: Case[]; 
+  caseRunning: Case[] = [];
+  caseCompleted: Case[]=[];
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
@@ -45,13 +45,13 @@ export class CaseComponent implements OnInit {
   $table: any;
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
     //this.caseRunning = CasesRunning
-    this.caseCompleted = CasesCompleted;
+    //this.caseCompleted = CasesCompleted;
     //this.setDropdownUniqueValues();
 
   }
 
   getRunningCase() {
-debugger
+    
     var $this = this;
     var reqData = {
       userId: this._storageService.getUserId(),
@@ -59,13 +59,19 @@ debugger
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
-debugger
+        debugger
         result.forEach(function (value) {
           $this.caseRunning.push(value);
+          
+          if(result[0].completionDate!=null)
+          { 
+            $this.caseCompleted.push(value);
+          }
+         
 
 
         });
-       
+
         setTimeout(() => {
           this.bindDatatable();
         }, 1);
@@ -108,14 +114,14 @@ debugger
 
         $('#ddlCaseBranch1').val("All");
         self.$table.columns(6).search("").draw();
-        
+
         $('#reservation').data('daterangepicker').setStartDate(new Date());
         $('#reservation').data('daterangepicker').setEndDate(new Date());
 
         $.fn.dataTableExt.afnFiltering.length = 0;
         self.$table.columns(5).search("").draw();
       });
-      
+
       $('#btnResetFilter').click(function () {
         $('#btnFilter').removeClass("bgColor");
 
@@ -128,7 +134,7 @@ debugger
         $('#ddlCaseBranch').val("All");
         $('#ddlCaseBranch1').val("All");
         self.$table.columns(6).search("").draw();
-       
+
         $('#reservation').data('daterangepicker').setStartDate(new Date());
         $('#reservation').data('daterangepicker').setEndDate(new Date());
 
@@ -139,9 +145,9 @@ debugger
       $('#reservation').daterangepicker({
         autoApply: true,
         locale: {
-          format: 'MM-DD-YYYY'
+          format: 'YYYY-MM-DD'
         }
-       
+
       });
       // $('#reservation').val('');
 
@@ -197,9 +203,9 @@ debugger
 
         $.fn.dataTableExt.afnFiltering.push(
           function (oSettings, data, iDataIndex) {
-            
-            var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
-            var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
+            debugger
+            var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('YYYY-MM-DD'));
+            var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('YYYY-MM-DD'));
             var rowDate = new Date(data[5]);
 
             if (rowDate >= startDate && rowDate <= endDate) {
@@ -212,23 +218,25 @@ debugger
           }
         );
 
+
+
         self.$table.draw();
         $("#closebtnFilter").click();
 
       });
       setTimeout(() => {
 
-       
+
       });
     }, 100)
 
-  
-   }
+
+  }
 
 
 
   bindDatatable() {
-
+    var self = this;
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
     var selectedPageLength = 10;
 
@@ -251,6 +259,7 @@ debugger
         var $rowSearching = $("#" + tableid + "_wrapper");
         $rowSearching.find(".row:eq(0)").hide();
 
+
         for (var i = 0; i < arLengthMenu[0].length; i++) {
           $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
         }
@@ -259,16 +268,44 @@ debugger
         $("#ddlLengthMenu").on("change", function () {
           $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
         });
+
+        //////////for table 2.........................
+        var tableid2 = "example2";
+        var $rowSearching = $("#" + tableid2 + "_wrapper");
+        $rowSearching.find(".row:eq(0)").hide();
+
+      
+
+        for (var i = 0; i < arLengthMenu[0].length; i++) {
+          $("#ddlLengthMenu2").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
+        }
+        $("#ddlLengthMenu2").val(selectedPageLength);
+
+        $("#ddlLengthMenu2").on("change", function () {
+          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
+        });
       }
     });
 
-    this.$table.columns().every(function () {
-      
-    
+    self.$table.columns().every(function () {
+
+
       $('#txtSearch').on('keyup change', function () {
-        
-        if (this.$table.search() !== this.value) {
-          this.$table.search(this.value).draw();
+        debugger
+
+        if (self.$table.search() !== this.value) {
+          self.$table.search(this.value).draw();
+        }
+      });
+    });
+    self.$table.columns().every(function () {
+
+
+      $('#txtSearch2').on('keyup change', function () {
+        debugger
+
+        if (self.$table.search() !== this.value) {
+          self.$table.search(this.value).draw();
         }
       });
     });
@@ -288,7 +325,7 @@ debugger
           $this.arrListCaseBranch1.push(value);
           $this.arrListCaseBranch.push(value);
         });
-       
+
       },
       err => {
         console.log(err);
@@ -320,7 +357,7 @@ debugger
         result.stageRecourses.forEach(function (value) {
           $this.arrListCaseStage.push(value);
         });
-       
+
       },
       err => {
         console.log(err);
@@ -328,47 +365,46 @@ debugger
   }
 
   showEditModal(c) {
-     $("#editCaseModal").modal("show");
+   
 
 
     var $this = this
     var reqData = {
       caseId: c.id,
     };
-    
-    if(c.compliance==false)
-    {
-    this.authService.getCaseByCaseId(reqData).subscribe(
 
-      result => {
-        $("#caseLi a").click();
-        
-         $("#complianceDiv").show();
-       
-         $("#compLi").hide();
-        this.editChild.createForm(result);
-        
-      },
-      err => {
-        console.log(err);
-      });
+    if (c.compliance == false) {
+      this.authService.getCaseByCaseId(reqData).subscribe(
+
+        result => {
+          $("#caseLi a").click();
+
+          $("#complianceDiv").show();
+
+          $("#compLi").hide();
+          this.editChild.createForm(result);
+
+        },
+        err => {
+          console.log(err);
+        });
     }
-    else{
+    else {
 
       this.authService.getCaseCompliance(reqData).subscribe(
 
         result => {
-          
+
           $("#compLi a").click();
-       
+
           $('#form1 input,textarea').attr('readonly', 'readonly');
           // $('#divRecourse').attr('disabled','disabled');
-          
-          
+
+
           $("#complianceDiv").hide();
           $('#compLi').show();
           this.editChild.createFormforcompliance(result);
-          
+
         },
         err => {
           console.log(err);
@@ -409,7 +445,7 @@ debugger
   // getUploadedDocuments() {
   //   this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   // }
-   SelectedFileIds = [];
+  SelectedFileIds = [];
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
       this.SelectedFileIds.push(FileId);
