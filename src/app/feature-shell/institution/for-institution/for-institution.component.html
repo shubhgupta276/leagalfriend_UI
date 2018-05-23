@@ -47,7 +47,7 @@
                 </div>
               </div>
             </div>
-            <table id="example1" class="table table-bordered table-hover">
+            <table id="example1" class="table table-bordered table-hover" on-mouseleave="hideCalendar()">
               <thead>
                 <tr>
                   <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
@@ -67,7 +67,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of arr; let i = index" data-toggle="modal" (dblclick)="showEditInstitutionModal()">
+                <tr *ngFor="let item of arr; let i = index" data-toggle="modal" on-mouseover="OnMouseHover(i)" (dblclick)="showEditInstitutionModal()">
                   <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
                     style="width: 35px;" aria-sort="ascending">
                     <input type="checkbox" #rowChecked (change)="checkboxChange(rowChecked.checked)">
@@ -78,8 +78,15 @@
                   <td>{{item.courtCaseId}}</td>
                   <td>{{item.legalCaseId}}</td>
                   <td>{{item.previousHearingDate | date:'dd-MM-yyyy'}}</td>
-                  <td (mouseenter)="rowIndex=i">
+                  <td style="position: relative;">
                     {{item.nextHearingDate | date:'dd-MM-yyyy'}}
+                    <div class="divNewHire input-group date" style="position:absolute; right: 0;" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd"
+                        class="form-control newHiringDate" size="10" formControlName="nextHearingDate">
+                      <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="ShowCalendar(item)">
+                        <span class="fa fa-calendar"></span>
+                      </div>
+                    </div>
                   </td>
                   <td>{{item.loanAccountNumber}}</td>
                   <td>

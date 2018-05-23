@@ -455,7 +455,6 @@ export class CaseComponent implements OnInit {
     }
   }
   ShowCalendar(items) {
-    this.isCalendarOpen = true;
     this.newHiringCasedata = items;
 
   }
@@ -473,7 +472,7 @@ export class CaseComponent implements OnInit {
     }
   }
 
-  hideCal() {
+  hideCalendar() {
     if ($('.datepicker-dropdown').length == 0)
       this.hoveredIndex = null;
 
