@@ -23,6 +23,7 @@ export class AddBillingComponent implements OnInit {
   arListStage: any[] = [];
   arListBranch: KeyValue[] = ListBranch;
   isCombinationAlreadyExits: boolean = false;
+  defaultInstitutionId:number;
   AddbillingMaster() {
   }
   constructor(private fb: FormBuilder, private _stageService: StageService, private _billingservice: BillingService, private _storageservice: StorageService) {
@@ -30,6 +31,7 @@ export class AddBillingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.SetDefaultInstitution();
     this.addBillForm();
     this.subscriberFields();
 
@@ -38,14 +40,22 @@ export class AddBillingComponent implements OnInit {
   addBillForm() {
     this.addForm = this.fb.group({
       //branch: ["", Validators.required],
-      institutionId: ["", Validators.required],
+      institutionId: [this.defaultInstitutionId, Validators.required],
       recourseId: ["", Validators.required],
       stageId: ["", Validators.required],
       amount: [null, Validators.required]
     });
 
   }
-
+SetDefaultInstitution()
+{
+  debugger
+  this.arAllInstitution.forEach(element => {
+    debugger
+    if(element.defaultInstitution)
+    this.defaultInstitutionId=element.id;
+  });
+}
   changeCombinations() {
     console.log(this.addForm);
     if (this.addForm.get("bank").value == "DCB BANK LTD."

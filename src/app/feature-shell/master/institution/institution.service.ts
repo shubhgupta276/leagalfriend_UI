@@ -3,7 +3,7 @@ import { retry } from 'rxjs/operator/retry';
 import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../../shared/services/api-gateway';
-import { addInstitutionUrl,getInstitutionsUrl,updateInstitutionUrl ,getBillFrom} from '../master.config';
+import { addInstitutionUrl,getInstitutionsUrl,updateInstitutionUrl,updateDefaultInstitutionUrl ,getBillFrom} from '../master.config';
 import { StorageService } from '../../../shared/services/storage.service';
 
 import { ResourceLoader } from '@angular/compiler';
@@ -36,6 +36,12 @@ export class InstitutionService {
     updateInstitution(reqData: any): Observable<any> {
         return this.apiGateWay.post<Institution>(
             updateInstitutionUrl,
+            JSON.stringify(reqData)
+        );
+    }
+    updateDefaultInstitution(reqData: any): Observable<any> {
+        return this.apiGateWay.post<Institution>(
+            updateDefaultInstitutionUrl,
             JSON.stringify(reqData)
         );
     }

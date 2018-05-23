@@ -34,13 +34,16 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   lstUploadedDocuments: any;
-  caseRunning: Case[]=[];
-  caseCompleted: Case[]; 
+  caseRunning: any[] = [];
+  caseCompleted: Case[];
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
+  hoveredIndex: number = null;
+  isCalendarOpen = false;
+  newHiringCasedata: any;
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
@@ -51,7 +54,6 @@ export class CaseComponent implements OnInit {
   }
 
   getRunningCase() {
-debugger
     var $this = this;
     var reqData = {
       userId: this._storageService.getUserId(),
@@ -59,13 +61,12 @@ debugger
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
-debugger
         result.forEach(function (value) {
           $this.caseRunning.push(value);
 
 
         });
-       
+
         setTimeout(() => {
           this.bindDatatable();
         }, 1);
@@ -77,12 +78,20 @@ debugger
 
 
   ngOnInit() {
+
+
     this.getRunningCase();
     const self = this;
     this.getBranchDDL();
     this.bindRecourseDDL();
     // Running Case DataTable
     $($.document).ready(function () {
+      // $(document).on('mouseover', '.rowRunningCase', function () {
+      //   $(this).find('.divCal').show();
+      // });
+      // $(document).on('click', '.rowRunningCase', function () {
+      //   $('body').find('.divCal').hide();
+      // });
 
       $("#ddlCaseRecource").change(function () {
 
@@ -108,14 +117,14 @@ debugger
 
         $('#ddlCaseBranch1').val("All");
         self.$table.columns(6).search("").draw();
-        
+
         $('#reservation').data('daterangepicker').setStartDate(new Date());
         $('#reservation').data('daterangepicker').setEndDate(new Date());
 
         $.fn.dataTableExt.afnFiltering.length = 0;
         self.$table.columns(5).search("").draw();
       });
-      
+
       $('#btnResetFilter').click(function () {
         $('#btnFilter').removeClass("bgColor");
 
@@ -128,7 +137,7 @@ debugger
         $('#ddlCaseBranch').val("All");
         $('#ddlCaseBranch1').val("All");
         self.$table.columns(6).search("").draw();
-       
+
         $('#reservation').data('daterangepicker').setStartDate(new Date());
         $('#reservation').data('daterangepicker').setEndDate(new Date());
 
@@ -141,7 +150,7 @@ debugger
         locale: {
           format: 'MM-DD-YYYY'
         }
-       
+
       });
       // $('#reservation').val('');
 
@@ -197,7 +206,7 @@ debugger
 
         $.fn.dataTableExt.afnFiltering.push(
           function (oSettings, data, iDataIndex) {
-            
+
             var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
             var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
             var rowDate = new Date(data[5]);
@@ -218,13 +227,17 @@ debugger
       });
       setTimeout(() => {
 
-       
+
       });
     }, 100)
 
-  
-   }
-
+    $('body').on('change', '.newHiringDate', function () {
+      self.updateNewHiringDate($(this).val())
+      $(this).closest('td')
+      .animate({backgroundColor: '#88d288'}, 1000)
+      .animate({backgroundColor: ''}, 1000);
+    });
+  }
 
 
   bindDatatable() {
@@ -263,10 +276,10 @@ debugger
     });
 
     this.$table.columns().every(function () {
-      
-    
+
+
       $('#txtSearch').on('keyup change', function () {
-        
+
         if (this.$table.search() !== this.value) {
           this.$table.search(this.value).draw();
         }
@@ -288,7 +301,7 @@ debugger
           $this.arrListCaseBranch1.push(value);
           $this.arrListCaseBranch.push(value);
         });
-       
+
       },
       err => {
         console.log(err);
@@ -320,7 +333,7 @@ debugger
         result.stageRecourses.forEach(function (value) {
           $this.arrListCaseStage.push(value);
         });
-       
+
       },
       err => {
         console.log(err);
@@ -328,47 +341,46 @@ debugger
   }
 
   showEditModal(c) {
-     $("#editCaseModal").modal("show");
+    $("#editCaseModal").modal("show");
 
 
     var $this = this
     var reqData = {
       caseId: c.id,
     };
-    
-    if(c.compliance==false)
-    {
-    this.authService.getCaseByCaseId(reqData).subscribe(
 
-      result => {
-        $("#caseLi a").click();
-        
-         $("#complianceDiv").show();
-       
-         $("#compLi").hide();
-        this.editChild.createForm(result);
-        
-      },
-      err => {
-        console.log(err);
-      });
+    if (c.compliance == false) {
+      this.authService.getCaseByCaseId(reqData).subscribe(
+
+        result => {
+          $("#caseLi a").click();
+
+          $("#complianceDiv").show();
+
+          $("#compLi").hide();
+          this.editChild.createForm(result);
+
+        },
+        err => {
+          console.log(err);
+        });
     }
-    else{
+    else {
 
       this.authService.getCaseCompliance(reqData).subscribe(
 
         result => {
-          
+
           $("#compLi a").click();
-       
+
           $('#form1 input,textarea').attr('readonly', 'readonly');
           // $('#divRecourse').attr('disabled','disabled');
-          
-          
+
+
           $("#complianceDiv").hide();
           $('#compLi').show();
           this.editChild.createFormforcompliance(result);
-          
+
         },
         err => {
           console.log(err);
@@ -409,7 +421,7 @@ debugger
   // getUploadedDocuments() {
   //   this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   // }
-   SelectedFileIds = [];
+  SelectedFileIds = [];
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
       this.SelectedFileIds.push(FileId);
@@ -442,4 +454,29 @@ debugger
       }
     }
   }
+  ShowCalendar(items) {
+    this.isCalendarOpen = true;
+    this.newHiringCasedata = items;
+
+  }
+  updateNewHiringDate(newHiring) {
+    this.caseRunning.forEach(element => {
+      if (element.id == this.newHiringCasedata.id) {
+        element.nextHearingDate = newHiring;
+      }
+    })
+  }
+  OnMouseHover(i) {
+    if ($('.datepicker-dropdown').length == 0) {
+      $('.newHiringDate').datepicker();
+      this.hoveredIndex = i;
+    }
+  }
+
+  hideCal() {
+    if ($('.datepicker-dropdown').length == 0)
+      this.hoveredIndex = null;
+
+  }
+
 }

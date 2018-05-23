@@ -33,7 +33,7 @@ export class AddUserComponent implements OnInit {
     this.addForm = this.fb.group({
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
-      organisation: [null, Validators.required],
+      organisation: [null, Validators.nullValidator],
       addressLine1: [null, Validators.required],
       addressLine2: [null, Validators.required],
       postalCode: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -79,8 +79,17 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
+        
+        if(result.body.httpCode==200)
+        {
+        $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
         console.log(result);
         this.userAdded.emit(result.body);
+        }
+        else
+        {
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
       },
       err => {
         console.log(err);

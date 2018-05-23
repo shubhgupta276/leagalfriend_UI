@@ -40,6 +40,7 @@ export class BillingComponent implements OnInit {
   arListBranch: KeyValue[] = ListBranch;
   arAllRecourses: any[] = [];
   arAllInstitution: any = [];
+  defaultInstitutionId:number;
   @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
   }
@@ -215,9 +216,12 @@ export class BillingComponent implements OnInit {
 
     this._institutionService.getInstitutions().subscribe(
       result => {
+        
         if (result.httpCode == 200) {
           result.institutions.forEach(element => {
             this.arAllInstitution.push(element);
+            if(element.defaultInstitution)
+            this.defaultInstitutionId=element.id;
           });
         }
       })

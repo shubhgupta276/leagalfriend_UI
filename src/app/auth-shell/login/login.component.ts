@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   isLoggedInError=false;
   public submitted: boolean;
   public events: any[] = [];
+  errLoginMsg="";
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = fb.group({
       email: [null, Validators.required],
@@ -107,8 +108,14 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['admin/dashboard']);
           this.isLoggedInError=false;
         }
+        else
+        {
+          this.errLoginMsg="Your account has been suspended please contact your administrator.";
+          this.isLoggedInError=true;
+        }
       },
       err => {
+        this.errLoginMsg="Invalid username or password";
         this.isLoggedInError=true;
         console.log(err);
       });
