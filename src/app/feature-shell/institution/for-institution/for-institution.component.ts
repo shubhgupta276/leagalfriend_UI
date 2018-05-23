@@ -34,8 +34,8 @@ export class ForInstitutionComponent implements OnInit {
     arFilterType: any = [];
     showDateFilter: boolean = false;
     filterTypeId: any;
-    hoveredIndex:number;
-    newHiringdata:any;
+    hoveredIndex: number;
+    newHiringdata: any;
     @ViewChild(AddForInstitutionComponent) _addForInstitution: AddForInstitutionComponent;
     constructor(private fb: FormBuilder,
         private _router: Router,
@@ -48,7 +48,7 @@ export class ForInstitutionComponent implements OnInit {
         this.bindFilterType();
         this.getInstitutionList();
         this.getRecourse();
-        var selfnew=this;
+        var selfnew = this;
         $($.document).ready(function () {
 
             document.ondragover = document.ondragenter = function (evt) {
@@ -79,17 +79,20 @@ export class ForInstitutionComponent implements OnInit {
             }
 
             $('#txtFromToDate').daterangepicker({
-                autoUpdateInput: false
+                autoUpdateInput: false,
+                locale: {
+                    format: 'DD-MM-YYYY'
+                }
             }, function (start_date, end_date) {
                 $('#txtFromToDate').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
             });
-            
+
             $('body').on('change', '.newHiringDate', function () {
                 selfnew.updateNewHiringDate($(this).val())
                 $(this).closest('td')
-                .animate({backgroundColor: '#88d288'}, 1000)
-                .animate({backgroundColor: ''}, 1000);
-              });
+                    .animate({ backgroundColor: '#88d288' }, 1000)
+                    .animate({ backgroundColor: '' }, 1000);
+            });
         });
     }
 
@@ -120,6 +123,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     changeInstitution() {
+        this.resetAllFilter();
         this.$table.destroy();
         this.GetAllForIntitution();
 
@@ -359,7 +363,7 @@ export class ForInstitutionComponent implements OnInit {
 
     bindFilterType() {
         this.arFilterType.push(
-            { value: "", text: "No Filter" },
+            { value: 0, text: "No Filter" },
             { value: 1, text: "Next Hearing Date" },
             { value: 2, text: "Last Hearing Date" },
             { value: 3, text: "Last Update Date" },
@@ -374,7 +378,7 @@ export class ForInstitutionComponent implements OnInit {
     filterDatatableData() {
         let $table = this.$table;
         let $this = this;
-        let fromToDate = $("#txtFromToDate").val();
+
         let dateColFilter = null;
 
         $table.columns().every(function () {
@@ -386,40 +390,33 @@ export class ForInstitutionComponent implements OnInit {
                 $table.columns(9).search($this.recourseFilter.recourseCode).draw();
             }
             //end recourse filter
-
-            // start date filter
-            if ($this.filterTypeId && $this.filterTypeId > 0) {
-
-                if ($this.filterTypeId == 1) //Next Hearing Date
-                    dateColFilter = 6;
-                else if ($this.filterTypeId == 2)//Last Hearing Date
-                    dateColFilter = 5;
-                // else if ($this.filterTypeId == 2)//Last Update Date
-                //     colFilter = 5;
-                // else if ($this.filterTypeId == 2)//Case Updated Date
-                //     colFilter = 5;
-
-                //$table.columns(colFilter).search($this.recourseFilter.recourseCode).draw();
-
-            }
-            // end date filter
-
         });
+        setTimeout(() => {
+            filterDates();
+        }, 200);
 
-        filterDates();
 
         function filterDates() {
+
             $.fn.dataTableExt.afnFiltering.push(
                 function (oSettings, data, iDataIndex) {
 
+                    if ($this.filterTypeId && $this.filterTypeId > 0) {
+
+                        if ($this.filterTypeId == 1) //Next Hearing Date
+                            dateColFilter = 6;
+                        else if ($this.filterTypeId == 2)//Last Hearing Date
+                            dateColFilter = 5;
+                    }
+
+                    let fromToDate = $("#txtFromToDate").val();
                     if (dateColFilter && fromToDate && fromToDate.length > 0) {
                         let arDates = fromToDate.split(" To ");
-                        console.log("call...");
 
                         let _startDate = null, _endDate = null;
                         let _filterDate = data[dateColFilter];
 
-                        if (_filterDate && _filterDate.length > 0) {
+                        if (_filterDate && _filterDate.trim().length > 0) {
                             _filterDate = $this.convertDateToDDMMYYYY(data[dateColFilter]);
 
                             if (arDates.length > 1) {
@@ -451,16 +448,21 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     resetAllFilter() {
+        $("#txtFromToDate").val("");
+        this.showDateFilter = false;
+        this.filterTypeId = 0;
         this.recourseFilter = null;
     }
 
     openPopup() {
         this._addForInstitution.bindBranch();
     }
+
     ShowCalendar(items) {
         this.newHiringdata = items;
 
     }
+
     updateNewHiringDate(newHiring) {
         this.arr.forEach(element => {
             if (element.id == this.newHiringdata.id) {
@@ -468,6 +470,7 @@ export class ForInstitutionComponent implements OnInit {
             }
         })
     }
+
     OnMouseHover(i) {
         if ($('.datepicker-dropdown').length == 0) {
             $('.newHiringDate').datepicker();
@@ -480,7 +483,7 @@ export class ForInstitutionComponent implements OnInit {
             this.hoveredIndex = null;
 
     }
-  
+
 }
 
 
