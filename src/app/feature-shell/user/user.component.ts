@@ -179,7 +179,7 @@ export class UserComponent implements OnInit {
       this.bindDataTable();
     }, 5);
 
-    $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
+   
   }
 
   setRoles() {

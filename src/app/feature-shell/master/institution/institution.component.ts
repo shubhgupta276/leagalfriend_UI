@@ -8,6 +8,7 @@ import { Institution } from './institution';
 import { InstitutionService } from './institution.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { CityService } from "../city/city.service";
+import { element } from "protractor";
 
 declare let $;
 
@@ -35,14 +36,11 @@ export class InstitutionComponent implements OnInit {
   arCity: any[] = [];
   @ViewChild(EditInstitutionMasterComponent) editChild: EditInstitutionMasterComponent;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _cityService: CityService, private _storageService: StorageService) {
-
   }
 
   ngOnInit() {
     this.bindCity();
-    setTimeout(() => {
-      this.GetAllInstitute();
-    }, 300);
+   
   }
 
   showEditModal(data) {
@@ -54,7 +52,6 @@ export class InstitutionComponent implements OnInit {
     this._institutionService.getInstitutions().subscribe(
       result => {
         if (result.httpCode == 200) {
-
           for (var i = 0; i < result.institutions.length; i++) {
             const obj = result.institutions[i];
 
@@ -66,9 +63,11 @@ export class InstitutionComponent implements OnInit {
               contactPerson: obj.contactName,
               city: this.getCityName(obj.fkCity),
               cityId: obj.fkCity,//todo
-              id: obj.id
+              id: obj.id,
+              defaultInstitution: obj.defaultInstitution
             });
           }
+
           setTimeout(() => {
             this.bindDatatable();
           }, 1);
@@ -144,8 +143,43 @@ export class InstitutionComponent implements OnInit {
         result.cities.forEach(item => {
           this.arCity.push(item);
         });
+        this.GetAllInstitute();
       }
     })
 
+  }
+  MakeDefault(data) {
+    var reqData = {
+      institutionName: data.institutionName,
+      contactName: data.contactPerson,
+      defaultInstitution: 1,
+      address: data.address,
+      billingAddr: data.billingAddress,
+      phone: data.contactNo,
+      fkCity: data.cityId,
+      id: data.id,
+      userId: parseInt(this._storageService.getUserId())
+    };
+    this._institutionService.updateDefaultInstitution(reqData).subscribe(
+
+      result => {
+        var _result = result.body;
+        if (_result.httpCode == 200) { //success
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.arr.forEach(element => {
+            if (element.id == data.id)
+              element.defaultInstitution = true;
+            else
+              element.defaultInstitution = false
+          })
+
+        }
+        else
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+
+      },
+      err => {
+        console.log(err);
+      });
   }
 }

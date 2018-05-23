@@ -49,7 +49,7 @@ export class AddInstitutionDashboardComponent implements OnInit {
         var _result = result.body;
 
         if (_result.httpCode == 200) { 
-          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          $.toaster({ priority: 'success', title: 'Success', message: "Thank you for completing initial setup." });
           $('#addInstitutionMasterModal').modal('hide');
           this.AddInstitutionMaster();
         }
