@@ -14,15 +14,16 @@ declare let $;
   templateUrl: "./add-for-institution.component.html",
   styleUrls: ["./add-for-institution.component.css"]
 })
-export class AddForInstitutionComponent implements OnInit, OnChanges {
+export class AddForInstitutionComponent implements OnInit {
   @Input() arInstitution: Institution[];
-  @Input() InstitutiondrpValue: string;
-  @Input() BranchdrpValue: string;
+  @Input() Institution: any;
   @Input() againstOpen: boolean;
+  BranchdrpValue: any;
   ForInstitution: string = "For Institution";
   addForm1: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
   arCityData: any[] = [];
+
   AddForInstitution() {
 
     this.addForm1 = this.fb.group({
@@ -30,32 +31,28 @@ export class AddForInstitutionComponent implements OnInit, OnChanges {
       branch: [null],
       reportType: [null],
       uploadCases: [null, FileValidator.validate],
-      uploadCaseFiles: [null, FileValidator.validate],
+      uploadCaseFiles: [null],
     });
   }
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
     this.AddForInstitution();
   }
-  submitAddForInstitution(data: Institution) {
+  submitAddForInstitution(data: any) {
 
-    var reqData = {
-      institutionName: data.institutionName,
-      branch: data.branch,
-      reportType: data.reportType,
-      uploadCases: data.uploadCases,
-      uploadCaseFiles: data.uploadCaseFiles,
-      userId: this._storageService.getUserId()
-    };
+    let fileInfo = data.uploadCases;
+    let formdata: FormData = new FormData();
+    formdata.append('institutionId', this.Institution.id);
+    formdata.append('userId', this._storageService.getUserId());
+    formdata.append('isForInstitution', 'Y');
+    formdata.append('csvfile', data.uploadCases[0]);
 
-    this._institutionService.addForInstitution(reqData).subscribe(
+    this._institutionService.addForInstitution(formdata).subscribe(
       result => {
+        debugger
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
-          // result.foreach(function(value)
-          //   {
-          //     this.arInstitution.push(value);
-          //   })
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.arInstitution.push({
             institutionName: data.institutionName, branch: data.branch, reportType: data.reportType,
             uploadCases: data.uploadCases, uploadCaseFiles: data.uploadCaseFiles, caseId: data.caseId,
@@ -89,7 +86,7 @@ export class AddForInstitutionComponent implements OnInit, OnChanges {
             completionDate: data.completionDate,
             id: _result.id
           });
-          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          
           this.AddForInstitution();
           this.closeModal();
           this.subscriberFields();
@@ -104,12 +101,13 @@ export class AddForInstitutionComponent implements OnInit, OnChanges {
   closeModal() {
     $('#closebtn').click();
   }
-  ngOnChanges() {
+
+  bindBranch() {
     var branchData = this._storageService.getBranchData();
     if (branchData)
       this.BranchdrpValue = branchData.branchName;
-
   }
+
   ngOnInit() {
     $("#ERROR_casefile").hide();
     this.subscriberFields();

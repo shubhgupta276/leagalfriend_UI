@@ -1,3 +1,4 @@
-export let addForInstitutionUrl = "Institution/add/forinstitution";
-export let getForInstitutionsUrl = "Institution/forinstitution";
-export let updateForInstitutionUrl = "Institution/update/forinstitution";
+export let addForInstitutionUrl = "institution/upload";
+export let getAllForInstitutionsUrl = "institution/cases";
+export let getForInstitutionUrl = "institution/case";
+export let updateForInstitutionUrl = "/institution/case";
