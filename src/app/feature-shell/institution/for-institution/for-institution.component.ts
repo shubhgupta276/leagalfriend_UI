@@ -34,6 +34,8 @@ export class ForInstitutionComponent implements OnInit {
     arFilterType: any = [];
     showDateFilter: boolean = false;
     filterTypeId: any;
+    hoveredIndex:number;
+    newHiringdata:any;
     @ViewChild(AddForInstitutionComponent) _addForInstitution: AddForInstitutionComponent;
     constructor(private fb: FormBuilder,
         private _router: Router,
@@ -46,7 +48,7 @@ export class ForInstitutionComponent implements OnInit {
         this.bindFilterType();
         this.getInstitutionList();
         this.getRecourse();
-
+        var selfnew=this;
         $($.document).ready(function () {
 
             document.ondragover = document.ondragenter = function (evt) {
@@ -81,7 +83,13 @@ export class ForInstitutionComponent implements OnInit {
             }, function (start_date, end_date) {
                 $('#txtFromToDate').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
             });
-
+            
+            $('body').on('change', '.newHiringDate', function () {
+                selfnew.updateNewHiringDate($(this).val())
+                $(this).closest('td')
+                .animate({backgroundColor: '#88d288'}, 1000)
+                .animate({backgroundColor: ''}, 1000);
+              });
         });
     }
 
@@ -112,7 +120,9 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     changeInstitution() {
+        this.$table.destroy();
         this.GetAllForIntitution();
+
     }
 
     getRecourse() {
@@ -405,7 +415,7 @@ export class ForInstitutionComponent implements OnInit {
                     if (dateColFilter && fromToDate && fromToDate.length > 0) {
                         let arDates = fromToDate.split(" To ");
                         console.log("call...");
-                        
+
                         let _startDate = null, _endDate = null;
                         let _filterDate = data[dateColFilter];
 
@@ -447,6 +457,30 @@ export class ForInstitutionComponent implements OnInit {
     openPopup() {
         this._addForInstitution.bindBranch();
     }
+    ShowCalendar(items) {
+        this.newHiringdata = items;
+
+    }
+    updateNewHiringDate(newHiring) {
+        this.arr.forEach(element => {
+            if (element.id == this.newHiringdata.id) {
+                element.nextHearingDate = newHiring;
+            }
+        })
+    }
+    OnMouseHover(i) {
+        if ($('.datepicker-dropdown').length == 0) {
+            $('.newHiringDate').datepicker();
+            this.hoveredIndex = i;
+        }
+    }
+
+    hideCalendar() {
+        if ($('.datepicker-dropdown').length == 0)
+            this.hoveredIndex = null;
+
+    }
+  
 }
 
 
