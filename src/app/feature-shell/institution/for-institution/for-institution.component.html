@@ -27,11 +27,14 @@
                     </option>
                   </select>
                 </div>
-               
+
                 <div class="col-sm-2">
                   <div *ngIf="arRecourse.length>0">
                     <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
                   </div>
+                </div>
+                <div class="col-sm-2">
+                  <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterForInstitutionModal">
                 </div>
                 <div class="col-sm-2">
                   <label class="custom-label">Show
@@ -64,21 +67,23 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of arr" data-toggle="modal" (dblclick)="showEditInstitutionModal()">
+                <tr *ngFor="let item of arr; let i = index" data-toggle="modal" (dblclick)="showEditInstitutionModal()">
                   <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
                     style="width: 35px;" aria-sort="ascending">
-                    <input type="checkbox"  #rowChecked (change)="checkboxChange(rowChecked.checked)">
+                    <input type="checkbox" #rowChecked (change)="checkboxChange(rowChecked.checked)">
                   </th>
 
                   <td>{{item.caseId}}</td>
                   <td>{{item.caseStage}}</td>
                   <td>{{item.courtCaseId}}</td>
                   <td>{{item.legalCaseId}}</td>
-                  <td>{{item.previousHearingDate}}</td>
-                  <td>{{item.nextHearingDate}}</td>
+                  <td>{{item.previousHearingDate | date:'dd-MM-yyyy'}}</td>
+                  <td (mouseenter)="rowIndex=i">
+                    {{item.nextHearingDate | date:'dd-MM-yyyy'}}
+                  </td>
                   <td>{{item.loanAccountNumber}}</td>
                   <td>
-                    <a>
+                    <a routerLink="/admin/institution/editforinstitution/{{item.institutionId}}/{{item.id}}">
                       <i class="fa fa-edit"></i>
                     </a>
                     <a>
@@ -120,11 +125,69 @@
 
 <div class="favicon" (click)="openPopup()">
   <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
-    <span class="tooltip-text" >Import Cases</span>
+    <span class="tooltip-text">Import Cases</span>
   </div>
   <a>
     <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addForInstitutionModal"></i>
   </a>
 </div>
 <add-for-institution-modal [Institution]="InstitutionValue"></add-for-institution-modal>
-<edit-for-institution-modal></edit-for-institution-modal>
+
+
+<!-- Filter Case Starts -->
+<div class="modal fade" style="z-index: 2001;" id="filterForInstitutionModal">
+  <div class="modal-dialog caseModalSearch">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header">
+
+        <button type="button" id="closebtnFilter" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Filter </h4>
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div style="margin-top: -15px; margin-bottom: -15px; background-color: #eee;" class="modal-body">
+
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="col-md-6">
+              <select class="form-control" (change)="filterTypeChange($event.target.value)">
+                <option *ngFor="let item of arFilterType" ([ngModel])="filterTypeId" [value]="item.value">{{item.text}}</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-12">&nbsp;</div>
+        </div>
+
+        <div class="row" [style.display]="!showDateFilter? 'none' : null">
+          <div class="col-md-12">
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control pull-right" id="txtFromToDate" placeholder="From To date">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">&nbsp;</div>
+        </div>
+        <div style="text-align: right;margin-right: 27px;">
+          <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" id="btnSearch" (click)="search()" data-dismiss="modal" class="btn btn-modal-addedit">Search</button>
+        </div>
+
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- Filter case ends -->

@@ -3,7 +3,7 @@ import { retry } from 'rxjs/operator/retry';
 import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
-import { addForInstitutionUrl, getForInstitutionsUrl, updateForInstitutionUrl } from '../institution/institution.config';
+import { addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl } from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
 import { getInstitutionsUrl } from '../master/master.config';
 import { ResourceLoader } from '@angular/compiler';
@@ -22,9 +22,15 @@ export class InstitutionService {
         );
     }
 
-    getForInstitutions(institutionId): Observable<any> {
+    getAllForInstitutions(institutionId): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getForInstitutionsUrl + "?institutionId=" + institutionId
+            getAllForInstitutionsUrl + "?institutionId=" + institutionId + "&userId=" + this._storageService.getUserId()
+        );
+    }
+
+    getForInstitution(institutionId, institutionalCaseId): Observable<any> {
+        return this.apiGateWay.get<Institution>(
+            getForInstitutionUrl + "?institutionId=" + institutionId + "&institutionalCaseId=" + institutionalCaseId
         );
     }
 
@@ -34,8 +40,9 @@ export class InstitutionService {
             addForInstitutionUrl, formData
         );
     }
+
     updateForInstitution(reqData: any): Observable<any> {
-        return this.apiGateWay.post<Institution>(
+        return this.apiGateWay.put<Institution>(
             updateForInstitutionUrl,
             JSON.stringify(reqData)
         );

@@ -1,10 +1,12 @@
-import { Component, OnInit,Input } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { debuglog } from 'util';
-import { FormGroup, FormBuilder, Validators, FormControl,ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { InstitutionService } from '../../institution.service';
 import { Institution } from '../../institution';
+import { ActivatedRoute } from "@angular/router";
+import { DatePipe } from "@angular/common";
 
 declare let $;
 
@@ -14,261 +16,189 @@ declare let $;
   styleUrls: ["./Edit-for-institution.component.css"]
 })
 
-export class EditForInstitutionComponent implements OnInit{
-     @Input() arInstitution: Institution[];
-     editDetails: Institution;
-     editForInstitutionForm: FormGroup;
-     isInstitutionNameAlreadyExists: boolean = false;
+export class EditForInstitutionComponent implements OnInit {
+  editForInstitutionForm: FormGroup;
+  institutionId: number;
+  institutionalCaseId: number;
+  editData: any;
+  constructor(
+    private fb: FormBuilder,
+    private _institutionService: InstitutionService,
+    private _activatedRoute: ActivatedRoute,
+    private _datePipe: DatePipe,
+    private _storageService: StorageService) {
 
-     constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) { 
-      this.createForm(null);
-     }
+    this._activatedRoute.params.subscribe((params) => {
+      this.institutionalCaseId = params.id;
+      this.institutionId = params.institutionId;
+      this.getInstitutionDetail();
+    })
+  }
 
-  submitEditinstitutionUser(data : Institution) {
-    
-    var reqData = {
-      institutionName:data.institutionName,
-      branch:data.branch,
-      reportType:data.reportType,
-      uploadCases:data.uploadCases,
-      uploadCaseFiles:data.uploadCaseFiles,
-      caseId: data.caseId,
-      stage:data.stage,
-      courtCaseId:data.courtCaseId,
-      legalCaseId:data.legalCaseId,
-      lastHearingDate:data.lastHearingDate,
-      nextHearingDate:data.nextHearingDate,
-      loanAccountNumber:data.loanAccountNumber,
-      compliance : data.compliance,
-      recourse : data.recourse,
-      region : data.region,
-      location : data.location,
-      productGroup : data.productGroup,
-      customerName : data.customerName,
-      DPDAsOnFilingDate : data.DPDAsOnFilingDate,
-      dateOfFilingCase : data.dateOfFilingCase,
-      courtPlace : data.courtPlace,
-      lawyerName : data.lawyerName,
-      stageInCourt : data.stageInCourt,
-      orderReceivedDate : data.orderReceivedDate,
-      rOStatus : data.rOStatus,
-      arbitrationInitiated : data.arbitrationInitiated,
-      repoFlag : data.repoFlag,
-      legalManager : data.legalManager,
-      closureDate : data.closureDate,
-      totalAmtRecovered : data.totalAmtRecovered,
-      caseFiledAgainst : data.caseFiledAgainst,
-      DPDAsOnCurrentSystemDate : data.DPDAsOnCurrentSystemDate,
-      caseCriticalityLevel : data.caseCriticalityLevel,
-      parentID : data.parentID,
-      generatedBy : data.generatedBy,
-      uploadDocument : data.uploadDocument,
-      groundForClosingFile : data.groundForClosingFile,
-      disposedOffFileNo : data.disposedOffFileNo,
-      state : data.state,
-      product : data.product,
-      POSAsOnFilingDate : data.POSAsOnFilingDate,
-      NPAStageAsOnFilingDate : data.NPAStageAsOnFilingDate,
-      caseType : data.caseType,
-      courtName : data.courtName,
-      amountInvolved : data.amountInvolved,
-      caseStage : data.caseStage,
-      previousHearingDate : data.previousHearingDate,
-      NDOHNullReason : data.NDOHNullReason,
-      receiverName : data.receiverName,
-      ROExecutionDate : data.ROExecutionDate,
-      arbitrationcaseID : data.arbitrationcaseID,
-      remarks : data.remarks,
-      caseStatus : data.caseStatus,
-      closureReportingDate : data.closureReportingDate,
-      accountStatus : data.accountStatus,
-      POSAsOnCurrentSystemDate : data.POSAsOnCurrentSystemDate,
-      NPAStageAsOnCurrentSystemDate : data.NPAStageAsOnCurrentSystemDate,
-      type : data.type,
-      childCase : data.childCase,
-      completionDate : data.completionDate,
-      id: data.id,
-      userId: this._storageService.getUserId()
-
-    };
-
-  this._institutionService.updateForInstitution(reqData).subscribe(
-
-    result => {
-      var _result = result.body;
-      if (_result.httpCode == 200) { //success
-        $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
-        this.closeModal();
-
-        const objFind = this.arInstitution.find(x => x.id == this.editDetails.id);
-        objFind.courtName = data.courtName;
-        objFind.institutionName = data.institutionName;
-        objFind.branch = data.branch;
-        objFind.reportType = data.reportType;
-        objFind.uploadCases = data.uploadCases;
-        objFind.uploadCaseFiles = data.uploadCaseFiles;
-        objFind.caseId = data.caseId;
-        objFind.stage = data.stage;
-        objFind.courtCaseId = data.courtCaseId;
-        objFind.legalCaseId = data.legalCaseId;
-        objFind.lastHearingDate = data.lastHearingDate;
-        objFind.nextHearingDate = data.nextHearingDate;
-        objFind.loanAccountNumber = data.loanAccountNumber;
-        objFind.compliance  = data.compliance;
-        objFind.recourse = data.recourse;
-        objFind.region = data.region;
-        objFind.location = data.location;
-        objFind.productGroup = data.productGroup;
-        objFind.customerName = data.customerName;
-        objFind.DPDAsOnFilingDate  + data.DPDAsOnFilingDate;
-        objFind.dateOfFilingCase = data.dateOfFilingCase;
-        objFind.courtPlace = data.courtPlace;
-        objFind.lawyerName = data.lawyerName;
-        objFind.stageInCourt = data.stageInCourt;
-        objFind.orderReceivedDate = data.orderReceivedDate;
-        objFind.rOStatus = data.rOStatus;
-        objFind.arbitrationInitiated = data.arbitrationInitiated;
-        objFind.repoFlag = data.repoFlag;
-        objFind.legalManager = data.legalManager;
-        objFind.closureDate = data.closureDate;
-        objFind.totalAmtRecovered = data.totalAmtRecovered;
-        objFind.caseFiledAgainst = data.caseFiledAgainst;
-        objFind.DPDAsOnCurrentSystemDate = data.DPDAsOnCurrentSystemDate;
-        objFind.caseCriticalityLevel = data.caseCriticalityLevel;
-        objFind.parentID = data.parentID;
-        objFind.generatedBy = data.generatedBy;
-        objFind.uploadDocument = data.uploadDocument;
-        objFind.groundForClosingFile = data.groundForClosingFile;
-        objFind.disposedOffFileNo = data.disposedOffFileNo;
-        objFind.state = data.state;
-        objFind.product = data.product;
-        objFind.POSAsOnFilingDate = data.POSAsOnFilingDate;
-        objFind.NPAStageAsOnFilingDate = data.NPAStageAsOnFilingDate;
-        objFind.caseType = data.caseType;
-        objFind.courtName = data.courtName;
-        objFind.amountInvolved = data.amountInvolved;
-        objFind.caseStage = data.caseStage;
-        objFind.previousHearingDate = data.previousHearingDate;
-        objFind.NDOHNullReason = data.NDOHNullReason;
-        objFind.receiverName = data.receiverName;
-        objFind.ROExecutionDate = data.ROExecutionDate;
-        objFind.arbitrationcaseID = data.arbitrationcaseID;
-        objFind.remarks = data.remarks;
-        objFind.caseStatus = data.caseStatus;
-        objFind.closureReportingDate = data.closureReportingDate;
-        objFind.accountStatus = data.accountStatus;
-        objFind.POSAsOnCurrentSystemDate = data.POSAsOnCurrentSystemDate;
-        objFind.NPAStageAsOnCurrentSystemDate = data.NPAStageAsOnCurrentSystemDate;
-        objFind.type = data.type;
-        objFind.childCase = data.childCase;
-        objFind.completionDate = data.completionDate;
-      }
-      else
-        $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
-    },
-    err => {
-      console.log(err);
+  ngOnInit() {
+    this.createForm(null);
+    const self = this;
+    $(document).ready(function () {
+      $('.input-group.date').datepicker().on('changeDate', function (ev) {
+        const attrName = $(this).find('input').attr('formControlName');
+        const attrValue = $(this).find('input').val();
+        self.editForInstitutionForm.controls[attrName].setValue(attrValue);
+      });
     });
   }
 
-  closeModal() {
-    $("#closebtn1").click();
-  }
+  createForm(obj) {
 
-  ngOnInit(){
-      //  const self = this;
-      // $(document).ready(function () {
-      //   $('.input-group.date').datepicker().on('changeDate', function (ev) {
-      //     const attrName = $(this).find('input').attr('formControlName');
-      //     const attrValue = $(this).find('input').val();
-      //     self.editForInstitutionForm.controls[attrName].setValue(attrValue);
-      //   });
-      // });
-  }
-
-  
-  subscriberFields() {
-    this.editForInstitutionForm.get('courtName').valueChanges.subscribe(
-      (e) => {
-        var fieldValue = e.toUpperCase();
-        if (this.editDetails.courtName.toUpperCase() != fieldValue && this.arInstitution.filter(x => x.courtName.toUpperCase() == fieldValue).length > 0)
-          this.isInstitutionNameAlreadyExists = true;
-        else {
-          this.isInstitutionNameAlreadyExists = false;
-        }
-      }
-    );
-  }
-
-  createForm(data: Institution) {
     this.editForInstitutionForm = this.fb.group({
-      institutionName:[data == null ? null : data.institutionName],
-      branch:[data == null ? null : data.branch],
-      reportType:[data == null ? null : data.reportType],
-      uploadCases:[data == null ? null : data.uploadCases],
-      uploadCaseFiles:[data == null ? null : data.uploadCaseFiles],
-      caseId:[data == null ? null : data.caseId],
-      stage:[data == null ? null : data.stage],
-      courtCaseId:[data == null ? null : data.courtCaseId],
-      legalCaseId:[data == null ? null : data.legalCaseId, Validators.required],
-      lastHearingDate:[data == null ? null : data.lastHearingDate],
-      nextHearingDate:[data == null ? null : data.nextHearingDate, Validators.required],
-      loanAccountNumber:[data == null ? null : data.loanAccountNumber],
-      compliance : [data == null ? null : data.compliance],
-      recourse: [data == null ? null : data.recourse],
-      region : [data == null ? null : data.region],
-      location : [data == null ? null : data.location, Validators.required],
-      productGroup : [data == null ? null : data.productGroup],
-      customerName :[data == null ? null : data.customerName, Validators.required],
-      DPDAsOnFilingDate : [data == null ? null : data.DPDAsOnFilingDate],
-      dateOfFilingCase : [data == null ? null : data.dateOfFilingCase, Validators.required],
-      courtPlace : [data == null ? null : data.courtPlace, Validators.required],
-      lawyerName : [data == null ? null : data.lawyerName],
-      stageInCourt : [data == null ? null : data.stageInCourt],
-      orderReceivedDate : [data == null ? null : data.orderReceivedDate],
-      rOStatus : [data == null ? null : data.rOStatus],
-      arbitrationInitiated : [data == null ? null : data.arbitrationInitiated],
-      repoFlag : [data == null ? null : data.repoFlag],
-      legalManager : [data == null ? null : data.legalManager],
-      closureDate : [data == null ? null : data.closureDate],
-      totalAmtRecovered : [data == null ? null : data.totalAmtRecovered],
-      caseFiledAgainst : [data == null ? null : data.caseFiledAgainst],
-      DPDAsOnCurrentSystemDate : [data == null ? null : data.DPDAsOnCurrentSystemDate],
-      caseCriticalityLevel : [data == null ? null : data.caseCriticalityLevel],
-      parentID : [data == null ? null : data.parentID],
-      generatedBy : [data == null ? null : data.generatedBy],
-      uploadDocument : [data == null ? null : data.uploadDocument],
-      groundForClosingFile : [data == null ? null : data.groundForClosingFile],
-      disposedOffFileNo : [data == null ? null : data.disposedOffFileNo],
-      state : [data == null ? null : data.state, Validators.required],
-      product : [data == null ? null : data.product],
-      POSAsOnFilingDate : [data == null ? null : data.POSAsOnFilingDate],
-      NPAStageAsOnFilingDate : [data == null ? null : data.NPAStageAsOnFilingDate],
-      caseType : [data == null ? null : data.caseType],
-      courtName : [data == null ? null : data.courtName, Validators.required],
-      amountInvolved : [data == null ? null : data.amountInvolved],
-      caseStage : [data == null ? null : data.caseStage],
-      previousHearingDate : [data == null ? null : data.previousHearingDate],
-      NDOHNullReason : [data == null ? null : data.NDOHNullReason],
-      receiverName : [data == null ? null : data.receiverName],
-      ROExecutionDate : [data == null ? null : data.ROExecutionDate],
-      arbitrationcaseID : [data == null ? null : data.arbitrationcaseID],
-      remarks : [data == null ? null : data.remarks, Validators.required],
-      caseStatus : [data == null ? null : data.caseStatus, Validators.required],
-      closureReportingDate : [data == null ? null : data.closureReportingDate],
-      accountStatus : [data == null ? null : data.accountStatus],
-      POSAsOnCurrentSystemDate : [data == null ? null : data.POSAsOnCurrentSystemDate],
-      NPAStageAsOnCurrentSystemDate : [data == null ? null : data.NPAStageAsOnCurrentSystemDate],
-      type : [data == null ? null : data.type],
-      childCase : [data == null ? null : data.childCase],
-      completionDate: [data == null ? null : data.completionDate],
-      id: [data == null ? null : data.id]
+      accountStatus: obj == null ? null : obj.accountStatus,
+      advocateofEp: obj == null ? null : obj.advocateofEp,
+      amountInvolved: obj == null ? null : obj.amountInvolved,
+      appealUs34Filed: obj == null ? null : obj.appealUs34Filed,
+      arbitrationCaseId: obj == null ? null : obj.arbitrationCaseId,
+      arbitrationInitiated: obj == null ? null : obj.arbitrationInitiated,
+      arbitratorAppointed: obj == null ? null : obj.arbitratorAppointed,
+      assetDetails: obj == null ? null : obj.assetDetails,
+      auctionDate: obj == null ? null : obj.auctionDate,
+      awardAmount: obj == null ? null : obj.awardAmount,
+      awardCopyProvided: obj == null ? null : obj.awardCopyProvided,
+      awardDate: obj == null ? null : obj.awardDate,
+      bankName: obj == null ? null : obj.bankName,
+      caseCriticalityLevel: obj == null ? null : obj.caseCriticalityLevel,
+      caseFiledAgainst: obj == null ? null : obj.caseFiledAgainst,
+      caseId: obj == null ? null : obj.caseId,
+      caseStage: obj == null ? null : obj.caseStage,
+      caseStatus: obj == null ? null : obj.caseStatus,
+      caseType: obj == null ? null : obj.caseType,
+      chqNo1: obj == null ? null : obj.chqNo1,
+      chqNo2: obj == null ? null : obj.chqNo2,
+      chqNo3: obj == null ? null : obj.chqNo3,
+      closureDate: obj == null ? null : this._datePipe.transform(obj.closureDate, "yyyy-MM-dd"),
+      closureReportingDate: obj == null ? null : this._datePipe.transform(obj.closureReportingDate, "yyyy-MM-dd"),
+      coolingPeriodNoticeDate: obj == null ? null : obj.coolingPeriodNoticeDate,
+      courtCaseId: obj == null ? null : obj.courtCaseId,
+      courtName: obj == null ? null : obj.courtName,
+      courtPlace: obj == null ? null : obj.courtPlace,
+      customerName: obj == null ? null : obj.customerName,
+      dateOfConduct: obj == null ? null : obj.dateOfConduct,
+      disbursalDate: obj == null ? null : obj.disbursalDate,
+      dpdOnCurrentDate: obj == null ? null : obj.dpdOnCurrentDate,
+      dpdOnEpFilingDate: obj == null ? null : obj.dpdOnEpFilingDate,
+      dpdOnFilingDate: obj == null ? null : obj.dpdOnFilingDate,
+      dpdOnNoticeDate: obj == null ? null : obj.dpdOnNoticeDate,
+      ePCourtName: obj == null ? null : obj.ePCourtName,
+      ePCourtPlace: obj == null ? null : obj.ePCourtPlace,
+      executionCaseNo: obj == null ? null : obj.executionCaseNo,
+      executionFiled: obj == null ? null : obj.executionFiled,
+      executionFilingDate: obj == null ? null : obj.executionFilingDate,
+      fileName: obj == null ? null : obj.fileName,
+      filingDate: obj == null ? null : obj.filingDate,
+      generatedBy: obj == null ? null : obj.generatedBy,
+      guarantorsName: obj == null ? null : obj.guarantorsName,
+      id: obj == null ? null : obj.id,
+      institutionId: obj == null ? null : obj.institutionId,
+      lawyerName: obj == null ? null : obj.lawyerName,
+      legalCaseId: obj == null ? null : obj.legalCaseId,
+      legalManager: obj == null ? null : obj.legalManager,
+      loanAccountNumber: obj == null ? null : obj.loanAccountNumber,
+      loanAmount: obj == null ? null : obj.loanAmount,
+      location: obj == null ? null : obj.location,
+      ndohNullReason: obj == null ? null : obj.ndohNullReason,
+      nextActionDate: obj == null ? null : obj.nextActionDate,
+      nextActionPlan: obj == null ? null : obj.nextActionPlan,
+      nextHearingDate: obj == null ? null : this._datePipe.transform(obj.nextHearingDate, "yyyy-MM-dd"),
+      noticeAmount: obj == null ? null : obj.noticeAmount,
+      noticeDate: obj == null ? null : obj.noticeDate,
+      noticeDateAppointmentArbitrator: obj == null ? null : obj.noticeDateAppointmentArbitrator,
+      noticePostalRemarks: obj == null ? null : obj.noticePostalRemarks,
+      noticeReferenceNumber: obj == null ? null : obj.noticeReferenceNumber,
+      noticeSentDate: obj == null ? null : obj.noticeSentDate,
+      noticeType: obj == null ? null : obj.noticeType,
+      npaStageOnCurrentDate: obj == null ? null : obj.npaStageOnCurrentDate,
+      npaStageOnEpFilingDate: obj == null ? null : obj.npaStageOnEpFilingDate,
+      npaStageOnFilingDate: obj == null ? null : obj.npaStageOnFilingDate,
+      npaStageOnNoticeDate: obj == null ? null : obj.npaStageOnNoticeDate,
+      orderReceivedDate: obj == null ? null : this._datePipe.transform(obj.orderReceivedDate, "yyyy-MM-dd"),
+      overdueAmtOnNoticeDate: obj == null ? null : obj.overdueAmtOnNoticeDate,
+      parentId: obj == null ? null : obj.parentId,
+      peacefulPossessionNoticeDate: obj == null ? null : obj.peacefulPossessionNoticeDate,
+      physicalPossessionDate: obj == null ? null : obj.physicalPossessionDate,
+      policeComplaintFiledDate: obj == null ? null : obj.policeComplaintFiledDate,
+      posOnCurrentDate: obj == null ? null : obj.posOnCurrentDate,
+      posOnEpFilingDate: obj == null ? null : obj.posOnEpFilingDate,
+      posOnFilingDate: obj == null ? null : obj.posOnFilingDate,
+      posOnNoticeDate: obj == null ? null : obj.posOnNoticeDate,
+      previousHearingDate: obj == null ? null : this._datePipe.transform(obj.previousHearingDate, "yyyy-MM-dd"),
+      product: obj == null ? null : obj.product,
+      productGroup: obj == null ? null : obj.productGroup,
+      publicationDatePhysicalPossessionNotice: obj == null ? null : obj.publicationDatePhysicalPossessionNotice,
+      receiveOrderStatus: obj == null ? null : obj.receiveOrderStatus,
+      receiverName: obj == null ? null : obj.receiverName,
+      receiverOrderAppliedDate: obj == null ? null : obj.receiverOrderAppliedDate,
+      receiverOrderReceivedDate: obj == null ? null : obj.receiverOrderReceivedDate,
+      recieveOrderApplied: obj == null ? null : obj.recieveOrderApplied,
+      recourse: obj == null ? null : obj.recourse,
+      region: obj == null ? null : obj.region,
+      remarks: obj == null ? null : obj.remarks,
+      repoFlag: obj == null ? null : obj.repoFlag,
+      reservePrice: obj == null ? null : obj.reservePrice,
+      saleDate: obj == null ? null : obj.saleDate,
+      saleNoticeDate: obj == null ? null : obj.saleNoticeDate,
+      saleNoticePublicationDate: obj == null ? null : obj.saleNoticePublicationDate,
+      sec9Applied: obj == null ? null : obj.sec9Applied,
+      sec9LegalCaseId: obj == null ? null : obj.sec9LegalCaseId,
+      sec14FilingDate: obj == null ? null : obj.sec14FilingDate,
+      sec17OrderApplied: obj == null ? null : obj.sec17OrderApplied,
+      sec17OrderAppliedDate: obj == null ? null : obj.sec17OrderAppliedDate,
+      sec17OrderReceivedDate: obj == null ? null : obj.sec17OrderReceivedDate,
+      sec17OrderStatus: obj == null ? null : obj.sec17OrderStatus,
+      sec132NoticeDate: obj == null ? null : obj.sec132NoticeDate,
+      sec132NoticePostalRemarks: obj == null ? null : obj.sec132NoticePostalRemarks,
+      sec132PublicationDate: obj == null ? null : obj.sec132PublicationDate,
+      sec134NoticePostalRemarks: obj == null ? null : obj.sec134NoticePostalRemarks,
+      sec134PublicationDate: obj == null ? null : obj.sec134PublicationDate,
+      serveDate: obj == null ? null : obj.serveDate,
+      settlementAmt: obj == null ? null : obj.settlementAmt,
+      spdcNoticeAckRemarks: obj == null ? null : obj.spdcNoticeAckRemarks,
+      spdcNoticeServiceDate: obj == null ? null : obj.spdcNoticeServiceDate,
+      stageInCourt: obj == null ? null : obj.stageInCourt,
+      state: obj == null ? null : obj.state,
+      symbolicPossessionDate: obj == null ? null : obj.symbolicPossessionDate,
+      totalAmtRecovered: obj == null ? null : obj.totalAmtRecovered,
+      transmissionRequired: obj == null ? null : obj.transmissionRequired,
+      type: obj == null ? null : obj.type,
+      valuationAmount: obj == null ? null : obj.valuationAmount,
+      valuationDate: obj == null ? null : obj.valuationDate,
+      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended
     });
-    if (data != null) {
-      this.isInstitutionNameAlreadyExists = false;
-      this.editDetails = data;
-      this.subscriberFields();
-    }
+  }
+
+  getInstitutionDetail() {
+
+    this._institutionService.getForInstitution(this.institutionId, this.institutionalCaseId).
+      subscribe((result) => {
+
+        if (result) {
+          this.createForm(result);
+        }
+      },
+        err => {
+          console.log(err);
+        })
+  }
+
+  submitEditinstitutionUser(data: any) {
+    //data.caseFiles = "";
+    
+    data.userId = this._storageService.getUserId();
+    this._institutionService.updateForInstitution(data).subscribe(
+
+      result => {
+        if (result.body == null) {
+          $.toaster({ priority: 'success', title: 'Success', message: "Update successfully." });
+        }
+      },
+      err => {
+        console.log(err);
+      });
   }
 }

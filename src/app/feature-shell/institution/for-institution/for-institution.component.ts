@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { KeyValue, ListBranch } from '../../../shared/Utility/util-common';
 import { AddForInstitutionComponent } from './add-for-institution/add-for-institution.component';
 import { EditForInstitutionComponent } from './Edit-for-institution/Edit-for-institution.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StorageService } from '../../../shared/services/storage.service';
@@ -10,6 +10,7 @@ import { InstitutionService } from '../institution.service';
 import { Institution } from '../institution';
 import { window } from 'rxjs/operator/window';
 import { RecourseService } from '../../master/resource/recourse.service';
+import { Router } from '@angular/router';
 
 declare let $;
 @Component({
@@ -27,14 +28,22 @@ export class ForInstitutionComponent implements OnInit {
     recourseConfig: any;
     arr = [];
     checkboxCounter: number = 0;
-    recourseFitler: any;
+    recourseFilter: any;
     $table: any;
+    rowIndex: number;
+    arFilterType: any = [];
+    showDateFilter: boolean = false;
+    filterTypeId: any;
     @ViewChild(AddForInstitutionComponent) _addForInstitution: AddForInstitutionComponent;
     constructor(private fb: FormBuilder,
-        private _institutionService: InstitutionService, private _recourseService: RecourseService,
+        private _router: Router,
+        private _datePipe: DatePipe,
+        private _institutionService: InstitutionService,
+        private _recourseService: RecourseService,
         private _storageService: StorageService) { }
 
     ngOnInit() {
+        this.bindFilterType();
         this.getInstitutionList();
         this.getRecourse();
 
@@ -56,6 +65,7 @@ export class ForInstitutionComponent implements OnInit {
                 }
                 evt.preventDefault();
             };
+
             function validateFile(name: string) {
                 var ext = name.substring(name.lastIndexOf('.'));
                 if (ext.toLowerCase() == '.csv') {
@@ -65,16 +75,31 @@ export class ForInstitutionComponent implements OnInit {
                     return false;
                 }
             }
+
+            $('#txtFromToDate').daterangepicker({
+                autoUpdateInput: false
+            }, function (start_date, end_date) {
+                $('#txtFromToDate').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
+            });
+
         });
+    }
+
+    filterTypeChange(id) {
+
+        this.filterTypeId = id;
+        if (this.filterTypeId == 1 || this.filterTypeId == 2 || this.filterTypeId == 3 || this.filterTypeId == 4)
+            this.showDateFilter = true;
+        else
+            this.showDateFilter = false;
     }
 
     getInstitutionList() {
 
         this._institutionService.getInstitutionList().subscribe((result) => {
-
             if (result.httpCode == 200) {
                 this.arInstitution = result.institutions;
-                this.InstitutionValue = this.arInstitution[0];
+                this.InstitutionValue = this.arInstitution.find(x => x.defaultInstitution);
                 this.GetAllForIntitution();
             }
             else
@@ -116,7 +141,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     changeRecourse(data: any) {
-        this.recourseFitler = data;
+        this.recourseFilter = data;
         this.filterDatatableData();
 
     }
@@ -127,12 +152,11 @@ export class ForInstitutionComponent implements OnInit {
 
     GetAllForIntitution() {
 
-        this._institutionService.getForInstitutions(this.InstitutionValue.id).subscribe(
+        this._institutionService.getAllForInstitutions(this.InstitutionValue.id).subscribe(
             result => {
-
+                this.arr = [];
                 for (var i = 0; i < result.length; i++) {
                     const obj = result[i];
-
                     this.arr.push({
                         accountStatus: obj.accountStatus,
                         advocateofEp: obj.advocateofEp,
@@ -268,12 +292,11 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     bindDatatable() {
+
         var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
         var selectedPageLength = 15;
 
-
         let $table = $("#example1").DataTable({
-            "bDestroy": true,
             paging: true,
             lengthChange: true,
             searching: true,
@@ -310,30 +333,6 @@ export class ForInstitutionComponent implements OnInit {
                 }
             });
 
-            //start bank filter
-            $("#ddlBank").on("change", function () {
-                var status = $(this).val();
-                if (status == "All") {
-                    $table.columns(1).search("").draw();
-                }
-                else if ($table.columns(1).search() !== this.value) {
-                    $table.columns(1).search(this.value).draw();
-                }
-            });
-            //end bank filter
-
-            //start caseid filter
-            $("#ddlCaseID").on("change", function () {
-                var status = $(this).val();
-                if (status == "All") {
-                    $table.columns(2).search("").draw();
-                }
-                else if ($table.columns(2).search() !== this.value) {
-                    $table.columns(2).search(this.value).draw();
-                }
-            });
-            //end caseid filter
-
             //start Recourse filter
             $("#ddlRecourse").on("change", function () {
                 var status = $(this).val();
@@ -345,51 +344,106 @@ export class ForInstitutionComponent implements OnInit {
                 }
             });
             //end Recourse filter
-
-            //start Stage filter
-            $("#ddlStage").on("change", function () {
-                var status = $(this).val();
-                if (status == "All") {
-                    $table.columns(4).search("").draw();
-                }
-                else if ($table.columns(3).search() !== this.value) {
-                    $table.columns(4).search(this.value).draw();
-                }
-            });
-            //end Stage filter
-
-            //Amount bank filter
-            $("#ddlAmount").on("change", function () {
-                var status = $(this).val();
-                if (status == "All") {
-                    $table.columns(5).search("").draw();
-                }
-                else if ($table.columns(5).search() !== this.value) {
-                    $table.columns(5).search(this.value).draw();
-                }
-            });
-            //end Amount filter
         });
+    }
+
+    bindFilterType() {
+        this.arFilterType.push(
+            { value: "", text: "No Filter" },
+            { value: 1, text: "Next Hearing Date" },
+            { value: 2, text: "Last Hearing Date" },
+            { value: 3, text: "Last Update Date" },
+            { value: 4, text: "Case Updated Date" },
+            { value: 5, text: "Compliance" });
+    }
+
+    search() {
+        this.filterDatatableData();
     }
 
     filterDatatableData() {
         let $table = this.$table;
         let $this = this;
+        let fromToDate = $("#txtFromToDate").val();
+        let dateColFilter = null;
+
         $table.columns().every(function () {
             // start recourse filter
-            if ($this.recourseFitler == null || $this.recourseFitler == undefined) {
+            if ($this.recourseFilter == null || $this.recourseFilter == undefined) {
                 $table.columns(9).search("").draw();
             }
-            else if ($table.columns(9).search() !== $this.recourseFitler.recourseCode) {
-                $table.columns(9).search($this.recourseFitler.recourseCode).draw();
+            else if ($table.columns(9).search() !== $this.recourseFilter.recourseCode) {
+                $table.columns(9).search($this.recourseFilter.recourseCode).draw();
             }
             //end recourse filter
+
+            // start date filter
+            if ($this.filterTypeId && $this.filterTypeId > 0) {
+
+                if ($this.filterTypeId == 1) //Next Hearing Date
+                    dateColFilter = 6;
+                else if ($this.filterTypeId == 2)//Last Hearing Date
+                    dateColFilter = 5;
+                // else if ($this.filterTypeId == 2)//Last Update Date
+                //     colFilter = 5;
+                // else if ($this.filterTypeId == 2)//Case Updated Date
+                //     colFilter = 5;
+
+                //$table.columns(colFilter).search($this.recourseFilter.recourseCode).draw();
+
+            }
+            // end date filter
+
         });
+
+        filterDates();
+
+        function filterDates() {
+            $.fn.dataTableExt.afnFiltering.push(
+                function (oSettings, data, iDataIndex) {
+
+                    if (dateColFilter && fromToDate && fromToDate.length > 0) {
+                        let arDates = fromToDate.split(" To ");
+                        console.log("call...");
+                        
+                        let _startDate = null, _endDate = null;
+                        let _filterDate = data[dateColFilter];
+
+                        if (_filterDate && _filterDate.length > 0) {
+                            _filterDate = $this.convertDateToDDMMYYYY(data[dateColFilter]);
+
+                            if (arDates.length > 1) {
+                                _startDate = $this.convertDateToDDMMYYYY(arDates[0]);
+                                _endDate = $this.convertDateToDDMMYYYY(arDates[1]);
+                            }
+
+                            if ((_filterDate >= _startDate && _filterDate <= _endDate))
+                                return true;
+                            else
+                                return false
+                        }
+                        else
+                            return false;
+                    }
+                    //else
+                    return true;
+
+                }
+            );
+
+            $table.draw();
+        }
+
+    }
+
+    convertDateToDDMMYYYY(dateStr) {
+        return new Date(dateStr.split('-')[2], dateStr.split('-')[1] - 1, dateStr.split('-')[0])
     }
 
     resetAllFilter() {
-        this.recourseFitler = null;
+        this.recourseFilter = null;
     }
+
     openPopup() {
         this._addForInstitution.bindBranch();
     }

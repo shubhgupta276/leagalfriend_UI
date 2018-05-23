@@ -39,28 +39,20 @@ export class AddForInstitutionComponent implements OnInit {
   }
   submitAddForInstitution(data: any) {
 
-    // var reqData = {
-    //   institutionId: this.Institution.id,
-    //   csvfile: data.uploadCases
-    //   // institutionName: data.institutionName,
-    //   // branch: data.branch,
-    //   // reportType: data.reportType,
-    //   // uploadCases: data.uploadCases,
-    //   // uploadCaseFiles: data.uploadCaseFiles,
-    //   // userId: this._storageService.getUserId()
-    // };
-
     let fileInfo = data.uploadCases;
     let formdata: FormData = new FormData();
     formdata.append('institutionId', this.Institution.id);
+    formdata.append('userId', this._storageService.getUserId());
+    formdata.append('isForInstitution', 'Y');
     formdata.append('csvfile', data.uploadCases[0]);
 
     this._institutionService.addForInstitution(formdata).subscribe(
       result => {
+        debugger
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
-
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.arInstitution.push({
             institutionName: data.institutionName, branch: data.branch, reportType: data.reportType,
             uploadCases: data.uploadCases, uploadCaseFiles: data.uploadCaseFiles, caseId: data.caseId,
@@ -94,7 +86,7 @@ export class AddForInstitutionComponent implements OnInit {
             completionDate: data.completionDate,
             id: _result.id
           });
-          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          
           this.AddForInstitution();
           this.closeModal();
           this.subscriberFields();
