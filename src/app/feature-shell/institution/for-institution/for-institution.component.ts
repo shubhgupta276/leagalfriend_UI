@@ -114,6 +114,8 @@ export class ForInstitutionComponent implements OnInit {
     filterTypeChange(id) {
 
         this.filterTypeId = id;
+        if (this.filterTypeId == 0)
+            $("#txtFromToDate").val("");
         if (this.filterTypeId == 1 || this.filterTypeId == 2 || this.filterTypeId == 3 || this.filterTypeId == 4)
             this.showDateFilter = true;
         else
@@ -329,6 +331,7 @@ export class ForInstitutionComponent implements OnInit {
         var selectedPageLength = 15;
 
         let $table = $("#example1").DataTable({
+            destroy: true,
             paging: true,
             lengthChange: true,
             searching: true,
