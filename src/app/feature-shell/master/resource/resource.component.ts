@@ -10,15 +10,7 @@ import { StorageService } from "../../../shared/services/storage.service";
 
 declare let $;
 
-@NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  declarations: [
-    ResourceComponent,
-    EditResourceMasterComponent,
-    AddResourceMasterComponent
-  ],
-  providers: [RecourseService, StorageService]
-})
+
 @Component({
   selector: "app-resource",
   templateUrl: "./resource.component.html",
@@ -115,3 +107,15 @@ export class ResourceComponent implements OnInit {
   }
 
 }
+
+@NgModule({
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  declarations: [
+    ResourceComponent,
+    EditResourceMasterComponent,
+    AddResourceMasterComponent
+  ],
+  providers: [RecourseService, StorageService]
+})
+
+export class RecourseModule {}

@@ -10,17 +10,7 @@ import { Court } from './court';
 
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      CourtComponent,
-      AddCourtMasterComponent,
-      EditCourtMasterComponent,
-    ],
-    providers: [CourtService, StorageService]
-  }
-)
+
 @Component({
   selector: 'app-court',
   templateUrl: './court.component.html',
@@ -119,3 +109,17 @@ export class CourtComponent implements OnInit {
 
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      CourtComponent,
+      AddCourtMasterComponent,
+      EditCourtMasterComponent,
+    ],
+    providers: [CourtService, StorageService]
+  }
+)
+
+export class CourtModule {}

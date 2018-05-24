@@ -8,17 +8,7 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { District } from './district';
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      DistrictComponent,
-      AddDistrictMasterComponent,
-      EditDistrictMasterComponent
-    ],
-    providers: [DistrictService]
-  }
-)
+
 @Component({
   selector: "app-district",
   templateUrl: "./district.component.html",
@@ -118,3 +108,17 @@ export class DistrictComponent implements OnInit {
   }
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      DistrictComponent,
+      AddDistrictMasterComponent,
+      EditDistrictMasterComponent
+    ],
+    providers: [DistrictService]
+  }
+)
+
+export class DistrictModule {}

@@ -11,17 +11,7 @@ import { RecourseService } from '../resource/recourse.service';
 
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      StageComponent,
-      AddStageMasterComponent,
-      EditStageMasterComponent,
-    ],
-    providers: [StageService, StorageService]
-  }
-)
+
 @Component({
   selector: 'app-stage',
   templateUrl: './stage.component.html',
@@ -167,3 +157,18 @@ export class StageComponent implements OnInit {
   }
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      StageComponent,
+      AddStageMasterComponent,
+      EditStageMasterComponent,
+    ],
+    providers: [StageService, StorageService]
+  }
+)
+
+export class StageModule {}
+
