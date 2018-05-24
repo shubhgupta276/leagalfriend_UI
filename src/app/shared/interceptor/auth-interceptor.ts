@@ -1,4 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
+import { endpoint_url } from '../shared-config';
 import 'rxjs/add/operator/do';
 import {
     HttpInterceptor,
@@ -15,6 +16,7 @@ import { TokenService } from '../services/token-service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+
     constructor(private auth: TokenService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -70,7 +72,8 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(changepwdReq);
         }
-        else if (req.url.indexOf('institution/upload') >= 0) {
+        else if (req.url.replace(endpoint_url, "").indexOf('institution/upload') >= 0 || req.url.replace(endpoint_url, "").indexOf("institution/case") >= 0) {
+            
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
                 headers: req.headers
@@ -80,7 +83,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(authReq);
         }
         else {
-            
+
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
                 headers: req.headers

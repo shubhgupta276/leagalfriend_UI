@@ -47,8 +47,8 @@
                                                     <em class="astrick">*</em>
                                                 </label>
                                                 <div class="col-md-3 createUserLabel">
-                                                    {{BranchdrpValue}}
-                                                    <input type="hidden" name="branch" id="branch" [(ngModel)]="BranchdrpValue" [value]="BranchdrpValue" formControlName="branch">
+                                                    {{branchData.branchName}}
+                                                    <input type="hidden" name="branch" id="branch" [(ngModel)]="branchData.branchName" [value]="branchData.branchName" formControlName="branch">
                                                 </div>
                                                 <div class="col-md-9" [class.has-error]="addForm1.get('branch').invalid 
                                                   &&  addForm1.get('branch').touched">
