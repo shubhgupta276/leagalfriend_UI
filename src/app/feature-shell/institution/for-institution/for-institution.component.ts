@@ -54,6 +54,8 @@ export class ForInstitutionComponent implements OnInit {
         this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
 
             if (this.branchData) {
+                if (this.$table)
+                    this.$table.destroy();
                 this.GetAllForIntitution();
             }
         });
@@ -416,7 +418,7 @@ export class ForInstitutionComponent implements OnInit {
 
             $.fn.dataTableExt.afnFiltering.push(
                 function (oSettings, data, iDataIndex) {
-                    
+
                     if ($this.filterTypeId && $this.filterTypeId > 0) {
 
                         if ($this.filterTypeId == 1) //Next Hearing Date
