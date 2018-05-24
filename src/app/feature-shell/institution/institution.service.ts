@@ -42,7 +42,7 @@ export class InstitutionService {
     }
 
     updateForInstitution(FormData: any): Observable<any> {
-        return this.apiGateWay.put<Institution>(
+        return this.apiGateWay.post<Institution>(
             updateForInstitutionUrl,
             FormData
         );

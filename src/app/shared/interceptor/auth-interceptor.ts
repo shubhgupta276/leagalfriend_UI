@@ -72,7 +72,7 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(changepwdReq);
         }
-        else if (req.url.replace(endpoint_url, "").indexOf('institution/upload') >= 0 || req.url.replace(endpoint_url, "").indexOf("institution/case") >= 0) {
+        else if (req.url.replace(endpoint_url, "").indexOf('institution/upload') >= 0 || req.url.replace(endpoint_url, "").indexOf("institution/for/case") >= 0) {
             
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
