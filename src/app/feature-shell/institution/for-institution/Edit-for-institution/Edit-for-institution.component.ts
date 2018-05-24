@@ -63,6 +63,7 @@ export class EditForInstitutionComponent implements OnInit {
       awardCopyProvided: obj == null ? null : obj.awardCopyProvided,
       awardDate: obj == null ? null : obj.awardDate,
       bankName: obj == null ? null : obj.bankName,
+      branchId: obj == null ? null : obj.branchId,
       caseCriticalityLevel: obj == null ? null : obj.caseCriticalityLevel,
       caseFiledAgainst: obj == null ? null : obj.caseFiledAgainst,
       caseId: obj == null ? null : obj.caseId,
@@ -187,12 +188,16 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   submitEditinstitutionUser(data: any) {
-    //data.caseFiles = "";
-    
     data.userId = this._storageService.getUserId();
-    this._institutionService.updateForInstitution(data).subscribe(
 
+    let formdata: FormData = new FormData();
+    formdata.append('forInstitutionalCase', JSON.stringify(data));
+    formdata.append('file', null);
+    debugger
+    this._institutionService.updateForInstitution(formdata).subscribe(
+      
       result => {
+        debugger
         if (result.body == null) {
           $.toaster({ priority: 'success', title: 'Success', message: "Update successfully." });
         }

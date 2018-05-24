@@ -18,7 +18,7 @@ export class AddForInstitutionComponent implements OnInit {
   @Input() arInstitution: Institution[];
   @Input() Institution: any;
   @Input() againstOpen: boolean;
-  BranchdrpValue: any;
+  branchData: any;
   ForInstitution: string = "For Institution";
   addForm1: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
@@ -36,7 +36,9 @@ export class AddForInstitutionComponent implements OnInit {
   }
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
     this.AddForInstitution();
+    this.bindBranch();
   }
+
   submitAddForInstitution(data: any) {
 
     let fileInfo = data.uploadCases;
@@ -44,11 +46,12 @@ export class AddForInstitutionComponent implements OnInit {
     formdata.append('institutionId', this.Institution.id);
     formdata.append('userId', this._storageService.getUserId());
     formdata.append('isForInstitution', 'Y');
+    formdata.append('branchId', this.branchData.id);
     formdata.append('csvfile', data.uploadCases[0]);
-
+    
     this._institutionService.addForInstitution(formdata).subscribe(
       result => {
-        debugger
+        
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
@@ -98,20 +101,22 @@ export class AddForInstitutionComponent implements OnInit {
         console.log(err);
       });
   }
+ 
   closeModal() {
     $('#closebtn').click();
   }
 
   bindBranch() {
-    var branchData = this._storageService.getBranchData();
-    if (branchData)
-      this.BranchdrpValue = branchData.branchName;
+    let data = this._storageService.getBranchData();
+    if (data)
+      this.branchData = data;
   }
 
   ngOnInit() {
     $("#ERROR_casefile").hide();
     this.subscriberFields();
   }
+ 
   subscriberFields() {
     // this.addForm1.get('institutionName').valueChanges.subscribe(
     //   (e) => {
@@ -123,6 +128,7 @@ export class AddForInstitutionComponent implements OnInit {
     //   }
     // );
   }
+  
   upload(event: any) {
     $("#ERROR_casefile").hide();
     $("#ERROR_uploadcasefile").hide();
@@ -158,5 +164,4 @@ export class AddForInstitutionComponent implements OnInit {
       return false;
     }
   }
-
 }
