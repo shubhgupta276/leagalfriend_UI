@@ -169,7 +169,9 @@ export class EditForInstitutionComponent implements OnInit {
       type: obj == null ? null : obj.type,
       valuationAmount: obj == null ? null : obj.valuationAmount,
       valuationDate: obj == null ? null : obj.valuationDate,
-      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended
+      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended,
+      //
+      uploadFile: null
     });
   }
 
@@ -190,16 +192,19 @@ export class EditForInstitutionComponent implements OnInit {
   submitEditinstitutionUser(data: any) {
     data.userId = this._storageService.getUserId();
 
+    let document = (data.uploadFile) ? data.uploadFile[0] : null
     let formdata: FormData = new FormData();
+    formdata.append('file', document);
+    delete data.uploadFile;
     formdata.append('forInstitutionalCase', JSON.stringify(data));
-    formdata.append('file', null);
-    debugger
+    
     this._institutionService.updateForInstitution(formdata).subscribe(
-      
+
       result => {
         debugger
-        if (result.body == null) {
-          $.toaster({ priority: 'success', title: 'Success', message: "Update successfully." });
+        result = result.body;
+        if (result.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
         }
       },
       err => {
