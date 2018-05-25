@@ -4,6 +4,7 @@ import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
 import {
+    updateHearingDate,
     addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile
 } from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
@@ -47,6 +48,12 @@ export class InstitutionService {
         return this.apiGateWay.post<Institution>(
             updateForInstitutionUrl,
             FormData
+        );
+    }
+
+    updateHearingDate(data: any): Observable<any> {
+        return this.apiGateWay.put<any>(
+            updateHearingDate, data
         );
     }
 

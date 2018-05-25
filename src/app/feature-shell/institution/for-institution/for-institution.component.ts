@@ -485,12 +485,15 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     updateNewHiringDate(newHiring) {
-        debugger
-        this.arr.forEach(element => {
-            if (element.id == this.newHiringdata.id) {
-                element.nextHearingDate = newHiring;
-            }
-        })
+
+        let obj = this.arr.find(x => x.id == this.newHiringdata.id);
+        obj.nextHearingDate = new Date(newHiring);
+        this._institutionService.updateHearingDate(obj).subscribe(
+            (result) => {
+
+            },
+            err => {
+            })
     }
 
     OnMouseHover(i) {
