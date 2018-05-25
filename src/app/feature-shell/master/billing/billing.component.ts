@@ -181,21 +181,28 @@ export class BillingComponent implements OnInit {
     this._billingservice.getBilling().subscribe(
       result => {
         if (result.httpCode == 200) {
+          
           for (var i = 0; i < result.billings.length; i++) {
             const obj = result.billings[i];
-
+            debugger
             this.arBillingData.push({
-              id: obj.id,
-              institutionId: 0,
-              institutionName: (obj.recourse.institution) ? obj.recourse.institution.institutionName : "",
+              id: obj.id,              
               amount: obj.amount,
               recourseName: obj.recourse.recourseName,
               recourseId: obj.recourse.id,
               stageId: obj.stage.id,
               stageName: obj.stage.stageName,
-              userId: obj.userId
+              userId: obj.userId,
+              address:obj.institution.address,
+              billingAddr:obj.institution.billingAddr,
+              contactName:obj.institution.contactName,
+              fkCity:obj.institution.fkCity,
+              phone:obj.institution.phone,
+              institutionId: obj.institution.id,
+              institutionName: obj.institution.institutionName,
             })
           }
+          
           this.setDropdownUniqueValues();
           setTimeout(() => {
             this.bindBillingGridPaging();

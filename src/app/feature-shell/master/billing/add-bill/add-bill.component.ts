@@ -15,7 +15,7 @@ declare let $;
 })
 
 export class AddBillingComponent implements OnInit {
-  @Input() arbillingData: Billing[];
+  @Input() arbillingData: any[];
   @Input() arAllRecourses: any[] = [];
   @Input() arAllInstitution: any = [];
   isbilingAlreadyExists: Boolean = false;
@@ -48,10 +48,8 @@ export class AddBillingComponent implements OnInit {
 
   }
 SetDefaultInstitution()
-{
-  debugger
+{  
   this.arAllInstitution.forEach(element => {
-    debugger
     if(element.defaultInstitution)
     this.defaultInstitutionId=element.id;
   });
