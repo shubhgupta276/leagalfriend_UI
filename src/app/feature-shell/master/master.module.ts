@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MasterRoutingModule } from './master-routing.module';
-import { StateComponent } from './state/state.component';
-import { StageComponent } from './stage/stage.component';
-import { CityComponent } from './city/city.component';
-import { DistrictComponent } from './district/district.component';
-import { CourtComponent } from './court/court.component';
-import { BillingComponent } from './billing/billing.component';
-import { InstitutionComponent } from './institution/institution.component';
-import { BranchComponent } from './branch/branch.component';
-import { ResourceComponent } from './resource/resource.component';
-import { ComplianceComponent } from './compliance/compliance.component';
+import { StateComponent, StateModule } from './state/state.component';
+import { StageComponent, StageModule } from './stage/stage.component';
+import { CityComponent, CityModule } from './city/city.component';
+import { DistrictComponent, DistrictModule } from './district/district.component';
+import { CourtComponent, CourtModule } from './court/court.component';
+import { BillingComponent, MasterBillingModule } from './billing/billing.component';
+import { InstitutionComponent, MasterInstitutionModule } from './institution/institution.component';
+import { BranchComponent, BranchModule } from './branch/branch.component';
+import { ResourceComponent, RecourseModule } from './resource/resource.component';
+import { ComplianceComponent, ComplianceModule } from './compliance/compliance.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
-import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
+import { MasterTemplatesComponent, MasterTemplateModule } from '../master/masterTemplates/masterTemplate.component';
 import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
 @NgModule({
   imports: [
@@ -22,17 +22,17 @@ import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    CityComponent,
-    DistrictComponent,
-    StateComponent,
-    CourtComponent,
-    BillingComponent,
-    StageComponent,
-    BranchComponent,
-    ComplianceComponent,
-    InstitutionComponent,
-    ResourceComponent,
-    MasterTemplatesComponent
+    CityModule,
+    DistrictModule,
+    CourtModule,
+    MasterBillingModule,
+    StageModule,
+    BranchModule,
+    ComplianceModule,
+    MasterInstitutionModule,
+    RecourseModule,
+    MasterTemplateModule,
+    StateModule
   ],
   declarations: [InvoiceInfoComponent]
 })

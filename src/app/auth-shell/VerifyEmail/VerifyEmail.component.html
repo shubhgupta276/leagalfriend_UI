@@ -8,7 +8,7 @@
             <!-- <p class="login-box-msg"></p> -->
         <!-- start form container -->
         <ng-container >
-            <form [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPasswordRecovery(forgotPasswordForm.value)">
+            <form [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPasswordRecovery()">
         
                          <div class="modal-body">
                              <h2 [style.color]="getColor()">{{message}}</h2>

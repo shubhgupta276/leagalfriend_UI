@@ -12,17 +12,7 @@ import { InstitutionService } from '../institution/institution.service';
 
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      BillingComponent,
-      AddBillingComponent,
-      EditBillingComponent,
-    ],
-    providers: [BillingService, StorageService, InstitutionService]
-  }
-)
+
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
@@ -252,3 +242,17 @@ export class BillingComponent implements OnInit {
   }
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      BillingComponent,
+      AddBillingComponent,
+      EditBillingComponent,
+    ],
+    providers: [BillingService, StorageService, InstitutionService]
+  }
+)
+
+export class MasterBillingModule {}

@@ -119,3 +119,17 @@ export class CityComponent implements OnInit {
   }
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      CityComponent,
+      AddCityMasterComponent,
+      EditCityMasterComponent
+    ],
+    providers: [CityService, StorageService]
+  }
+)
+
+export class CityModule {}

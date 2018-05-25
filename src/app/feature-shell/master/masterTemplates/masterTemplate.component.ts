@@ -13,14 +13,7 @@ declare var System: any;
   templateUrl: './masterTemplate.component.html',
   styleUrls: ['./masterTemplate.component.css']
 })
-@NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  declarations: [
-    MasterTemplatesComponent
-  ]
-}
 
-)
 export class MasterTemplatesComponent implements OnInit {
   table: any;
   fileIdSelected: string;
@@ -248,3 +241,14 @@ export class MasterTemplatesComponent implements OnInit {
   }
 
 }
+
+@NgModule({
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  declarations: [
+    MasterTemplatesComponent
+  ]
+}
+
+)
+
+export class MasterTemplateModule {}

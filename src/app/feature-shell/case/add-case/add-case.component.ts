@@ -127,10 +127,11 @@ export class AddCaseComponent implements OnInit {
       uploadDocument: [],
     });
   }
-  protected searchStr: string;
-  protected captain: string;
-  protected dataService: CompleterData;
-  protected searchData = [
+  public searchStr: string;
+  public match: any;
+  public captain: string;
+  public dataService: CompleterData;
+  public searchData = [
     { color: 'red', value: '#f00' },
     { color: 'green', value: '#0f0' },
     { color: 'blue', value: '#00f' },
@@ -139,7 +140,7 @@ export class AddCaseComponent implements OnInit {
     { color: 'yellow', value: '#ff0' },
     { color: 'black', value: '#000' }
   ];
-  protected captains = ['James T. Kirk', 'Benjamin Sisko', 'Jean-Luc Picard', 'Spock', 'Jonathan Archer', 'Hikaru Sulu', 'Christopher Pike', 'Rachel Garrett' ];
+  public captains = ['James T. Kirk', 'Benjamin Sisko', 'Jean-Luc Picard', 'Spock', 'Jonathan Archer', 'Hikaru Sulu', 'Christopher Pike', 'Rachel Garrett' ];
  
 
   constructor(private completerService: CompleterService,private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {

@@ -12,17 +12,7 @@ import { element } from "protractor";
 
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      InstitutionComponent,
-      AddInstitutionMasterComponent,
-      EditInstitutionMasterComponent
-    ],
-    providers: [InstitutionService, StorageService, CityService]
-  }
-)
+
 @Component({
   selector: "app-institution",
   templateUrl: "./institution.component.html",
@@ -183,3 +173,17 @@ export class InstitutionComponent implements OnInit {
       });
   }
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      InstitutionComponent,
+      AddInstitutionMasterComponent,
+      EditInstitutionMasterComponent
+    ],
+    providers: [InstitutionService, StorageService, CityService]
+  }
+)
+
+export class MasterInstitutionModule {}
