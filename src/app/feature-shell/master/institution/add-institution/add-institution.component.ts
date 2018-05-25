@@ -58,7 +58,8 @@ export class AddInstitutionMasterComponent implements OnInit {
             contactPerson: data.contactPerson,
             city: data.city.cityName,
             cityId: data.city.id,
-            id: _result.id
+            id: _result.id,
+            defaultInstitution:false
           });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddInstitutionMaster();

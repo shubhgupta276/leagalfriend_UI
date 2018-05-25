@@ -53,7 +53,7 @@ export class AgainstInstitutionComponent implements OnInit {
         });
 
         this.getRecourse();
-        this.GetForInstitution();
+        this.GetAgainstInstitution();
         this.setFilterDropdowns();
         this.getInstitutions();
         var $this = this;
@@ -246,7 +246,7 @@ export class AgainstInstitutionComponent implements OnInit {
         this.branchSubscription.unsubscribe();
     }
 
-    GetForInstitution() {
+    GetAgainstInstitution() {
         this.arr = [
             { institutionId: 1, branchId: 1, recourseId: 23, CaseId: "O_SEC9_31526", Stage: "COMPLAINT_RETURNED", CourtCaseId: "9717/14", LegalCaseId: "10049575/SEC_138/14022014/R5780/1352986/MIGR", LastHearingDate: "15-Mar-2016", NextHearingDate: "16-Jan-2018", LoanAccountNo: "10049575" },
             { institutionId: 1, branchId: 1, recourseId: 23, CaseId: "O_SEC9_31527", Stage: "ARGUMENTS", CourtCaseId: "", LegalCaseId: "21567835/SEC_138/19092014/S2766/1530552/MIGR_REF", LastHearingDate: "03-Nov-2015", NextHearingDate: "16-Jan-2018", LoanAccountNo: "21567835" },

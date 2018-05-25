@@ -36,7 +36,8 @@ export class EditInstitutionMasterComponent {
       phone: data.contactNo,
       fkCity: data.city.id,
       id: data.id,
-      userId: this._storageService.getUserId()
+      userId: this._storageService.getUserId(),
+      defaultInstitution: data.defaultInstitution
     };
 
     this._institutionService.updateInstitution(reqData).subscribe(
@@ -90,7 +91,8 @@ export class EditInstitutionMasterComponent {
       city: [data == null ? null : data.city, Validators.required],
       billingAddress: [data == null ? null : data.billingAddress, Validators.required],
       contactNo: [data == null ? null : data.contactNo, Validators.required],
-      id: [data == null ? null : data.id]
+      id: [data == null ? null : data.id],
+      defaultInstitution: [data == null ? null : data.defaultInstitution, Validators.nullValidator]
     });
     if (data != null) {
       this.isInstitutionAlreadyExists = false;

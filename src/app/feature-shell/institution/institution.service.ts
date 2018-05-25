@@ -3,36 +3,62 @@ import { retry } from 'rxjs/operator/retry';
 import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
-import {addForInstitutionUrl,getForInstitutionsUrl,updateForInstitutionUrl} from '../institution/institution.config';
+import {
+    addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile
+} from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
-
+import { getInstitutionsUrl } from '../master/master.config';
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
+import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class InstitutionService {
 
-    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService) {
+    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService, private _httpClient: HttpClient) {
 
     }
 
-    getForInstitutions(): Observable<any> {
+    getInstitutionList(): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getForInstitutionsUrl + "?email=" +this._storageService.getUserEmail()
+            getInstitutionsUrl + "?email=" + this._storageService.getUserEmail()
         );
     }
 
-    addForInstitution(reqData: any): Observable<any> {
+    getAllForInstitutions(institutionId, branchId): Observable<any> {
+        return this.apiGateWay.get<Institution>(
+            getAllForInstitutionsUrl + "?institutionId=" + institutionId + "&branchId=" + branchId + "&userId=" + this._storageService.getUserId()
+        );
+    }
+
+    getForInstitution(institutionId, branchId, institutionalCaseId): Observable<any> {
+        return this.apiGateWay.get<Institution>(
+            getForInstitutionUrl + "?institutionId=" + institutionId + "&branchId=" + branchId + "&institutionalCaseId=" + institutionalCaseId
+        );
+    }
+
+    addForInstitution(formData: any): Observable<any> {
 
         return this.apiGateWay.post<Institution>(
-            addForInstitutionUrl,
-            JSON.stringify(reqData)
+            addForInstitutionUrl, formData
         );
     }
 
-    updateForInstitution(reqData: any): Observable<any> {
+    updateForInstitution(FormData: any): Observable<any> {
         return this.apiGateWay.post<Institution>(
             updateForInstitutionUrl,
-            JSON.stringify(reqData)
+            FormData
+        );
+    }
+
+    deleteFile(fileId: any): Observable<any> {
+        return this.apiGateWay.delete<any>(
+            deleteFile + "?fileId=" + fileId
+        );
+    }
+
+    downloadFile(fileId: any): Observable<any> {
+        return this.apiGateWay.get<any>(
+            downloadFile + "?fileId=" + fileId
         );
     }
 }

@@ -398,7 +398,7 @@ export class AddCaseComponent implements OnInit {
         });
 
         $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
-        debugger
+        
       },
       err => {
         console.log(err);
@@ -418,7 +418,7 @@ export class AddCaseComponent implements OnInit {
 
 submitAddCaseUser(data) {
   
-
+debugger
   let objEditCase: FormData = new FormData();
   const x = {
     "branchId": data.branch[0].id,

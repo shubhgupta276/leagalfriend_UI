@@ -1,156 +1,157 @@
 <div class="modal fade" id="addForInstitutionModal">
-        <div class="modal-dialog">
-            <div class="modal-content" style="border-radius: 5px;">
-                <div class="modal-header modal-header-addedit">
-                    <button id="closebtn" type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">Add Cases</h4>
-                </div>
-                <div style="width:120px;height:10%;background-color:black;"></div>
-                <div style="margin-top: -15px;" class="modal-body modal-body-adedit">
-                    <!-- Create User Starts -->
-                    <div class="row">
-                        <!-- <div class="col-md-12"> -->
-                        <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-                        <div>
-                            <div class="box-body widget-content">
-                                <form [formGroup]="addForm1"  class="form-horizontal" (ngSubmit)="submitAddForInstitution(addForm1.value)">
-                                    <div class="form-body">
-                                         <div class="tab-content">
-                                            <div class="tab-pane active">
-     
-                                                <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label createUserLabel">Institution:
-                                                        <em class="astrick">*</em>
-                                                    </label>
-                                                    <div class="col-md-3 createUserLabel">
-                                                       {{InstitutiondrpValue}}
-                                                       <input type="hidden" name="institution" id="institution" [(ngModel)]="InstitutiondrpValue" [value]="InstitutiondrpValue" formControlName="institutionName">
-                                                   </div>
-                                                    <div class="col-md-9" [class.has-error]="addForm1.get('institutionName').invalid 
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 5px;">
+            <div class="modal-header modal-header-addedit">
+                <button id="closebtn" type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add Cases</h4>
+            </div>
+            <div style="width:120px;height:10%;background-color:black;"></div>
+            <div style="margin-top: -15px;" class="modal-body modal-body-adedit">
+                <!-- Create User Starts -->
+                <div class="row">
+                    <!-- <div class="col-md-12"> -->
+                    <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+                    <div>
+                        <div class="box-body widget-content">
+                            <form [formGroup]="addForm1" class="form-horizontal" (ngSubmit)="submitAddForInstitution(addForm1.value)">
+                                <div class="form-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active">
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label createUserLabel">Institution:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-3 createUserLabel" *ngIf="Institution">
+                                                    {{Institution.institutionName}}
+                                                    <input type="hidden" name="institution" id="institution" [(ngModel)]="Institution.institutionName" [value]="Institution.institutionName"
+                                                        formControlName="institutionName">
+                                                </div>
+                                                <div class="col-md-9" [class.has-error]="addForm1.get('institutionName').invalid 
                                                   &&  addForm1.get('institutionName').touched">
-                                                       
-                                                    </div>
-                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('institutionName').invalid
+
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('institutionName').invalid
                                                      &&  addForm1.get('institutionName').touched">
-                                                        <small class="text-danger">
-                                                            <span>Institution name is required.</span>
-                                                        </small>
-                                                    </div>
-                                                   
+                                                    <small class="text-danger">
+                                                        <span>Institution name is required.</span>
+                                                    </small>
                                                 </div>
 
-                                                <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label createUserLabel">Branch:
-                                                        <em class="astrick">*</em>
-                                                    </label>
-                                                   <div class="col-md-3 createUserLabel">
-                                                      {{BranchdrpValue}}
-                                                      <input type="hidden" name="branch" id="branch" [(ngModel)]="BranchdrpValue" [value]="BranchdrpValue" formControlName="branch">
-                                                   </div>
-                                                    <div class="col-md-9" [class.has-error]="addForm1.get('branch').invalid 
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label createUserLabel">Branch:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-3 createUserLabel">
+                                                    {{branchData.branchName}}
+                                                    <input type="hidden" name="branch" id="branch" [(ngModel)]="branchData.branchName" [value]="branchData.branchName" formControlName="branch">
+                                                </div>
+                                                <div class="col-md-9" [class.has-error]="addForm1.get('branch').invalid 
                                                   &&  addForm1.get('branch').touched">
-                                                       
-                                                    </div>
-                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('branch').invalid
+
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('branch').invalid
                                                      &&  addForm1.get('branch').touched">
-                                                        <small class="text-danger">
-                                                            <span>Branch name is required.</span>
-                                                        </small>
-                                                    </div>
-                                                    
-                                                   
+                                                    <small class="text-danger">
+                                                        <span>Branch name is required.</span>
+                                                    </small>
                                                 </div>
 
-                                               <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label createUserLabel">Report Type:
-                                                        <em class="astrick">*</em>
-                                                    </label>
-                                                    <div class="col-md-3 createUserLabel">
+
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label createUserLabel">Report Type:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-3 createUserLabel">
                                                     {{ForInstitution}}
                                                     <input type="hidden" name="reportType" id="reportType" [(ngModel)]="ForInstitution" [value]="ForInstitution" formControlName="reportType">
-                                                   </div>
-                                                    <div class="col-md-9" [class.has-error]="addForm1.get('reportType').invalid 
+                                                </div>
+                                                <div class="col-md-9" [class.has-error]="addForm1.get('reportType').invalid 
                                                   &&  addForm1.get('reportType').touched">
-                                                       
-                                                    </div>
-                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('reportType').invalid
+
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('reportType').invalid
                                                      &&  addForm1.get('reportType').touched">
-                                                        <small class="text-danger">
-                                                            <span>Report Type name is required.</span>
-                                                        </small>
-                                                    </div>
-                                                   
+                                                    <small class="text-danger">
+                                                        <span>Report Type name is required.</span>
+                                                    </small>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label createUserLabel">Upload Cases:
-                                                        <em class="astrick">*</em>
-                                                    </label>
-                                                    <div class="col-md-3 createUserLabel">
-                                                        <input type="file" name="casefile" id="casefile" accept=".csv"  value="" formControlName="uploadCases" (change)="upload($event)" >
-                                                        <div class="error" style="display:none; width:140%;" id="ERROR_casefile">
-                                                                <small class="text-danger">
-                                                                <span id="spncasefile">Please upload only csv file.</span>
-                                                                </small>
-                                                        </div>
-                                                     </div>
-                                                    <div class="col-md-9" [class.has-error]="addForm1.get('uploadCases').invalid  &&  addForm1.get('uploadCases').touched">
-                                                    </div>
-                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('uploadCases').invalid &&  addForm1.get('uploadCases').touched">
-                                                        <small class="text-danger" style="margin-left: 48px;">
-                                                            <span>Upload Cases name is required.</span>
-                                                        </small>
-                                                    </div>
-                                                   
-                                                </div>
-                                              <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label createUserLabel">Upload Case Files:
-                                                        <em class="astrick">*</em>
-                                                    </label>
-                                                      <div class="col-md-3 createUserLabel">
-                                                        <input type="file" name="uploadcasefile" id="uploadcasefile" value="" formControlName="uploadCaseFiles" (change)="upload($event)">
-									                <div class="error" style="display:none; width:140%;" id="ERROR_uploadcasefile">
-                                                            <small class="text-danger">
-                                                                    <span id="spncasefile">Please upload only csv file.</span>
-                                                            </small>
-                                                    </div>
-                                                    </div>
-                                                    <div class="col-md-9" [class.has-error]="addForm1.get('uploadCaseFiles').invalid 
-                                                  &&  addForm1.get('uploadCaseFiles').touched">
-                                                       
-                                                    </div>
-                                                    <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('uploadCaseFiles').invalid
-                                                     &&  addForm1.get('uploadCaseFiles').touched">
-                                                        <small class="text-danger" style="margin-left: 48px;">
-                                                            <span>Upload Case Files name is required.</span>
-                                                        </small>
-                                                    </div>
-                                                   
-                                                </div>
-    
+
                                             </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label createUserLabel">Upload Cases:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-3 createUserLabel">
+                                                    <input type="file" name="casefile" id="casefile" accept=".csv" value="" formControlName="uploadCases" (change)="upload($event)">
+                                                    <div class="error" style="width:140%;" *ngIf="showCsvError">
+                                                        <small class="text-danger">
+                                                            <span id="spncasefile">Please upload only csv file.</span>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9" [class.has-error]="addForm1.get('uploadCases').invalid  &&  addForm1.get('uploadCases').touched">
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('uploadCases').invalid &&  addForm1.get('uploadCases').touched">
+                                                    <small class="text-danger" style="margin-left: 48px;">
+                                                        <span>Upload Cases name is required.</span>
+                                                    </small>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label createUserLabel">Upload Case Files:
+                                                    <em class="astrick">*</em>
+                                                </label>
+                                                <div class="col-md-3 createUserLabel">
+                                                    <input type="file" name="uploadcasefile" id="uploadcasefile" value="" formControlName="uploadCaseFiles" (change)="upload($event)">
+                                                    <div class="error" style="width:140%;" *ngIf="showZipError">
+                                                        <small class="text-danger">
+                                                            <span id="spncasefile">Please upload only zip file.</span>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9" [class.has-error]="addForm1.get('uploadCaseFiles').invalid 
+                                                  &&  addForm1.get('uploadCaseFiles').touched">
+
+                                                </div>
+                                                <div class="col-sm-9 valodation-padding" *ngIf="addForm1.get('uploadCaseFiles').invalid
+                                                     &&  addForm1.get('uploadCaseFiles').touched">
+                                                    <small class="text-danger" style="margin-left: 48px;">
+                                                        <span>Upload Case Files name is required.</span>
+                                                    </small>
+                                                </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
-                                     <div class="modal-footer modal-footer-addedit">
-                                        <button type="button" class="btn btn-default btn-default-add-edit" data-dismiss="modal">Close</button>
-                                        <button type="submit" [disabled]="addForm1.invalid" class="btn btn-modal-addedit">Submit</button>
-                                    </div> 
-                                </form>
-                            </div>
+                                </div>
+                                <div class="modal-footer modal-footer-addedit">
+                                    <button type="button" class="btn btn-default btn-default-add-edit" data-dismiss="modal">Close</button>
+                                    <button type="submit" [disabled]="addForm1.invalid" class="btn btn-modal-addedit">Submit</button>
+                                </div>
+                            </form>
                         </div>
-                        <!-- </div> -->
                     </div>
-                    <!-- Create User ends -->
+                    <!-- </div> -->
                 </div>
-                <!-- <div class="modal-footer">
+                <!-- Create User ends -->
+            </div>
+            <!-- <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                             <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
                             
                           </div> -->
-    
-            </div>
-            <!-- /.modal-content -->
+
         </div>
-        <!-- /.modal-dialog -->
+        <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
+</div>

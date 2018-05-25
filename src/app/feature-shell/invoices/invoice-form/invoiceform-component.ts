@@ -16,7 +16,7 @@ declare let canvas;
 export class InvoiceFormComponent implements OnInit {
     arr: Institution[] = [];
     arrInvoice = [];
-    arrInvoiceDetails = {};
+    arrInvoiceDetails: any;
     invoiceNo: string = '333333';
     template: string = ``;
     addressInfo = {
@@ -38,7 +38,7 @@ export class InvoiceFormComponent implements OnInit {
         this.addressInfo.billToAddress = $('#txtBillToAddress').val();
         this.addressInfo.CompanyAddress = $('#txtcompanyAddress').val();
         this.addressInfo.Date = $('#invoiceDate').val();
-        localStorage.setItem("addressDetails",JSON.stringify(this.addressInfo));
+        localStorage.setItem("addressDetails", JSON.stringify(this.addressInfo));
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));

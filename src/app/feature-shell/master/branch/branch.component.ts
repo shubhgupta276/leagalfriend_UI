@@ -10,17 +10,7 @@ import { CityService } from "../city/city.service";
 import {SelectModule} from 'ng2-select';
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, SelectModule],
-    declarations: [
-      BranchComponent,
-      AddBranchMasterComponent,
-      EditBranchMasterComponent      
-    ],
-    providers: [BranchService, StorageService]
-  }
-)
+
 @Component({
   selector: 'app-branch',
   templateUrl: './branch.component.html',
@@ -215,3 +205,17 @@ export class BranchComponent implements OnInit {
   }
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, SelectModule],
+    declarations: [
+      BranchComponent,
+      AddBranchMasterComponent,
+      EditBranchMasterComponent
+    ],
+    providers: [BranchService, StorageService]
+  }
+)
+
+export class BranchModule {}

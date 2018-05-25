@@ -34,13 +34,16 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   lstUploadedDocuments: any;
-  caseRunning: Case[] = [];
-  caseCompleted: Case[]=[];
+  caseRunning: any[] = [];
+  caseCompleted: Case[];
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
+  hoveredIndex: number = null;
+  isCalendarOpen = false;
+  newHiringCasedata: any;
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
@@ -63,10 +66,10 @@ export class CaseComponent implements OnInit {
         result.forEach(function (value) {
           $this.caseRunning.push(value);
           
-          if(result[0].completionDate!=null)
-          { 
-            $this.caseCompleted.push(value);
-          }
+          // if(result[0].completionDate!=null)
+          // { 
+          //   $this.caseCompleted.push(value);
+          // }
          
 
 
@@ -83,12 +86,20 @@ export class CaseComponent implements OnInit {
 
 
   ngOnInit() {
+
+
     this.getRunningCase();
     const self = this;
     this.getBranchDDL();
     this.bindRecourseDDL();
     // Running Case DataTable
     $($.document).ready(function () {
+      // $(document).on('mouseover', '.rowRunningCase', function () {
+      //   $(this).find('.divCal').show();
+      // });
+      // $(document).on('click', '.rowRunningCase', function () {
+      //   $('body').find('.divCal').hide();
+      // });
 
       $("#ddlCaseRecource").change(function () {
 
@@ -230,7 +241,12 @@ export class CaseComponent implements OnInit {
       });
     }, 100)
 
-
+    $('body').on('change', '.newHiringDate', function () {
+      self.updateNewHiringDate($(this).val())
+      $(this).closest('td')
+      .animate({backgroundColor: '#88d288'}, 1000)
+      .animate({backgroundColor: ''}, 1000);
+    });
   }
 
 
@@ -478,4 +494,28 @@ export class CaseComponent implements OnInit {
       }
     }
   }
+  ShowCalendar(items) {
+    this.newHiringCasedata = items;
+
+  }
+  updateNewHiringDate(newHiring) {
+    this.caseRunning.forEach(element => {
+      if (element.id == this.newHiringCasedata.id) {
+        element.nextHearingDate = newHiring;
+      }
+    })
+  }
+  OnMouseHover(i) {
+    if ($('.datepicker-dropdown').length == 0) {
+      $('.newHiringDate').datepicker();
+      this.hoveredIndex = i;
+    }
+  }
+
+  hideCalendar() {
+    if ($('.datepicker-dropdown').length == 0)
+      this.hoveredIndex = null;
+
+  }
+
 }
