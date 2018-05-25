@@ -77,9 +77,9 @@
                   <td>{{item.caseStage}}</td>
                   <td>{{item.courtCaseId}}</td> 
                   <td>{{item.legalCaseId}}</td>
-                  <td>{{item.previousHearingDate | date:'dd-MM-yyyy'}}</td>
+                  <td>{{item.previousHearingDate | date:'dd MMM yyyy'}}</td>
                   <td style="position: relative;">
-                    {{item.nextHearingDate | date:'dd-MM-yyyy'}}
+                    {{item.nextHearingDate | date:'dd MMM yyyy'}}
                     <div class="divNewHire input-group date" style="position:absolute; right: 0;" data-provide="datepicker" data-date-format="DD-MM-YYYY">
                       <input style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd"
                         class="form-control newHiringDate" size="10">
@@ -139,7 +139,7 @@
     <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addForInstitutionModal"></i>
   </a>
 </div>
-<add-for-institution-modal [Institution]="InstitutionValue"></add-for-institution-modal>
+<add-for-institution-modal (saveSuccess)="caseSaved()" [Institution]="InstitutionValue"></add-for-institution-modal>
 
 
 <!-- Filter Case Starts -->
