@@ -75,14 +75,14 @@
 
                   <td>{{item.caseId}}</td>
                   <td>{{item.caseStage}}</td>
-                  <td>{{item.courtCaseId}}</td>
+                  <td>{{item.courtCaseId}}</td> 
                   <td>{{item.legalCaseId}}</td>
                   <td>{{item.previousHearingDate | date:'dd-MM-yyyy'}}</td>
                   <td style="position: relative;">
                     {{item.nextHearingDate | date:'dd-MM-yyyy'}}
-                    <div class="divNewHire input-group date" style="position:absolute; right: 0;" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                      <input style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd"
-                        class="form-control newHiringDate" size="10" formControlName="nextHearingDate">
+                    <div class="divNewHire input-group date" style="position:absolute; right: 0;" data-provide="datepicker" data-date-format="DD-MM-YYYY">
+                      <input style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd"
+                        class="form-control newHiringDate" size="10">
                       <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="ShowCalendar(item)">
                         <span class="fa fa-calendar"></span>
                       </div>
@@ -102,6 +102,7 @@
                 </tr>
                 <tr *ngIf="!arr || arr.length == 0">
                   <td colspan="9">No Record Found...!</td>
+                  <td *ngFor="let item of [1,2,3,4,5,6,7,8,9]" style="display: none;"></td>
                 </tr>
               </tbody>
 
@@ -160,7 +161,7 @@
           <div class="col-md-12">
             <div class="col-md-6">
               <select class="form-control" (change)="filterTypeChange($event.target.value)">
-                <option *ngFor="let item of arFilterType" ([ngModel])="filterTypeId" [value]="item.value">{{item.text}}</option>
+                <option *ngFor="let item of arFilterType" [value]="item.value">{{item.text}}</option>
               </select>
             </div>
           </div>

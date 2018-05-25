@@ -22,9 +22,9 @@ export class InstitutionService {
         );
     }
 
-    getAllForInstitutions(institutionId): Observable<any> {
+    getAllForInstitutions(institutionId, branchId): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getAllForInstitutionsUrl + "?institutionId=" + institutionId + "&userId=" + this._storageService.getUserId()
+            getAllForInstitutionsUrl + "?institutionId=" + institutionId + "&branchId=" + branchId + "&userId=" + this._storageService.getUserId()
         );
     }
 
@@ -41,10 +41,10 @@ export class InstitutionService {
         );
     }
 
-    updateForInstitution(reqData: any): Observable<any> {
-        return this.apiGateWay.put<Institution>(
+    updateForInstitution(FormData: any): Observable<any> {
+        return this.apiGateWay.post<Institution>(
             updateForInstitutionUrl,
-            JSON.stringify(reqData)
+            FormData
         );
     }
 }

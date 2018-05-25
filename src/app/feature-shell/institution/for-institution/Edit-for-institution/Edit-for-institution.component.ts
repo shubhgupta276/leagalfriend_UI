@@ -63,6 +63,7 @@ export class EditForInstitutionComponent implements OnInit {
       awardCopyProvided: obj == null ? null : obj.awardCopyProvided,
       awardDate: obj == null ? null : obj.awardDate,
       bankName: obj == null ? null : obj.bankName,
+      branchId: obj == null ? null : obj.branchId,
       caseCriticalityLevel: obj == null ? null : obj.caseCriticalityLevel,
       caseFiledAgainst: obj == null ? null : obj.caseFiledAgainst,
       caseId: obj == null ? null : obj.caseId,
@@ -168,7 +169,9 @@ export class EditForInstitutionComponent implements OnInit {
       type: obj == null ? null : obj.type,
       valuationAmount: obj == null ? null : obj.valuationAmount,
       valuationDate: obj == null ? null : obj.valuationDate,
-      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended
+      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended,
+      //
+      uploadFile: null
     });
   }
 
@@ -187,14 +190,21 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   submitEditinstitutionUser(data: any) {
-    //data.caseFiles = "";
-    
     data.userId = this._storageService.getUserId();
-    this._institutionService.updateForInstitution(data).subscribe(
+
+    let document = (data.uploadFile) ? data.uploadFile[0] : null
+    let formdata: FormData = new FormData();
+    formdata.append('file', document);
+    delete data.uploadFile;
+    formdata.append('forInstitutionalCase', JSON.stringify(data));
+    
+    this._institutionService.updateForInstitution(formdata).subscribe(
 
       result => {
-        if (result.body == null) {
-          $.toaster({ priority: 'success', title: 'Success', message: "Update successfully." });
+        debugger
+        result = result.body;
+        if (result.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
         }
       },
       err => {
