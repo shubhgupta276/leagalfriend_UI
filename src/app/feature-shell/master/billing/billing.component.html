@@ -110,6 +110,6 @@
   <!-- /.content -->
 </div>
 
-<add-bill-modal [arbillingData]="arBillingData" [arAllInstitution]="arAllInstitution" [arAllRecourses]="arAllRecourses"></add-bill-modal>
+<add-bill-modal *ngIf="arAllInstitution.length>0" [arbillingData]="arBillingData" [arAllInstitution]="arAllInstitution" [arAllRecourses]="arAllRecourses"></add-bill-modal>
 <!-- <edit-bill-modal [editDetails]="editDetails"></edit-bill-modal> -->
 <edit-bill-modal [arbillingData]="arBillingData" [arAllInstitution]="arAllInstitution" [arAllRecourses]="arAllRecourses"></edit-bill-modal>

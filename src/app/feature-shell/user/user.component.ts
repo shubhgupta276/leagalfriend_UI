@@ -61,6 +61,7 @@ export class UserComponent implements OnInit {
         { name: 'Role', orderable: false },
         { name: 'Status', orderable: false }
       ],
+      destroy:true,
       lengthMenu: arLengthMenu,
       pageLength: selectedPageLength,
       oLanguage: {
@@ -179,7 +180,7 @@ export class UserComponent implements OnInit {
       this.bindDataTable();
     }, 5);
 
-    $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
+   
   }
 
   setRoles() {

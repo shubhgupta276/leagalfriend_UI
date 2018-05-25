@@ -75,7 +75,7 @@
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             <div class="error" *ngIf="isLoggedInError">
                 <p class="error-block">
-                    <span>Invalid username or password</span>
+                    <span>{{errLoginMsg}}</span>
                 </p>
             </div>
         </div>

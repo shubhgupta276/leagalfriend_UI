@@ -40,7 +40,6 @@ export class EditUserComponent {
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
   }
   submitEditUser(data) {
-    debugger
     if (this.isStatusChange)
       data.statusName = this.selectedStatus;
     if (this.isRoleChange)
@@ -134,7 +133,7 @@ export class EditUserComponent {
       lastName: [user == null ? null : user.lastName, Validators.required],
       organisation: [
         user == null ? null : user.organization,
-        Validators.required
+        Validators.nullValidator
       ],
       addressLine1: [
         (user == null || user.address == null) ? null : user.address.address1,

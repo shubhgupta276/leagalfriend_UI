@@ -10,4 +10,9 @@ export class Billing {
   stageId: number;
   stageName: string;
   userId: string;
+  address:string;
+  billingAddr:string;
+  contactName:string;
+  fkCity:number;
+  phone:string;
 }

@@ -34,13 +34,16 @@ declare var $;
 })
 export class CaseComponent implements OnInit {
   lstUploadedDocuments: any;
-  caseRunning: Case[] = [];
-  caseCompleted: Case[]=[];
+  caseRunning: any[] = [];
+  caseCompleted: Case[];
   editCaseForm: FormGroup;
   arrListCaseRecource: any[] = [];
   arrListCaseStage: any[] = [];
   arrListCaseBranch: any[] = [];
   arrListCaseBranch1: any[] = [];
+  hoveredIndex: number = null;
+  isCalendarOpen = false;
+  newHiringCasedata: any;
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
@@ -51,7 +54,6 @@ export class CaseComponent implements OnInit {
   }
 
   getRunningCase() {
-    
     var $this = this;
     var reqData = {
       userId: this._storageService.getUserId(),
@@ -59,14 +61,13 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
-        debugger
         result.forEach(function (value) {
           $this.caseRunning.push(value);
           
-          if(result[0].completionDate!=null)
-          { 
-            $this.caseCompleted.push(value);
-          }
+          // if(result[0].completionDate!=null)
+          // { 
+          //   $this.caseCompleted.push(value);
+          // }
          
 
 
@@ -83,12 +84,20 @@ export class CaseComponent implements OnInit {
 
 
   ngOnInit() {
+
+
     this.getRunningCase();
     const self = this;
     this.getBranchDDL();
     this.bindRecourseDDL();
     // Running Case DataTable
     $($.document).ready(function () {
+      // $(document).on('mouseover', '.rowRunningCase', function () {
+      //   $(this).find('.divCal').show();
+      // });
+      // $(document).on('click', '.rowRunningCase', function () {
+      //   $('body').find('.divCal').hide();
+      // });
 
       $("#ddlCaseRecource").change(function () {
 
@@ -149,7 +158,7 @@ export class CaseComponent implements OnInit {
         }
 
       });
-      // $('#reservation').val('');
+      $('#reservation').val('');
 
       //start Branch1 filter
       $("#ddlCaseBranch1").on("change", function () {
@@ -204,6 +213,8 @@ export class CaseComponent implements OnInit {
         $.fn.dataTableExt.afnFiltering.push(
           function (oSettings, data, iDataIndex) {
             debugger
+            const x = data[5];
+            data[5] = x.substring(0,10);
             var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('YYYY-MM-DD'));
             var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('YYYY-MM-DD'));
             var rowDate = new Date(data[5]);
@@ -229,7 +240,6 @@ export class CaseComponent implements OnInit {
 
       });
     }, 100)
-
 
   }
 
@@ -365,7 +375,7 @@ export class CaseComponent implements OnInit {
   }
 
   showEditModal(c) {
-   
+    $("#editCaseModal").modal("show");
 
 
     var $this = this
@@ -478,4 +488,28 @@ export class CaseComponent implements OnInit {
       }
     }
   }
+  ShowCalendar(items) {
+    this.newHiringCasedata = items;
+
+  }
+  updateNewHiringDate(newHiring) {
+    this.caseRunning.forEach(element => {
+      if (element.id == this.newHiringCasedata.id) {
+        element.nextHearingDate = newHiring;
+      }
+    })
+  }
+  OnMouseHover(i) {
+    if ($('.datepicker-dropdown').length == 0) {
+      $('.newHiringDate').datepicker();
+      this.hoveredIndex = i;
+    }
+  }
+
+  hideCalendar() {
+    if ($('.datepicker-dropdown').length == 0)
+      this.hoveredIndex = null;
+
+  }
+
 }

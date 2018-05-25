@@ -54,7 +54,11 @@
                   <td>
                     <a title="Edit" (click)="showEditModal(item)">
                       <i class="fa fa-edit"></i>
+                      <span> / </span>                     
                     </a>
+                    
+                    <button *ngIf="!item.defaultInstitution" class="btn btn-primary" (click)="MakeDefault(item)">Make Default</button>
+                    <span *ngIf="item.defaultInstitution" class="btn btn-primary" style="background: green; cursor: default;">Default</span>
                   </td>
 
                 </tr>
