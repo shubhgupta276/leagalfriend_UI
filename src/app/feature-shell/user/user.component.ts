@@ -61,6 +61,7 @@ export class UserComponent implements OnInit {
         { name: 'Role', orderable: false },
         { name: 'Status', orderable: false }
       ],
+      destroy:true,
       lengthMenu: arLengthMenu,
       pageLength: selectedPageLength,
       oLanguage: {
