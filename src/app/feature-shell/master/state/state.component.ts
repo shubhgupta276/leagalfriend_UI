@@ -10,17 +10,8 @@ import { State } from './state';
 
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      StateComponent,
-      AddStateMasterComponent,
-      EditStateMasterComponent
-    ],
-    providers: [StateService, StorageService]
-  }
-)
+
+
 @Component({
   selector: 'app-state',
   templateUrl: './state.component.html',
@@ -119,3 +110,17 @@ export class StateComponent implements OnInit {
 
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      StateComponent,
+      AddStateMasterComponent,
+      EditStateMasterComponent
+    ],
+    providers: [StateService, StorageService]
+  }
+)
+
+export class StateModule { }

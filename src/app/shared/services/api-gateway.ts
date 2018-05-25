@@ -18,13 +18,11 @@ import { endpoint_url } from '../shared-config';
 @Injectable()
 export class ApiGateway {
     _endPointUrl: string;
-
     constructor(private _httpClient: HttpClient) {
         this._endPointUrl = endpoint_url;
     };
 
-    public post<T>(apiPath: string, body): Observable<any> {
-        console.log(apiPath);
+    public post<T>(apiPath: string, body): Observable<any> {  
         const _url: string = this.createApiUrl(apiPath);
         return this._httpClient.post<T>(_url, body, { observe: 'response' })
             .catch(initialError => {
@@ -32,7 +30,6 @@ export class ApiGateway {
             });
     }
     public put<T>(apiPath: string, body): Observable<any> {
-        console.log(apiPath);
         const _url: string = this.createApiUrl(apiPath);
         return this._httpClient.put<T>(_url, body, { observe: 'response' })
             .catch(initialError => {
@@ -40,7 +37,6 @@ export class ApiGateway {
             });
     }
     public postWithParam<T>(apiPath: string, urlParam): Observable<any> {
-        console.log(apiPath);
         const _url: string = this.createApiUrl(apiPath);
         return this._httpClient.post<T>(_url+urlParam, { observe: 'response' })
             .catch(initialError => {
@@ -67,7 +63,6 @@ export class ApiGateway {
     }
 
     public delete<T>(apiPath: string, params?: Object, headers?: string): Observable<any> {
-        console.log(apiPath);
         const _url: string = this.createApiUrl(apiPath);
         const urlParams = new URLSearchParams();
         const options: Object = {

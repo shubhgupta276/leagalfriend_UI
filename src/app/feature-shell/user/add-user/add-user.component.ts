@@ -79,7 +79,6 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        
         if(result.body.httpCode==200)
         {
         $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });

@@ -91,6 +91,8 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['signup']);
   }
 
+  forgotPassword(){}
+
   login(data) {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
