@@ -21,6 +21,8 @@ export class EditForInstitutionComponent implements OnInit {
   institutionId: number;
   institutionalCaseId: number;
   editData: any;
+  caseFiles: any;
+
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -176,17 +178,20 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   getInstitutionDetail() {
+    let branchData = this._storageService.getBranchData();
+    if (branchData) {
+      this._institutionService.getForInstitution(this.institutionId, branchData.id, this.institutionalCaseId).
+        subscribe((result) => {
 
-    this._institutionService.getForInstitution(this.institutionId, this.institutionalCaseId).
-      subscribe((result) => {
-
-        if (result) {
-          this.createForm(result);
-        }
-      },
-        err => {
-          console.log(err);
-        })
+          if (result) {
+            this.caseFiles = result.caseFiles;
+            this.createForm(result);
+          }
+        },
+          err => {
+            console.log(err);
+          })
+    }
   }
 
   submitEditinstitutionUser(data: any) {
@@ -197,11 +202,11 @@ export class EditForInstitutionComponent implements OnInit {
     formdata.append('file', document);
     delete data.uploadFile;
     formdata.append('forInstitutionalCase', JSON.stringify(data));
-    
+
     this._institutionService.updateForInstitution(formdata).subscribe(
 
       result => {
-        debugger
+
         result = result.body;
         if (result.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
@@ -210,5 +215,33 @@ export class EditForInstitutionComponent implements OnInit {
       err => {
         console.log(err);
       });
+  }
+
+  deleteFile(data) {
+
+    this._institutionService.deleteFile(data.id).subscribe(
+      (result) => {
+        this.caseFiles = this.caseFiles.filter(x => x.id != data.id);
+      },
+      err => {
+        console.log(err);
+      })
+  }
+
+  downloadFile(data) {
+    debugger
+    this._institutionService.downloadFile(data.id).subscribe(
+      (result) => this.downloadFile(data),
+      err => {
+        debugger
+        console.log(err);
+      })
+  }
+
+  downloadFile1(data: Response){
+    debugger
+    var blob = new Blob([data], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    window.open(url);
   }
 }

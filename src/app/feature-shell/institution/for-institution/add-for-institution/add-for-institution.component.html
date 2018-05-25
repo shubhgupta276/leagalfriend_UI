@@ -90,7 +90,7 @@
                                                 </label>
                                                 <div class="col-md-3 createUserLabel">
                                                     <input type="file" name="casefile" id="casefile" accept=".csv" value="" formControlName="uploadCases" (change)="upload($event)">
-                                                    <div class="error" style="display:none; width:140%;" id="ERROR_casefile">
+                                                    <div class="error" style="width:140%;" *ngIf="showCsvError">
                                                         <small class="text-danger">
                                                             <span id="spncasefile">Please upload only csv file.</span>
                                                         </small>
@@ -111,9 +111,9 @@
                                                 </label>
                                                 <div class="col-md-3 createUserLabel">
                                                     <input type="file" name="uploadcasefile" id="uploadcasefile" value="" formControlName="uploadCaseFiles" (change)="upload($event)">
-                                                    <div class="error" style="display:none; width:140%;" id="ERROR_uploadcasefile">
+                                                    <div class="error" style="width:140%;" *ngIf="showZipError">
                                                         <small class="text-danger">
-                                                            <span id="spncasefile">Please upload only csv file.</span>
+                                                            <span id="spncasefile">Please upload only zip file.</span>
                                                         </small>
                                                     </div>
                                                 </div>
