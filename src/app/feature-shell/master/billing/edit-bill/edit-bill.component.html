@@ -33,7 +33,7 @@
                                                 <div class="col-md-9" [class.has-error]="editForm.get('institutionId').invalid 
                                                   &&  editForm.get('institutionId').touched">
                                                     
-                                                    <select class="form-control" formControlName="institutionId" (change)="changeCombinations()">
+                                                    <select class="form-control" formControlName="institutionId" >
                                                         <option value="">Select Institution</option>
                                                         <option *ngFor="let item of arAllInstitution" value="{{item.institutionName}}">
                                                             {{item.institutionName}}
@@ -75,7 +75,7 @@
                                                 </label>
                                                 <div class="col-md-9" [class.has-error]="editForm.get('stage').invalid 
                                                             &&  editForm.get('stage').touched">
-                                                    <select class="form-control" formControlName="stage" (change)="changeCombinations()">
+                                                    <select class="form-control" formControlName="stage" >
                                                         <option value="">Select Stage</option>
                                                         <option *ngFor="let item of arListStage" value="{{item.id}}">
                                                             {{item.stageName}}

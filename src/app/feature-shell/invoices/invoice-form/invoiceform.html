@@ -194,17 +194,17 @@
 
                                     <tbody id="itemsInvoice">
                                         <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
-                                            <td>
+                                            <td *ngIf="arrInvoiceDetails.totalDescription">
                                                 <textarea style="width:500px;height:40px;" disabled class="form-control productName" type="text" placeholder="Description">{{arrInvoiceDetails.totalDescription}}</textarea>
                                             </td>
-                                            <td>
+                                            <td *ngIf="arrInvoiceDetails.totalQuantity" >
                                                 <input class="form-control quantity" disabled value="{{arrInvoiceDetails.totalQuantity}}" style="width:100px" placeholder="Quantity">
                                             </td>
                                             <!-- <td>
                                                         <input class="form-control unitPrice" value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()" style="width:100px" placeholder="Unit Price">
                                                     </td> -->
 
-                                            <td>
+                                            <td *ngIf="arrInvoiceDetails.totalAmount">
                                                 <input class="form-control amount" disabled value="{{arrInvoiceDetails.totalAmount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount()"
                                                     style="width:100px" placeholder="Amount">
 
@@ -229,7 +229,7 @@
                                                     <label style="font-weight:bold">Total</label>
                                                 </strong>
                                             </td>
-                                            <td colspan="2">
+                                            <td colspan="2" *ngIf="arrInvoiceDetails.totalAmount">
                                                 Rs
                                                 <label id="totalAmount">{{arrInvoiceDetails.totalAmount}}</label>
                                             </td>
