@@ -27,7 +27,6 @@ import { SharedModule } from '../shared/shared.module';
     FeatureShellRoutingModule,
     CommonModule ,
     SharedModule,
-    
   ],
   declarations: [FeatureShellComponent, 
     CalendarComponent, EmployeeActiveComponent

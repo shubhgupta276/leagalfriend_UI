@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from "@angular/core";
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from "@angular/core";
 import { debuglog } from 'util';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FileValueAccessorDirective } from '../../../../shared/Directives/fileValueAccessor';
@@ -15,14 +15,23 @@ declare let $;
   styleUrls: ["./add-for-institution.component.css"]
 })
 export class AddForInstitutionComponent implements OnInit {
-  @Input() arInstitution: Institution[];
+  @Input() arInstitution: Institution[] = [];
   @Input() Institution: any;
   @Input() againstOpen: boolean;
+  @Output() saveSuccess: EventEmitter<any> = new EventEmitter();
+
   branchData: any;
   ForInstitution: string = "For Institution";
   addForm1: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
   arCityData: any[] = [];
+  showZipError: boolean = false;
+  showCsvError: boolean = false;
+
+  constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
+    this.AddForInstitution();
+    this.bindBranch();
+  }
 
   AddForInstitution() {
 
@@ -34,10 +43,6 @@ export class AddForInstitutionComponent implements OnInit {
       uploadCaseFiles: [null],
     });
   }
-  constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
-    this.AddForInstitution();
-    this.bindBranch();
-  }
 
   submitAddForInstitution(data: any) {
 
@@ -48,51 +53,18 @@ export class AddForInstitutionComponent implements OnInit {
     formdata.append('isForInstitution', 'Y');
     formdata.append('branchId', this.branchData.id);
     formdata.append('csvfile', data.uploadCases[0]);
+    formdata.append('zipFile', (data.uploadCaseFiles) ? data.uploadCaseFiles[0] : null);
     
     this._institutionService.addForInstitution(formdata).subscribe(
       result => {
-        
+
         var _result = result.body;
 
         if (_result.httpCode == 200) { //success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
-          this.arInstitution.push({
-            institutionName: data.institutionName, branch: data.branch, reportType: data.reportType,
-            uploadCases: data.uploadCases, uploadCaseFiles: data.uploadCaseFiles, caseId: data.caseId,
-            stage: data.stage, courtCaseId: data.courtCaseId, legalCaseId: data.legalCaseId,
-            lastHearingDate: data.lastHearingDate, nextHearingDate: data.nextHearingDate,
-            loanAccountNumber: data.loanAccountNumber, compliance: data.compliance,
-            recourse: data.recourse, region: data.region,
-            location: data.location, productGroup: data.productGroup,
-            customerName: data.customerName, DPDAsOnFilingDate: data.DPDAsOnFilingDate,
-            dateOfFilingCase: data.dateOfFilingCase, courtPlace: data.courtPlace,
-            lawyerName: data.lawyerName, stageInCourt: data.stageInCourt,
-            orderReceivedDate: data.orderReceivedDate, rOStatus: data.rOStatus,
-            arbitrationInitiated: data.arbitrationInitiated, repoFlag: data.repoFlag,
-            legalManager: data.legalManager, closureDate: data.closureDate,
-            totalAmtRecovered: data.totalAmtRecovered, caseFiledAgainst: data.caseFiledAgainst,
-            DPDAsOnCurrentSystemDate: data.DPDAsOnCurrentSystemDate, caseCriticalityLevel: data.caseCriticalityLevel,
-            parentID: data.parentID, generatedBy: data.generatedBy,
-            uploadDocument: data.uploadDocument, groundForClosingFile: data.groundForClosingFile,
-            disposedOffFileNo: data.disposedOffFileNo, state: data.state,
-            product: data.product, POSAsOnFilingDate: data.POSAsOnFilingDate,
-            NPAStageAsOnFilingDate: data.NPAStageAsOnFilingDate, caseType: data.caseType,
-            courtName: data.courtName, caseStage: data.caseStage,
-            previousHearingDate: data.previousHearingDate, amountInvolved: data.amountInvolved,
-            receiverName: data.receiverName, NDOHNullReason: data.NDOHNullReason,
-            ROExecutionDate: data.ROExecutionDate, arbitrationcaseID: data.arbitrationcaseID,
-            remarks: data.remarks, caseStatus: data.caseStatus,
-            closureReportingDate: data.closureReportingDate, accountStatus: data.accountStatus,
-            POSAsOnCurrentSystemDate: data.POSAsOnCurrentSystemDate,
-            NPAStageAsOnCurrentSystemDate: data.NPAStageAsOnCurrentSystemDate,
-            type: data.type, childCase: data.childCase,
-            completionDate: data.completionDate,
-            id: _result.id
-          });
-          
+          this.saveSuccess.emit();
           this.AddForInstitution();
           this.closeModal();
-          this.subscriberFields();
         }
         else
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -101,7 +73,7 @@ export class AddForInstitutionComponent implements OnInit {
         console.log(err);
       });
   }
- 
+
   closeModal() {
     $('#closebtn').click();
   }
@@ -116,52 +88,32 @@ export class AddForInstitutionComponent implements OnInit {
     $("#ERROR_casefile").hide();
     this.subscriberFields();
   }
- 
-  subscriberFields() {
-    // this.addForm1.get('institutionName').valueChanges.subscribe(
-    //   (e) => {
-    //     if (this.arInstitution.filter(x => x.institutionName.toUpperCase() == e.toUpperCase()).length > 0)
-    //       this.isInstitutionAlreadyExists = true;
-    //     else {
-    //       this.isInstitutionAlreadyExists = false;
-    //     }
-    //   }
-    // );
-  }
-  
+
   upload(event: any) {
-    $("#ERROR_casefile").hide();
-    $("#ERROR_uploadcasefile").hide();
+
     let files = event.target.files;
-    //check file is valid
-    if (event.target.id == "casefile") {
-      if (!this.validateFile(files[0].name)) {
-        $("#ERROR_casefile").show();
-        return false;
-      }
-      else {
-        $("#ERROR_casefile").hide();
-      }
-    }
-    else if (event.target.id == "uploadcasefile") {
-      if (!this.validateFile(files[0].name)) {
-        $("#ERROR_uploadcasefile").show();
-        return false;
-      }
-      else {
-        $("#ERROR_uploadcasefile").hide();
-      }
-    }
-
-  }
-
-  validateFile(name: string) {
-    var ext = name.substring(name.lastIndexOf('.'));
-    if (ext.toLowerCase() == '.csv') {
-      return true;
+    if (files.length > 0) {
+      if (event.target.id == "casefile")
+        this.showCsvError = !this.validateFile(files[0].name, false);
+      else
+        this.showZipError = !this.validateFile(files[0].name, true);
     }
     else {
-      return false;
+      if (event.target.id == "casefile")
+        this.showCsvError = false;
+      else
+        this.showZipError = false;
     }
+  }
+
+  validateFile(name: string, isZipFile: boolean = false): boolean {
+
+    var ext = name.substring(name.lastIndexOf('.'));
+    if (isZipFile && ext.toLowerCase() == '.zip')
+      return true;
+    else if (!isZipFile && ext.toLowerCase() == '.csv')
+      return true;
+    else
+      return false;
   }
 }

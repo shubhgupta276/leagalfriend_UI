@@ -187,7 +187,6 @@ export class ForInstitutionComponent implements OnInit {
             this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
                 result => {
                     this.arr = [];
-
                     for (var i = 0; i < result.length; i++) {
                         const obj = result[i];
                         this.arr.push({
@@ -506,6 +505,11 @@ export class ForInstitutionComponent implements OnInit {
 
     }
 
+    caseSaved() {
+        if (this.$table)
+            this.$table.destroy();
+        this.GetAllForIntitution();
+    }
 }
 
 

@@ -3,7 +3,9 @@ import { retry } from 'rxjs/operator/retry';
 import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
-import { addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl } from '../institution/institution.config';
+import {
+    addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile
+} from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
 import { getInstitutionsUrl } from '../master/master.config';
 import { ResourceLoader } from '@angular/compiler';
@@ -28,9 +30,9 @@ export class InstitutionService {
         );
     }
 
-    getForInstitution(institutionId, institutionalCaseId): Observable<any> {
+    getForInstitution(institutionId, branchId, institutionalCaseId): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getForInstitutionUrl + "?institutionId=" + institutionId + "&institutionalCaseId=" + institutionalCaseId
+            getForInstitutionUrl + "?institutionId=" + institutionId + "&branchId=" + branchId + "&institutionalCaseId=" + institutionalCaseId
         );
     }
 
@@ -45,6 +47,18 @@ export class InstitutionService {
         return this.apiGateWay.post<Institution>(
             updateForInstitutionUrl,
             FormData
+        );
+    }
+
+    deleteFile(fileId: any): Observable<any> {
+        return this.apiGateWay.delete<any>(
+            deleteFile + "?fileId=" + fileId
+        );
+    }
+
+    downloadFile(fileId: any): Observable<any> {
+        return this.apiGateWay.get<any>(
+            downloadFile + "?fileId=" + fileId
         );
     }
 }
