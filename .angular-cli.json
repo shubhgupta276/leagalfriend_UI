@@ -19,10 +19,18 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/ionicons/dist/css/ionicons.min.css",
+        "../src/assets/dist/css/bootstrap-datepicker.min.css",
         "styles.css",
+        "../src/assets/dist/css/style.css",
         "../node_modules/ngx-select-dropdown/dist/assets/style.css"
+        
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "../src/assets/dist/js/bootstrap-datepicker.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
