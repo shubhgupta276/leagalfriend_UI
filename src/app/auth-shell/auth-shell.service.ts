@@ -141,15 +141,29 @@ export class AuthService {
   }
 
   submitEditCaseUser(customerData: EditCase): Observable<any> {
+    
     return this.apiGateWay.post<any>(
-      'case/add',
-      JSON.stringify(customerData)
+      'case/add',customerData
+      //JSON.stringify(customerData)
     );
+    
   }
   updateEditCaseUser(customerData: EditCase): Observable<EditCase> {
-    return this.apiGateWay.post<EditCase>(
-      'case/update',
-      JSON.stringify(customerData)
+    return this.apiGateWay.post<any>(
+      'case/update',customerData
+     // JSON.stringify(customerData)
+    );
+  }
+
+  deleteCaseById(id): Observable<EditCase> {
+    return this.apiGateWay.delete<any>(
+      'case/case/file'+ '?caseFileId='+id,null,
+      //JSON.stringify(id)
+    );
+  }
+  downloadCaseFile(id): Observable<EditCase> {
+    return this.apiGateWay.get<any>(
+      '/case/file/download'+'?fileId='+id
     );
   }
 

@@ -158,7 +158,7 @@
                       
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Remark:
-                          <!-- <em class="astrick">*</em> -->
+                          <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addCaseForm.get('remark').invalid &&  addCaseForm.get('remark').touched">
                           <!-- <input class="form-control" placeholder="Remark" formControlName="remark"> -->
@@ -238,7 +238,7 @@
                           
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
-                          <!-- <em class="astrick">*</em> -->
+                          <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Last Hearing Date" formControlName="lastHearingDate"> -->
@@ -257,7 +257,8 @@
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Upload Document" formControlName="uploadDocument"> -->
-                          <input type="file" name="upload_document" id="upload_document" class="form-control" formControlName="uploadDocument">
+                          <!-- <input type="file" class="form-control" formControlName="uploadDocument"> -->
+                          <input type="file" class="form-control" (change)="onFileChange($event)" formControlName="myDocument">
                         </div>
 
 
@@ -280,9 +281,44 @@
                     </div>
                   </div>
                 </div>
+                <table id="caseFile" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <!-- <th>Select</th> -->
+                      <th>Case ID</th>
+                      <th>isInstitutional</th>
+                      <th>filePath</th>
+                      <th>fileName</th>
+                      <th>fromDate</th>
+                      <th>thruDate</th>
+                      
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let items of caseFiles;let i=index">
+                      <!-- <td>{{i+1}}</td> -->
+                      <td>{{items.caseId}}</td>
+                      <td>{{items.courtCaseId}}</td>
+                      <td>{{items.customerFirstName}}</td>
+                      <td>{{items.recourseCode}}</td>
+                      <td>{{items.stageName}}</td>
+                      <td>{{items.nextHearingDate}}</td>
+                
+                      <td>
+                        <a title="delete">
+                          <i class="fa fa-delete"></i>
+                        </a> /
+                        <a data-toggle="modal" data-target="#modal-default1" href="#">
+                          <i class="fa fa-history"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
                 <div class="modal-footer modal-footer-addedit">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" [disabled]="addCaseForm.invalid" class="btn btn-modal-addedit">Submit</button>
+                  <button type="submit" class="btn btn-modal-addedit">Submit</button>
                   <!-- <button type="submit" class="btn btn-modal-addedit">Submit</button> -->
                 </div>
               </form>
