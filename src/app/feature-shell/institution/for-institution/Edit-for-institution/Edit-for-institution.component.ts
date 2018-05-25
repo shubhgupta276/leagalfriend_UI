@@ -231,17 +231,12 @@ export class EditForInstitutionComponent implements OnInit {
   downloadFile(data) {
     debugger
     this._institutionService.downloadFile(data.id).subscribe(
-      (result) => this.downloadFile(data),
+      (result) => {
+        debugger
+      },
       err => {
         debugger
         console.log(err);
       })
-  }
-
-  downloadFile1(data: Response){
-    debugger
-    var blob = new Blob([data], { type: 'text/csv' });
-    var url= window.URL.createObjectURL(blob);
-    window.open(url);
   }
 }

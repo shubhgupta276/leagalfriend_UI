@@ -77,9 +77,9 @@
                   <td>{{item.caseStage}}</td>
                   <td>{{item.courtCaseId}}</td> 
                   <td>{{item.legalCaseId}}</td>
-                  <td>{{item.previousHearingDate | date:'dd MMM yyyy'}}</td>
+                  <td>{{item.previousHearingDate | date:'dd-mm-yyyy'}}</td>
                   <td style="position: relative;">
-                    {{item.nextHearingDate | date:'dd MMM yyyy'}}
+                    {{item.nextHearingDate | date:'dd-MM-yyyy'}}
                     <div class="divNewHire input-group date" style="position:absolute; right: 0;" data-provide="datepicker" data-date-format="DD-MM-YYYY">
                       <input style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd"
                         class="form-control newHiringDate" size="10">

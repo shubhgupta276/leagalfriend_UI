@@ -485,6 +485,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     updateNewHiringDate(newHiring) {
+        debugger
         this.arr.forEach(element => {
             if (element.id == this.newHiringdata.id) {
                 element.nextHearingDate = newHiring;
