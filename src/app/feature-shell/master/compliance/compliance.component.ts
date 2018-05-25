@@ -12,17 +12,7 @@ import { Compliance } from './compliance';
 
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      ComplianceComponent,
-      AddComplianceMasterComponent,
-      EditComplianceMasterComponent,
-    ],
-    providers: [ComplianceService, StorageService, RecourseService, StageService]
-  }
-)
+
 @Component({
   selector: 'app-compliance',
   templateUrl: './compliance.component.html',
@@ -189,3 +179,17 @@ debugger
 
 
 }
+
+@NgModule(
+  {
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    declarations: [
+      ComplianceComponent,
+      AddComplianceMasterComponent,
+      EditComplianceMasterComponent,
+    ],
+    providers: [ComplianceService, StorageService, RecourseService, StageService]
+  }
+)
+
+export class ComplianceModule {}

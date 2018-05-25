@@ -22,6 +22,7 @@ export class VerifyEmailComponent implements OnInit {
   isMailSent = false;
   message: string;
   isSuccess: boolean=true;
+  public forgotPasswordForm: FormGroup;
 
 
   constructor(private fb: FormBuilder,
@@ -78,6 +79,7 @@ else{
       return 'red';
     }
   }
+  forgotPasswordRecovery(){}
   verifyEmailPageLayout(){
     $(window.document).ready(function () {
       if($(".login-page")[0]){
