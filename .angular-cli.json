@@ -43,8 +43,9 @@
         "../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
         "../node_modules/bootstrap-daterangepicker/daterangepicker.js",
         "../node_modules/fullcalendar/dist/fullcalendar.min.js",
-        "../src/assets/bower_components/toaster/js/jquery.toaster.js",
-        "../src/assets/dist/js/adminlte.min.js"
+        "../src/assets/dist/js/jquery.toaster.js",
+        "../src/assets/dist/js/adminlte.min.js",
+        "../src/assets/dist/js/swiper.min.js"
         
       ],
       "environmentSource": "environments/environment.ts",
