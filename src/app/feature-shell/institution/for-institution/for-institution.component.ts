@@ -493,8 +493,9 @@ export class ForInstitutionComponent implements OnInit {
 
         this._institutionService.updateHearingDate(obj).subscribe(
             (result) => {
-                if (result.body == null) {
-                    $.toaster({ priority: 'success', title: 'Success', message: "Date Update Successfully." });
+
+                if (result.status == 200) {
+                    $.toaster({ priority: 'success', title: 'Success', message: "Update Successfully." });
                 }
             },
             err => {

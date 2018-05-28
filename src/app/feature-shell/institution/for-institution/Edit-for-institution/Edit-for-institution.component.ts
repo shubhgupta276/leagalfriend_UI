@@ -7,7 +7,7 @@ import { InstitutionService } from '../../institution.service';
 import { Institution } from '../../institution';
 import { ActivatedRoute } from "@angular/router";
 import { DatePipe } from "@angular/common";
-
+import { saveAs } from 'file-saver';
 declare let $;
 
 @Component({
@@ -229,13 +229,12 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   downloadFile(data) {
-    debugger
     this._institutionService.downloadFile(data.id).subscribe(
       (result) => {
-        debugger
+        let blob = new Blob([result]);
+        saveAs(blob, data.fileName);
       },
       err => {
-        debugger
         console.log(err);
       })
   }

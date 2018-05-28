@@ -63,8 +63,8 @@ export class InstitutionService {
         );
     }
 
-    downloadFile(fileId: any): Observable<any> {
-        return this.apiGateWay.get<any>(
+    downloadFile(fileId: any): Observable<File> {
+        return this.apiGateWay.getFile(
             downloadFile + "?fileId=" + fileId
         );
     }
