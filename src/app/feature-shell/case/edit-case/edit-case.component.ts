@@ -269,7 +269,10 @@ export class EditCaseComponent implements OnInit {
     this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
     this.selectedCourtPlace = this.courtPlaceSelected[0];
     this.caseFile=[];
-    this.caseFile.push(c.caseFiles[0]);
+    var $this=this;
+    (c.caseFiles.forEach(function(value){
+      $this.caseFile.push(value);
+    }));
     
     $("#editCaseModal").modal("show");
   }
@@ -742,7 +745,7 @@ debugger
     
     //var a=data.parentCase.substr(data.parentCase.lastIndexOf("/")+1);
     const x = {
-      //"id": data.caseId,
+      "id": data.caseId,
       "caseId":data.caseId,
       "courtCaseId": data.courtCaseId,
       "userId": parseInt(localStorage.getItem('client_id')),
