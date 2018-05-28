@@ -12,6 +12,7 @@ import { EditCase } from '../../../shared/models/auth/editcase.model';
 import { DatePipe } from '@angular/common';
 import { parse } from 'querystring';
 import { CompleterService, CompleterData } from 'ng2-completer';
+import { saveAs } from 'file-saver';
 declare var $;
 
 @Component({
@@ -741,7 +742,8 @@ debugger
     
     //var a=data.parentCase.substr(data.parentCase.lastIndexOf("/")+1);
     const x = {
-      "id": data.caseId,
+      //"id": data.caseId,
+      "caseId":data.caseId,
       "courtCaseId": data.courtCaseId,
       "userId": parseInt(localStorage.getItem('client_id')),
       "branchId": this.selectedBranch.id,
@@ -823,19 +825,17 @@ debugger
       }
     )};
 
-    downloadCaseFile(item)
+    downloadCaseFile(data)
   {
-  debugger
-  var a=item.id;
-  this.authService.downloadCaseFile(a).subscribe(
-
-    result => {
-debugger
-  
-         //$.toaster({ priority: 'success', title: 'Success', message: 'Case File deleted successfully' });
-         
-      }
-    )};
+    this.authService.downloadFile(data.id).subscribe(
+      (result) => {
+        let blob = new Blob([result]);
+        saveAs(blob, data.fileName);
+      },
+      err => {
+        console.log(err);
+      })
+    };
   
 
   closeModal() {

@@ -161,11 +161,17 @@ export class AuthService {
       //JSON.stringify(id)
     );
   }
-  downloadCaseFile(id): Observable<EditCase> {
-    return this.apiGateWay.get<any>(
-      '/case/file/download'+'?fileId='+id
+  // downloadCaseFile(id): Observable<EditCase> {
+  //   return this.apiGateWay.get<any>(
+  //     '/case/file/download'+'?fileId='+id
+  //   );
+  // }
+
+  downloadFile(fileId: any): Observable<File> {
+    return this.apiGateWay.getFile(
+      '/case/file/download' + "?fileId=" + fileId
     );
-  }
+}
 
   caseUpdateCompliance(customerData: any): Observable<EditCase> {
     return this.apiGateWay.post<any>(
