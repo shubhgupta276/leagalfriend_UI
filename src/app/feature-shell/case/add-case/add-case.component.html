@@ -135,9 +135,6 @@
 
                             <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
                          
-                                  <!-- <ng-select [allowClear]="true" [items]="ParentCases" formControlName="parentCase" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                                  (removed)="removed($event)" (typed)="typed($event)" placeholder="No parent case selected">
-                                </ng-select> -->
                         </div>
                       </div>
                       <div class="form-group row">
@@ -145,7 +142,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" >
-                          <!-- <input class="form-control" placeholder="Next Hearing Date" formControlName="nextHearingDate"> -->
+                         
                           <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                             <input type="text" tabindex="14" id="NEXT_HEARING_DATE"  name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
                               size="10" formControlName="nextHearingDate" >
@@ -161,7 +158,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" [class.has-error]="addCaseForm.get('remark').invalid &&  addCaseForm.get('remark').touched">
-                          <!-- <input class="form-control" placeholder="Remark" formControlName="remark"> -->
+                     
                           <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
                         </div>
                         <div class="col-sm-9 valodation-padding" *ngIf="addCaseForm.get('remark').invalid &&  addCaseForm.get('remark').touched">
@@ -175,8 +172,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9" id="divBranch" *ngIf="Branch.length > 0" >
-                          <!-- <ngx-select-dropdown (change)="dropChangeBranch(this)" [config]="config" [options]="Branch"  
-                                    [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
+                      
                                     <ng-select [allowClear]="true" [items]="Branch" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
                                     (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" formControlName="branch">
                                   </ng-select>
@@ -188,7 +184,7 @@
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9">
-                          <!-- <input class="form-control" placeholder="Filing date" formControlName="filingdate"> -->
+                         
                           <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                             <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
                               size="10" value="2017-11-07" formControlName="filingdate">
@@ -225,8 +221,8 @@
                           <!-- <em class="astrick">*</em> -->
                         </label>
                         <div class="col-md-9">
-                          <!-- <input class="form-control" placeholder="Child Case" formControlName="childCase"> -->
-                          <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+                        
+                          <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr1" [datasource]="dataService1" [matchClass]="match" [autofocus]="true"   [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
                          
                         </div>
                       </div>
@@ -256,16 +252,9 @@
                           <!-- <em class="astrick">*</em> -->
                         </label>
                         <div class="col-md-9">
-                          <!-- <input class="form-control" placeholder="Upload Document" formControlName="uploadDocument"> -->
-                          <!-- <input type="file" class="form-control" formControlName="uploadDocument"> -->
+                          
                           <input type="file" class="form-control" (change)="onFileChange($event)" formControlName="myDocument">
                         </div>
-
-
-
-
-                       
-
 
 
                       </div>
@@ -281,41 +270,7 @@
                     </div>
                   </div>
                 </div>
-                <table id="caseFile" class="table table-bordered table-hover">
-                  <thead>
-                    <tr>
-                      <!-- <th>Select</th> -->
-                      <th>Case ID</th>
-                      <th>isInstitutional</th>
-                      <th>filePath</th>
-                      <th>fileName</th>
-                      <th>fromDate</th>
-                      <th>thruDate</th>
-                      
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let items of caseFiles;let i=index">
-                      <!-- <td>{{i+1}}</td> -->
-                      <td>{{items.caseId}}</td>
-                      <td>{{items.courtCaseId}}</td>
-                      <td>{{items.customerFirstName}}</td>
-                      <td>{{items.recourseCode}}</td>
-                      <td>{{items.stageName}}</td>
-                      <td>{{items.nextHearingDate}}</td>
-                
-                      <td>
-                        <a title="delete">
-                          <i class="fa fa-delete"></i>
-                        </a> /
-                        <a data-toggle="modal" data-target="#modal-default1" href="#">
-                          <i class="fa fa-history"></i>
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              
                 <div class="modal-footer modal-footer-addedit">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-modal-addedit">Submit</button>

@@ -52,7 +52,8 @@ export class EditCaseComponent implements OnInit {
   arr: any = [];
   caseId: any = [];
   complianceGridData = [];
-  
+  caseFile:any=[];
+  public searchStr1: string;
   protected dataService: CompleterData;
   protected dataService1: CompleterData;
   private get disabledV(): string {
@@ -150,6 +151,7 @@ export class EditCaseComponent implements OnInit {
   Court: any = [];
   State: any = [];
   ParentCases: any = [];
+  ChildCases: any = [];
   CustomerName: any = [];
   Branch: any = [];
   Stage: any = [];
@@ -157,6 +159,7 @@ export class EditCaseComponent implements OnInit {
   CourtPlace: any = [];
   recourseSelected: Array<any> = [];
   parentcaseSelectedauto:Array<any>=[];
+  childcaseSelectedauto:Array<any>=[];
   managerSelected: Array<any> = [];
   employeeSelected: Array<any> = [];
   courtSelected: Array<any> = [];
@@ -168,8 +171,9 @@ export class EditCaseComponent implements OnInit {
   courtPlaceSelected: Array<any> = [];
   recourseId: any;
   stageId: any;
-  caseFile:any=[];
+ 
   childCaseText:string;
+  childParentText:string;
   // emailValidationMessage: string = "Email address is required.";
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,private completerService: CompleterService, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
     this.createForm(null);
@@ -202,7 +206,7 @@ export class EditCaseComponent implements OnInit {
 
   }
   BindCompliance() {
-
+   
   }
   bindDataOnEdit(c) {
     debugger
@@ -210,9 +214,14 @@ export class EditCaseComponent implements OnInit {
 
     this.caseId = c.id;
     //this.complianceGridData=[c[0].compliance];
-    const objChildCase = this.ParentCases.filter(x => x.id == c.childCase);
-    this.parentcaseSelectedauto.push({ id: c.childCase, text: objChildCase[0].text });
+    const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
+    this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
    this.childCaseText = this.parentcaseSelectedauto[0].text;
+
+   this.childcaseSelectedauto = [];
+   const objchild = this.ChildCases.filter(x => x.id == c.childCase);
+   this.childcaseSelectedauto.push({ id: c.childCase, text: objchild[0].text });
+  this.childParentText = this.childcaseSelectedauto[0].text;
 
     this.recourseSelected = [];
     const objFilter = this.Resource.filter(x => x.id == c.recourseId);
@@ -258,8 +267,9 @@ export class EditCaseComponent implements OnInit {
     const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id == c.id);
     this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
     this.selectedCourtPlace = this.courtPlaceSelected[0];
-    
+    this.caseFile=[];
     this.caseFile.push(c.caseFiles[0]);
+    
     $("#editCaseModal").modal("show");
   }
   createForm(c) {
@@ -268,7 +278,7 @@ export class EditCaseComponent implements OnInit {
       // this.recourseId = c.recourseId;
       // this.stageId = c.stageId;
       this.bindStageDDL(c.recourseId,c);
-
+      
     }
 
 
@@ -285,7 +295,7 @@ export class EditCaseComponent implements OnInit {
       manager: [c == null ? null : c.managerId],
       court: [c == null ? null : c.courtId],
       state: [c == null ? null : c.stateId],
-      parentCase: [c == null ? null : c.parentCaseId],
+     parentCase: [c == null ? null : this.childParentText],
       nextHearingDate: [c == null ? null : this.datePipe.transform(c.nextHearingDate, "yyyy-MM-dd")],
       customerName: [c == null ? null : c.customerId],
       remark: [c == null ? null : c.remark, Validators.required],
@@ -629,10 +639,11 @@ export class EditCaseComponent implements OnInit {
         result.forEach(function (value) {
           
           $this.ParentCases.push({ id: value.id, text: value.caseId });
+          $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
         $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
         debugger
-        //$this.dataService1 = $this.completerService.local($this.ParentCases, 'id', 'id');
+        $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text');
       },
       err => {
         console.log(err);
@@ -762,7 +773,7 @@ debugger
           $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
           this.closeModal();
           $('#editCaseModal').modal('hide');
-
+          $(window.location.href = "/admin/case");
         }
       },
       err => {
@@ -800,15 +811,15 @@ debugger
   }
   deleteCaseFile(item)
   {
-  
+  debugger
   var a=item.id;
   this.authService.deleteCaseById(a).subscribe(
 
     result => {
-
+debugger
   
          $.toaster({ priority: 'success', title: 'Success', message: 'Case File deleted successfully' });
-      
+         $(window.location.href = "/admin/case");
       }
     )};
 

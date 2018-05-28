@@ -9,6 +9,7 @@ import { ApiGateway } from '../../../shared/services/api-gateway';
 import { StorageService } from "../../../shared/services/storage.service";
 import { HttpResponse } from 'selenium-webdriver/http';
 import { CompleterService, CompleterData } from 'ng2-completer';
+
 import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
 
 
@@ -88,6 +89,7 @@ export class AddCaseComponent implements OnInit {
   Court: any = [];
   State: any = [];
   ParentCases: any = [];
+  ChildCases:any = [];
   CustomerName: any = [];
   Branch: any = [];
   Stage: any = [];
@@ -122,9 +124,11 @@ export class AddCaseComponent implements OnInit {
     });
   }
   public searchStr: string;
+  public searchStr1: string;
   public match: any;
   public captain: string;
   public dataService: CompleterData;
+  public dataService1: CompleterData;
   public searchData = [
     { color: 'red', value: '#f00' },
     { color: 'green', value: '#0f0' },
@@ -395,9 +399,12 @@ export class AddCaseComponent implements OnInit {
         result.forEach(function (value) {
 
           $this.ParentCases.push({ id: value.id, text: value.caseId });
+          $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
 
         $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
+        debugger
+        $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text');
         debugger
       },
       err => {

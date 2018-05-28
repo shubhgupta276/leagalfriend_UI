@@ -61,6 +61,7 @@ export class CaseComponent implements OnInit {
     this.authService.getCaseRunning(reqData).subscribe(
 
       result => {
+        debugger
         result.forEach(function (value) {
           $this.caseRunning.push(value);
           
@@ -375,7 +376,7 @@ export class CaseComponent implements OnInit {
   }
 
   showEditModal(c) {
-    $("#editCaseModal").modal("show");
+    //$("#editCaseModal").modal("show");
 
 
     var $this = this

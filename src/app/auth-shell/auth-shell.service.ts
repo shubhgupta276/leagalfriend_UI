@@ -157,7 +157,7 @@ export class AuthService {
 
   deleteCaseById(id): Observable<EditCase> {
     return this.apiGateWay.delete<any>(
-      'case/case/file'+ '?caseFileId='+id,null,
+      'case/file'+ '?caseFileId='+id,null,
       //JSON.stringify(id)
     );
   }
