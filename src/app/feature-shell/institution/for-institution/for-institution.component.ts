@@ -217,6 +217,7 @@ export class ForInstitutionComponent implements OnInit {
                             courtCaseId: obj.courtCaseId,
                             courtName: obj.courtName,
                             courtPlace: obj.courtPlace,
+                            createdDate: obj.createdDate,
                             customerName: obj.customerName,
                             dateOfConduct: obj.dateOfConduct,
                             disbursalDate: obj.disbursalDate,
@@ -235,6 +236,7 @@ export class ForInstitutionComponent implements OnInit {
                             guarantorsName: obj.guarantorsName,
                             id: obj.id,
                             institutionId: obj.institutionId,
+                            lastUpdated: obj.lastUpdated,
                             lawyerName: obj.lawyerName,
                             legalCaseId: obj.legalCaseId,
                             legalManager: obj.legalManager,
@@ -385,8 +387,8 @@ export class ForInstitutionComponent implements OnInit {
             { value: 0, text: "No Filter" },
             { value: 1, text: "Next Hearing Date" },
             { value: 2, text: "Last Hearing Date" },
-            { value: 3, text: "Last Update Date" },
-            { value: 4, text: "Case Created Date" },
+            { value: 3, text: "Case Created Date" },
+            { value: 4, text: "Last Update Date" },
             { value: 5, text: "Compliance" });
     }
 
@@ -426,7 +428,11 @@ export class ForInstitutionComponent implements OnInit {
                             dateColFilter = 6;
                         else if ($this.filterTypeId == 2)//Last Hearing Date
                             dateColFilter = 5;
-
+                        else if ($this.filterTypeId == 3)//Case Created Date
+                            dateColFilter = 10;
+                        else if ($this.filterTypeId == 4)//Last Updated Date
+                            dateColFilter = 11;
+                        
                         let fromToDate = $("#txtFromToDate").val();
                         if (dateColFilter && fromToDate && fromToDate.length > 0) {
                             let arDates = fromToDate.split(" To ");
@@ -521,6 +527,3 @@ export class ForInstitutionComponent implements OnInit {
         this.GetAllForIntitution();
     }
 }
-
-
-

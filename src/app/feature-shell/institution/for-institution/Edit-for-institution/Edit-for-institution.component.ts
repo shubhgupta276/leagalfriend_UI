@@ -210,6 +210,7 @@ export class EditForInstitutionComponent implements OnInit {
         result = result.body;
         if (result.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+          this.getInstitutionDetail();
         }
       },
       err => {
