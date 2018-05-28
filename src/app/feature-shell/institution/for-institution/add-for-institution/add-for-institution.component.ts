@@ -54,7 +54,7 @@ export class AddForInstitutionComponent implements OnInit {
     formdata.append('branchId', this.branchData.id);
     formdata.append('csvfile', data.uploadCases[0]);
     formdata.append('zipFile', (data.uploadCaseFiles) ? data.uploadCaseFiles[0] : null);
-    
+
     this._institutionService.addForInstitution(formdata).subscribe(
       result => {
 
@@ -86,7 +86,6 @@ export class AddForInstitutionComponent implements OnInit {
 
   ngOnInit() {
     $("#ERROR_casefile").hide();
-    this.subscriberFields();
   }
 
   subscriberFields(){

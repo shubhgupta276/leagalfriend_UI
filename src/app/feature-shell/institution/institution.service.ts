@@ -4,6 +4,7 @@ import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
 import {
+    updateHearingDate,
     addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile
 } from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
@@ -50,14 +51,20 @@ export class InstitutionService {
         );
     }
 
+    updateHearingDate(data: any): Observable<any> {
+        return this.apiGateWay.put<any>(
+            updateHearingDate, data
+        );
+    }
+
     deleteFile(fileId: any): Observable<any> {
         return this.apiGateWay.delete<any>(
             deleteFile + "?fileId=" + fileId
         );
     }
 
-    downloadFile(fileId: any): Observable<any> {
-        return this.apiGateWay.get<any>(
+    downloadFile(fileId: any): Observable<File> {
+        return this.apiGateWay.getFile(
             downloadFile + "?fileId=" + fileId
         );
     }
