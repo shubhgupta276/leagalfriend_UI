@@ -88,6 +88,10 @@ export class AddForInstitutionComponent implements OnInit {
     $("#ERROR_casefile").hide();
   }
 
+  subscriberFields(){
+    //
+  }
+
   upload(event: any) {
 
     let files = event.target.files;
