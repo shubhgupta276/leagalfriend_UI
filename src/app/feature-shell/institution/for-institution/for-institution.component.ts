@@ -38,6 +38,7 @@ export class ForInstitutionComponent implements OnInit {
     filterTypeId: any;
     hoveredIndex: number;
     newHiringdata: any;
+    lastHiringdata: any;
     branchData: any;
     branchSubscription: Subscription;
     @ViewChild(AddForInstitutionComponent) _addForInstitution: AddForInstitutionComponent;
@@ -102,11 +103,9 @@ export class ForInstitutionComponent implements OnInit {
                 $('#txtFromToDate').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
             });
 
-            $('body').on('change', '.newHiringDate', function () {
-                selfnew.updateNewHiringDate($(this).val())
-                $(this).closest('td')
-                    .animate({ backgroundColor: '#88d288' }, 1000)
-                    .animate({ backgroundColor: '' }, 1000);
+            $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
+                let isNewHearingDate = $(evt.target).hasClass("newHiringDate");
+                selfnew.updateNewHearingDate($(this).val(), isNewHearingDate)
             });
         });
     }
@@ -484,13 +483,19 @@ export class ForInstitutionComponent implements OnInit {
 
     }
 
-    updateNewHiringDate(newHiring) {
+    updateNewHearingDate(date, isNewHearingDate) {
 
         let obj = this.arr.find(x => x.id == this.newHiringdata.id);
-        obj.nextHearingDate = new Date(newHiring);
+        if (isNewHearingDate)
+            obj.nextHearingDate = new Date(date);
+        else
+            obj.previousHearingDate = new Date(date);
+
         this._institutionService.updateHearingDate(obj).subscribe(
             (result) => {
-
+                if (result.body == null) {
+                    $.toaster({ priority: 'success', title: 'Success', message: "Date Update Successfully." });
+                }
             },
             err => {
             })
