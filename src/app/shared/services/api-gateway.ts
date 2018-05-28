@@ -1,5 +1,5 @@
 import { Injectable, Injector, } from '@angular/core';
-import { Http, RequestOptions, Headers, RequestMethod, RequestOptionsArgs, Request, Response } from '@angular/http';
+import { Http, RequestOptions, Headers, RequestMethod, RequestOptionsArgs, Request, Response, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 import {
     HttpClient,
@@ -14,15 +14,16 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { URLSearchParams } from '@angular/http';
 import { endpoint_url } from '../shared-config';
+import { TokenService } from './token-service';
 
 @Injectable()
 export class ApiGateway {
     _endPointUrl: string;
-    constructor(private _httpClient: HttpClient) {
+    constructor(private _httpClient: HttpClient, private _http: Http, private auth: TokenService) {
         this._endPointUrl = endpoint_url;
     };
 
-    public post<T>(apiPath: string, body): Observable<any> {  
+    public post<T>(apiPath: string, body): Observable<any> {
         const _url: string = this.createApiUrl(apiPath);
         return this._httpClient.post<T>(_url, body, { observe: 'response' })
             .catch(initialError => {
@@ -38,7 +39,7 @@ export class ApiGateway {
     }
     public postWithParam<T>(apiPath: string, urlParam): Observable<any> {
         const _url: string = this.createApiUrl(apiPath);
-        return this._httpClient.post<T>(_url+urlParam, { observe: 'response' })
+        return this._httpClient.post<T>(_url + urlParam, { observe: 'response' })
             .catch(initialError => {
                 return Observable.throw(initialError);
             });
@@ -60,6 +61,24 @@ export class ApiGateway {
             .catch(initialError => {
                 return Observable.throw(initialError);
             });
+    }
+
+    public getFile(apiPath: string): Observable<any> {
+
+        let myHeaders = new Headers();
+        const authHeader = this.auth.getAuthorizationHeader();
+        myHeaders.append('Authorization', authHeader.access_token.toString());
+        myHeaders.append('customer-id', authHeader.client_id.toString());
+        
+        let options = new RequestOptions({ headers: myHeaders, responseType: ResponseContentType.Blob });
+
+        const _url: string = this.createApiUrl(apiPath);
+
+        return this._http.get(_url, options)
+            .map((response: Response) => <Blob>response.blob());
+
+        // return this._httpClient.get(_url, )
+        //     .map((response: Response) => <Blob>response.blob());
     }
 
     public delete<T>(apiPath: string, params?: Object, headers?: string): Observable<any> {
