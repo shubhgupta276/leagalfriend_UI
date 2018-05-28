@@ -89,6 +89,10 @@ export class AddForInstitutionComponent implements OnInit {
     this.subscriberFields();
   }
 
+  subscriberFields(){
+    //
+  }
+
   upload(event: any) {
 
     let files = event.target.files;

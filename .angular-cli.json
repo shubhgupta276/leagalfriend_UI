@@ -19,20 +19,32 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/ionicons/dist/css/ionicons.min.css",
-        "../src/assets/dist/css/bootstrap-datepicker.min.css",
-        "../src/assets/dist/css/daterangepicker.css",
-        "styles.css",
+        "../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css",
+        "../node_modules/bootstrap-daterangepicker/daterangepicker.css",
+        "../node_modules/ngx-select-dropdown/dist/assets/style.css",
+        "../src/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css",
+        "../src/assets/dist/css/skins/_all-skins.min.css",        
+        "../src/assets/dist/css/AdminLTE.min.css",
         "../src/assets/dist/css/style.css",
-        "../node_modules/ngx-select-dropdown/dist/assets/style.css"
+        "../node_modules/fullcalendar/dist/fullcalendar.min.css",
+        "styles.css"
+        
       ],
       "scripts": [
+        "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.min.js",
-        "../src/assets/dist/js/moment.min.js",
-        "../src/assets/dist/js/bootstrap-datepicker.min.js",
-        "../src/assets/dist/js/daterangepicker.js",
-        "../src/assets/bower_components/fullcalendar/dist/fullcalendar.min.js"
+        "../src/assets/bower_components/datatables.net/js/jquery.dataTables.min.js",
+        "../node_modules/jquery-ui-dist/jquery-ui.min.js",
+        "../src/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js",
+        "../node_modules/moment/min/moment.min.js",
+        "../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
+        "../node_modules/bootstrap-daterangepicker/daterangepicker.js",
+        "../node_modules/fullcalendar/dist/fullcalendar.min.js",
+        "../src/assets/bower_components/toaster/js/jquery.toaster.js",
+        "../src/assets/dist/js/adminlte.min.js"
         
       ],
       "environmentSource": "environments/environment.ts",
