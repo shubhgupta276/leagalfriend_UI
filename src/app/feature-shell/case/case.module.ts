@@ -3,25 +3,26 @@ import { CaseRoutingModule } from './case-routing.module';
 import { CaseComponent } from './case.component';
 import { EditCaseComponent} from './edit-case/edit-case.component';
 import { AddCaseComponent} from './Add-case/Add-case.component';
-import {CaseHistoryComponent} from './case-history/case-history-component';
+import { CaseHistoryComponent } from './case-history/case-history-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
-import {SelectModule} from 'ng2-select';
-import { Ng2CompleterModule } from "ng2-completer";
-
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { SelectModule } from 'ng2-select';
+import { Ng2CompleterModule } from 'ng2-completer';
+import { DataTableModule } from '../../shared/components/data-table/data-table.module';
 @NgModule(
     {
-        imports: [ 
-            CaseRoutingModule, 
+        imports: [
+            CaseRoutingModule,
             CommonModule,
             ReactiveFormsModule,
             FormsModule,
             SelectDropDownModule,
             SelectModule,
             Ng2CompleterModule,
+            DataTableModule
         ],
-        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent,CaseHistoryComponent ]
+        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent ]
     }
-)    
+)
 export class CaseModule {}

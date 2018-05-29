@@ -1,0 +1,56 @@
+<div class="example-header">
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+
+    <mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="select" *ngIf="showRowSelect">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? onRowSelect(row) : null" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container *ngFor="let column of tableColumns" matColumnDef={{column.uniqueId}}>
+            <div *ngIf="column.sortable">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{column.displayName}}
+                </mat-header-cell>
+            </div>
+            <div *ngIf="!column.sortable">
+                <mat-header-cell *matHeaderCellDef>
+                    {{column.displayName}}
+                    <mat-form-field class="table-dropdown-sort" *ngIf="column.dropDownFilter">
+                        <mat-select [(value)]="dropdownData[column.uniqueId].selected" (change)="sortTable($event,column.uniqueId)">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option *ngFor="let value of dropdownData[column.uniqueId].values" [value]="value">
+                                {{ value }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-header-cell>
+            </div>
+            <mat-cell *matCellDef="let row">{{ row[column.uniqueId] }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick($event, row)" (dblclick)="onRowDoubleClick($event, row)"
+        [ngClass]="{'mat-row-hover': hoverTableRow}">
+        </mat-row>
+
+    </mat-table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+</div>
+<!-- <button (click)="sortDateColumn()" >Sort Date Column</button> -->
+<!-- <button (click)="applyFilters()" >filter</button> -->
+<!-- <button (click)="dateRangeFilter('2015-03-28', '2016-7-15', 'fromDate')" >Filter</button> -->
+<!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator> -->
