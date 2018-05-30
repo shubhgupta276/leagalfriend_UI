@@ -35,7 +35,7 @@ export class DataTableComponent implements OnInit {
 
   ngOnInit() {
     this.tableData = this.cleanIncomingData(this.tableData);
-    this.renderDataTable(this.tableData);
+    this.renderDataTable(this.tableData, false);
     this.createDropdowns();
     this.displayColumn();
   }
@@ -113,9 +113,9 @@ export class DataTableComponent implements OnInit {
     }
   }
 
-  renderDataTable(tableData) {
+  renderDataTable(tableData, keepFilter) {
     this.dataSource = new MatTableDataSource(tableData);
-    this.initializeFilterArray();
+    this.initializeFilterArray(keepFilter);
     this.setFilterPredicate();
     this.dataSource.filter = JSON.stringify(this.filterArray);
     this.dataSource.sort = this.sort;
@@ -145,7 +145,7 @@ export class DataTableComponent implements OnInit {
       if (hasGlobalSearch) {
         const matchFilter = [];
         filters.forEach(filter => {
-          let val = data[filter.columnId] === null  ? '' : data[filter.columnId];
+          let val = data[filter.columnId] === null ? '' : data[filter.columnId];
           val = val.toString();
           matchFilter.push(val.toLowerCase().includes(filter.value.toLowerCase()));
         });
@@ -156,14 +156,16 @@ export class DataTableComponent implements OnInit {
     };
   }
 
-  initializeFilterArray() {
-    this.filterArray = [];
-    this.tableColumns.forEach( column => {
-      const columnFilter = new FilterModel();
-      columnFilter.columnId = column.uniqueId;
-      columnFilter.value = '';
-      this.filterArray.push(columnFilter);
-    });
+  initializeFilterArray(keepFilter) {
+    if (!keepFilter) {
+      this.filterArray = [];
+      this.tableColumns.forEach(column => {
+        const columnFilter = new FilterModel();
+        columnFilter.columnId = column.uniqueId;
+        columnFilter.value = '';
+        this.filterArray.push(columnFilter);
+      });
+    }
   }
 
   applyFilter(filterValue: string) {
@@ -173,11 +175,14 @@ export class DataTableComponent implements OnInit {
     this.dataSource.filter = JSON.stringify(this.filterArray);
   }
 
-  sortTable(event, uniqueId) {
+  sortTable(searchValue, uniqueId) {
     this.filterArray.forEach(filter => {
       if (filter.columnId === uniqueId) {
         // filter.value = this.dropdownData[uniqueId].selected;
-        filter.value = event.value;
+        filter.value = searchValue;
+        if (this.dropdownData[uniqueId]) {
+          this.dropdownData[uniqueId].selected = filter.value;
+        }
       }
     });
     this.dataSource.filter = JSON.stringify(this.filterArray);
@@ -219,23 +224,23 @@ export class DataTableComponent implements OnInit {
         }
       });
     });
-    this.renderDataTable(sortedRows);
+    this.renderDataTable(sortedRows, false);
   }
 
   dateRangeFilter(startDate, endDate, columnId) {
     const sd = new Date(startDate);
     const ed = new Date(endDate);
-    const filteredRows = this.tableData.filter( row => {
+    const filteredRows = this.tableData.filter(row => {
       const dateValue = new Date(row[columnId]);
       return (sd <= dateValue && dateValue <= ed);
     });
-    this.renderDataTable(filteredRows);
+    this.renderDataTable(filteredRows, true);
     this.dataSource.paginator = this.paginator;
+    this.dataSource.filter = JSON.stringify(this.filterArray);
   }
 
   resetFilters() {
-    this.initializeFilterArray();
     this.searchFilterValue = '';
-    this.dataSource.filter = JSON.stringify(this.filterArray);
+    this.renderDataTable(this.tableData, false);
   }
 }

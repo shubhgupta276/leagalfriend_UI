@@ -4,10 +4,13 @@
   </div>
 
   <section class="content">
+    <button (click)="filterTable()" >Filter</button>
+    <button (click)="resetTableFilter()" >reset</button>
     <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
       (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
     </app-data-table>
   </section>
+
 
   <div class="favicon" data-toggle="modal" data-target="#addUserModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">

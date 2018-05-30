@@ -101,17 +101,6 @@ export class CaseComponent implements OnInit {
       });
   }
 
-  // initializeDataTable(dataToRender) {
-  //   let cleanTableData = [];
-  //   dataToRender.forEach(row => {
-  //     row.forEach(item => {
-  //       if ()
-        
-  //     });
-  //   });
-  // }
-
-
   ngOnInit() {
 
 
@@ -283,8 +272,20 @@ export class CaseComponent implements OnInit {
     console.log(event);
   }
 
-  onRowSelect(event) {
+  onRowSelect(event){
     console.log(event);
+  }
+
+  filterTable(data){
+    this.dataTableComponent.sortTable('SBI', 'branchName');
+    this.dataTableComponent.sortTable('WINDING_UP', 'recourseCode');
+    // this.dataTableComponent.sortTable('', 'stageName');
+    this.dataTableComponent.dateRangeFilter('2018-05-28', '2018-5-30', 'nextHearingDate');
+    
+  }
+
+  resetTableFilter(){
+    this.dataTableComponent.resetFilters();
   }
 
   bindDatatable() {
