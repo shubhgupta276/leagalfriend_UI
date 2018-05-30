@@ -46,6 +46,7 @@ export class CaseComponent implements OnInit {
   newHiringCasedata: any;
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
+  caseIdforRemark:string;
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
     //this.caseRunning = CasesRunning
     //this.caseCompleted = CasesCompleted;
@@ -373,6 +374,12 @@ export class CaseComponent implements OnInit {
       err => {
         console.log(err);
       });
+  }
+  showhistoryModal(c)
+  {
+    debugger
+    var caseId=c.caseId;
+     $("#modal-default1").modal("show");
   }
 
   showEditModal(c) {

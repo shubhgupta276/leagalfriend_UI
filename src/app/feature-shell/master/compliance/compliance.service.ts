@@ -30,6 +30,12 @@ export class ComplianceService {
             JSON.stringify(reqData)
         );
     }
+    bindStageDDL(reqData): Observable<any> {    
+        return this.apiGateWay.get<any>(
+          'master/stages'+ '?email='+ reqData.email+ '&recourseId='+reqData.recourseId, null,
+          
+        );
+      }
 
     updateCompliance(reqData: any): Observable<any> {
         return this.apiGateWay.post<Compliance>(

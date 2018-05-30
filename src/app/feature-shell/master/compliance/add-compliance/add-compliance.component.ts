@@ -22,6 +22,7 @@ export class AddComplianceMasterComponent implements OnInit {
   @Input() arCompliance: Compliance[];
   @Input() arRecourse: any[];
   @Input() arStage: any[];
+  Stage: any=[];
   @Input() arStatus: any[];
   addComplianceMasterForm: FormGroup;
   isComplianceAlreadyExists: boolean = false;
@@ -87,7 +88,32 @@ export class AddComplianceMasterComponent implements OnInit {
   closeModal() {
     $("#closebtn1").click();
   }
+  bindstage(item)
+  {
+    debugger
+    var a = item.charAt(0);
+    
 
+      var $this = this
+      var reqData = {
+        email: this._storageService.getUserEmail(),
+        recourseId: a
+      };
+      this._complianceService.bindStageDDL(reqData).subscribe(
+  
+        result => {
+          debugger
+          result.stageRecourses.forEach(function (value) {
+  debugger
+            $this.Stage.push({ id: value.id, text: value.stageName });
+          });
+        
+        },
+        err => {
+          console.log(err);
+        });
+    
+  }
   ngOnInit() {
     this.subscriberFields();
   }

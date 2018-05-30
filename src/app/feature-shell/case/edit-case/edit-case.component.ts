@@ -52,6 +52,7 @@ export class EditCaseComponent implements OnInit {
   // arrCompliance = [];
   arr: any = [];
   caseId: any = [];
+  id:any = [];
   complianceGridData = [];
   caseFile:any=[];
   public searchStr1: string;
@@ -213,16 +214,23 @@ export class EditCaseComponent implements OnInit {
     debugger
     this.parentcaseSelectedauto = [];
 
-    this.caseId = c.id;
+    this.caseId = c.caseId;
+    this.id=c.id;
     //this.complianceGridData=[c[0].compliance];
+    if(c.parentCaseId!=null)
+    {
     const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
     this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
    this.childCaseText = this.parentcaseSelectedauto[0].text;
-
-   this.childcaseSelectedauto = [];
-   const objchild = this.ChildCases.filter(x => x.id == c.childCase);
-   this.childcaseSelectedauto.push({ id: c.childCase, text: objchild[0].text });
-  this.childParentText = this.childcaseSelectedauto[0].text;
+  }
+  if(c.childCase!=null)
+  {
+    this.childcaseSelectedauto = [];
+    const objchild = this.ChildCases.filter(x => x.id == c.childCase);
+    this.childcaseSelectedauto.push({ id: c.childCase, text: objchild[0].text });
+   this.childParentText = this.childcaseSelectedauto[0].text;
+  }
+  
 
     this.recourseSelected = [];
     const objFilter = this.Resource.filter(x => x.id == c.recourseId);
@@ -745,8 +753,8 @@ debugger
     
     //var a=data.parentCase.substr(data.parentCase.lastIndexOf("/")+1);
     const x = {
-      "id": data.caseId,
-      "caseId":data.caseId,
+      "id": this.id,
+      "caseId":this.caseId,
       "courtCaseId": data.courtCaseId,
       "userId": parseInt(localStorage.getItem('client_id')),
       "branchId": this.selectedBranch.id,

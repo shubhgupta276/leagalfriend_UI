@@ -85,7 +85,7 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(changepwdReq);
         }
-        else if (req.url.indexOf('case/update') >= 0) {
+        else if (req.url.indexOf('case/update') >= 0 || (req.url.indexOf('case/file/upload') >= 0)) {
 
             const authHeader = this.auth.getAuthorizationHeader();
             const changepwdReq = req.clone({
@@ -95,6 +95,7 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(changepwdReq);
         }
+        
         else if (req.url.replace(endpoint_url, "").indexOf('institution/upload') >= 0 || req.url.replace(endpoint_url, "").indexOf("institution/for/case") >= 0) {
 
             const authHeader = this.auth.getAuthorizationHeader();

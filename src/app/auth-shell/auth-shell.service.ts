@@ -155,6 +155,13 @@ export class AuthService {
     );
   }
 
+  addRemarkHistory(customerData: any): Observable<EditCase> {
+    return this.apiGateWay.post<any>(
+      'case/file/upload',customerData
+     // JSON.stringify(customerData)
+    );
+  }
+
   deleteCaseById(id): Observable<EditCase> {
     return this.apiGateWay.delete<any>(
       'case/file'+ '?caseFileId='+id,null,

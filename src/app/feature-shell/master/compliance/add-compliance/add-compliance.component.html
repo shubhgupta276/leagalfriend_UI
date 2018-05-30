@@ -25,9 +25,9 @@
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                          <select tabindex="3" class="form-control select2me" formControlName="recourse">
+                          <select tabindex="3" class="form-control select2me"   (change)="bindstage($event.target.value);"  formControlName="recourse">
                             <option value="">Select Recourse</option>
-                            <option *ngFor="let option of arRecourse" [ngValue]="option">
+                            <option *ngFor="let option of arRecourse"  [ngValue]="option">
                               {{ option.recourseCode }}
                             </option>
                           </select>
@@ -48,8 +48,8 @@
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
                           <select tabindex="3" class="form-control select2me" formControlName="stage">
                             <option value="">Select Stage add</option>
-                            <option *ngFor="let option of arStage" [ngValue]="option">
-                              {{ option.stageCode }}
+                            <option *ngFor="let option of Stage" [ngValue]="option">
+                              {{option.text}}
                             </option>
                           </select>
                         </div>

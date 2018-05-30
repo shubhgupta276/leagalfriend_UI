@@ -129,11 +129,11 @@
                         </td>
                         <td>{{items.branchName}}</td>
                         <td>{{items.empFirstName}}</td>
-                        <td>
+                        <td >
                           <a title="Edit">
                             <i class="fa fa-edit"></i>
                           </a> /
-                          <a data-toggle="modal" data-target="#modal-default1" href="#">
+                          <a data-toggle="modal" (click)="showhistoryModal(items)">
                             <i class="fa fa-history"></i>
                           </a>
                         </td>
