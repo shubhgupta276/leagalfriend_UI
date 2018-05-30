@@ -8,19 +8,19 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
-import {MasterTemplateComponentService} from "../app/feature-shell/master/masterTemplates/masterTemplate.component.service";
+import {MasterTemplateComponentService} from '../app/feature-shell/master/masterTemplates/masterTemplate.component.service';
 import { HttpClientModule } from '@angular/common/http'
 import { SharedModule } from './shared/shared.module';
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
 import { StorageService } from './shared/services/storage.service';
-import { Ng2CompleterModule } from "ng2-completer";
+import { Ng2CompleterModule } from 'ng2-completer';
 import {BusyModule} from 'angular2-busy';
-
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FeatureShellModule,
     AuthShellModule,
     AppRoutingModule,
