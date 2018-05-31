@@ -24,8 +24,12 @@ import { debounce } from 'rxjs/operators/debounce';
 declare var $;
 
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
-import { caseRunningTableConfig } from './case.config';
+import { caseRunningTableConfig, caseCompletedTableConfig } from './case.config';
 import { element } from 'protractor';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
+const now = new Date();
+
 
 @Component({
   selector: 'app-case',
@@ -39,9 +43,17 @@ import { element } from 'protractor';
 export class CaseComponent implements OnInit {
   tableInputData = [];
   columns = caseRunningTableConfig;
-  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  @ViewChild('caseRunningTable') runningDataTableComponent: DataTableComponent;
   rowSelect = true;
   hoverTableRow = true;
+  showSearchFilter = false;
+  actionColumnConfig: ActionColumnModel;
+  model: NgbDateStruct;
+  date: {year: number, month: number};
+
+  completedTableInputData = [];
+  completedColumns = caseCompletedTableConfig;
+  @ViewChild('caseCompletedTable') completedDataTableComponent: DataTableComponent;
 
   lstUploadedDocuments: any;
   caseRunning: any[] = [];
@@ -56,6 +68,8 @@ export class CaseComponent implements OnInit {
   newHiringCasedata: any;
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
+  IsPrintable = false;
+  SelectedFileIds = [];
   constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
     this.caseCompleted = CasesCompleted;
   }
@@ -83,29 +97,47 @@ export class CaseComponent implements OnInit {
       });
   }
 
-  getRunningCasesData() {
+  selectToday() {
+    this.model = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+  }
+  getCasesData() {
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
     };
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
-        result.forEach(element => {
-          this.tableInputData.push(element);
+        result.forEach(ele => {
+          if (ele.completionDate) {
+            this.completedTableInputData.push(ele);
+          } else {
+            this.tableInputData.push(ele);
+          }
         });
-        // this.tableInputData = result;
-        console.log(this.tableInputData);
-        this.dataTableComponent.ngOnInit();
+        console.log('running:', this.tableInputData);
+        this.runningDataTableComponent.ngOnInit();
+        console.log('completed:', this.completedTableInputData);
+        this.completedDataTableComponent.ngOnInit();
       },
       err => {
         console.log(err);
       });
   }
 
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.btnText = ['View History'];
+    this.actionColumnConfig.moduleName = 'Case';
+  }
   ngOnInit() {
 
 
     // this.getRunningCase();
-    this.getRunningCasesData();
+    this.setActionConfig();
+    this.getCasesData();
+    this.getBranchDDL();
+    this.bindRecourseDDL();
+    this.bindStageDDL();
     // const self = this;
     // this.getBranchDDL();
     // this.bindRecourseDDL();
@@ -272,20 +304,58 @@ export class CaseComponent implements OnInit {
     console.log(event);
   }
 
-  onRowSelect(event){
+  onRowSelect(event) {
     console.log(event);
   }
 
-  filterTable(data){
-    this.dataTableComponent.sortTable('SBI', 'branchName');
-    this.dataTableComponent.sortTable('WINDING_UP', 'recourseCode');
-    // this.dataTableComponent.sortTable('', 'stageName');
-    this.dataTableComponent.dateRangeFilter('2018-05-28', '2018-5-30', 'nextHearingDate');
-    
+  onActionBtnClick(event) {
+    console.log('action: ', event);
   }
 
-  resetTableFilter(){
-    this.dataTableComponent.resetFilters();
+  onRowClickCompleted(event) {
+    console.log(event);
+  }
+
+  onRowDoubleClickCompleted(event) {
+    console.log(event);
+  }
+
+  onRowSelectCompleted(event) {
+    console.log(event);
+  }
+
+  onActionBtnClickCompleted(event) {
+    console.log('action: ', event);
+  }
+
+  filterTable(data) {
+    this.runningDataTableComponent.sortTable('SBI', 'branchName');
+    this.runningDataTableComponent.sortTable('WINDING_UP', 'recourseCode');
+    // this.runningDataTableComponent.sortTable('', 'stageName');
+    this.runningDataTableComponent.dateRangeFilter('2018-05-28', '2018-5-30', 'nextHearingDate');
+  }
+
+  resetTableFilter() {
+    this.runningDataTableComponent.resetFilters();
+  }
+
+  searchFilterRunning(value) {
+    this.runningDataTableComponent.applyFilter(value);
+  }
+
+  filterTableCompleted(data) {
+    this.completedDataTableComponent.sortTable('SBI', 'branchName');
+    this.completedDataTableComponent.sortTable('WINDING_UP', 'recourseCode');
+    // this.completedDataTableComponent.sortTable('', 'stageName');
+    this.completedDataTableComponent.dateRangeFilter('2018-05-28', '2018-5-30', 'nextHearingDate');
+  }
+
+  resetTableFilterCompleted() {
+    this.completedDataTableComponent.resetFilters();
+  }
+
+  searchFilterRunningCompleted(value) {
+    this.completedDataTableComponent.applyFilter(value);
   }
 
   bindDatatable() {
@@ -438,21 +508,19 @@ export class CaseComponent implements OnInit {
   }
 
   runningTools() {
-    document.getElementById('pageLength1').style.display = 'block';
-    document.getElementById('pageLength2').style.display = 'none';
-    document.getElementById('searchBox1').style.display = 'block';
-    document.getElementById('searchBox2').style.display = 'none';
+    // document.getElementById('pageLength1').style.display = 'block';
+    // document.getElementById('pageLength2').style.display = 'none';
+    // document.getElementById('searchBox1').style.display = 'block';
+    // document.getElementById('searchBox2').style.display = 'none';
   }
 
   completedTools() {
-    document.getElementById('pageLength2').style.display = 'block';
-    document.getElementById('pageLength1').style.display = 'none';
-    document.getElementById('searchBox2').style.display = 'block';
-    document.getElementById('searchBox1').style.display = 'none';
+    // document.getElementById('pageLength2').style.display = 'block';
+    // document.getElementById('pageLength1').style.display = 'none';
+    // document.getElementById('searchBox2').style.display = 'block';
+    // document.getElementById('searchBox1').style.display = 'none';
   }
 
-
-  IsPrintable = false;
   updateCheckedOptions(items) {
     var flagPrint = false;
     for (var i = 0; i < items.length; i++) {
@@ -469,7 +537,6 @@ export class CaseComponent implements OnInit {
   // getUploadedDocuments() {
   //   this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   // }
-  SelectedFileIds = [];
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
       this.SelectedFileIds.push(FileId);
