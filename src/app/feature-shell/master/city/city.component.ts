@@ -1,34 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ViewChild } from '@angular/core';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import { AddCityMasterComponent } from './add-city/add-city.component';
 import { EditCityMasterComponent } from './edit-city/edit-city.component';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CityService } from './city.service'
-import { City } from './city'
+import { CityService } from './city.service';
+import { City } from './city';
 import { StorageService } from '../../../shared/services/storage.service';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { cityTableConfig } from './city.config';
+import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 declare let $;
 
-@NgModule(
-  {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [
-      CityComponent,
-      AddCityMasterComponent,
-      EditCityMasterComponent
-    ],
-    providers: [CityService, StorageService]
-  }
-)
-
 @Component({
-  selector: "app-city",
-  templateUrl: "./city.component.html",
-  styleUrls: ["./city.component.css"]
+  selector: 'app-city',
+  templateUrl: './city.component.html',
+  styleUrls: ['./city.component.css']
 })
 export class CityComponent implements OnInit {
-  arCityData: City[] = [];
+  tableInputData = [];
+  columns = cityTableConfig;
   @ViewChild(EditCityMasterComponent) editChild: EditCityMasterComponent;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = false;
+  hoverTableRow = true;
   constructor(private fb: FormBuilder, private _cityService: CityService, private _storageService: StorageService) {
 
   }
@@ -38,91 +33,42 @@ export class CityComponent implements OnInit {
     this.getCityData();
   }
 
-  showEditModal(data) {
-    this.editChild.createForm(data);
-    $('#editCityMasterModal').modal('show');
-
-  }
-
   getCityData() {
     this._cityService.getCities().subscribe(
       result => {
-        if (result.httpCode == 200) {
-          for (var i = 0; i < result.cities.length; i++) {
-            const obj = result.cities[i];
-
-            this.arCityData.push({
-              cityName: obj.cityName,
-              id: obj.id
-            });
+        if (result.httpCode === 200) {
+          for (let i = 0; i < result.cities.length; i++) {
+            this.tableInputData.push(result.cities[i]);
           }
-          setTimeout(() => {
-            this.bindDatatable();
-          }, 1);
+          this.dataTableComponent.ngOnInit();
 
-        }
-        else {
+        } else {
           console.log(result);
         }
       },
       err => {
         console.log(err);
-        this.arCityData = [];
 
       });
 
   }
 
-  bindDatatable() {
-
-    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-    var selectedPageLength = 15;
-
-    var $table = $("#example1").DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: false,
-      lengthMenu: arLengthMenu,
-      pageLength: selectedPageLength,
-      oLanguage: {
-        sLengthMenu: "Show _MENU_ rows",
-        sSearch: "",
-        sSearchPlaceholder: "Search..."
-      },
-      initComplete: function () {
-        var tableid = "example1";
-        var $rowSearching = $("#" + tableid + "_wrapper");
-        $rowSearching.find(".row:eq(0)").hide();
-
-        for (var i = 0; i < arLengthMenu[0].length; i++) {
-          $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-        }
-        $("#ddlLengthMenu").val(selectedPageLength);
-
-        $("#ddlLengthMenu").on("change", function () {
-          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-        });
-      }
-    });
-
-    $table.columns().every(function () {
-      $('#txtSearch').on('keyup change', function () {
-        if ($table.search() !== this.value) {
-          $table.search(this.value).draw();
-        }
-      });
-    });
-
+  onRowClick(event) {
+    console.log(event);
   }
+  onRowDoubleClick(event) {
+    this.editChild.createForm(event);
+    $('#editCityMasterModal').modal('show');
+   }
 
+  onRowSelect(event) {
+    console.log(event);
+  }
 }
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
     declarations: [
       CityComponent,
       AddCityMasterComponent,
@@ -132,4 +78,4 @@ export class CityComponent implements OnInit {
   }
 )
 
-export class CityModule {}
+export class CityModule { }

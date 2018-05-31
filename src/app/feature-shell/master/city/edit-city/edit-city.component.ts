@@ -17,7 +17,7 @@ export class EditCityMasterComponent implements OnInit {
 
   editDetails: City;
   @Input()
-  arCityData: City[];
+  tableInputData: any[];
 
   editCityMasterForm: FormGroup;
   isCityAlreadyExists: boolean = false;
@@ -26,27 +26,24 @@ export class EditCityMasterComponent implements OnInit {
   }
 
   submitEditCityMaster(data) {
-    var reqData = {
+    const reqData = {
       cityName: data.cityName,
       id: data.id,
       userId: this._storageService.getUserId()
 
     };
-
     this._cityService.updateCity(reqData).subscribe(
 
       result => {
-        var _result = result.body;
-        if (_result.httpCode == 200) { //success
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-          debugger
-          const objFind = this.arCityData.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.cityName = data.cityName;
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
+        }
       },
       err => {
         console.log(err);
@@ -55,7 +52,7 @@ export class EditCityMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn1").click();
+    $('#closebtn1').click();
   }
 
   ngOnInit() {
@@ -66,10 +63,11 @@ export class EditCityMasterComponent implements OnInit {
     this.editCityMasterForm.get('cityName').valueChanges.subscribe(
       (e) => {
 
-        var fieldValue = e.toUpperCase();
-        if (this.editDetails.cityName.toUpperCase() != fieldValue && this.arCityData.filter(x => x.cityName.toUpperCase() == fieldValue).length > 0)
+        const fieldValue = e.toUpperCase();
+        if (this.editDetails.cityName.toUpperCase() !== fieldValue
+        && this.tableInputData.filter(x => x.cityName.toUpperCase() === fieldValue).length > 0) {
           this.isCityAlreadyExists = true;
-        else {
+        } else {
           this.isCityAlreadyExists = false;
         }
       }
@@ -77,7 +75,6 @@ export class EditCityMasterComponent implements OnInit {
   }
 
   createForm(data: City) {
-debugger
     this.editCityMasterForm = this.fb.group({
       cityName: [data == null ? null : data.cityName, Validators.required],
       id: [data == null ? null : data.id],

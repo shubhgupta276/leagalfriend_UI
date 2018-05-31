@@ -11,13 +11,12 @@ declare var $;
 @Component({
   selector: 'app-add-district',
   templateUrl: '../add-district/add-district.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class AddDistrictMasterComponent implements OnInit {
 
   addDistrictMasterForm: FormGroup;
   isDistrictAlreadyExists: boolean = false;
-  @Input() arDisrict: District[];
+  @Input() tableInputData: District[];
 
   AddDistrictMaster() {
     this.addDistrictMasterForm = this.fb.group({
@@ -30,24 +29,23 @@ export class AddDistrictMasterComponent implements OnInit {
   }
 
   submitAddDistrictMaster(data) {
-    var reqData = {
+    const reqData = {
       districtName: data.districtName,
       userId: this._storageService.getUserId()
     };
 
     this._districtService.addDistrict(reqData).subscribe(
       result => {
-        var _result = result.body;
-        
-        if (_result.httpCode == 200) { //success
-          this.arDisrict.push({ districtName: data.districtName, id: _result.id });
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
+          this.tableInputData.push({ districtName: data.districtName, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddDistrictMaster();
           this.closeModal();
           this.subscriberFields();
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -55,7 +53,7 @@ export class AddDistrictMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn").click();
+    $('#closebtn').click();
   }
 
   ngOnInit() {
@@ -65,9 +63,9 @@ export class AddDistrictMasterComponent implements OnInit {
     this.addDistrictMasterForm.get('districtName').valueChanges.subscribe(
       (e) => {
 
-        if (this.arDisrict.filter(x => x.districtName.toUpperCase() == e.toUpperCase()).length > 0)
+        if (this.tableInputData.filter(x => x.districtName.toUpperCase() === e.toUpperCase()).length > 0) {
           this.isDistrictAlreadyExists = true;
-        else {
+        } else {
           this.isDistrictAlreadyExists = false;
         }
       }

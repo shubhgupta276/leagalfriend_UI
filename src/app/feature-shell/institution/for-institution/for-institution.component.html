@@ -47,7 +47,11 @@
                 </div>
               </div>
             </div>
-            <table id="example1" class="table table-bordered table-hover" on-mouseleave="hideCalendar()">
+
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            </app-data-table>
+            <!-- <table id="example1" class="table table-bordered table-hover" on-mouseleave="hideCalendar()">
               <thead>
                 <tr>
                   <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
@@ -64,6 +68,8 @@
                   <th>Loan Account No</th>
                   <th>Action</th>
                   <th style="display: none;">Recourse</th>
+                  <th style="display: none;">Created Date</th>
+                  <th style="display: none;">Last Updated Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,7 +85,7 @@
                   <td>{{item.legalCaseId}}</td>
                   <td style="position: relative;">
                     {{item.previousHearingDate | date:'dd-MM-yyyy'}}
-                  
+
                     <div class="input-group date" style="position:absolute; right: 0;" data-provide="datepicker">
                       <input style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd" class="form-control lastHiringDate"
                         size="10">
@@ -109,14 +115,16 @@
 
                   </td>
                   <td style="display: none;">{{item.recourse}}</td>
+                  <td style="display: none;">{{item.createdDate | date:'dd-MM-yyyy'}}</td>
+                  <td style="display: none;">{{item.lastUpdated | date:'dd-MM-yyyy'}}</td>
                 </tr>
                 <tr *ngIf="!arr || arr.length == 0">
-                  <td colspan="9">No Record Found...!</td>
-                  <td *ngFor="let item of [1,2,3,4,5,6,7,8,9]" style="display: none;"></td>
+                  <td colspan="11">No Record Found...!</td>
+                  <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11]" style="display: none;"></td>
                 </tr>
               </tbody>
 
-            </table>
+            </table> -->
           </div>
           <!-- /.box-body -->
         </div>

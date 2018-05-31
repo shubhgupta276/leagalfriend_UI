@@ -16,10 +16,9 @@ declare var $;
 @Component({
   selector: 'app-edit-compliance',
   templateUrl: '../edit-compliance/edit-compliance.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class EditComplianceMasterComponent implements OnInit, OnChanges {
-  @Input() arCompliance: Compliance[];
+  @Input() tableInputData: any[];
   @Input() arRecourse: any[];
   @Input() arStage: any[];
   @Input() arStatus: any[];
@@ -45,10 +44,11 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   subscriberFields() {
     this.editComplianceMasterForm.get('compliance').valueChanges.subscribe(
       (e) => {
-        var fieldValue = e.toUpperCase();
-        if (this.editDetails.compliance.toUpperCase() != fieldValue && this.arCompliance.filter(x => x.compliance.toUpperCase() == fieldValue).length > 0)
+        const fieldValue = e.toUpperCase();
+        if (this.editDetails.compliance.toUpperCase() !== fieldValue
+          && this.tableInputData.filter(x => x.compliance.toUpperCase() === fieldValue).length > 0) {
           this.isComplianceAlreadyExists = true;
-        else {
+        } else {
           this.isComplianceAlreadyExists = false;
         }
       }
@@ -56,43 +56,42 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   }
 
   submitEditComplianceMaster(data) {
-    var reqData = {
-      id:data.id,
-      recourse:{
-        id:data.recourse.id,
+    const reqData = {
+      id: data.id,
+      recourse: {
+        id: data.recourse.id,
       },
-    
-      stage:{
-        id:data.stage.id,
+
+      stage: {
+        id: data.stage.id,
       },
-       
+
       complianceName: data.compliance,
       statusId: data.status.statusId,
-  
+
       userId: this._storageService.getUserId()
     };
-    
+
     this._complianceService.updateCompliance(reqData).subscribe(
 
       result => {
-        
-        var _result = result.body;
-        if (_result.httpCode == 200) { //success
+
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
 
-          const objFind = this.arCompliance.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.compliance = data.compliance;
           objFind.recourseId = data.recourse;
           objFind.stageId = data.stage;
           objFind.statusId = data.status;
-          objFind.recourse = $("#ddlRecourse option:selected").text();
-          objFind.stage = $("#ddlStage option:selected").text();
-          objFind.statusId = $("#ddlStatus option:selected").text();
-        }
-        else
+          objFind.recourse = $('#ddlRecourse option:selected').text();
+          objFind.stage = $('#ddlStage option:selected').text();
+          objFind.statusId = $('#ddlStatus option:selected').text();
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
+        }
       },
       err => {
         console.log(err);
@@ -103,9 +102,8 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
     $('#closebtn').click();
   }
   createForm(data: Compliance) {
-    debugger
     this.editComplianceMasterForm = this.fb.group({
-      
+
       recourse: [data == null ? null : data.recourse, Validators.required],
       stage: [data == null ? null : data.stage, Validators.required],
       compliance: [data == null ? null : data.compliance, Validators.required],
