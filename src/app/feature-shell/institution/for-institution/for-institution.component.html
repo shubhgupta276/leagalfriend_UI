@@ -47,7 +47,11 @@
                 </div>
               </div>
             </div>
-            <table id="example1" class="table table-bordered table-hover" on-mouseleave="hideCalendar()">
+
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            </app-data-table>
+            <!-- <table id="example1" class="table table-bordered table-hover" on-mouseleave="hideCalendar()">
               <thead>
                 <tr>
                   <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
@@ -120,7 +124,7 @@
                 </tr>
               </tbody>
 
-            </table>
+            </table> -->
           </div>
           <!-- /.box-body -->
         </div>

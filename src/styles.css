@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.table-dropdown-sort .mat-form-field-label{
+    display: none !important;
+    border: 1px solid red;
+}
+.mat-row-hover:hover{
+    background-color: whitesmoke;
+}
+.mat-row{
+    cursor: pointer;
+}
+.mat-column-select {
+    flex: 0.3 !important;
+}
+.mat-header-cell{
+    color: rgb(34, 45, 50);
+    font-size: 15px;
+    font-weight: 700;
+}

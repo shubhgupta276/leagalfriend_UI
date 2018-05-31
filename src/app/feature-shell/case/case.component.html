@@ -1,4 +1,30 @@
-<style>
+<div class="content-wrapper">
+  <div class="page-heading">
+    Case Management
+  </div>
+
+  <section class="content">
+    <button (click)="filterTable()">Filter</button>
+    <button (click)="resetTableFilter()">reset</button>
+    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+      (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+    </app-data-table>
+  </section>
+
+
+  <div class="favicon" data-toggle="modal" data-target="#addUserModal">
+    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+      <span class="tooltip-text">Add User</span>
+    </div>
+    <a>
+      <i class="fa fa-plus" type="button"></i>
+    </a>
+  </div>
+  <!-- <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles"></app-add-user>
+  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [arrUsers]="arrUsers"></app-edit-user> -->
+</div>
+
+<!-- <style>
   .bgColor {
     background-color: #dd4b39;
   }
@@ -33,11 +59,9 @@
   <div class="page-heading">
     Case Management
   </div>
-  <!-- Main content -->
   <section class="content">
     <div class="row">
       <div class="col-xs-12">
-        <!-- /.box -->
         <div class="box">
           <div class="box-body">
             <div class="nav-tabs-custom">
@@ -97,7 +121,6 @@
                   <table id="example1" on-mouseleave="hideCalendar()" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <!-- <th>Select</th> -->
                         <th>Case ID</th>
                         <th>Court Case ID</th>
                         <th>Customer Name</th>
@@ -184,15 +207,12 @@
             </div>
           </div>
         </div>
-        <!-- /.box -->
       </div>
     </div>
   </section>
   <app-edit-case [caseRunning]="caseRunning"></app-edit-case>
   <app-add-case></app-add-case>
   <app-history-case></app-history-case>
-  <!-- /.content -->
-  <!-- Filter Case Starts -->
   <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
     <div class="modal-dialog caseModalSearch">
       <div class="modal-content" style="border-radius: 5px;">
@@ -236,8 +256,6 @@
                   </div>
                   <input style="width:560px;margin-right:575px;" type="text" class="form-control pull-right" id="reservation">
                 </div>
-
-                <!-- /.input group -->
               </div>
             </div>
 
@@ -248,11 +266,8 @@
           </div>
 
         </div>
-        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-dialog -->
     </div>
-    <!-- Filter case ends -->
 
 
   </div>
@@ -283,18 +298,8 @@
               <h3 class="box-title">List Of Documents</h3>
 
               <div class="box-tools">
-                <!-- <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default">
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </div>
-                </div> -->
               </div>
             </div>
-            <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
                 <tr>
@@ -313,7 +318,6 @@
                 </tr>
               </table>
             </div>
-            <!-- /.box-body -->
           </div>
         </div>
         <div class="modal-footer">
@@ -322,6 +326,4 @@
 
         </div>
       </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- <app-edit-case></app-edit-case>  -->
+    </div> -->

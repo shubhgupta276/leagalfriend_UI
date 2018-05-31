@@ -13,6 +13,8 @@ import { RecourseService } from '../../master/resource/recourse.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../../shared/services/shared.service';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { forInstitutionTableConfig } from './for-intitution-config';
 
 declare let $;
 @Component({
@@ -23,12 +25,15 @@ declare let $;
 })
 
 export class ForInstitutionComponent implements OnInit {
+    tableInputData = [];
+    columns = forInstitutionTableConfig;
+    rowSelect = true;
+    hoverTableRow = true;
 
     arInstitution = [];
     arRecourse: any[] = [];
     InstitutionValue: any;
     recourseConfig: any;
-    arr = [];
     checkboxCounter: number = 0;
     recourseFilter: any;
     $table: any;
@@ -42,6 +47,8 @@ export class ForInstitutionComponent implements OnInit {
     branchData: any;
     branchSubscription: Subscription;
     @ViewChild(AddForInstitutionComponent) _addForInstitution: AddForInstitutionComponent;
+    @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+    isPageLoad: boolean = true;
     constructor(private fb: FormBuilder,
         private _router: Router,
         private _datePipe: DatePipe,
@@ -51,63 +58,62 @@ export class ForInstitutionComponent implements OnInit {
         private _storageService: StorageService) { }
 
     ngOnInit() {
+        //this.getInstitutionList();
 
         this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
+            if (!this.isPageLoad)
+                this.GetAllForIntitution()
 
-            if (this.branchData) {
-                if (this.$table)
-                    this.$table.destroy();
-                this.GetAllForIntitution();
-            }
+            this.isPageLoad = false;
         });
+        this.GetAllForIntitution();
+        //this.bindFilterType();
 
-        this.bindFilterType();
-        this.getInstitutionList();
-        this.getRecourse();
-        var selfnew = this;
-        $($.document).ready(function () {
+        //this.getRecourse();
+        //var selfnew = this;
+        // $($.document).ready(function () {
 
-            document.ondragover = document.ondragenter = function (evt) {
-                $('#addForInstitutionModal').modal('show');
-                evt.preventDefault();
-            };
+        //     document.ondragover = document.ondragenter = function (evt) {
+        //         $('#addForInstitutionModal').modal('show');
+        //         evt.preventDefault();
+        //     };
 
-            document.getElementById("addForInstitutionModal").ondrop = function (evt) {
-                $("#ERROR_casefile").hide();
-                if (!validateFile(evt.dataTransfer.files[0].name)) {
-                    $("#ERROR_casefile").show();
-                }
-                else {
-                    $("#casefile")[0].files = evt.dataTransfer.files;
-                    $("#ERROR_casefile").hide();
-                }
-                evt.preventDefault();
-            };
+        //     document.getElementById("addForInstitutionModal").ondrop = function (evt) {
+        //         $("#ERROR_casefile").hide();
+        //         if (!validateFile(evt.dataTransfer.files[0].name)) {
+        //             $("#ERROR_casefile").show();
+        //         }
+        //         else {
+        //             $("#casefile")[0].files = evt.dataTransfer.files;
+        //             $("#ERROR_casefile").hide();
+        //         }
+        //         evt.preventDefault();
+        //     };
 
-            function validateFile(name: string) {
-                var ext = name.substring(name.lastIndexOf('.'));
-                if (ext.toLowerCase() == '.csv') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
+        //     function validateFile(name: string) {
+        //         var ext = name.substring(name.lastIndexOf('.'));
+        //         if (ext.toLowerCase() == '.csv') {
+        //             return true;
+        //         }
+        //         else {
+        //             return false;
+        //         }
+        //     }
 
-            $('#txtFromToDate').daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    format: 'DD-MM-YYYY'
-                }
-            }, function (start_date, end_date) {
-                $('#txtFromToDate').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
-            });
+        //     $('#txtFromToDate').daterangepicker({
+        //         autoUpdateInput: false,
+        //         locale: {
+        //             format: 'DD-MM-YYYY'
+        //         }
+        //     }, function (start_date, end_date) {
+        //         $('#txtFromToDate').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
+        //     });
 
-            $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
-                let isNewHearingDate = $(evt.target).hasClass("newHiringDate");
-                selfnew.updateNewHearingDate($(this).val(), isNewHearingDate)
-            });
-        });
+        //     $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
+        //         let isNewHearingDate = $(evt.target).hasClass("newHiringDate");
+        //         selfnew.updateNewHearingDate($(this).val(), isNewHearingDate)
+        //     });
+        // });
     }
 
     filterTypeChange(id) {
@@ -125,6 +131,7 @@ export class ForInstitutionComponent implements OnInit {
 
         this._institutionService.getInstitutionList().subscribe((result) => {
             if (result.httpCode == 200) {
+                debugger
                 this.arInstitution = result.institutions;
                 this.InstitutionValue = this.arInstitution.find(x => x.defaultInstitution);
                 this.GetAllForIntitution();
@@ -181,148 +188,157 @@ export class ForInstitutionComponent implements OnInit {
 
     GetAllForIntitution() {
         this.branchData = this._storageService.getBranchData();
-        if (this.branchData) {
 
-            this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
-                result => {
-                    this.arr = [];
-                    for (var i = 0; i < result.length; i++) {
-                        const obj = result[i];
-                        this.arr.push({
-                            accountStatus: obj.accountStatus,
-                            advocateofEp: obj.advocateofEp,
-                            amountInvolved: obj.amountInvolved,
-                            appealUs34Filed: obj.appealUs34Filed,
-                            arbitrationCaseId: obj.arbitrationCaseId,
-                            arbitrationInitiated: obj.arbitrationInitiated,
-                            arbitratorAppointed: obj.arbitratorAppointed,
-                            assetDetails: obj.assetDetails,
-                            auctionDate: obj.auctionDate,
-                            awardAmount: obj.awardAmount,
-                            awardCopyProvided: obj.awardCopyProvided,
-                            awardDate: obj.awardDate,
-                            bankName: obj.bankName,
-                            caseCriticalityLevel: obj.caseCriticalityLevel,
-                            caseFiledAgainst: obj.caseFiledAgainst,
-                            caseId: obj.caseId,
-                            caseStage: obj.caseStage,
-                            caseStatus: obj.caseStatus,
-                            caseType: obj.caseType,
-                            chqNo1: obj.chqNo1,
-                            chqNo2: obj.chqNo2,
-                            chqNo3: obj.chqNo3,
-                            closureDate: obj.closureDate,
-                            closureReportingDate: obj.closureReportingDate,
-                            coolingPeriodNoticeDate: obj.coolingPeriodNoticeDate,
-                            courtCaseId: obj.courtCaseId,
-                            courtName: obj.courtName,
-                            courtPlace: obj.courtPlace,
-                            createdDate: obj.createdDate,
-                            customerName: obj.customerName,
-                            dateOfConduct: obj.dateOfConduct,
-                            disbursalDate: obj.disbursalDate,
-                            dpdOnCurrentDate: obj.dpdOnCurrentDate,
-                            dpdOnEpFilingDate: obj.dpdOnEpFilingDate,
-                            dpdOnFilingDate: obj.dpdOnFilingDate,
-                            dpdOnNoticeDate: obj.dpdOnNoticeDate,
-                            ePCourtName: obj.ePCourtName,
-                            ePCourtPlace: obj.ePCourtPlace,
-                            executionCaseNo: obj.executionCaseNo,
-                            executionFiled: obj.executionFiled,
-                            executionFilingDate: obj.executionFilingDate,
-                            fileName: obj.fileName,
-                            filingDate: obj.filingDate,
-                            generatedBy: obj.generatedBy,
-                            guarantorsName: obj.guarantorsName,
-                            id: obj.id,
-                            institutionId: obj.institutionId,
-                            lastUpdated: obj.lastUpdated,
-                            lawyerName: obj.lawyerName,
-                            legalCaseId: obj.legalCaseId,
-                            legalManager: obj.legalManager,
-                            loanAccountNumber: obj.loanAccountNumber,
-                            loanAmount: obj.loanAmount,
-                            location: obj.location,
-                            ndohNullReason: obj.ndohNullReason,
-                            nextActionDate: obj.nextActionDate,
-                            nextActionPlan: obj.nextActionPlan,
-                            nextHearingDate: obj.nextHearingDate,
-                            noticeAmount: obj.noticeAmount,
-                            noticeDate: obj.noticeDate,
-                            noticeDateAppointmentArbitrator: obj.noticeDateAppointmentArbitrator,
-                            noticePostalRemarks: obj.noticePostalRemarks,
-                            noticeReferenceNumber: obj.noticeReferenceNumber,
-                            noticeSentDate: obj.noticeSentDate,
-                            noticeType: obj.noticeType,
-                            npaStageOnCurrentDate: obj.npaStageOnCurrentDate,
-                            npaStageOnEpFilingDate: obj.npaStageOnEpFilingDate,
-                            npaStageOnFilingDate: obj.npaStageOnFilingDate,
-                            npaStageOnNoticeDate: obj.npaStageOnNoticeDate,
-                            orderReceivedDate: obj.orderReceivedDate,
-                            overdueAmtOnNoticeDate: obj.overdueAmtOnNoticeDate,
-                            parentId: obj.parentId,
-                            peacefulPossessionNoticeDate: obj.peacefulPossessionNoticeDate,
-                            physicalPossessionDate: obj.physicalPossessionDate,
-                            policeComplaintFiledDate: obj.policeComplaintFiledDate,
-                            posOnCurrentDate: obj.posOnCurrentDate,
-                            posOnEpFilingDate: obj.posOnEpFilingDate,
-                            posOnFilingDate: obj.posOnFilingDate,
-                            posOnNoticeDate: obj.posOnNoticeDate,
-                            previousHearingDate: obj.previousHearingDate,
-                            product: obj.product,
-                            productGroup: obj.productGroup,
-                            publicationDatePhysicalPossessionNotice: obj.publicationDatePhysicalPossessionNotice,
-                            receiveOrderStatus: obj.receiveOrderStatus,
-                            receiverName: obj.receiverName,
-                            receiverOrderAppliedDate: obj.receiverOrderAppliedDate,
-                            receiverOrderReceivedDate: obj.receiverOrderReceivedDate,
-                            recieveOrderApplied: obj.recieveOrderApplied,
-                            recourse: obj.recourse,
-                            region: obj.region,
-                            remarks: obj.remarks,
-                            repoFlag: obj.repoFlag,
-                            reservePrice: obj.reservePrice,
-                            saleDate: obj.saleDate,
-                            saleNoticeDate: obj.saleNoticeDate,
-                            saleNoticePublicationDate: obj.saleNoticePublicationDate,
-                            sec9Applied: obj.sec9Applied,
-                            sec9LegalCaseId: obj.sec9LegalCaseId,
-                            sec14FilingDate: obj.sec14FilingDate,
-                            sec17OrderApplied: obj.sec17OrderApplied,
-                            sec17OrderAppliedDate: obj.sec17OrderAppliedDate,
-                            sec17OrderReceivedDate: obj.sec17OrderReceivedDate,
-                            sec17OrderStatus: obj.sec17OrderStatus,
-                            sec132NoticeDate: obj.sec132NoticeDate,
-                            sec132NoticePostalRemarks: obj.sec132NoticePostalRemarks,
-                            sec132PublicationDate: obj.sec132PublicationDate,
-                            sec134NoticePostalRemarks: obj.sec134NoticePostalRemarks,
-                            sec134PublicationDate: obj.sec134PublicationDate,
-                            serveDate: obj.serveDate,
-                            settlementAmt: obj.settlementAmt,
-                            spdcNoticeAckRemarks: obj.spdcNoticeAckRemarks,
-                            spdcNoticeServiceDate: obj.spdcNoticeServiceDate,
-                            stageInCourt: obj.stageInCourt,
-                            state: obj.state,
-                            symbolicPossessionDate: obj.symbolicPossessionDate,
-                            totalAmtRecovered: obj.totalAmtRecovered,
-                            transmissionRequired: obj.transmissionRequired,
-                            type: obj.type,
-                            valuationAmount: obj.valuationAmount,
-                            valuationDate: obj.valuationDate,
-                            whetherCustomerAttended: obj.whetherCustomerAttended,
-                        });
-                    }
+        // if (this.branchData) {
+        //this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
+        this._institutionService.getAllForInstitutions(15, 14).subscribe(
+            result => {
+                this.tableInputData = [];
+                for (var i = 0; i < result.length; i++) {
+                    const obj = result[i];
+                    this.tableInputData.push({
+                        accountStatus: obj.accountStatus,
+                        advocateofEp: obj.advocateofEp,
+                        amountInvolved: obj.amountInvolved,
+                        appealUs34Filed: obj.appealUs34Filed,
+                        arbitrationCaseId: obj.arbitrationCaseId,
+                        arbitrationInitiated: obj.arbitrationInitiated,
+                        arbitratorAppointed: obj.arbitratorAppointed,
+                        assetDetails: obj.assetDetails,
+                        auctionDate: obj.auctionDate,
+                        awardAmount: obj.awardAmount,
+                        awardCopyProvided: obj.awardCopyProvided,
+                        awardDate: obj.awardDate,
+                        bankName: obj.bankName,
+                        caseCriticalityLevel: obj.caseCriticalityLevel,
+                        caseFiledAgainst: obj.caseFiledAgainst,
+                        caseId: obj.caseId,
+                        caseStage: obj.caseStage,
+                        caseStatus: obj.caseStatus,
+                        caseType: obj.caseType,
+                        chqNo1: obj.chqNo1,
+                        chqNo2: obj.chqNo2,
+                        chqNo3: obj.chqNo3,
+                        closureDate: obj.closureDate,
+                        closureReportingDate: obj.closureReportingDate,
+                        coolingPeriodNoticeDate: obj.coolingPeriodNoticeDate,
+                        courtCaseId: obj.courtCaseId,
+                        courtName: obj.courtName,
+                        courtPlace: obj.courtPlace,
+                        createdDate: obj.createdDate,
+                        customerName: obj.customerName,
+                        dateOfConduct: obj.dateOfConduct,
+                        disbursalDate: obj.disbursalDate,
+                        dpdOnCurrentDate: obj.dpdOnCurrentDate,
+                        dpdOnEpFilingDate: obj.dpdOnEpFilingDate,
+                        dpdOnFilingDate: obj.dpdOnFilingDate,
+                        dpdOnNoticeDate: obj.dpdOnNoticeDate,
+                        ePCourtName: obj.ePCourtName,
+                        ePCourtPlace: obj.ePCourtPlace,
+                        executionCaseNo: obj.executionCaseNo,
+                        executionFiled: obj.executionFiled,
+                        executionFilingDate: obj.executionFilingDate,
+                        fileName: obj.fileName,
+                        filingDate: obj.filingDate,
+                        generatedBy: obj.generatedBy,
+                        guarantorsName: obj.guarantorsName,
+                        id: obj.id,
+                        institutionId: obj.institutionId,
+                        lastUpdated: obj.lastUpdated,
+                        lawyerName: obj.lawyerName,
+                        legalCaseId: obj.legalCaseId,
+                        legalManager: obj.legalManager,
+                        loanAccountNumber: obj.loanAccountNumber,
+                        loanAmount: obj.loanAmount,
+                        location: obj.location,
+                        ndohNullReason: obj.ndohNullReason,
+                        nextActionDate: obj.nextActionDate,
+                        nextActionPlan: obj.nextActionPlan,
+                        nextHearingDate: obj.nextHearingDate,
+                        noticeAmount: obj.noticeAmount,
+                        noticeDate: obj.noticeDate,
+                        noticeDateAppointmentArbitrator: obj.noticeDateAppointmentArbitrator,
+                        noticePostalRemarks: obj.noticePostalRemarks,
+                        noticeReferenceNumber: obj.noticeReferenceNumber,
+                        noticeSentDate: obj.noticeSentDate,
+                        noticeType: obj.noticeType,
+                        npaStageOnCurrentDate: obj.npaStageOnCurrentDate,
+                        npaStageOnEpFilingDate: obj.npaStageOnEpFilingDate,
+                        npaStageOnFilingDate: obj.npaStageOnFilingDate,
+                        npaStageOnNoticeDate: obj.npaStageOnNoticeDate,
+                        orderReceivedDate: obj.orderReceivedDate,
+                        overdueAmtOnNoticeDate: obj.overdueAmtOnNoticeDate,
+                        parentId: obj.parentId,
+                        peacefulPossessionNoticeDate: obj.peacefulPossessionNoticeDate,
+                        physicalPossessionDate: obj.physicalPossessionDate,
+                        policeComplaintFiledDate: obj.policeComplaintFiledDate,
+                        posOnCurrentDate: obj.posOnCurrentDate,
+                        posOnEpFilingDate: obj.posOnEpFilingDate,
+                        posOnFilingDate: obj.posOnFilingDate,
+                        posOnNoticeDate: obj.posOnNoticeDate,
+                        previousHearingDate: obj.previousHearingDate,
+                        product: obj.product,
+                        productGroup: obj.productGroup,
+                        publicationDatePhysicalPossessionNotice: obj.publicationDatePhysicalPossessionNotice,
+                        receiveOrderStatus: obj.receiveOrderStatus,
+                        receiverName: obj.receiverName,
+                        receiverOrderAppliedDate: obj.receiverOrderAppliedDate,
+                        receiverOrderReceivedDate: obj.receiverOrderReceivedDate,
+                        recieveOrderApplied: obj.recieveOrderApplied,
+                        recourse: obj.recourse,
+                        region: obj.region,
+                        remarks: obj.remarks,
+                        repoFlag: obj.repoFlag,
+                        reservePrice: obj.reservePrice,
+                        saleDate: obj.saleDate,
+                        saleNoticeDate: obj.saleNoticeDate,
+                        saleNoticePublicationDate: obj.saleNoticePublicationDate,
+                        sec9Applied: obj.sec9Applied,
+                        sec9LegalCaseId: obj.sec9LegalCaseId,
+                        sec14FilingDate: obj.sec14FilingDate,
+                        sec17OrderApplied: obj.sec17OrderApplied,
+                        sec17OrderAppliedDate: obj.sec17OrderAppliedDate,
+                        sec17OrderReceivedDate: obj.sec17OrderReceivedDate,
+                        sec17OrderStatus: obj.sec17OrderStatus,
+                        sec132NoticeDate: obj.sec132NoticeDate,
+                        sec132NoticePostalRemarks: obj.sec132NoticePostalRemarks,
+                        sec132PublicationDate: obj.sec132PublicationDate,
+                        sec134NoticePostalRemarks: obj.sec134NoticePostalRemarks,
+                        sec134PublicationDate: obj.sec134PublicationDate,
+                        serveDate: obj.serveDate,
+                        settlementAmt: obj.settlementAmt,
+                        spdcNoticeAckRemarks: obj.spdcNoticeAckRemarks,
+                        spdcNoticeServiceDate: obj.spdcNoticeServiceDate,
+                        stageInCourt: obj.stageInCourt,
+                        state: obj.state,
+                        symbolicPossessionDate: obj.symbolicPossessionDate,
+                        totalAmtRecovered: obj.totalAmtRecovered,
+                        transmissionRequired: obj.transmissionRequired,
+                        type: obj.type,
+                        valuationAmount: obj.valuationAmount,
+                        valuationDate: obj.valuationDate,
+                        whetherCustomerAttended: obj.whetherCustomerAttended,
+                    });
+                }
+                this.dataTableComponent.ngOnInit();
+            },
+            err => {
+                console.log(err);
+                this.tableInputData = [];
+            });
+        //}
+    }
 
-                    setTimeout(() => {
-                        this.bindDatatable();
-                    }, 100);
-                },
-                err => {
-                    console.log(err);
-                    this.arr = [];
+    onRowClick(event) {
+        console.log(event);
+    }
 
-                });
-        }
+    onRowDoubleClick(event) {
+        console.log(event);
+    }
+
+    onRowSelect(event) {
+        console.log(event);
     }
 
     bindDatatable() {
@@ -432,7 +448,7 @@ export class ForInstitutionComponent implements OnInit {
                             dateColFilter = 10;
                         else if ($this.filterTypeId == 4)//Last Updated Date
                             dateColFilter = 11;
-                        
+
                         let fromToDate = $("#txtFromToDate").val();
                         if (dateColFilter && fromToDate && fromToDate.length > 0) {
                             let arDates = fromToDate.split(" To ");
@@ -491,7 +507,7 @@ export class ForInstitutionComponent implements OnInit {
 
     updateNewHearingDate(date, isNewHearingDate) {
 
-        let obj = this.arr.find(x => x.id == this.newHiringdata.id);
+        let obj = this.tableInputData.find(x => x.id == this.newHiringdata.id);
         if (isNewHearingDate)
             obj.nextHearingDate = new Date(date);
         else
@@ -526,4 +542,5 @@ export class ForInstitutionComponent implements OnInit {
             this.$table.destroy();
         this.GetAllForIntitution();
     }
+
 }
