@@ -7,5 +7,5 @@ export interface Institution {
   billingAddress: string;
   contactNo: string;
   id: number;
-  defaultInstitution:boolean
+  defaultInstitution: boolean;
 }

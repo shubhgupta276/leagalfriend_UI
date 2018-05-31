@@ -11,10 +11,9 @@ declare var $;
 @Component({
   selector: 'app-add-resource',
   templateUrl: '../add-resource/add-resource.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class AddResourceMasterComponent implements OnInit {
-  @Input() arRecourse: Recourse[];
+  @Input() tableInputData: any[];
   addResourceMasterForm: FormGroup;
   isResourcecodeAlreadyExists: boolean = false;
 
@@ -32,27 +31,27 @@ export class AddResourceMasterComponent implements OnInit {
 
   submitAddResourceMaster(data: Recourse) {
 
-    var reqData = {
+    const reqData = {
       recourseCode: data.recourseCode,
       recourseName: data.recourseName,
       recourseDesc: data.recourseDesc,
       userId: this._storageService.getUserId()
     };
-    
     this._recourseService.addResource(reqData).subscribe(
       result => {
-        var _result = result.body;
+        const _result = result.body;
 
-        if (_result.httpCode == 200) { //success
-          
-          this.arRecourse.push({recourseCode:data.recourseCode, recourseName: data.recourseName, recourseDesc: data.recourseDesc, id: _result.id });
+        if (_result.httpCode === 200) { // success
+          this.tableInputData.push({
+            recourseCode: data.recourseCode, recourseName: data.recourseName, recourseDesc: data.recourseDesc, id: _result.id
+          });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddResourceMaster();
           this.closeModal();
           this.subscriberFields();
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -60,19 +59,19 @@ export class AddResourceMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn").click();
+    $('#closebtn').click();
   }
 
   ngOnInit() {
-    this.subscriberFields()
+    this.subscriberFields();
   }
   subscriberFields() {
     this.addResourceMasterForm.get('recourseCode').valueChanges.subscribe(
       (e) => {
-        
-        if (this.arRecourse.filter(x => x.recourseCode.toUpperCase() == e.toUpperCase()).length > 0)
+
+        if (this.tableInputData.filter(x => x.recourseCode.toUpperCase() === e.toUpperCase()).length > 0) {
           this.isResourcecodeAlreadyExists = true;
-        else {
+        } else {
           this.isResourcecodeAlreadyExists = false;
         }
       }

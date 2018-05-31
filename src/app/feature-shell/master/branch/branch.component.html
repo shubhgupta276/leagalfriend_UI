@@ -1,61 +1,24 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <!-- Main content -->
-    <div class="page-heading" >
-      Master Management
-    </div>
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-  
-          <!-- /.box -->
-  
-          <div class="box">
-            <!-- <div class="box-header">
+  <!-- Content Header (Page header) -->
+  <!-- Main content -->
+  <div class="page-heading">
+    Master Management
+  </div>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+
+        <!-- /.box -->
+
+        <div class="box">
+          <!-- <div class="box-header">
               <h3 class="box-title">Data Table With Full Features</h3>
             </div> -->
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div>
-                <div class="row table-toolbar">
-                  <div class="col-sm-4 heading">Branch</div>
-                  <div class="col-sm-2"></div>
-                  <div class="col-sm-2"></div>
-                  <div class="col-sm-2">
-                    <label class="custom-label">Show
-                      <select class="input-sm" id="ddlLengthMenu">
-                      </select> rows
-                    </label>
-                  </div>
-                  <div class="col-sm-2">
-                    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                  </div>
-                </div>
-              </div>
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>Branch Name</th>
-                  <th>Branch Code</th>
-                  <th>Address</th>
-                  <th>City</th>
-                  <th>Contact</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of arrBranch" (dblclick)="showEditModal(item)" data-target="#editBranchMasterModal" >
-                  <td>{{item.branchName}}</td>
-                  <td>{{item.branchCode}}</td>
-                  <td>{{item.branchAddress}}</td>
-                  <td>{{item.cityName}}</td>
-                  <td>{{item.branchContact}}</td>
-                  <td><a (click)="showEditModal(item)"   title="Edit"><i class="fa fa-edit"></i></a></td>
-                </tr>
-              
-                </tbody>
-            
-            </table>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            </app-data-table>
           </div>
           <!-- /.box-body -->
         </div>
@@ -71,10 +34,10 @@
       <span class="tooltip-text">Add Branch</span>
     </div>
     <a>
-      <i class="fa fa-plus" type="button" ></i>
+      <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
 
-  <app-add-branch [arCity]="arCity" [arrBranch]="arrBranch"></app-add-branch>
-  <app-edit-branch [editDetails]="editDetails" [arCity]="arCity" [arrBranch]="arrBranch"></app-edit-branch>
+  <app-add-branch [arCity]="arCity" [tableInputData]="tableInputData"></app-add-branch>
+  <app-edit-branch [editDetails]="editDetails" [arCity]="arCity" [tableInputData]="tableInputData"></app-edit-branch>
 </div>

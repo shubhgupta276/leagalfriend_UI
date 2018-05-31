@@ -11,10 +11,9 @@ declare var $;
 @Component({
   selector: 'app-edit-resource',
   templateUrl: '../edit-resource/edit-resource.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class EditResourceMasterComponent implements OnInit {
-  @Input() arRecourse: Recourse[];
+  @Input() tableInputData: Recourse[];
   editDetails: Recourse;
   editResourceMasterForm: FormGroup;
   isResourcecodeAlreadyExists: boolean = false;
@@ -23,8 +22,7 @@ export class EditResourceMasterComponent implements OnInit {
   }
 
   submitEditResourceMaster(data: Recourse) {
-    
-    var reqData = {
+    const reqData = {
       recourseCode: data.recourseCode,
       recourseName: data.recourseName,
       recourseDesc: data.recourseDesc,
@@ -32,24 +30,20 @@ export class EditResourceMasterComponent implements OnInit {
       userId: this._storageService.getUserId()
 
     };
-    
     this._recourseService.updateResource(reqData).subscribe(
 
       result => {
-        
-        var _result = result.body;
-        if (_result.httpCode == 200) { //success
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-          
-          const objFind = this.arRecourse.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.recourseCode = data.recourseCode;
           objFind.recourseName = data.recourseName;
           objFind.recourseDesc = data.recourseDesc;
-          
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -57,21 +51,22 @@ export class EditResourceMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn1").click();
+    $('#closebtn1').click();
   }
 
   ngOnInit() {
 
   }
-  
+
   subscriberFields() {
 
     this.editResourceMasterForm.get('recourseCode').valueChanges.subscribe(
       (e) => {
-        var fieldValue = e.toUpperCase();
-        if (this.editDetails.recourseCode.toUpperCase() != fieldValue && this.arRecourse.filter(x => x.recourseCode.toUpperCase() == fieldValue).length > 0)
+        const fieldValue = e.toUpperCase();
+        if (this.editDetails.recourseCode.toUpperCase() !== fieldValue
+          && this.tableInputData.filter(x => x.recourseCode.toUpperCase() === fieldValue).length > 0) {
           this.isResourcecodeAlreadyExists = true;
-        else {
+        } else {
           this.isResourcecodeAlreadyExists = false;
         }
       });

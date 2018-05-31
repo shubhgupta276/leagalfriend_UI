@@ -12,10 +12,9 @@ declare var $;
 @Component({
   selector: 'app-edit-state',
   templateUrl: '../edit-state/edit-state.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class EditStateMasterComponent implements OnInit {
-  @Input() arState: State[];
+  @Input() tableInputData: any[];
   editDetails: State;
   editStateMasterForm: FormGroup;
   isStateAlreadyExists: boolean = false;
@@ -24,7 +23,7 @@ export class EditStateMasterComponent implements OnInit {
   }
 
   submitEditStateMaster(data: State) {
-    var reqData = {
+    const reqData = {
       stateName: data.stateName,
       id: data.id,
       userId: this._storageService.getUserId()
@@ -34,17 +33,16 @@ export class EditStateMasterComponent implements OnInit {
     this._stateService.updateState(reqData).subscribe(
 
       result => {
-        var _result = result.body;
-        if (_result.httpCode == 200) { //success
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
 
-          const objFind = this.arState.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.stateName = data.stateName;
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
+        }
       },
       err => {
         console.log(err);
@@ -53,7 +51,7 @@ export class EditStateMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn1").click();
+    $('#closebtn1').click();
   }
 
   ngOnInit() {
@@ -63,10 +61,11 @@ export class EditStateMasterComponent implements OnInit {
   subscriberFields() {
     this.editStateMasterForm.get('stateName').valueChanges.subscribe(
       (e) => {
-        var fieldValue = e.toUpperCase();
-        if (this.editDetails.stateName.toUpperCase() != fieldValue && this.arState.filter(x => x.stateName.toUpperCase() == fieldValue).length > 0)
+        const fieldValue = e.toUpperCase();
+        if (this.editDetails.stateName.toUpperCase() !== fieldValue
+          && this.tableInputData.filter(x => x.stateName.toUpperCase() === fieldValue).length > 0) {
           this.isStateAlreadyExists = true;
-        else {
+        } else {
           this.isStateAlreadyExists = false;
         }
       }
@@ -83,5 +82,4 @@ export class EditStateMasterComponent implements OnInit {
       this.subscriberFields();
     }
   }
-
 }

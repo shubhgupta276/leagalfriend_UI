@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import { retry } from 'rxjs/operator/retry';
-import { Billing } from './billing'
-import { Observable } from "rxjs/Observable";
+import { Billing } from './billing';
+import { Observable } from 'rxjs/Observable';
 import { ApiGateway } from '../../../shared/services/api-gateway';
-import { addBillingUrl, updateBillingUrl, getBillingUrl,deleteBillingUrl } from '../master.config'
+import { addBillingUrl, updateBillingUrl, getBillingUrl, deleteBillingUrl } from '../master.config';
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
@@ -18,7 +18,7 @@ export class BillingService {
 
     getBilling(): Observable<any> {
         return this.apiGateWay.get<Billing>(
-            getBillingUrl + "?email=" + this._storageService.getUserEmail()
+            getBillingUrl + '?email=' + this._storageService.getUserEmail()
         );
     }
 

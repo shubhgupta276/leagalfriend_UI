@@ -4,21 +4,20 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { BranchService } from '../branch.service';
 import { StorageService } from '../../../../shared/services/storage.service';
-import {SelectModule} from 'ng2-select';
+import { SelectModule } from 'ng2-select';
 declare var $;
 
 @Component({
   selector: 'app-edit-branch',
   templateUrl: '../edit-branch/edit-branch.component.html'
-  //template:`<h1>test popup</h1>`
 })
-export class EditBranchMasterComponent implements OnInit {  
+export class EditBranchMasterComponent implements OnInit, OnChanges {
   @Input() editDetails: any;
   editBranchMasterForm: FormGroup;
   isBranchcodeAlreadyExists: boolean = false;
   finalData: any = {};
   @Input() arCity = [];
-  @Input() arrBranch = [];
+  @Input() tableInputData = [];
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
@@ -27,16 +26,15 @@ export class EditBranchMasterComponent implements OnInit {
   constructor(private fb: FormBuilder, private _branchService: BranchService, private _storageService: StorageService) {
     this.createForm(null);
   }
-  
+
   submitEditBranchMaster(data) {
-    var finalData = this.GetBranchData(data);
+    const finalData = this.GetBranchData(data);
     this._branchService.updateBranch(finalData).subscribe(
       result => {
-        if (result.body.httpCode == 200) {
+        if (result.body.httpCode === 200) {
           this.BindBranchGridOnEdit(data);
           $.toaster({ priority: 'success', title: 'Success', message: 'Branch updated successfully' });
-        }
-        else {
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
         }
       },
@@ -57,19 +55,18 @@ export class EditBranchMasterComponent implements OnInit {
     return this.finalData;
   }
   BindBranchGridOnEdit(data) {
-    debugger
-    this.arrBranch.filter(
+    this.tableInputData.filter(
       branch => {
-        if (branch.id == data.id) {
+        if (branch.id === data.id) {
           branch.branchName = data.branchname;
           branch.branchCode = data.branchcode;
           branch.branchAddress = data.address;
           branch.branchContact = data.contact;
-          branch.cityId = this.selectedCity.id;;
+          branch.cityId = this.selectedCity.id;
           branch.cityName = this.selectedCity.text;
         }
       });
-      
+
 
   }
   closeModal() {
@@ -91,19 +88,19 @@ export class EditBranchMasterComponent implements OnInit {
   subscriberFields() {
     this.editBranchMasterForm.get('branchcode').valueChanges.subscribe(
       (e) => {
-        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+        if (e === 'test') { // right now this is hardcode later it will be checked from service(database)
           this.isBranchcodeAlreadyExists = true;
-        else
+        } else {
           this.isBranchcodeAlreadyExists = false;
+        }
       }
     );
   }
- 
+
   createForm(data) {
-    if(data!=null)
-    {
-    this.citySelected = [];
-      const objFilter = this.arCity.filter(x => x.id ==data.cityId);
+    if (data != null) {
+      this.citySelected = [];
+      const objFilter = this.arCity.filter(x => x.id === data.cityId);
       this.citySelected.push({ id: data.id, text: objFilter[0].text });
       this.selectedCity = this.citySelected[0];
     }

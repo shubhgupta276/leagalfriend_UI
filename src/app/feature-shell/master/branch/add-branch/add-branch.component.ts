@@ -9,14 +9,13 @@ declare var $;
 @Component({
   selector: 'app-add-branch',
   templateUrl: '../add-branch/add-branch.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class AddBranchMasterComponent implements OnInit {
   addBranchMasterForm: FormGroup;
   isBranchcodeAlreadyExists: boolean = false;
   finalData: any = {};
   @Input() arCity = [];
-  @Input() arrBranch = [];
+  @Input() tableInputData = [];
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
@@ -31,21 +30,18 @@ export class AddBranchMasterComponent implements OnInit {
       contact: [null, Validators.required],
     });
   }
-  
   constructor(private fb: FormBuilder, private _branchService: BranchService, private _storageService: StorageService) {
     this.AddBranchMaster();
   }
 
   submitAddBranchMaster(data) {
-    var finalData = this.GetBranchData(data);
+    const finalData = this.GetBranchData(data);
     this._branchService.addBranch(finalData).subscribe(
       result => {
-        debugger
-        if (result.body.httpCode == 200) {
+        if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
-          this.BindBranchGridOnAdd(data, result.body.id)
-        }
-        else {
+          this.BindBranchGridOnAdd(data, result.body.id);
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
         }
       },
@@ -69,20 +65,19 @@ export class AddBranchMasterComponent implements OnInit {
     return this.finalData;
   }
   BindBranchGridOnAdd(data, id) {
-    debugger
     this.finalData = {};
     this.finalData.branchName = data.branchname;
     this.finalData.branchCode = data.branchcode;
     this.finalData.branchAddress = data.address;
     this.finalData.branchContact = data.contact;
-    this.finalData.cityId =  this.selectedCity.id;
+    this.finalData.cityId = this.selectedCity.id;
     this.finalData.cityName = this.selectedCity.text;
     this.finalData.id = id;
-    this.arrBranch.push(this.finalData);
+    this.tableInputData.push(this.finalData);
 
   }
   closeModal() {
-    $("#closebtn").click();
+    $('#closebtn').click();
   }
 
   ngOnInit() {
@@ -91,10 +86,11 @@ export class AddBranchMasterComponent implements OnInit {
   subscriberFields() {
     this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
       (e) => {
-        if (e == "test") // right now this is hardcode later it will be checked from service(database)
+        if (e === 'test') { // right now this is hardcode later it will be checked from service(database)
           this.isBranchcodeAlreadyExists = true;
-        else
+        } else {
           this.isBranchcodeAlreadyExists = false;
+        }
       }
     );
   }

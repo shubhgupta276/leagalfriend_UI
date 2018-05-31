@@ -12,10 +12,9 @@ declare var $;
 @Component({
   selector: 'app-add-institution',
   templateUrl: '../add-institution/add-institution.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class AddInstitutionMasterComponent implements OnInit {
-  @Input() arInstitution: Institution[];
+  @Input() tableInputData: any[];
   @Input() arCity: any[];
   addInstitutionMasterForm: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
@@ -24,7 +23,7 @@ export class AddInstitutionMasterComponent implements OnInit {
       institutionName: [null, Validators.required],
       contactPerson: [null, Validators.required],
       address: [null, Validators.required],
-      city: ["", Validators.required],
+      city: ['', Validators.required],
       billingAddress: [null, Validators.required],
       contactNo: [null, Validators.required],
     });
@@ -35,7 +34,7 @@ export class AddInstitutionMasterComponent implements OnInit {
   }
 
   submitAddInstitutionMaster(data: Institution) {
-    var reqData = {
+    const reqData = {
       institutionName: data.institutionName,
       contactName: data.contactPerson,
       address: data.address,
@@ -47,10 +46,10 @@ export class AddInstitutionMasterComponent implements OnInit {
 
     this._institutionService.addInstitution(reqData).subscribe(
       result => {
-        var _result = result.body;
+        const _result = result.body;
 
-        if (_result.httpCode == 200) { //success
-          this.arInstitution.push({
+        if (_result.httpCode === 200) { // success
+          this.tableInputData.push({
             institutionName: data.institutionName,
             address: data.address,
             billingAddress: data.billingAddress,
@@ -59,15 +58,15 @@ export class AddInstitutionMasterComponent implements OnInit {
             city: data.city.cityName,
             cityId: data.city.id,
             id: _result.id,
-            defaultInstitution:false
+            defaultInstitution: false
           });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddInstitutionMaster();
           this.closeModal();
           this.subscriberFields();
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -81,14 +80,15 @@ export class AddInstitutionMasterComponent implements OnInit {
   ngOnInit() {
     this.subscriberFields();
   }
-  
+
   subscriberFields() {
     this.addInstitutionMasterForm.get('institutionName').valueChanges.subscribe(
       (e) => {
-        if (this.arInstitution.filter(x => x.institutionName.toUpperCase() == e.toUpperCase()).length > 0)
+        if (this.tableInputData.filter(x => x.institutionName.toUpperCase() === e.toUpperCase()).length > 0) {
           this.isInstitutionAlreadyExists = true;
-        else
+        } else {
           this.isInstitutionAlreadyExists = false;
+        }
       }
     );
   }

@@ -1,95 +1,25 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <!-- Main content -->
-    <div class="page-heading" >
-      Master Management
-    </div>
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-  
-          <!-- /.box -->
-  
-          <div class="box">
-            <!-- <div class="box-header">
+  <!-- Content Header (Page header) -->
+  <!-- Main content -->
+  <div class="page-heading">
+    Master Management
+  </div>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+
+        <!-- /.box -->
+
+        <div class="box">
+          <!-- <div class="box-header">
               <h3 class="box-title">Data Table With Full Features</h3>
             </div> -->
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div>
-                <div class="row table-toolbar">
-                  <div class="col-sm-4 heading">Billing</div>
-                  <div class="col-sm-2"></div>
-                  <!-- <div class="col-sm-2">
-                      <label class="custom-label">Branch
-                          <select class="input-sm" id="ddlBranch">
-                              <option  value="All">All</option>
-                              <option *ngFor="let item of arListBranch" value="{{item.name}}">
-                                  {{item.name}}
-                              </option>
-                          </select>
-                      </label>
-                    </div> -->
-                  <!-- <div class="col-sm-2">
-                    <label class="custom-label">Show
-                      <select class="input-sm" id="ddlLengthMenu">
-                      </select> rows
-                    </label>
-                  </div> -->
-                  <div class="col-sm-6">
-                    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                  </div>
-                </div>
-              </div>
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-             
-                  <tr>
-                     
-                    <th>#</th>
-                      <th>Institution
-                        <select class="role input-sm" id="ddlBank"> 
-                          <option value="All">All</option>
-                          <option *ngFor="let item of arListBanks" value="{{item}}">{{item}}</option>
-                         </select>
-                      </th>
-                      <th>Recourse
-                          <select class="role input-sm" id="ddlRecourse">
-                              <option value="All">All</option>
-                              <option *ngFor="let item of arListRecourse" value="{{item}}">{{item}}</option>
-                          </select>
-                      </th>
-                      <th>Stage
-                          <select class="role input-sm" id="ddlStage">
-                              <option value="All">All</option>
-                              <option *ngFor="let item of arListStage" value="{{item}}">{{item}}</option>
-                          </select>
-                      </th>
-                      <th>Amount
-                          <select class="role input-sm" id="ddlAmount">
-                              <option value="All">All</option>
-                              <option *ngFor="let item of arListAmount" value="{{item}}">{{item}}</option>
-                          </select>
-                      </th>
-                      <th>Action</th>
-                      <th  style="display: none;">Branch</th>
-                    </tr>
-             
-              </thead>
-              <tbody>
-                  <tr *ngFor="let item of arBillingData; let i=index" (dblclick)="showEditModal(item)" data-target="#editBillModal">
-                      <td>{{i+1}}</td>
-                      <td>{{item.institutionName}}</td>
-                      <td>{{item.recourseName}}</td>
-                      <td>{{item.stageName}}</td>
-                      <td>{{item.amount}}</td>
-                      <td>
-                          <a href="javascript:void()" (click)="showEditModal(item)" title="Edit;" data-toggle="modal"><i class="fa fa-edit"></i></a>
-                      </td>
-                      <td style="display: none;">{{item.branch}}</td>
-                    </tr>
-              </tbody>
-            </table>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            </app-data-table>
+
           </div>
           <!-- /.box-body -->
         </div>
@@ -104,12 +34,13 @@
       <span class="tooltip-text">Add Bill</span>
     </div>
     <a>
-      <i class="fa fa-plus" type="button" ></i>
+      <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
   <!-- /.content -->
 </div>
 
-<add-bill-modal *ngIf="arAllInstitution.length>0" [arbillingData]="arBillingData" [arAllInstitution]="arAllInstitution" [arAllRecourses]="arAllRecourses"></add-bill-modal>
+<app-add-bill-modal *ngIf="arAllInstitution.length>0" [tableInputData]="tableInputData" [arAllInstitution]="arAllInstitution"
+  [arAllRecourses]="arAllRecourses"></app-add-bill-modal>
 <!-- <edit-bill-modal [editDetails]="editDetails"></edit-bill-modal> -->
-<edit-bill-modal [arbillingData]="arBillingData" [arAllInstitution]="arAllInstitution" [arAllRecourses]="arAllRecourses"></edit-bill-modal>
+<app-edit-bill-modal [tableInputData]="tableInputData" [arAllInstitution]="arAllInstitution" [arAllRecourses]="arAllRecourses"></app-edit-bill-modal>
