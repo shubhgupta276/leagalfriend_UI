@@ -16,46 +16,9 @@
             </div> -->
           <!-- /.box-header -->
           <div class="box-body">
-            <div>
-              <div class="row table-toolbar">
-                <div class="col-sm-4 heading">State</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                  <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label>
-                </div>
-                <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                </div>
-              </div>
-            </div>
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>State Name</th>
-                  <th>Action</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editStateMasterModal">
-                  <td>{{item.stateName}}</td>
-                  <td>
-                    <a title="Edit" (click)="showEditModal(item)">
-                      <i class="fa fa-edit"></i>
-                    </a>
-                  </td>
-
-                </tr>
-                <tr *ngIf="!arr || arr.length==0">
-                  <td colspan="2"> No Record Found...!</td>
-                </tr>
-              </tbody>
-
-            </table>
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            </app-data-table>
           </div>
           <!-- /.box-body -->
         </div>
@@ -74,6 +37,6 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-state [arState]="arr"></app-add-state>
-  <app-edit-state [arState]="arr"></app-edit-state>
+  <app-add-state [tableInputData]="tableInputData"></app-add-state>
+  <app-edit-state [tableInputData]="tableInputData"></app-edit-state>
 </div>

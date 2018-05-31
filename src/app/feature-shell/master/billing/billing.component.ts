@@ -1,14 +1,20 @@
 import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
-import { AddBillingComponent } from "./add-bill/add-bill.component";
-import { EditBillingComponent } from "./edit-bill/edit-bill.component";
+import { AddBillingComponent } from './add-bill/add-bill.component';
+import { EditBillingComponent } from './edit-bill/edit-bill.component';
 import { CommonModule } from '@angular/common';
-import { UserRoles, UserStatus, KeyValue, ListBillingBank, ListBillingRecourse, ListBillingStage, ListBranch } from '../../../shared/Utility/util-common';
+import {
+  UserRoles, UserStatus, KeyValue, ListBillingBank, ListBillingRecourse,
+  ListBillingStage, ListBranch
+} from '../../../shared/Utility/util-common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BillingService } from './billing.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { Billing } from '../billing/billing';
 import { RecourseService } from '../resource/recourse.service';
 import { InstitutionService } from '../institution/institution.service';
+import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
+import { billingTableConfig } from './billing.config';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 
 declare let $;
 
@@ -20,7 +26,6 @@ declare let $;
 })
 
 export class BillingComponent implements OnInit {
-  arBillingData: Billing[] = [];
   arListBanks: any[] = [];
   arListRecourse: any[] = [];
   arListStage: any[] = [];
@@ -30,9 +35,15 @@ export class BillingComponent implements OnInit {
   arListBranch: KeyValue[] = ListBranch;
   arAllRecourses: any[] = [];
   arAllInstitution: any = [];
-  defaultInstitutionId:number;
+  defaultInstitutionId: number;
   @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
-  constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
+  tableInputData = [];
+  columns = billingTableConfig;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = false;
+  hoverTableRow = true;
+  constructor(private fb: FormBuilder, private _institutionService: InstitutionService,
+    private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
   }
 
   ngOnInit() {
@@ -40,128 +51,25 @@ export class BillingComponent implements OnInit {
     this.getAllInstitutions();
     this.getBillingData();
   }
-  bindBillingGridPaging() {
-    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-    var selectedPageLength = 15;
-
-    var $table = $("#example1").DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: false,
-      info: true,
-      autoWidth: false,
-      lengthMenu: arLengthMenu,
-      pageLength: selectedPageLength,
-      oLanguage: {
-        sLengthMenu: "Show _MENU_ rows",
-        sSearch: "",
-        sSearchPlaceholder: "Search..."
-      },
-      initComplete: function () {
-        var tableid = "example1";
-        var $rowSearching = $("#" + tableid + "_wrapper");
-        $rowSearching.find(".row:eq(0)").hide();
-        $("#ddlLengthMenu").empty();
-        for (var i = 0; i < arLengthMenu[0].length; i++) {
-          $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-        }
-        $("#ddlLengthMenu").val(selectedPageLength);
-
-        $("#ddlLengthMenu").on("change", function () {
-          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-        });
-      }
-    });
-    $table.columns().every(function () {
-
-      $('#txtSearch').on('keyup change', function () {
-        if ($table.search() !== this.value) {
-          $table.search(this.value).draw();
-        }
-      });
-
-
-      //  //start Branch filter
-      $("#ddlBranch").on("change", function () {
-        //able.draw();
-        var branch = $(this).val();
-        if (branch == "All") { //hidden row
-          $table.columns(6).search("").draw();
-        }
-        else
-          $table.columns(6).search(this.value).draw();
-      });
-
-      //start bank filter
-      $("#ddlBank").on("change", function () {
-        var status = $(this).val();
-        if (status == "All") {
-          $table.columns(1).search("").draw();
-        }
-        else if ($table.columns(1).search() !== this.value) {
-          $table.columns(1).search(this.value).draw();
-        }
-      });
-      //end bank filter
-
-      //start Recourse filter
-      $("#ddlRecourse").on("change", function () {
-        var status = $(this).val();
-        if (status == "All") {
-          $table.columns(2).search("").draw();
-        }
-        else if ($table.columns(2).search() !== this.value) {
-          $table.columns(2).search(this.value).draw();
-        }
-      });
-      //end Recourse filter
-
-      //start Stage filter
-      $("#ddlStage").on("change", function () {
-        var status = $(this).val();
-        if (status == "All") {
-          $table.columns(3).search("").draw();
-        }
-        else if ($table.columns(3).search() !== this.value) {
-          $table.columns(3).search(this.value).draw();
-        }
-      });
-      //end Stage filter
-
-      //Amount bank filter
-      $("#ddlAmount").on("change", function () {
-        var status = $(this).val();
-        if (status == "All") {
-          $table.columns(4).search("").draw();
-        }
-        else if ($table.columns(4).search() !== this.value) {
-          $table.columns(4).search(this.value).draw();
-        }
-      });
-      //end Amount filter
-
-    });
-
-
-  }
 
   setDropdownUniqueValues() {
-    for (var i = 0; i < this.arBillingData.length; i++) {
-      var obj = this.arBillingData[i];
+    for (let i = 0; i < this.tableInputData.length; i++) {
+      const obj = this.tableInputData[i];
 
-      if ($.inArray(obj.institutionName, this.arListBanks) < 0)
+      if ($.inArray(obj.institutionName, this.arListBanks) < 0) {
         this.arListBanks.push(obj.institutionName);
+      }
 
-      if ($.inArray(obj.recourseName, this.arListRecourse) < 0)
+      if ($.inArray(obj.recourseName, this.arListRecourse) < 0) {
         this.arListRecourse.push(obj.recourseName);
+      }
 
-      if ($.inArray(obj.stageName, this.arListStage) < 0)
+      if ($.inArray(obj.stageName, this.arListStage) < 0) {
         this.arListStage.push(obj.stageName);
-
-      if ($.inArray(obj.amount, this.arListAmount) < 0)
+      }
+      if ($.inArray(obj.amount, this.arListAmount) < 0) {
         this.arListAmount.push(obj.amount);
-
+      }
     }
 
   }
@@ -170,41 +78,34 @@ export class BillingComponent implements OnInit {
 
     this._billingservice.getBilling().subscribe(
       result => {
-        if (result.httpCode == 200) {
-          
-          for (var i = 0; i < result.billings.length; i++) {
+        if (result.httpCode === 200) {
+          for (let i = 0; i < result.billings.length; i++) {
             const obj = result.billings[i];
-            debugger
-            this.arBillingData.push({
-              id: obj.id,              
+            this.tableInputData.push({
+              id: obj.id,
               amount: obj.amount,
               recourseName: obj.recourse.recourseName,
               recourseId: obj.recourse.id,
               stageId: obj.stage.id,
               stageName: obj.stage.stageName,
               userId: obj.userId,
-              address:obj.institution.address,
-              billingAddr:obj.institution.billingAddr,
-              contactName:obj.institution.contactName,
-              fkCity:obj.institution.fkCity,
-              phone:obj.institution.phone,
+              address: obj.institution.address,
+              billingAddr: obj.institution.billingAddr,
+              contactName: obj.institution.contactName,
+              fkCity: obj.institution.fkCity,
+              phone: obj.institution.phone,
               institutionId: obj.institution.id,
               institutionName: obj.institution.institutionName,
-            })
+            });
           }
-          
+          this.dataTableComponent.ngOnInit();
           this.setDropdownUniqueValues();
-          setTimeout(() => {
-            this.bindBillingGridPaging();
-          }, 1);
-        }
-        else {
+        } else {
           console.log(result);
         }
       },
       err => {
         console.log(err);
-        this.arBillingData = [];
 
       });
   }
@@ -213,39 +114,44 @@ export class BillingComponent implements OnInit {
 
     this._institutionService.getInstitutions().subscribe(
       result => {
-        
-        if (result.httpCode == 200) {
+
+        if (result.httpCode === 200) {
           result.institutions.forEach(element => {
             this.arAllInstitution.push(element);
-            if(element.defaultInstitution)
-            this.defaultInstitutionId=element.id;
+            if (element.defaultInstitution) {
+              this.defaultInstitutionId = element.id;
+            }
           });
         }
-      })
+      });
   }
 
   getAllRecourses() {
     this._recourseService.getResources().subscribe(
       result => {
-        if (result.httpCode == 200) {
+        if (result.httpCode === 200) {
           result.recourses.forEach(element => {
             this.arAllRecourses.push(element);
           });
         }
-      })
+      });
   }
 
-  showEditModal(data) {
-    this.editChild.createForm(data);
-    // this.editDetails = data;
+  onRowClick(event) {
+    console.log(event);
+  }
+  onRowDoubleClick(event) {
+    this.editChild.createForm(event);
     $('#editBillModal').modal('show');
   }
-
+  onRowSelect(event) {
+    console.log(event);
+  }
 }
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
     declarations: [
       BillingComponent,
       AddBillingComponent,
@@ -255,4 +161,4 @@ export class BillingComponent implements OnInit {
   }
 )
 
-export class MasterBillingModule {}
+export class MasterBillingModule { }

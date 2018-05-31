@@ -12,10 +12,9 @@ declare var $;
 @Component({
   selector: 'app-edit-institution',
   templateUrl: '../edit-institution/edit-institution.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class EditInstitutionMasterComponent {
-  @Input() arInstitution: Institution[];
+  @Input() tableInputData: Institution[];
   editDetails: Institution;
   @Input() arCity: any[];
   editInstitutionMasterForm: FormGroup;
@@ -27,8 +26,7 @@ export class EditInstitutionMasterComponent {
   }
 
   submitEditInstitutionMaster(data: Institution) {
-
-    var reqData = {
+    const reqData = {
       institutionName: data.institutionName,
       contactName: data.contactPerson,
       address: data.address,
@@ -43,12 +41,12 @@ export class EditInstitutionMasterComponent {
     this._institutionService.updateInstitution(reqData).subscribe(
 
       result => {
-        var _result = result.body;
-        if (_result.httpCode == 200) { //success
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
 
-          const objFind = this.arInstitution.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.institutionName = data.institutionName;
           objFind.contactPerson = data.contactPerson;
           objFind.city = data.city.cityName;
@@ -57,10 +55,9 @@ export class EditInstitutionMasterComponent {
           objFind.billingAddress = data.billingAddress;
           objFind.contactNo = data.contactNo;
 
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
+        }
       },
       err => {
         console.log(err);
@@ -74,11 +71,13 @@ export class EditInstitutionMasterComponent {
   subscriberFields() {
     this.editInstitutionMasterForm.get('institutionName').valueChanges.subscribe(
       (e) => {
-        var fieldValue = e.toUpperCase();
-        if (this.editDetails.institutionName.toUpperCase() != fieldValue && this.arInstitution.filter(x => x.institutionName.toUpperCase() == fieldValue).length > 0)
+        const fieldValue = e.toUpperCase();
+        if (this.editDetails.institutionName.toUpperCase() !== fieldValue
+          && this.tableInputData.filter(x => x.institutionName.toUpperCase() === fieldValue).length > 0) {
           this.isInstitutionAlreadyExists = true;
-        else
-          this.isInstitutionAlreadyExists = false;
+        } else {
+        this.isInstitutionAlreadyExists = false;
+        }
       }
     );
   }
@@ -98,12 +97,11 @@ export class EditInstitutionMasterComponent {
       this.isInstitutionAlreadyExists = false;
       this.selectedCity = null;
       setTimeout(() => {
-        this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
+        this.selectedCity = this.arCity.filter(x => x.id === data.cityId)[0];
       }, 100);
-      //this.selectedCity = this.arCity.filter(x => x.id == data.cityId)[0];
-      //debugger
       this.editDetails = data;
       this.subscriberFields();
     }
   }
 }
+

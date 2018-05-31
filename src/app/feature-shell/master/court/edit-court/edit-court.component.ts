@@ -11,10 +11,9 @@ declare var $;
 @Component({
   selector: 'app-edit-court',
   templateUrl: '../edit-court/edit-court.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class EditCourtMasterComponent implements OnInit {
-  @Input() arCourt: Court[];
+  @Input() tableInputData: any[];
   editDetails: Court;
   editCourtMasterForm: FormGroup;
   isCourtNameAlreadyExists: boolean = false;
@@ -24,7 +23,7 @@ export class EditCourtMasterComponent implements OnInit {
 
   submitEditCourtMaster(data: Court) {
 
-    var reqData = {
+    const reqData = {
       courtName: data.courtName,
       courtDesc: data.courtDesc,
       id: data.id,
@@ -35,25 +34,23 @@ export class EditCourtMasterComponent implements OnInit {
     this._courtService.updateCourt(reqData).subscribe(
 
       result => {
-        var _result = result.body;
-        if (_result.httpCode == 200) { //success
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-          debugger
-          const objFind = this.arCourt.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.courtName = data.courtName;
           objFind.courtDesc = data.courtDesc;
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
+        }
       },
       err => {
         console.log(err);
       });
   }
   closeModal() {
-    $("#closebtn1").click();
+    $('#closebtn1').click();
   }
 
   ngOnInit() {
@@ -63,10 +60,11 @@ export class EditCourtMasterComponent implements OnInit {
   subscriberFields() {
     this.editCourtMasterForm.get('courtName').valueChanges.subscribe(
       (e) => {
-        var fieldValue = e.toUpperCase();
-        if (this.editDetails.courtName.toUpperCase() != fieldValue && this.arCourt.filter(x => x.courtName.toUpperCase() == fieldValue).length > 0)
+        const fieldValue = e.toUpperCase();
+        if (this.editDetails.courtName.toUpperCase() !== fieldValue
+          && this.tableInputData.filter(x => x.courtName.toUpperCase() === fieldValue).length > 0) {
           this.isCourtNameAlreadyExists = true;
-        else {
+        } else {
           this.isCourtNameAlreadyExists = false;
         }
       }

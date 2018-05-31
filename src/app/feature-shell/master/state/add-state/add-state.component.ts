@@ -7,15 +7,12 @@ import { StateService } from '../state.service';
 import { StorageService } from '../../../../shared/services/storage.service';
 
 declare var $;
-
-
 @Component({
   selector: 'app-add-state',
   templateUrl: '../add-state/add-state.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class AddStateMasterComponent implements OnInit {
-  @Input() arState: State[];
+  @Input() tableInputData: any[];
   addStateMasterForm: FormGroup;
   isStateAlreadyExists: boolean = false;
   AddStateMaster() {
@@ -29,24 +26,24 @@ export class AddStateMasterComponent implements OnInit {
   }
 
   submitAddStateMaster(data) {
-    var reqData = {
+    const reqData = {
       stateName: data.stateName,
       userId: this._storageService.getUserId()
     };
 
     this._stateService.addState(reqData).subscribe(
       result => {
-        var _result = result.body;
+        const _result = result.body;
 
-        if (_result.httpCode == 200) { //success
-          this.arState.push({ stateName: data.stateName, id: _result.id });
+        if (_result.httpCode === 200) { // success
+          this.tableInputData.push({ stateName: data.stateName, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddStateMaster();
           this.closeModal();
           this.subscriberFields();
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -54,7 +51,7 @@ export class AddStateMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn").click();
+    $('#closebtn').click();
   }
 
   ngOnInit() {
@@ -63,9 +60,9 @@ export class AddStateMasterComponent implements OnInit {
   subscriberFields() {
     this.addStateMasterForm.get('stateName').valueChanges.subscribe(
       (e) => {
-        if (this.arState.filter(x => x.stateName.toUpperCase() == e.toUpperCase()).length > 0)
+        if (this.tableInputData.filter(x => x.stateName.toUpperCase() === e.toUpperCase()).length > 0) {
           this.isStateAlreadyExists = true;
-        else {
+        } else {
           this.isStateAlreadyExists = false;
         }
       }
