@@ -8,11 +8,17 @@
   <div class="page-heading">
     User Management    
   </div>
-  <!-- Main content -->
   <section class="content">
+   
+    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)"
+      (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+    </app-data-table>
+  </section>
+ 
+  <!-- <section class="content">
     <div class="row">
       <div class="col-xs-12">
-        <!-- /.box -->
+      
         <div class="box">
           <div class="box-body">
             <div>
@@ -74,14 +80,14 @@
 
             </table>
           </div>
-          <!-- /.box-body -->
+         
         </div>
-        <!-- /.box -->
+       
       </div>
-      <!-- /.col -->
+     
     </div>
-    <!-- /.row -->
-  </section>
+    
+  </section> -->
 
   <div class="favicon"  data-toggle="modal" data-target="#addUserModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">

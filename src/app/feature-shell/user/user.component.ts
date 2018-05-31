@@ -20,7 +20,8 @@ import { RoleModel } from '../../shared/models/auth/role.model';
 import { StatusModel } from '../../shared/models/auth/status.model';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { AddUserComponent } from './add-user/add-user.component';
-
+import { userTableConfig } from './user.config';
+import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
 declare var $;
 
 @Component({
@@ -30,9 +31,16 @@ declare var $;
   providers: [UserService]
 })
 export class UserComponent implements OnInit {
+  tableInputData = [];
+  columns = userTableConfig;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = true;
+  hoverTableRow = true;
+
   isDisplayPopup = false;
   arrUsers: any = [];
   userRoles: RoleModel[];
+  userRoles1: any= [];
   userStatus: StatusModel[];
   filterby = 'All';
   editForm: FormGroup;
@@ -61,7 +69,7 @@ export class UserComponent implements OnInit {
         { name: 'Role', orderable: false },
         { name: 'Status', orderable: false }
       ],
-      destroy:true,
+      destroy: true,
       lengthMenu: arLengthMenu,
       pageLength: selectedPageLength,
       oLanguage: {
@@ -97,7 +105,7 @@ export class UserComponent implements OnInit {
         });
       }
     });
-    var $this = this;
+    const $this = this;
     $this.$table.columns().every(function () {
       $('#txtSearch').on('keyup change', function () {
         if ($this.$table.search() !== this.value) {
@@ -116,7 +124,7 @@ export class UserComponent implements OnInit {
             .search('')
             .draw();
         } else if ($this.$table.columns(5).search() !== this.value) {
-          var query = "((  )|^)" + regex_escape(this.value) + "((  )|$)";
+          const query = '((  )|^)' + regex_escape(this.value) + '((  )|$)';
           $this.$table
             .columns(4)
             .search(query, true, false)
@@ -133,7 +141,7 @@ export class UserComponent implements OnInit {
             .search('')
             .draw();
         } else if ($this.$table.columns(5).search() !== this.value) {
-          var query = "((  )|^)" + regex_escape(this.value) + "((  )|$)";
+          const query = '((  )|^)' + regex_escape(this.value) + '((  )|$)';
           $this.$table
             .columns(5)
             .search(query, true, false)
@@ -143,44 +151,45 @@ export class UserComponent implements OnInit {
       });
     });
     function regex_escape(text) {
-      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-    };
+      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
   }
 
+
   getUsers() {
-    var $this = this;
+    const $this = this;
     const client = '?clientId=' + localStorage.getItem('client_id');
-    this.userService.listUsers(client)
-      .map(res => res)
-      .finally(() => {
-        setTimeout(() => {
-          $this.bindDataTable();
-        }, 5);
-      })
-      .subscribe(
-      data => {
-        this.arrUsers = data
+    this.userService.listUsers(client).subscribe(
+      result => {
+        result.forEach(element => {
+          debugger
+          element.roleId = element.roles[0].id;
+          element.roles = element.roles[0].roleName;
+           element.statusId = element.status.statusId;
+          element.status = element.status.statusName;
+          this.tableInputData.push(element);
+        });
+        console.log(JSON.stringify(this.tableInputData[0]));
+        this.dataTableComponent.ngOnInit();
       },
-      error => console.log(error)
-      );
-
-  };
-
+      err => {
+        console.log(err);
+      });
+  }
   editUser(user) {
     $('#editUserModal').modal('show');
+    this.userRoles1 = [];
     this.child.createForm(user);
     this.child.subscriberFields();
   }
 
 
-  public addUserToList(user: any): void {
-    this.arrUsers.push(user);
-    this.$table.destroy();
-    setTimeout(() => {
-      this.bindDataTable();
-    }, 5);
-
-   
+  public addUserToList(user: any) {
+    user.roles = user.roles[0].roleName;
+    user.status = user.status.statusName;
+    this.tableInputData.push(user);
+    console.log(user);
+    this.dataTableComponent.ngOnInit();
   }
 
   setRoles() {
@@ -207,31 +216,27 @@ export class UserComponent implements OnInit {
 
 
   GetLoggedInUserDetails() {
-    var $this = this;
-    var client = '?userId=' + localStorage.getItem('client_id');
+    const $this = this;
+    const client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(
       data => {
         $this.isDisplayPopup = data.subscriptionEnded;
-        if(data.daysLeftForRenew<=5)
-        {
-          $('#subscriptionWarningModal').modal("show");
-        }
-        else{
-          $('#subscriptionWarningModal').modal("hide");
-        }
-        if (data.subscriptionEnded == true) {
+        if (data.daysLeftForRenew <= 5) {
+          $('#subscriptionWarningModal').modal('show');
+        }else {
+           $('#subscriptionWarningModal').modal('hide');
+          }
+        if (data.subscriptionEnded === true) {
           $('#subscriptionModal').modal({
             backdrop: 'static',
             keyboard: false,
             closeOnEscape: false,
             open: function(event, ui) {
-              $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+              $('.ui-dialog-titlebar-close', ui.dialog || ui).hide();
           }
-          })
-          //$("#subscriptionModal").modal("show");
-        }
-        else {
-          $("#subscriptionModal").modal("hide");
+          });
+        }else {
+          $('#subscriptionModal').modal('hide');
         }
 
       },

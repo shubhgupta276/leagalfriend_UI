@@ -22,8 +22,8 @@ export class UserService {
         return this.apiGateWay.post<UserModel>(editUser, JSON.stringify(userData));
     }
 
-    listUsers(client: string): Observable<UserModel> {
-        return this.apiGateWay.get<UserModel>(listUsers + client);
+    listUsers(client: string): Observable<any> {
+        return this.apiGateWay.get<any>(listUsers + client);
     }
 
     listRoles(): Observable<RoleModel[]> {

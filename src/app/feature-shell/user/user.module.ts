@@ -6,7 +6,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-
+import { DataTableModule } from '../../shared/components/data-table/data-table.module';
 @NgModule(
     {
         imports: [
@@ -14,8 +14,8 @@ import { SharedModule } from '../../shared/shared.module';
             FormsModule,
             ReactiveFormsModule,
             CommonModule,
-            SharedModule
-          
+            SharedModule,
+            DataTableModule
         ],
         declarations: [ UserComponent, AddUserComponent, EditUserComponent ]
     }
