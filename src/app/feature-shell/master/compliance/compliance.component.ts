@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AddComplianceMasterComponent } from "./add-compliance/add-compliance.component";
-import { EditComplianceMasterComponent } from "./edit-compliance/edit-compliance.component";
+import { AddComplianceMasterComponent } from './add-compliance/add-compliance.component';
+import { EditComplianceMasterComponent } from './edit-compliance/edit-compliance.component';
 import { CommonModule } from '@angular/common';
 import { NgModule, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -9,9 +9,11 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { RecourseService } from '../resource/recourse.service';
 import { StageService } from '../stage/stage.service';
 import { Compliance } from './compliance';
+import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
+import { complianceTableConfig } from './compliance.config';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 
 declare let $;
-
 
 @Component({
   selector: 'app-compliance',
@@ -20,12 +22,15 @@ declare let $;
 })
 export class ComplianceComponent implements OnInit {
   @ViewChild(EditComplianceMasterComponent) editChild: EditComplianceMasterComponent;
-  arr: Compliance[] = [];
   arRecourse: any[];
   arStage: any[];
   arStatus: any[];
   editComplianceMasterForm: FormGroup;
-
+  tableInputData = [];
+  columns = complianceTableConfig;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = false;
+  hoverTableRow = true;
   constructor(private fb: FormBuilder, private _complianceService: ComplianceService,
     private _storageService: StorageService, private _recourseService: RecourseService, private _stageService: StageService) {
   }
@@ -35,45 +40,25 @@ export class ComplianceComponent implements OnInit {
     this.getStage();
     this.getStatus();
   }
-  showEditModal(data) {
-    this.editChild.createForm(data);
-    $('#editComplianceMasterModal').modal('show');
-  }
   getAllCompliance() {
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
     this._complianceService.getCompliances(reqData).subscribe(
       result => {
-debugger
-        if (result.httpCode == 200) {
-          for (var i = 0; i < result.complianceStageRecourses.length; i++) {
+        if (result.httpCode === 200) {
+          for (let i = 0; i < result.complianceStageRecourses.length; i++) {
             const obj = result.complianceStageRecourses[i];
-            
-            this.arr.push({
-              compliance: obj.complianceName,
-              stage:  obj.stageCode,
-              stageId: obj.stageId,
-              recourse: obj.recourseCode,
-              recourseId: obj.recourseId,
-              status: null,
-              statusId: obj.statusId,
-              id: obj.id
-            });
+            this.tableInputData.push(result.complianceStageRecourses[i]);
           }
-          setTimeout(() => {
-            this.bindDatatable();
-          }, 1);
-        }
-        else {
+          this.dataTableComponent.ngOnInit();
+        } else {
           console.log(result);
         }
       },
       err => {
         console.log(err);
-        this.arr = [];
-
       });
   }
   getRecourse() {
@@ -83,8 +68,7 @@ debugger
 
         if (result != null) {
           this.arRecourse = result.recourses;
-        }
-        else {
+        } else {
           console.log(result);
         }
       },
@@ -103,8 +87,7 @@ debugger
 
         if (result != null) {
           this.arStage = result.stageRecourses;
-        }
-        else {
+        } else {
           console.log(result);
         }
       },
@@ -121,8 +104,7 @@ debugger
 
         if (result != null) {
           this.arStatus = result;
-        }
-        else {
+        } else {
           console.log(result);
         }
       },
@@ -132,57 +114,22 @@ debugger
 
       });
   }
-
-  bindDatatable() {
-    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-    var selectedPageLength = 15;
-
-    var $table = $("#example1").DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: false,
-      lengthMenu: arLengthMenu,
-      pageLength: selectedPageLength,
-      oLanguage: {
-        sLengthMenu: "Show _MENU_ rows",
-        sSearch: "",
-        sSearchPlaceholder: "Search..."
-      },
-      initComplete: function () {
-        var tableid = "example1";
-        var $rowSearching = $("#" + tableid + "_wrapper");
-        $rowSearching.find(".row:eq(0)").hide();
-
-        for (var i = 0; i < arLengthMenu[0].length; i++) {
-          $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-        }
-        $("#ddlLengthMenu").val(selectedPageLength);
-
-        $("#ddlLengthMenu").on("change", function () {
-          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-        });
-      }
-    });
-
-    $table.columns().every(function () {
-
-      $('#txtSearch').on('keyup change', function () {
-        if ($table.search() !== this.value) {
-          $table.search(this.value).draw();
-        }
-      });
-    });
+  onRowClick(event) {
+    console.log(event);
+  }
+  onRowDoubleClick(event) {
+    this.editChild.createForm(event);
+    $('#editComplianceMasterModal').modal('show');
   }
 
-
+  onRowSelect(event) {
+    console.log(event);
+  }
 }
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
     declarations: [
       ComplianceComponent,
       AddComplianceMasterComponent,
@@ -192,4 +139,4 @@ debugger
   }
 )
 
-export class ComplianceModule {}
+export class ComplianceModule { }

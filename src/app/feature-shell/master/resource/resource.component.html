@@ -16,49 +16,9 @@
             </div> -->
           <!-- /.box-header -->
           <div class="box-body">
-            <div>
-              <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Recourse</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                  <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label>
-                </div>
-                <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                </div>
-              </div>
-            </div>
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>Recourse Code</th>
-                  <th>Recourse Name</th>
-                  <th>Recourse Desc</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let item of arr;let i=index">
-                  <tr (dblclick)="showEditModal(item)" data-target="#editResourceMasterModal">
-                    <td>{{item.recourseCode}}</td>
-                    <td>{{item.recourseName}}
-                    </td>
-                    <td>{{item.recourseDesc}}</td>
-
-                  </tr>
-                </ng-container>
-                <tr *ngIf="!arr || arr.length==0">
-                    <td colspan="4"> No Record Found...!</td>
-                  </tr>
-
-
-              </tbody>
-
-            </table>
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            </app-data-table>
           </div>
           <!-- /.box-body -->
         </div>
@@ -77,6 +37,6 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-resource [arRecourse]="arr"></app-add-resource>
-  <app-edit-resource [arRecourse]="arr"></app-edit-resource>
+  <app-add-resource [tableInputData]="tableInputData"></app-add-resource>
+  <app-edit-resource [tableInputData]="tableInputData"></app-edit-resource>
 </div>

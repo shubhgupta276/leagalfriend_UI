@@ -12,11 +12,10 @@ declare var $;
 @Component({
   selector: 'app-edit-district',
   templateUrl: '../edit-district/edit-district.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class EditDistrictMasterComponent implements OnInit {
   editDetails: any;
-  @Input() arDisrict: District[];
+  @Input() tableInputData: any[];
 
   editDistrictMasterForm: FormGroup;
   isDistrictAlreadyExists: boolean = false;
@@ -26,7 +25,7 @@ export class EditDistrictMasterComponent implements OnInit {
 
   submitEditDistrictMaster(data) {
 
-    var reqData = {
+    const reqData = {
       districtName: data.districtName,
       id: data.id,
       userId: this._storageService.getUserId()
@@ -36,19 +35,18 @@ export class EditDistrictMasterComponent implements OnInit {
     this._districtService.updateDistrict(reqData).subscribe(
 
       result => {
-        var _result = result.body;
+        const _result = result.body;
 
-        if (_result.httpCode == 200) { //success
+        if (_result.httpCode === 200) { // success
 
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
 
-          const objFind = this.arDisrict.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.districtName = data.districtName;
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
+        }
       },
       err => {
         console.log(err);
@@ -56,7 +54,7 @@ export class EditDistrictMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn1").click();
+    $('#closebtn1').click();
   }
 
   ngOnInit() {
@@ -65,11 +63,11 @@ export class EditDistrictMasterComponent implements OnInit {
   subscriberFields() {
     this.editDistrictMasterForm.get('districtName').valueChanges.subscribe(
       (e) => {
-
-        var filedValue = e.toUpperCase();
-        if (this.editDetails.districtName.toUpperCase() != filedValue && this.arDisrict.filter(x => x.districtName.toUpperCase() == filedValue).length > 0)
+        const filedValue = e.toUpperCase();
+        if (this.editDetails.districtName.toUpperCase() !== filedValue
+          && this.tableInputData.filter(x => x.districtName.toUpperCase() === filedValue).length > 0) {
           this.isDistrictAlreadyExists = true;
-        else {
+        } else {
           this.isDistrictAlreadyExists = false;
         }
       }

@@ -16,7 +16,10 @@
             </div> -->
           <!-- /.box-header -->
           <div class="box-body">
-            <div>
+              <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            </app-data-table>
+            <!-- <div>
               <div class="row table-toolbar">
                 <div class="col-sm-4 heading">Institutions</div>
                 <div class="col-sm-2"></div>
@@ -31,8 +34,8 @@
                   <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
                 </div>
               </div>
-            </div>
-            <table id="example1" class="table table-bordered table-hover">
+            </div> -->
+            <!-- <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
                   <th>Institution Name</th>
@@ -44,7 +47,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editInstitutionMasterModal">
+                <tr *ngFor="let item of tableInputData" (dblclick)="showEditModal(item)" data-target="#editInstitutionMasterModal">
                   <td>{{item.institutionName}}</td>
                   <td>{{item.contactPerson}}</td>
                   <td>{{item.address}}</td>
@@ -68,7 +71,7 @@
 
               </tbody>
 
-            </table>
+            </table> -->
           </div>
           <!-- /.box-body -->
         </div>
@@ -87,6 +90,6 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-institution [arInstitution]="arr" [arCity]="arCity"></app-add-institution>
-  <app-edit-institution [arCity]="arCity" [arInstitution]="arr"></app-edit-institution>
+  <app-add-institution [tableInputData]="tableInputData" [arCity]="arCity"></app-add-institution>
+  <app-edit-institution [arCity]="arCity" [tableInputData]="tableInputData"></app-edit-institution>
 </div>
