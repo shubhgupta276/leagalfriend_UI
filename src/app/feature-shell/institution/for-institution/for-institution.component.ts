@@ -186,10 +186,7 @@ export class ForInstitutionComponent implements OnInit {
     filterTable() {
         this.dataTableComponent.sortTable((this.recourseFilter === undefined) ? '' : this.recourseFilter.recourseCode, 'recourse');
         if (this.filterTypeId === 0) {
-            this.dataTableComponent.dateRangeFilter('', '', 'nextHearingDate');
-            this.dataTableComponent.dateRangeFilter('', '', 'previousHearingDate');
-            this.dataTableComponent.dateRangeFilter('', '', 'createdDate');
-            this.dataTableComponent.dateRangeFilter('', '', 'lastUpdated');
+            this.dataTableComponent.resetDateFilter();
         } else {
             const fromToDate = $('#txtFromToDate').val().split(' To ');
             if (this.filterTypeId === 1) { // Next Hearing Date

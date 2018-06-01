@@ -255,4 +255,8 @@ export class DataTableComponent implements OnInit {
     this.searchFilterValue = '';
     this.renderDataTable(this.tableData, false);
   }
+
+  resetDateFilter() {
+    this.renderDataTable(this.tableData, true);
+  }
 }

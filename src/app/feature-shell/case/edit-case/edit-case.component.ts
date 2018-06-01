@@ -19,21 +19,10 @@ declare var $;
   // template:`<h1>test popup</h1>`
 })
 export class EditCaseComponent implements OnInit {
-  @Input() caseRunning = [];
-  public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
-    'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
-    'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
-    'Düsseldorf', 'Essen', 'Frankfurt', 'Genoa', 'Glasgow', 'Gothenburg',
-    'Hamburg', 'Hannover', 'Helsinki', 'Kraków', 'Leeds', 'Leipzig', 'Lisbon',
-    'London', 'Madrid', 'Manchester', 'Marseille', 'Milan', 'Munich', 'Málaga',
-    'Naples', 'Palermo', 'Paris', 'Poznań', 'Prague', 'Riga', 'Rome',
-    'Rotterdam', 'Seville', 'Sheffield', 'Sofia', 'Stockholm', 'Stuttgart',
-    'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
-    'Zagreb', 'Zaragoza', 'Łódź'];
-
+  @Input() tableInputData = [];
   private value: any = {};
-  private _disabledV:string = '0';
-  private disabled:boolean = false;
+  private _disabledV: string = '0';
+  private disabled: boolean = false;
   selectedRecourse: any;
   selectedManager: any;
   selectedCourt: any;
@@ -46,8 +35,8 @@ export class EditCaseComponent implements OnInit {
   selectedCourtPlace: any;
   // arrCompliance = [];
   arr: any = [];
-  caseId:any=[];
-  complianceGridData=[];
+  caseId: any = [];
+  complianceGridData = [];
   private get disabledV(): string {
     debugger
     return this._disabledV;
@@ -131,7 +120,7 @@ export class EditCaseComponent implements OnInit {
     this.value = value;
   }
   editCaseForm: FormGroup;
-  
+
 
   Resource: Array<any> = [];
   Manager: any = [];
@@ -186,14 +175,14 @@ export class EditCaseComponent implements OnInit {
 
   }
   BindCompliance() {
-   
+
   }
   createForm(c) {
     if (c != null) {
       debugger
       // this.recourseId = c.recourseId;
       // this.stageId = c.stageId;
-      this.caseId=c.id;
+      this.caseId = c.id;
       //this.complianceGridData=[c[0].compliance];
       this.recourseSelected = [];
       const objFilter = this.Resource.filter(x => x.id == c.recourseId);
@@ -210,33 +199,41 @@ export class EditCaseComponent implements OnInit {
       const objstate = this.State.filter(x => x.id == c.stateId);
       this.stateSelected.push({ id: c.stateId, text: objstate[0].text });
       this.selectedState = this.stateSelected[0];
-      
+
       this.branchSelected = [];
       const objBranch = this.Branch.filter(x => x.id == c.branchId);
       this.branchSelected.push({ id: c.branchId, text: objBranch[0].text });
       this.selectedBranch = this.branchSelected[0];
+
       this.stageSelected = [];
       const objStage = this.Stage.filter(x => x.id == c.stageId);
-      this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
-      this.selectedStage = this.stageSelected[0];
+      if (this.Stage.length > 0) {
+        this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
+        this.selectedStage = this.stageSelected[0];
+      }
       // this.parentcaseSelected = [];
-      
+
       // const objParentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
       // this.parentcaseSelected.push({ id: c.parentCaseId, text: objParentCase[0].text });
       // this.selectedParentCase = this.parentcaseSelected[0];
       this.customerSelected = [];
       const objcustomerSelected = this.CustomerName.filter(x => x.id == c.customerId);
-      this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
-      this.selectedCustomerName = this.customerSelected[0];
+      if (this.CustomerName.length > 0) {
+        this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
+        this.selectedCustomerName = this.customerSelected[0];
+      }
       this.managerSelected = [];
       const objmanagerSelected = this.Manager.filter(x => x.id == c.managerId);
-      this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
-      this.selectedManager = this.managerSelected[0];
-      debugger
+      if (this.Manager.length > 0) {
+        this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
+        this.selectedManager = this.managerSelected[0];
+      }
       this.employeeSelected = [];
       const objemployeeSelected = this.Employee.filter(x => x.id == c.employeeId);
-      this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
-      this.selectedEmployee = this.employeeSelected[0];
+      if (this.Employee.length > 0) {
+        this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
+        this.selectedEmployee = this.employeeSelected[0];
+      }
       this.courtPlaceSelected = [];
       const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id == c.id);
       this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
@@ -244,7 +241,7 @@ export class EditCaseComponent implements OnInit {
     }
 
 
-    
+
 
 
     this.editCaseForm = this.fb.group({
@@ -270,7 +267,7 @@ export class EditCaseComponent implements OnInit {
       courtplace: [c == null ? null : c.courtId],
       oppLawyer: [c == null ? null : c.oppLawyer],
       childCase: [c == null ? null : c.childCase],
-    
+
       lastHearingDate: [c == null ? null : this.datePipe.transform(c.lastHearingDate, "yyyy-MM-dd")],
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, "yyyy-MM-dd")]
@@ -279,95 +276,95 @@ export class EditCaseComponent implements OnInit {
 
 
   //............................................for compliance........................
-  
-  createFormforcompliance(c) {
-    this._disabledV='1';
-    this.disabled=true;
-    var self=this;
-        if (c != null) {
-         self.complianceGridData=[];
-          this.caseId=c[0].id;
-          c.forEach(function(value){
-              self.complianceGridData.push(value.compliance);
-          });
-         // this.complianceGridData=[c[0].compliance];
-          this.recourseSelected = [];
 
-          const objFilter = this.Resource.filter(x => x.id == c[0].legalCase.recourseId);
-          this.recourseSelected.push({ id: c[0].legalCase.recourseId, text: objFilter[0].text });
-          this.selectedRecourse = this.recourseSelected[0];
-    
-    
-          this.courtSelected = [];
-          const objCourt = this.Court.filter(x => x.id ==  c[0].legalCase.courtId);
-          this.courtSelected.push({ id: c[0].legalCase.courtId, text: objCourt[0].text });
-          this.selectedCourt = this.courtSelected[0];
-    
-          this.stateSelected = [];
-          const objstate = this.State.filter(x => x.id == c[0].legalCase.stateId);
-          this.stateSelected.push({ id: c[0].legalCase.stateId, text: objstate[0].text });
-          this.selectedState = this.stateSelected[0];
-          
-          this.branchSelected = [];
-          const objBranch = this.Branch.filter(x => x.id == c[0].legalCase.branchId);
-          this.branchSelected.push({ id: c[0].legalCase.branchId, text: objBranch[0].text });
-          this.selectedBranch = this.branchSelected[0];
-          this.stageSelected = [];
-          const objStage = this.Stage.filter(x => x.id == c[0].legalCase.stageId);
-          this.stageSelected.push({ id: c[0].legalCase.stageId, text: objStage[0].text });
-          this.selectedStage = this.stageSelected[0];
-         
-          this.customerSelected = [];
-          const objcustomerSelected = this.CustomerName.filter(x => x.id == c[0].legalCase.customerId);
-          this.customerSelected.push({ id: c[0].legalCase.customerId, text: objcustomerSelected[0].text });
-          this.selectedCustomerName = this.customerSelected[0];
-          this.managerSelected = [];
-          const objmanagerSelected = this.Manager.filter(x => x.id == c[0].legalCase.managerId);
-          this.managerSelected.push({ id: c[0].legalCase.managerId, text: objmanagerSelected[0].text });
-          this.selectedManager = this.managerSelected[0];
-          
-          this.employeeSelected = [];
-          const objemployeeSelected = this.Employee.filter(x => x.id == c[0].legalCase.employeeId);
-          this.employeeSelected.push({ id: c[0].legalCase.employeeId, text: objemployeeSelected[0].text });
-          this.selectedEmployee = this.employeeSelected[0];
-          this.courtPlaceSelected = [];
-          const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id == c[0].legalCase.id);
-          this.courtPlaceSelected.push({ id: c[0].legalCase.id, text: objcourtPlaceSelected[0].text });
-          this.selectedCourtPlace = this.courtPlaceSelected[0];
-        }
-    
-    
-        
-    
-    
-        this.editCaseForm = this.fb.group({
-    
-    
-          caseId: [c == null ? null : c[0].legalCase.id, Validators.required],
-    
-          courtCaseId: [c == null ? null : c[0].legalCase.courtCaseId],
-          recourse: [c == null ? null : c.recourseId],
-          manager: [c == null ? null : c.managerId],
-          court: [c == null ? null : c.courtId],
-          state: [c == null ? null : c.stateId],
-          parentCase: [c == null ? null : c.parentCaseId],
-          nextHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.nextHearingDate, "yyyy-MM-dd")],
-          customerName: [c == null ? null : c.customerId],
-          remark: [c == null ? null : c[0].legalCase.remark, Validators.required],
-          groundforclosingfile: [],
-          disposedoffFileNo: [],
-          branch: [c == null ? null : c.branchId],
-          filingdate: [c == null ? null : c.filingdate],
-          stage: [c == null ? null : c.stageId],
-          employee: [c == null ? null : c.employeeId],
-          courtplace: [c == null ? null : c.courtId],
-          oppLawyer: [c == null ? null : c[0].legalCase.oppLawyer],
-          childCase: [c == null ? null : c[0].legalCase.childCase],
-          lastHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.lastHearingDate, "yyyy-MM-dd")],
-          uploadDocument: [],
-          completionDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.completionDate, "yyyy-MM-dd")]
-        });
-      }
+  createFormforcompliance(c) {
+    this._disabledV = '1';
+    this.disabled = true;
+    var self = this;
+    if (c != null) {
+      self.complianceGridData = [];
+      this.caseId = c[0].id;
+      c.forEach(function (value) {
+        self.complianceGridData.push(value.compliance);
+      });
+      // this.complianceGridData=[c[0].compliance];
+      this.recourseSelected = [];
+
+      const objFilter = this.Resource.filter(x => x.id == c[0].legalCase.recourseId);
+      this.recourseSelected.push({ id: c[0].legalCase.recourseId, text: objFilter[0].text });
+      this.selectedRecourse = this.recourseSelected[0];
+
+
+      this.courtSelected = [];
+      const objCourt = this.Court.filter(x => x.id == c[0].legalCase.courtId);
+      this.courtSelected.push({ id: c[0].legalCase.courtId, text: objCourt[0].text });
+      this.selectedCourt = this.courtSelected[0];
+
+      this.stateSelected = [];
+      const objstate = this.State.filter(x => x.id == c[0].legalCase.stateId);
+      this.stateSelected.push({ id: c[0].legalCase.stateId, text: objstate[0].text });
+      this.selectedState = this.stateSelected[0];
+
+      this.branchSelected = [];
+      const objBranch = this.Branch.filter(x => x.id == c[0].legalCase.branchId);
+      this.branchSelected.push({ id: c[0].legalCase.branchId, text: objBranch[0].text });
+      this.selectedBranch = this.branchSelected[0];
+      this.stageSelected = [];
+      const objStage = this.Stage.filter(x => x.id == c[0].legalCase.stageId);
+      this.stageSelected.push({ id: c[0].legalCase.stageId, text: objStage[0].text });
+      this.selectedStage = this.stageSelected[0];
+
+      this.customerSelected = [];
+      const objcustomerSelected = this.CustomerName.filter(x => x.id == c[0].legalCase.customerId);
+      this.customerSelected.push({ id: c[0].legalCase.customerId, text: objcustomerSelected[0].text });
+      this.selectedCustomerName = this.customerSelected[0];
+      this.managerSelected = [];
+      const objmanagerSelected = this.Manager.filter(x => x.id == c[0].legalCase.managerId);
+      this.managerSelected.push({ id: c[0].legalCase.managerId, text: objmanagerSelected[0].text });
+      this.selectedManager = this.managerSelected[0];
+
+      this.employeeSelected = [];
+      const objemployeeSelected = this.Employee.filter(x => x.id == c[0].legalCase.employeeId);
+      this.employeeSelected.push({ id: c[0].legalCase.employeeId, text: objemployeeSelected[0].text });
+      this.selectedEmployee = this.employeeSelected[0];
+      this.courtPlaceSelected = [];
+      const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id == c[0].legalCase.id);
+      this.courtPlaceSelected.push({ id: c[0].legalCase.id, text: objcourtPlaceSelected[0].text });
+      this.selectedCourtPlace = this.courtPlaceSelected[0];
+    }
+
+
+
+
+
+    this.editCaseForm = this.fb.group({
+
+
+      caseId: [c == null ? null : c[0].legalCase.id, Validators.required],
+
+      courtCaseId: [c == null ? null : c[0].legalCase.courtCaseId],
+      recourse: [c == null ? null : c.recourseId],
+      manager: [c == null ? null : c.managerId],
+      court: [c == null ? null : c.courtId],
+      state: [c == null ? null : c.stateId],
+      parentCase: [c == null ? null : c.parentCaseId],
+      nextHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.nextHearingDate, "yyyy-MM-dd")],
+      customerName: [c == null ? null : c.customerId],
+      remark: [c == null ? null : c[0].legalCase.remark, Validators.required],
+      groundforclosingfile: [],
+      disposedoffFileNo: [],
+      branch: [c == null ? null : c.branchId],
+      filingdate: [c == null ? null : c.filingdate],
+      stage: [c == null ? null : c.stageId],
+      employee: [c == null ? null : c.employeeId],
+      courtplace: [c == null ? null : c.courtId],
+      oppLawyer: [c == null ? null : c[0].legalCase.oppLawyer],
+      childCase: [c == null ? null : c[0].legalCase.childCase],
+      lastHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.lastHearingDate, "yyyy-MM-dd")],
+      uploadDocument: [],
+      completionDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.completionDate, "yyyy-MM-dd")]
+    });
+  }
 
 
   GetAllCourt() {
@@ -382,19 +379,18 @@ export class EditCaseComponent implements OnInit {
 
         result.courts.forEach(function (value) {
 
-         
+
           $this.Court.push({ id: value.id, text: value.courtName });
 
           $this.CourtPlace.push({ id: value.id, text: value.courtName });
         });
-      
+
       },
       err => {
         console.log(err);
       });
   }
   bindStateDDL() {
-    this.items = [];
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -412,7 +408,7 @@ export class EditCaseComponent implements OnInit {
           // $this.arDdl.push({ id: value.stateName, text: value.stateName});
 
         });
-       
+
       },
       err => {
         console.log(err);
@@ -428,29 +424,22 @@ export class EditCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-
         result.forEach(function (value) {
-
-          if (value.roles[0].roleName == 'MANAGER') {
-            $this.Manager.push(
-              {
-
-
-                id: value.id, text: value.firstName
-
-
-              }
-            );
-          }
-
-          if (value.roles[0].roleName == 'CUSTOMER') {
-            $this.CustomerName.push(
-              {
-
-                id: value.id, text: value.firstName
-
-              }
-            );
+          if (value.roles.length > 0) {
+            if (value.roles[0].roleName == 'MANAGER') {
+              $this.Manager.push(
+                {
+                  id: value.id, text: value.firstName
+                }
+              );
+            }
+            else if (value.roles[0].roleName == 'CUSTOMER') {
+              $this.CustomerName.push(
+                {
+                  id: value.id, text: value.firstName
+                }
+              );
+            }
           }
         });
 
@@ -473,7 +462,7 @@ export class EditCaseComponent implements OnInit {
 
           $this.Branch.push({ id: value.id, text: value.branchName });
         });
-        
+
       },
       err => {
         console.log(err);
@@ -481,13 +470,10 @@ export class EditCaseComponent implements OnInit {
   }
 
   bindRecourseDDL() {
-    this.items = [];
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
     };
-
-
 
     this.authService.bindRecourseDDL(reqData).subscribe(
 
@@ -520,7 +506,7 @@ export class EditCaseComponent implements OnInit {
 
           $this.Stage.push({ id: value.id, text: value.stageName });
         });
-        
+
       },
       err => {
         console.log(err);
@@ -546,7 +532,7 @@ export class EditCaseComponent implements OnInit {
 
           }
         });
-       
+
       },
       err => {
         console.log(err);
@@ -570,7 +556,7 @@ export class EditCaseComponent implements OnInit {
         result.forEach(function (value) {
           $this.ParentCases.push({ id: value.id, text: value.id });
         });
-       
+
       },
       err => {
         console.log(err);
@@ -584,40 +570,40 @@ export class EditCaseComponent implements OnInit {
     var status = document.getElementById("content");
 
     if (c == true) {
-     
-      var status = document.getElementById("content");
-      
-      var reqData = {
-        compliance:{
-        recourse:{
-          id:this.recourseSelected[0].id,
-        },
-      
-        stage:{
-          id:this.stageSelected[0].id,
-        }
-      },
 
-          legalCase:{
-           id:this.caseId,
+      var status = document.getElementById("content");
+
+      var reqData = {
+        compliance: {
+          recourse: {
+            id: this.recourseSelected[0].id,
           },
-    
-    
+
+          stage: {
+            id: this.stageSelected[0].id,
+          }
+        },
+
+        legalCase: {
+          id: this.caseId,
+        },
+
+
       };
-      
+
       this.authService.caseUpdateCompliance(reqData).subscribe(
 
         result => {
-  
+
           if (result.body.httpCode == 200) { //success
-           
+
             $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
-            $(window.location.href="/admin/case");
+            $(window.location.href = "/admin/case");
           }
           else {
             var c = confirm("Case can not be moved under compliance as no compliance mapped against recourse code & stage of this case?");
             var status = document.getElementById("content");
-           
+
             $('#Compliance').prop('checked', false);
             $('#editCaseModal').modal('hide');
           }
@@ -628,32 +614,31 @@ export class EditCaseComponent implements OnInit {
     }
 
   }
-  closeCase()
-  {
-    
-     var id=this.caseId;
-    
+  closeCase() {
+
+    var id = this.caseId;
+
     this.authService.closeCase(id).subscribe(
-      
+
       result => {
 
-          $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
-          $('#editCaseModal').modal('hide');
-          $(window.location.href="/admin/case");
-         //this.getRunningCase();
+        $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
+        $('#editCaseModal').modal('hide');
+        $(window.location.href = "/admin/case");
+        //this.getRunningCase();
 
         //}
-       
+
       },
       err => {
         console.log(err);
       });
   }
 
-  
+
 
   submitEditCaseUser(data) {
-debugger
+    debugger
 
     const objEditCase = new EditCase();
     objEditCase.id = data.caseId;
@@ -675,7 +660,7 @@ debugger
     objEditCase.childCase = data.childCase;
     objEditCase.lastHearingDate = this.datePipe.transform(data.lastHearingDate, "yyyy-MM-dd");
     objEditCase.remark = data.remark;
-    objEditCase.parentCaseId=data.parentCase;
+    objEditCase.parentCaseId = data.parentCase;
 
     this.authService.updateEditCaseUser(objEditCase).subscribe(
 
@@ -686,7 +671,7 @@ debugger
           $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
           this.closeModal();
           $('#editCaseModal').modal('hide');
-          
+
         }
       },
       err => {
@@ -695,29 +680,29 @@ debugger
 
   }
   BindCaseGridOnEdit(data) {
-    
-    this.caseRunning.filter(
+
+    this.tableInputData.filter(
       branch => {
         if (branch.id == data.caseId) {
           branch.caseId = data.caseId;
           branch.childCase = data.childCase;
-          
+
           branch.court = data.court;
-          
+
           // branch.cityId = data.city;
           // branch.cityName = this.getCityName(data.city);
-         
-          branch.recourseCode =  this.selectedRecourse.text;
+
+          branch.recourseCode = this.selectedRecourse.text;
           branch.customerFirstName = this.selectedCustomerName.text;
-  
+
           branch.employee = this.selectedEmployee.text;
-      
-        
+
+
           branch.nextHearingDate = data.nextHearingDate;
-          
+
           branch.branchName = this.selectedBranch.text;
           branch.stageName = this.selectedStage.text;
-         
+
         }
       });
 
