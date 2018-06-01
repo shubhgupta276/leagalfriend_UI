@@ -64,14 +64,13 @@ export class AddUserComponent implements OnInit {
         roleName: this.getRoleName(data.role)
       }
     ];
-    userDetails.address =
-      {
-        address1: data.addressLine1,
-        address2: data.addressLine2,
-        city: '',
-        state: '',
-        zipCode: data.postalCode
-      };
+    userDetails.address = {
+      address1: data.addressLine1,
+      address2: data.addressLine2,
+      city: '',
+      state: '',
+      zipCode: data.postalCode
+    };
     userDetails.status = {
       statusId: data.status,
       statusName: this.getStatusName(data.status)
@@ -79,14 +78,17 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        if(result.body.httpCode==200)
-        {
-        $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
-        console.log(result);
-        this.userAdded.emit(result.body);
-        }
-        else
-        {
+        if (result.body.httpCode === 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
+          console.log(result);
+          userDetails.id = result.body.id;
+          userDetails.showSubscriptionFlash = result.body.showSubscriptionFlash;
+          userDetails.subscriptionEndDate = result.body.subscriptionEndDate;
+          userDetails.subscriptionEnded = result.body.subscriptionEnded;
+          userDetails.subscriptionId = result.body.subscriptionId;
+          userDetails.verified = result.body.verified;
+          this.userAdded.emit(userDetails);
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
         }
       },
@@ -145,19 +147,21 @@ export class AddUserComponent implements OnInit {
     );
   }
   getRoleName(roleId): string {
-    const objFind = this.Roles.filter(x => x.id == roleId)[0];
-    if (objFind)
+    const objFind = this.Roles.filter(x => x.id === roleId)[0];
+    if (objFind) {
       return objFind.roleName;
-    else
-      return "";
+    } else {
+      return '';
 
+    }
   }
   getStatusName(statusId): string {
-    const objFind = this.Status.filter(x => x.statusId == statusId)[0];
-    if (objFind)
+    const objFind = this.Status.filter(x => x.statusId === statusId)[0];
+    if (objFind) {
       return objFind.statusName;
-    else
-      return "";
-
+    } else {
+      return '';
+    }
   }
 }
+

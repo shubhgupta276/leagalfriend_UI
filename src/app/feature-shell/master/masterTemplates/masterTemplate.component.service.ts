@@ -3,7 +3,7 @@ import { FileInfo } from '../../../shared/models/master/FileInfo';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 @Injectable()
-export class MasterTemplateComponentService {
+export class MasterTemplateService {
   FileList: FileInfo[];
 
   constructor() {
