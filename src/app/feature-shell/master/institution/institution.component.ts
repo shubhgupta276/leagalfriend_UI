@@ -145,6 +145,7 @@ export class InstitutionComponent implements OnInit {
     this.actionColumnConfig.moduleName = 'Master_Institution';
   }
   onActionBtnClick(data) {
+    data = data.data;
     const reqData = {
       institutionName: data.institutionName,
       contactName: data.contactPerson,
@@ -159,6 +160,7 @@ export class InstitutionComponent implements OnInit {
     this._institutionService.updateDefaultInstitution(reqData).subscribe(
 
       result => {
+        
         const _result = result.body;
         if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
