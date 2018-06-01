@@ -11,7 +11,7 @@ import { Institution } from '../institution';
 import { window } from 'rxjs/operator/window';
 import { RecourseService } from '../../master/resource/recourse.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { SharedService } from '../../../shared/services/shared.service';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { forInstitutionTableConfig } from './for-intitution-config';
@@ -542,3 +542,4 @@ export class ForInstitutionComponent implements OnInit {
         this.GetAllForIntitution();
     }
 }
+

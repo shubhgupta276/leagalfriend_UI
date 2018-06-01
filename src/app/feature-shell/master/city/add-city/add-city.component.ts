@@ -11,11 +11,10 @@ declare var $;
 @Component({
   selector: 'app-add-city',
   templateUrl: '../add-city/add-city.component.html'
-  //template:`<h1>test popup</h1>`
 })
 export class AddCityMasterComponent implements OnInit {
   @Input()
-  arCityData: City[];
+  tableInputData: any[];
   addCityMasterForm: FormGroup;
 
   isCityAlreadyExists: Boolean = false;
@@ -31,24 +30,23 @@ export class AddCityMasterComponent implements OnInit {
 
   submitAddCityMaster(data: City) {
 
-    var reqData = {
+    const reqData = {
       cityName: data.cityName,
       userId: this._storageService.getUserId()
     };
-    
     this._cityService.addCity(reqData).subscribe(
       result => {
-        var _result = result.body;
+        const _result = result.body;
 
-        if (_result.httpCode == 200) { //success
-          this.arCityData.push({ cityName: data.cityName, id: _result.id });
+        if (_result.httpCode === 200) { // success
+          this.tableInputData.push({ cityName: data.cityName, id: _result.id });
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddCityMaster();
           this.closeModal();
           this.subscriberFields();
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -56,7 +54,7 @@ export class AddCityMasterComponent implements OnInit {
   }
 
   closeModal() {
-    $("#closebtn").click();
+    $('#closebtn').click();
   }
 
   ngOnInit() {
@@ -65,9 +63,9 @@ export class AddCityMasterComponent implements OnInit {
   subscriberFields() {
     this.addCityMasterForm.get('cityName').valueChanges.subscribe(
       (e) => {
-        if (this.arCityData.filter(x => x.cityName.toUpperCase() == e.toUpperCase()).length > 0)
+        if (this.tableInputData.filter(x => x.cityName.toUpperCase() === e.toUpperCase()).length > 0) {
           this.isCityAlreadyExists = true;
-        else {
+        } else {
           this.isCityAlreadyExists = false;
         }
       }

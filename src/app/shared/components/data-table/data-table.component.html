@@ -1,4 +1,4 @@
-<div class="example-header">
+<div class="example-header" *ngIf="showSearchFilter">
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
@@ -41,16 +41,23 @@
             <mat-cell *matCellDef="let row">{{ row[column.uniqueId] }}</mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="action" *ngIf="actionColumnConfig">
+            <mat-header-cell *matHeaderCellDef>
+                {{ actionColumnConfig.displayName }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button class="table-case-history-btn" (click)="actionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Case'" >{{ actionColumnConfig.btnText[0] }}</button>
+                <button class="table-make-default-inst-btn" (click)="actionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution" >{{ actionColumnConfig.btnText[0] }}</button>
+                <button class="table-default-inst-btn" (click)="actionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution" >{{ actionColumnConfig.btnText[1] }}</button>
+            </mat-cell>
+        </ng-container>
+
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick($event, row)" (dblclick)="onRowDoubleClick($event, row)"
-        [ngClass]="{'mat-row-hover': hoverTableRow}">
+            [ngClass]="{'mat-row-hover': hoverTableRow}">
         </mat-row>
 
     </mat-table>
-    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    <mat-paginator [pageSize]="15" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 
 </div>
-<!-- <button (click)="sortDateColumn()" >Sort Date Column</button> -->
-<!-- <button (click)="applyFilters()" >filter</button> -->
-<!-- <button (click)="dateRangeFilter('2015-03-28', '2016-7-15', 'fromDate')" >Filter</button> -->
-<!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator> -->

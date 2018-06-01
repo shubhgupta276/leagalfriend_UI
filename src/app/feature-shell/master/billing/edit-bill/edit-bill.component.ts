@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { UserRoles, UserStatus, KeyValue, ListBillingBank, ListBillingRecourse, ListBillingStage, ListBranch } from '../../../../shared/Utility/util-common';
+import {
+  UserRoles, UserStatus, KeyValue, ListBillingBank,
+  ListBillingRecourse, ListBillingStage, ListBranch
+} from '../../../../shared/Utility/util-common';
 import { BillingService } from '../billing.service';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { Billing } from '../billing';
@@ -8,7 +11,7 @@ import { Branch } from '../../branch/branch';
 import { StageService } from '../../stage/stage.service';
 declare let $;
 @Component({
-  selector: 'edit-bill-modal',
+  selector: 'app-edit-bill-modal',
   templateUrl: '../edit-bill/edit-bill.component.html',
   styleUrls: ['../edit-bill/edit-bill.component.css']
 })
@@ -17,7 +20,7 @@ export class EditBillingComponent implements OnInit {
 
   @Input() editDetails: Billing;
   // @Input() updateDetails: Billing;
-  @Input() arbillingData: Billing[];
+  @Input() tableInputData: Billing[];
   @Input() arAllRecourses: any[] = [];
   @Input() arAllInstitution: any = [];
   editForm: FormGroup;
@@ -25,7 +28,8 @@ export class EditBillingComponent implements OnInit {
   arListBranch: KeyValue[] = ListBranch;
   isCombinationAlreadyExits: boolean = false;
   isBilingAlreadyExists: boolean = false;
-  constructor(private fb: FormBuilder, private _stageService: StageService, private _billingservice: BillingService, private _storageservice: StorageService) {
+  constructor(private fb: FormBuilder, private _stageService: StageService,
+    private _billingservice: BillingService, private _storageservice: StorageService) {
     this.createForm(null);
   }
   ngOnInit() {
@@ -36,7 +40,7 @@ export class EditBillingComponent implements OnInit {
 
 
   // changeCombinations() {
-  //       
+  //
   //     console.log(this.editForm);
   //     if (this.editForm.get("branch").value == "Delhi" && this.editForm.get("bank").value == "DCB BANK LTD."
   //         && this.editForm.get("recourse").value == "RODA" && this.editForm.get("stage").value == "ARGUMENTS")
@@ -49,30 +53,29 @@ export class EditBillingComponent implements OnInit {
     this.arListStage = [];
     this._stageService.getRecourseStages(recourseId).subscribe(
       result => {
-        if (result.httpCode == 200) {
+        if (result.httpCode === 200) {
           result.stageRecourses.forEach(element => {
             this.arListStage.push(element);
           });
         }
-      })
+      });
   }
 
   submitEditBill(data) {
-    debugger
-    const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
-    const objStage = this.arListStage.find(x => x.id == data.stage);
-    const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
+    const objRecourse = this.arAllRecourses.find(x => x.id === data.recourse);
+    const objStage = this.arListStage.find(x => x.id === data.stage);
+    const objInstitution = this.arAllInstitution.find(x => x.id === data.institutionId);
 
-    var reqData = {
+    const reqData = {
       id: data.id,
       institution: {
-        address:data.address,
-        billingAddr:data.billingAddr,
-        contactName:data.contactName,
-        fkCity:data.fkCity,
-        phone:data.phone,
+        address: data.address,
+        billingAddr: data.billingAddr,
+        contactName: data.contactName,
+        fkCity: data.fkCity,
+        phone: data.phone,
         id: objInstitution.id,
-        institutionName:objInstitution.institutionName
+        institutionName: objInstitution.institutionName
       },
       recourse: {
         id: objRecourse.id,
@@ -92,15 +95,15 @@ export class EditBillingComponent implements OnInit {
       amount: data.amount,
       userId: this._storageservice.getUserId()
     };
-    
+
     this._billingservice.updateBilling(reqData).subscribe(
 
       result => {
-        var _result = result.body;
-        if (_result.httpCode == 200) { //success
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-          const objFind = this.arbillingData.find(x => x.id == this.editDetails.id);
+          const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.recourseName = objRecourse.recourseName;
           objFind.stageName = objStage.stageName;
           objFind.institutionName = objInstitution.institutionName;
@@ -108,10 +111,9 @@ export class EditBillingComponent implements OnInit {
           objFind.recourseId = data.recourse;
           objFind.stageId = data.stage;
           objFind.amount = data.amount;
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
-
+        }
       },
       err => {
         console.log(err);
@@ -122,11 +124,10 @@ export class EditBillingComponent implements OnInit {
   }
 
   closeModal() {
-    $(".closebtn").click();
+    $('.closebtn').click();
   }
 
   createForm(data) {
-    debugger
     if (data != null) {
       this.isBilingAlreadyExists = false;
       this.editDetails = data;
@@ -144,7 +145,7 @@ export class EditBillingComponent implements OnInit {
       contactName: [data == null ? null : data.contactName, null],
       fkCity: [data == null ? null : data.fkCity, null],
       phone: [data == null ? null : data.phone, null],
-      institutionName:[data == null ? null : data.institutionName, null],
+      institutionName: [data == null ? null : data.institutionName, null],
     });
 
   }
@@ -153,10 +154,11 @@ export class EditBillingComponent implements OnInit {
     this.editForm.get('recourseId').valueChanges.subscribe(
       (e) => {
 
-        var fieldValue = e;
-        if (this.editDetails.recourseId != fieldValue && this.arbillingData.filter(x => x.recourseId == fieldValue).length > 0)
-          this.isBilingAlreadyExists = true;
-        else {
+        const fieldValue = e;
+        if (this.editDetails.recourseId !== fieldValue
+          && this.tableInputData.filter(x => x.recourseId === fieldValue).length > 0) {
+        this.isBilingAlreadyExists = true;
+        } else {
           this.isBilingAlreadyExists = false;
         }
       }

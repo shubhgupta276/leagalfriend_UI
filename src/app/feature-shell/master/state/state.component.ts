@@ -1,26 +1,29 @@
 import { AddStateMasterComponent } from './add-state/add-state.component';
 import { EditStateMasterComponent } from './edit-state/edit-state.component';
 import { CommonModule } from '@angular/common';
-import { NgModule,ViewChild } from '@angular/core';
-import { Component, OnInit } from "@angular/core";
+import { NgModule, ViewChild, Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StateService } from './state.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { State } from './state';
+import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
+import { stateTableConfig } from './state.config';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 
 declare let $;
-
-
-
 @Component({
   selector: 'app-state',
   templateUrl: './state.component.html',
   styleUrls: ['./state.component.css']
 })
 export class StateComponent implements OnInit {
-  arr: State[] = [];
   editStateMasterForm: FormGroup;
   @ViewChild(EditStateMasterComponent) editChild: EditStateMasterComponent;
+  tableInputData = [];
+  columns = stateTableConfig;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = false;
+  hoverTableRow = true;
   constructor(private fb: FormBuilder, private _stateService: StateService, private _storageService: StorageService) {
 
   }
@@ -33,87 +36,38 @@ export class StateComponent implements OnInit {
     this._stateService.getStates().subscribe(
       result => {
 
-        if (result.httpCode == 200) {
-          for (var i = 0; i < result.states.length; i++) {
-            const obj = result.states[i];
-
-            this.arr.push({
-              stateName: obj.stateName,
-              id: obj.id
-            });
-
+        if (result.httpCode === 200) {
+          for (let i = 0; i < result.states.length; i++) {
+            this.tableInputData.push(result.states[i]);
           }
-          setTimeout(() => {
-            this.bindDatatable();
-          }, 1);
-
-        }
-        else {
+          this.dataTableComponent.ngOnInit();
+        } else {
           console.log(result);
         }
       },
       err => {
         console.log(err);
-        this.arr = [];
 
       });
 
   }
-
-  bindDatatable() {
-    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-    var selectedPageLength = 15;
-
-    var $table = $("#example1").DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: false,
-      lengthMenu: arLengthMenu,
-      pageLength: selectedPageLength,
-      oLanguage: {
-        sLengthMenu: "Show _MENU_ rows",
-        sSearch: "",
-        sSearchPlaceholder: "Search..."
-      },
-      initComplete: function () {
-        var tableid = "example1";
-        var $rowSearching = $("#" + tableid + "_wrapper");
-        $rowSearching.find(".row:eq(0)").hide();
-
-        for (var i = 0; i < arLengthMenu[0].length; i++) {
-          $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-        }
-        $("#ddlLengthMenu").val(selectedPageLength);
-
-        $("#ddlLengthMenu").on("change", function () {
-          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-        });
-      }
-    });
-
-    $table.columns().every(function () {
-
-      $('#txtSearch').on('keyup change', function () {
-        if ($table.search() !== this.value) {
-          $table.search(this.value).draw();
-        }
-      });
-    });
+  onRowClick(event) {
+    console.log(event);
   }
-  showEditModal(data) {
-    this.editChild.createForm(data);
+  onRowDoubleClick(event) {
+    this.editChild.createForm(event);
     $('#editStateMasterModal').modal('show');
   }
 
+  onRowSelect(event) {
+    console.log(event);
+  }
 
 }
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
     declarations: [
       StateComponent,
       AddStateMasterComponent,

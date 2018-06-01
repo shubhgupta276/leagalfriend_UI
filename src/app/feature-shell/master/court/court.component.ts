@@ -1,24 +1,29 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
-import { AddCourtMasterComponent } from "./add-court/add-court.component";
-import { EditCourtMasterComponent } from "./edit-court/edit-court.component";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AddCourtMasterComponent } from './add-court/add-court.component';
+import { EditCourtMasterComponent } from './edit-court/edit-court.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CourtService } from './court.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { Court } from './court';
+import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
+import { courtTableConfig } from './court.config';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 
 declare let $;
-
-
 @Component({
   selector: 'app-court',
   templateUrl: './court.component.html',
   styleUrls: ['./court.component.css']
 })
 export class CourtComponent implements OnInit {
-  arr: Court[] = [];
   @ViewChild(EditCourtMasterComponent) editChild: EditCourtMasterComponent;
+  tableInputData = [];
+  columns = courtTableConfig;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = false;
+  hoverTableRow = true;
   constructor(private fb: FormBuilder, private _courtService: CourtService, private _storageService: StorageService) {
 
   }
@@ -27,92 +32,39 @@ export class CourtComponent implements OnInit {
     this.GetAllCourt();
   }
 
-  showEditModal(data) {
-    this.editChild.createForm(data);
-    $('#editCourtMasterModal').modal('show');
-
-  }
   GetAllCourt() {
-    
     this._courtService.getCourts().subscribe(
       result => {
-        if (result.httpCode == 200) {
-
-          for (var i = 0; i < result.courts.length; i++) {
-            const obj = result.courts[i];
-            
-            this.arr.push({
-              courtName: obj.courtName,
-              courtDesc: obj.courtDesc,
-              id: obj.id
-            });
+        if (result.httpCode === 200) {
+          for (let i = 0; i < result.courts.length; i++) {
+            this.tableInputData.push(result.courts[i]);
           }
-          setTimeout(() => {
-            this.bindDatatable();
-          }, 1);
-
-        }
-        else {
+          this.dataTableComponent.ngOnInit();
+        } else {
           console.log(result);
         }
       },
       err => {
         console.log(err);
-        this.arr = [];
 
       });
   }
-
-  bindDatatable() {
-    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-    var selectedPageLength = 15;
-
-    var $table = $("#example1").DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: false,
-      lengthMenu: arLengthMenu,
-      pageLength: selectedPageLength,
-      oLanguage: {
-        sLengthMenu: "Show _MENU_ rows",
-        sSearch: "",
-        sSearchPlaceholder: "Search..."
-      },
-      initComplete: function () {
-        var tableid = "example1";
-        var $rowSearching = $("#" + tableid + "_wrapper");
-        $rowSearching.find(".row:eq(0)").hide();
-
-        for (var i = 0; i < arLengthMenu[0].length; i++) {
-          $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-        }
-        $("#ddlLengthMenu").val(selectedPageLength);
-
-        $("#ddlLengthMenu").on("change", function () {
-          $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-        });
-      }
-    });
-
-    $table.columns().every(function () {
-
-      $('#txtSearch').on('keyup change', function () {
-        if ($table.search() !== this.value) {
-          $table.search(this.value).draw();
-        }
-      });
-    });
+  onRowClick(event) {
+    console.log(event);
+  }
+  onRowDoubleClick(event) {
+    this.editChild.createForm(event);
+    $('#editCourtMasterModal').modal('show');
   }
 
-
+  onRowSelect(event) {
+    console.log(event);
+  }
 }
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
     declarations: [
       CourtComponent,
       AddCourtMasterComponent,
@@ -122,4 +74,4 @@ export class CourtComponent implements OnInit {
   }
 )
 
-export class CourtModule {}
+export class CourtModule { }
