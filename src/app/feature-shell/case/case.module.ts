@@ -10,6 +10,7 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { SelectModule } from 'ng2-select';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { DataTableModule } from '../../shared/components/data-table/data-table.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule(
     {
         imports: [
@@ -20,7 +21,8 @@ import { DataTableModule } from '../../shared/components/data-table/data-table.m
             SelectDropDownModule,
             SelectModule,
             Ng2CompleterModule,
-            DataTableModule
+            DataTableModule,
+            NgbModule
         ],
         declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent ]
     }

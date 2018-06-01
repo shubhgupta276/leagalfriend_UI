@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angu
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FilterModel } from '../../models/data-table/filter.model';
+import { ActionColumnModel } from '../../models/data-table/action-column.model';
 
 @Component({
   selector: 'app-data-table',
@@ -24,10 +25,13 @@ export class DataTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @Input() tableData: Array<any>;
   @Input() tableColumns: Array<any>;
-  @Input() showRowSelect: boolean;
+  @Input() showRowSelect = false;
   @Input() hoverTableRow = false;
+  @Input() actionColumnConfig: ActionColumnModel;
+  @Input() showSearchFilter = true;
   @Output() rowClick = new EventEmitter<any>();
   @Output() rowDoubleClick = new EventEmitter<any>();
+  @Output() actionBtnClick = new EventEmitter<any>();
   @Output() selectedRows = new EventEmitter<any>();
   selection = new SelectionModel<Element>(true, []);
 
@@ -52,6 +56,9 @@ export class DataTableComponent implements OnInit {
         }
       }
     );
+    if (this.actionColumnConfig) {
+      this.displayedColumns.push('action');
+    }
   }
 
   isAllSelected() {
@@ -83,6 +90,10 @@ export class DataTableComponent implements OnInit {
 
   onRowDoubleClick(event, row) {
     this.rowDoubleClick.emit(row);
+  }
+
+  onActionBtnClick(event, row) {
+    this.actionBtnClick.emit(row);
   }
 
   addColumnHeader() {
