@@ -16,7 +16,6 @@ import {
   CasesCompleted
 } from '../../shared/models/case/case';
 import { forEach } from '@angular/router/src/utils/collection';
-import { MasterTemplateComponentService } from '../master/masterTemplates/masterTemplate.component.service';
 import { EditCaseComponent } from './edit-case/edit-case.component';
 import { Compliance } from '../master/compliance/compliance';
 import { debounce } from 'rxjs/operators/debounce';

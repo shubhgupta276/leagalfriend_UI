@@ -21,9 +21,11 @@ export class UserModel {
     roles: any = [];
     address: any = [];
     login = {};
-    subscriptionEnded:boolean;
-    subscriptionEndDate:string;
-    daysLeftForRenew:number;
-    showSubscriptionFlash:boolean
+    subscriptionEnded: boolean;
+    subscriptionEndDate: string;
+    daysLeftForRenew: number;
+    showSubscriptionFlash: boolean;
+    subscriptionId: number;
+    verified: boolean;
 
 }

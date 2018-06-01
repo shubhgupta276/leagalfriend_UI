@@ -20,6 +20,7 @@ export class EditUserComponent {
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
   @Input() arrUsers: any;
+  @Input() tableInputData: any;
   selectedStatus: string;
   selectedRole: string;
   isStatusChange: boolean;
@@ -40,18 +41,20 @@ export class EditUserComponent {
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
   }
   submitEditUser(data) {
-    if (this.isStatusChange)
+    if (this.isStatusChange) {
       data.statusName = this.selectedStatus;
-    if (this.isRoleChange)
+    }
+    if (this.isRoleChange) {
       data.roleName = this.selectedRole;
+    }
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
-        if (result.body.httpCode == 200) {
+        if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
+          window.location.href = '/admin/user';
           this.BindGridOnEdit(data);
-        }
-        else {
+        }else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
         }
       },
@@ -62,23 +65,22 @@ export class EditUserComponent {
     $('#editUserModal').modal('hide');
   }
   BindGridOnEdit(data) {
-    this.arrUsers.forEach((item, index) => {
-      if (data.id == item.id) {
-        this.arrUsers[index].firstName = data.firstName;
-        this.arrUsers[index].lastName = data.lastName;
-        this.arrUsers[index].organization = data.organisation;
-        this.arrUsers[index].addressLine1 = data.addressLine1;
-        this.arrUsers[index].addressLine2 = data.addressLine2;
-        this.arrUsers[index].email = data.email;
-        this.arrUsers[index].mobileNumber = data.mobileNumber;
-        this.arrUsers[index].roles = [
+    this.tableInputData.forEach((item, index) => {
+      if (data.id === item.id) {
+        this.tableInputData[index].firstName = data.firstName;
+        this.tableInputData[index].lastName = data.lastName;
+        this.tableInputData[index].organization = data.organisation;
+        this.tableInputData[index].addressLine1 = data.addressLine1;
+        this.tableInputData[index].addressLine2 = data.addressLine2;
+        this.tableInputData[index].email = data.email;
+        this.tableInputData[index].mobileNumber = data.mobileNumber;
+        this.tableInputData[index].roles = [
           {
             id: data.role,
             roleName: data.roleName
           }
         ];
-        this.arrUsers[index].address =
-          {
+        this.tableInputData[index].address =  {
             address1: data.addressLine1,
             address2: data.addressLine2,
             city: '',
@@ -86,7 +88,7 @@ export class EditUserComponent {
             zipCode: data.postalCode
           }
           ;
-        this.arrUsers[index].status = {
+        this.tableInputData[index].status = {
           statusId: data.status,
           statusName: data.statusName
         };
@@ -130,7 +132,7 @@ export class EditUserComponent {
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],
-      lastName: [user == null ? null : user.lastName, Validators.required],
+      lastName: [user == null ? null : user.lastName, Validators.required], 
       organisation: [
         user == null ? null : user.organization,
         Validators.nullValidator
@@ -155,10 +157,10 @@ export class EditUserComponent {
         user == null ? null : user.mobileNumber,
         Validators.compose([Validators.required, Validators.minLength(10)])
       ],
-      role: [user == null ? 1 : user.roles[0].id],
-      roleName: [user == null ? 1 : user.roles[0].roleName],
-      status: [user == null ? 1 : user.status.statusId],
-      statusName: [user == null ? 1 : user.status.statusName]
+      role: [user == null ? 1 : user.roleId],
+      roles: [user == null ? 1 : user.roles],
+      status: [user == null ? 1 : user.statusId],
+      statusName: [user == null ? 1 : user.status]
     });
   }
   subscriberFields() {

@@ -13,8 +13,10 @@ import { ResourceComponent, RecourseModule } from './resource/resource.component
 import { ComplianceComponent, ComplianceModule } from './compliance/compliance.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
-import { MasterTemplatesComponent, MasterTemplateModule } from '../master/masterTemplates/masterTemplate.component';
+
 import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
+import { MasterTemplatesComponent, MasterTemplateModule } from './masterTemplates/masterTemplate.component';
+
 @NgModule({
   imports: [
     MasterRoutingModule,
@@ -32,6 +34,7 @@ import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
     MasterInstitutionModule,
     RecourseModule,
     MasterTemplateModule,
+
     StateModule
   ],
   declarations: [InvoiceInfoComponent]
