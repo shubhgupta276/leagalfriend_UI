@@ -5,5 +5,8 @@ export const forInstitutionTableConfig = [
     { uniqueId: 'legalCaseId', displayName: 'Legal Case Id', sortable: false, dropDownFilter: false, display: true },
     { uniqueId: 'previousHearingDate', displayName: 'Last Hearing Date', sortable: true, dropDownFilter: false, display: true },
     { uniqueId: 'nextHearingDate', displayName: 'Next Hearing Date', sortable: false, dropDownFilter: false, display: true },
-    { uniqueId: 'loanAccountNumber', displayName: 'Loan Account No', sortable: true, dropDownFilter: false, display: true }
+    { uniqueId: 'loanAccountNumber', displayName: 'Loan Account No', sortable: true, dropDownFilter: false, display: true },
+    { uniqueId: 'recourse', displayName: 'recourse', sortable: true, dropDownFilter: true, display: false },
+    { uniqueId: 'createdDate', displayName: 'createdDate', sortable: true, dropDownFilter: false, display: false },
+    { uniqueId: 'lastUpdated', displayName: 'lastUpdated', sortable: true, dropDownFilter: false, display: false }
 ];

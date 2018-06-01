@@ -92,8 +92,9 @@ export class DataTableComponent implements OnInit {
     this.rowDoubleClick.emit(row);
   }
 
-  onActionBtnClick(event, row) {
-    this.actionBtnClick.emit(row);
+  onActionBtnClick(event, row, type) {
+    const data = { eventType: type, data: row };
+    this.actionBtnClick.emit(data);
   }
 
   addColumnHeader() {
@@ -238,7 +239,7 @@ export class DataTableComponent implements OnInit {
     this.renderDataTable(sortedRows, false);
   }
 
-  dateRangeFilter(startDate, endDate, columnId) {
+  dateRangeFilter(startDate: any, endDate: any, columnId) {
     const sd = new Date(startDate);
     const ed = new Date(endDate);
     const filteredRows = this.tableData.filter(row => {
