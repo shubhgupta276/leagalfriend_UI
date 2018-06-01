@@ -20,8 +20,8 @@
       "prefix": "app",
       "styles": [
         "../node_modules/font-awesome/css/font-awesome.min.css",
-        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/ionicons/dist/css/ionicons.min.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css",
         "../node_modules/bootstrap-daterangepicker/daterangepicker.css",
         "../node_modules/ngx-select-dropdown/dist/assets/style.css",
@@ -31,6 +31,7 @@
         "../src/assets/dist/css/style.css",
         "../node_modules/fullcalendar/dist/fullcalendar.min.css",
         "styles.css"
+        
         
       ],
       "scripts": [

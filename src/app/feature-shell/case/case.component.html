@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<!-- <div class="content-wrapper">
   <div class="page-heading">
     Case Management
   </div>
@@ -19,12 +19,12 @@
     <a>
       <i class="fa fa-plus" type="button"></i>
     </a>
-  </div>
-  <!-- <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles"></app-add-user>
+  </div> -->
+<!-- <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles"></app-add-user>
   <app-edit-user [Roles]="userRoles" [Status]="userStatus" [arrUsers]="arrUsers"></app-edit-user> -->
-</div>
+<!-- </div> -->
 
-<!-- <style>
+<style>
   .bgColor {
     background-color: #dd4b39;
   }
@@ -67,14 +67,14 @@
             <div class="nav-tabs-custom">
               <div>
                 <div class="row case-table-toolbar">
-                  <div class="col-sm-4 pr-zero">
+                  <div class="col-sm-7 pr-zero">
                     <ul class="nav nav-tabs">
                       <li class="active">
 
-                        <a href="#tab_running" (click)="runningTools()" data-toggle="tab">Running Cases</a>
+                        <a href="#tab_running" (click)="runningTabActive()" data-toggle="tab">Running Cases</a>
                       </li>
                       <li>
-                        <a href="#tab_completed" (click)="completedTools()" data-toggle="tab">Completed Cases</a>
+                        <a href="#tab_completed" (click)="completedTabActive()" data-toggle="tab">Completed Cases</a>
                       </li>
                     </ul>
                   </div>
@@ -84,41 +84,29 @@
                       <span class="glyphicon glyphicon-print"></span>
                     </button>
                   </div>
-                  <div class="col-sm-3">
-                    <div style="margin-bottom: -35px;float:  right;">
-                      <label style="font-weight: 400;">Branch:</label>
-                      <select id="ddlCaseBranch1" class="caseFilterDropDown1">
-                        <option value="All">All</option>
-                        <option *ngFor="let item of arrListCaseBranch1" [ngValue]="item.id">{{item.branchName}}</option>
-                      </select>
-                    </div>
-                    <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button">Reset</button>
+                  <div class="col-sm-2" *ngIf="runningCaseTabActive">
+                    <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilter()">Reset</button>
                     <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
                   </div>
-                  <div id="pageLength1" class="col-sm-2 case-pagelength">
-
-                    <label class="custom-label">Show
-                      <select class="input-sm" id="ddlLengthMenu">
-                      </select> rows
-                    </label>
+                  <div class="col-sm-2" *ngIf="!runningCaseTabActive">
+                    <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilterCompleted()">Reset</button>
+                    <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
                   </div>
-                  <div id="searchBox1" class="col-sm-2 case-search">
-                    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
+                  <div id="searchBox1" class="col-sm-2 case-search" *ngIf="runningCaseTabActive">
+                    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilterRunning($event.target.value)">
                   </div>
-                  <div id="pageLength2" class="col-sm-2 case-pagelength" style="display:none">
-                    <label class="custom-label">Show
-                      <select class="input-sm" id="ddlLengthMenu2">
-                      </select> rows
-                    </label>
-                  </div>
-                  <div id="searchBox2" class="col-sm-2 case-search" style="display:none">
-                    <input type="text" id="txtSearch2" class="input-sm custom-search" placeholder="Search...">
+                  <div id="searchBox2" class="col-sm-2 case-search" *ngIf="!runningCaseTabActive">
+                    <input type="text" id="txtSearch2" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilterCompleted($event.target.value)">
                   </div>
                 </div>
               </div>
               <div class="tab-content">
                 <div class="tab-pane active" id="tab_running">
-                  <table id="example1" on-mouseleave="hideCalendar()" class="table table-bordered table-hover">
+                  <app-data-table #caseRunningTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+                    (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
+                    [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)">
+                  </app-data-table>
+                  <!-- <table id="example1" on-mouseleave="hideCalendar()" class="table table-bordered table-hover">
                     <thead>
                       <tr>
                         <th>Case ID</th>
@@ -161,10 +149,15 @@
                         </td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table> -->
                 </div>
                 <div class="tab-pane" id="tab_completed">
-                  <table id="example2" class="table table-bordered table-hover">
+                  <app-data-table #caseCompletedTable [tableData]="completedTableInputData" [tableColumns]="completedColumns" (rowClick)="onRowClickCompleted($event)"
+                    (rowDoubleClick)="onRowDoubleClickCompleted($event)" (selectedRows)="onRowSelectCompleted($event)" [showRowSelect]="rowSelect"
+                    [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" [showSearchFilter]="showSearchFilter"
+                    (actionBtnClick)="onActionBtnClickCompleted($event)">
+                  </app-data-table>
+                  <!-- <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
                         <th>Select</th>
@@ -201,16 +194,31 @@
                         </td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table> -->
                 </div>
               </div>
             </div>
+            <!-- <p>Simple datepicker</p>
+
+            <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+
+            <hr/>
+
+            <button class="btn btn-sm btn-outline-primary mr-2" (click)="selectToday()">Select Today</button>
+            <button class="btn btn-sm btn-outline-primary mr-2" (click)="dp.navigateTo()">To current month</button>
+            <button class="btn btn-sm btn-outline-primary mr-2" (click)="dp.navigateTo({year: 2013, month: 2})">To Feb 2013</button>
+
+            <hr/>
+
+            <pre>Month: {{ date.month }}.{{ date.year }}</pre>
+            <pre>Model: {{ model | json }}</pre> -->
           </div>
         </div>
       </div>
+
     </div>
   </section>
-  <app-edit-case [caseRunning]="caseRunning"></app-edit-case>
+  <!-- <app-edit-case [caseRunning]="caseRunning"></app-edit-case> -->
   <app-add-case></app-add-case>
   <app-history-case></app-history-case>
   <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
@@ -326,4 +334,7 @@
 
         </div>
       </div>
-    </div> -->
+    </div>
+  </div>
+
+</div>
