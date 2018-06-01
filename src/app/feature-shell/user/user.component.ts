@@ -57,103 +57,103 @@ export class UserComponent implements OnInit {
 
   }
 
-  bindDataTable() {
-    const arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, 'All']];
-    const selectedPageLength = 15;
-    this.$table = $('#example1').DataTable({
-      columns: [
-        { name: '#', orderable: true },
-        { name: 'Name', orderable: true },
-        { name: 'Email', orderable: true },
-        { name: 'Phone', orderable: true },
-        { name: 'Role', orderable: false },
-        { name: 'Status', orderable: false }
-      ],
-      destroy: true,
-      lengthMenu: arLengthMenu,
-      pageLength: selectedPageLength,
-      oLanguage: {
-        sLengthMenu: 'Show _MENU_ rows',
-        sSearch: '',
-        sSearchPlaceholder: 'Search...'
-      },
-      initComplete: function () {
-        const tableid = 'example1';
-        const $rowSearching = $('#' + tableid + '_wrapper');
-        $rowSearching.find('.row:eq(0)').hide();
+  // bindDataTable() {
+  //   const arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, 'All']];
+  //   const selectedPageLength = 15;
+  //   this.$table = $('#example1').DataTable({
+  //     columns: [
+  //       { name: '#', orderable: true },
+  //       { name: 'Name', orderable: true },
+  //       { name: 'Email', orderable: true },
+  //       { name: 'Phone', orderable: true },
+  //       { name: 'Role', orderable: false },
+  //       { name: 'Status', orderable: false }
+  //     ],
+  //     destroy: true,
+  //     lengthMenu: arLengthMenu,
+  //     pageLength: selectedPageLength,
+  //     oLanguage: {
+  //       sLengthMenu: 'Show _MENU_ rows',
+  //       sSearch: '',
+  //       sSearchPlaceholder: 'Search...'
+  //     },
+  //     initComplete: function () {
+  //       const tableid = 'example1';
+  //       const $rowSearching = $('#' + tableid + '_wrapper');
+  //       $rowSearching.find('.row:eq(0)').hide();
 
-        for (let i = 0; i < arLengthMenu[0].length; i++) {
-          const selectText = (arLengthMenu[0][i] === selectedPageLength) ? 'selected' : '';
-          $('#ddlLengthMenu').append(
+  //       for (let i = 0; i < arLengthMenu[0].length; i++) {
+  //         const selectText = (arLengthMenu[0][i] === selectedPageLength) ? 'selected' : '';
+  //         $('#ddlLengthMenu').append(
 
 
-            '<option ' + selectText + ' value=' +
-            arLengthMenu[0][i] +
-            '>' +
-            arLengthMenu[1][i] +
-            '</option>'
-          );
-        }
-        // $('#ddlLengthMenu').val(selectedPageLength);
+  //           '<option ' + selectText + ' value=' +
+  //           arLengthMenu[0][i] +
+  //           '>' +
+  //           arLengthMenu[1][i] +
+  //           '</option>'
+  //         );
+  //       }
+  //       // $('#ddlLengthMenu').val(selectedPageLength);
 
-        $('#ddlLengthMenu').on('change', function () {
-          $rowSearching
-            .find('.row:eq(0)')
-            .find('select')
-            .val($(this).val())
-            .change();
-        });
-      }
-    });
-    const $this = this;
-    $this.$table.columns().every(function () {
-      $('#txtSearch').on('keyup change', function () {
-        if ($this.$table.search() !== this.value) {
-          $this.$table.search(this.value).draw();
-        }
-      });
-    });
+  //       $('#ddlLengthMenu').on('change', function () {
+  //         $rowSearching
+  //           .find('.row:eq(0)')
+  //           .find('select')
+  //           .val($(this).val())
+  //           .change();
+  //       });
+  //     }
+  //   });
+  //   const $this = this;
+  //   $this.$table.columns().every(function () {
+  //     $('#txtSearch').on('keyup change', function () {
+  //       if ($this.$table.search() !== this.value) {
+  //         $this.$table.search(this.value).draw();
+  //       }
+  //     });
+  //   });
 
-    $this.$table.columns().every(function () {
-      // user filter
-      $('#ddlUserFilter').on('change', function () {
-        const role = $(this).val();
-        if (role === 'All') {
-          $this.$table
-            .columns(4)
-            .search('')
-            .draw();
-        } else if ($this.$table.columns(5).search() !== this.value) {
-          const query = '((  )|^)' + regex_escape(this.value) + '((  )|$)';
-          $this.$table
-            .columns(4)
-            .search(query, true, false)
-            .draw();
-        } else {
-        }
-      });
-      // status filter
-      $('#ddlStatusFilter').on('change', function () {
-        const status = $(this).val();
-        if (status === 'All') {
-          $this.$table
-            .columns(5)
-            .search('')
-            .draw();
-        } else if ($this.$table.columns(5).search() !== this.value) {
-          const query = '((  )|^)' + regex_escape(this.value) + '((  )|$)';
-          $this.$table
-            .columns(5)
-            .search(query, true, false)
-            .draw();
-        } else {
-        }
-      });
-    });
-    function regex_escape(text) {
-      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-    }
-  }
+  //   $this.$table.columns().every(function () {
+  //     // user filter
+  //     $('#ddlUserFilter').on('change', function () {
+  //       const role = $(this).val();
+  //       if (role === 'All') {
+  //         $this.$table
+  //           .columns(4)
+  //           .search('')
+  //           .draw();
+  //       } else if ($this.$table.columns(5).search() !== this.value) {
+  //         const query = '((  )|^)' + regex_escape(this.value) + '((  )|$)';
+  //         $this.$table
+  //           .columns(4)
+  //           .search(query, true, false)
+  //           .draw();
+  //       } else {
+  //       }
+  //     });
+  //     // status filter
+  //     $('#ddlStatusFilter').on('change', function () {
+  //       const status = $(this).val();
+  //       if (status === 'All') {
+  //         $this.$table
+  //           .columns(5)
+  //           .search('')
+  //           .draw();
+  //       } else if ($this.$table.columns(5).search() !== this.value) {
+  //         const query = '((  )|^)' + regex_escape(this.value) + '((  )|$)';
+  //         $this.$table
+  //           .columns(5)
+  //           .search(query, true, false)
+  //           .draw();
+  //       } else {
+  //       }
+  //     });
+  //   });
+  //   function regex_escape(text) {
+  //     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  //   }
+  // }
 
 
   getUsers() {
@@ -162,7 +162,6 @@ export class UserComponent implements OnInit {
     this.userService.listUsers(client).subscribe(
       result => {
         result.forEach(element => {
-          debugger
           element.roleId = element.roles[0].id;
           element.roles = element.roles[0].roleName;
            element.statusId = element.status.statusId;
