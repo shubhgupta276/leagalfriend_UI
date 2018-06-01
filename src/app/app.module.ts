@@ -17,6 +17,7 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import {BusyModule} from 'angular2-busy';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   imports: [
     BrowserModule,
@@ -27,7 +28,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     SharedModule,
     Ng2CompleterModule,
     NgxPermissionsModule.forRoot(),
-    BusyModule
+    BusyModule,
+    NgbModule.forRoot()
   ],
   declarations: [
     AppComponent
