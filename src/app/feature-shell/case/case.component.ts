@@ -26,8 +26,10 @@ declare var $;
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
 import { caseRunningTableConfig, caseCompletedTableConfig } from './case.config';
 import { element } from 'protractor';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../../shared/services/shared.service';
 const now = new Date();
 
 
@@ -41,6 +43,7 @@ const now = new Date();
   ],
 })
 export class CaseComponent implements OnInit {
+  @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   tableInputData = [];
   columns = caseRunningTableConfig;
   @ViewChild('caseRunningTable') runningDataTableComponent: DataTableComponent;
@@ -49,7 +52,7 @@ export class CaseComponent implements OnInit {
   showSearchFilter = false;
   actionColumnConfig: ActionColumnModel;
   model: NgbDateStruct;
-  date: {year: number, month: number};
+  date: { year: number, month: number };
 
   completedTableInputData = [];
   completedColumns = caseCompletedTableConfig;
@@ -68,11 +71,13 @@ export class CaseComponent implements OnInit {
   hoveredIndex: number = null;
   isCalendarOpen = false;
   newHiringCasedata: any;
-  @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   $table: any;
   IsPrintable = false;
   SelectedFileIds = [];
-  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService) {
+  branchSubscription: Subscription;
+  branchData: any;
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
 
@@ -100,21 +105,27 @@ export class CaseComponent implements OnInit {
   }
 
   selectToday() {
-    this.model = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+    this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
   getCasesData() {
+    var $this = this;
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
     };
+    this.tableInputData = [];
+    this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
         result.forEach(ele => {
-          if (ele.completionDate) {
-            this.completedTableInputData.push(ele);
-          } else {
-            this.tableInputData.push(ele);
+          if (ele.branchName == $this.branchData.branchName) {
+            if (ele.completionDate) {
+              this.completedTableInputData.push(ele);
+            } else {
+              this.tableInputData.push(ele);
+            }
           }
         });
+
         this.runningDataTableComponent.ngOnInit();
         this.completedDataTableComponent.ngOnInit();
       },
@@ -131,10 +142,15 @@ export class CaseComponent implements OnInit {
   }
   ngOnInit() {
 
-
+    this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
+      this.branchData = this._storageService.getBranchData();
+      if (this.branchData) {
+        this.getCasesData();
+      }
+    });
     // this.getRunningCase();
     this.setActionConfig();
-    this.getCasesData();
+    //this.getCasesData();
     this.getBranchDDL();
     this.bindRecourseDDL();
     this.bindStageDDL();
@@ -201,15 +217,24 @@ export class CaseComponent implements OnInit {
     //     $.fn.dataTableExt.afnFiltering.length = 0;
     //     self.$table.columns(5).search('').draw();
     //   });
+    $('#reservation').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+        format: 'DD-MM-YYYY'
+      }
+    }, function (start_date, end_date) {
+      $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
+    });
 
-    //   $('#reservation').daterangepicker({
-    //     autoApply: true,
-    //     locale: {
-    //       format: 'MM-DD-YYYY'
-    //     }
+    // $('#reservation').daterangepicker({
+    //   autoApply: true,
+    //   locale: {
+    //     format: 'MM-DD-YYYY'
+    //   },
+    //   autoUpdateInput:false
 
-    //   });
-    //   // $('#reservation').val('');
+    //  });
+    //$('#reservation').val('');
 
     //   //start Branch1 filter
     //   $('#ddlCaseBranch1').on('change', function () {
@@ -300,8 +325,51 @@ export class CaseComponent implements OnInit {
     console.log(event);
   }
 
-  onRowDoubleClick(event) {
-    console.log(event);
+  onRowDoubleClick(c) {
+    $('#editCaseModal').modal('show');
+    var $this = this
+    var reqData = {
+      caseId: c.id,
+    };
+
+    if (c.compliance == false) {
+      this.authService.getCaseByCaseId(reqData).subscribe(
+
+        result => {
+          debugger
+          $this.editChild.createForm(result);
+          $('#caseLi a').click();
+
+          $('#complianceDiv').show();
+
+          $('#compLi').hide();
+
+        },
+        err => {
+          console.log(err);
+        });
+    }
+    else {
+
+      this.authService.getCaseCompliance(reqData).subscribe(
+
+        result => {
+
+          $('#compLi a').click();
+
+          $('#form1 input,textarea').attr('readonly', 'readonly');
+          // $('#divRecourse').attr('disabled','disabled');
+
+
+          $('#complianceDiv').hide();
+          $('#compLi').show();
+          this.editChild.createFormforcompliance(result);
+
+        },
+        err => {
+          console.log(err);
+        });
+    }
   }
 
   onRowSelect(event) {
@@ -309,7 +377,7 @@ export class CaseComponent implements OnInit {
   }
 
   onActionBtnClick(event) {
-    console.log('action: ', event);
+    $('#modal-default1').modal('show');
   }
 
   onRowClickCompleted(event) {
@@ -355,7 +423,35 @@ export class CaseComponent implements OnInit {
   searchFilterCompleted(value) {
     this.completedDataTableComponent.applyFilter(value);
   }
+  formatDate(date) {
 
+    var arDate = date.split('-');
+    var dd = arDate[0];
+    var mm = arDate[1];
+    var yy = arDate[2];
+    return (yy + '-' + mm + '-' + dd);
+  }
+  filterCaseData() {
+    var arDates;
+    let fromToDate = $("#reservation").val();
+    if (fromToDate && fromToDate.length > 0) {
+      arDates = fromToDate.split(" To ");
+      arDates[0] = this.formatDate(arDates[0]);
+      arDates[1] = this.formatDate(arDates[1]);
+    }
+
+    this.runningDataTableComponent.sortTable($('#ddlCaseRecource').val(), 'recourseCode');
+    this.runningDataTableComponent.sortTable($('#ddlCaseStage').val(), 'stageName');
+    if (fromToDate.length > 0) {
+      this.runningDataTableComponent.dateRangeFilter(arDates[0], arDates[1], 'nextHearingDate');
+    }
+    else {
+      this.runningDataTableComponent.resetDateFilter();
+    }
+
+    $('#filterCaseModal').modal('hide');
+
+  }
   bindDatatable() {
 
     var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, 'All']];
@@ -454,55 +550,6 @@ export class CaseComponent implements OnInit {
       err => {
         console.log(err);
       });
-  }
-
-  showEditModal(c) {
-    $('#editCaseModal').modal('show');
-
-
-    var $this = this
-    var reqData = {
-      caseId: c.id,
-    };
-
-    if (c.compliance == false) {
-      this.authService.getCaseByCaseId(reqData).subscribe(
-
-        result => {
-          $('#caseLi a').click();
-
-          $('#complianceDiv').show();
-
-          $('#compLi').hide();
-          this.editChild.createForm(result);
-
-        },
-        err => {
-          console.log(err);
-        });
-    }
-    else {
-
-      this.authService.getCaseCompliance(reqData).subscribe(
-
-        result => {
-
-          $('#compLi a').click();
-
-          $('#form1 input,textarea').attr('readonly', 'readonly');
-          // $('#divRecourse').attr('disabled','disabled');
-
-
-          $('#complianceDiv').hide();
-          $('#compLi').show();
-          this.editChild.createFormforcompliance(result);
-
-        },
-        err => {
-          console.log(err);
-        });
-    }
-
   }
 
   runningTabActive() {
