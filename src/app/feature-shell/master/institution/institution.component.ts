@@ -12,6 +12,7 @@ import { element } from 'protractor';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { institutionTableConfig } from './institution.config';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 
 declare let $;
 
@@ -31,12 +32,13 @@ export class InstitutionComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
-
+  actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService,
     private _cityService: CityService, private _storageService: StorageService) {
   }
 
   ngOnInit() {
+    this.setActionConfig();
     this.bindCity();
 
   }
@@ -135,6 +137,46 @@ export class InstitutionComponent implements OnInit {
 
   onRowSelect(event) {
     console.log(event);
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.btnText = ['Make Default','Default'];
+    this.actionColumnConfig.moduleName = 'Master_Institution';
+  }
+  onActionBtnClick(data) {
+    const reqData = {
+      institutionName: data.institutionName,
+      contactName: data.contactPerson,
+      defaultInstitution: 1,
+      address: data.address,
+      billingAddr: data.billingAddress,
+      phone: data.contactNo,
+      fkCity: data.cityId,
+      id: data.id,
+      userId: parseInt(this._storageService.getUserId(), 10)
+    };
+    this._institutionService.updateDefaultInstitution(reqData).subscribe(
+
+      result => {
+        const _result = result.body;
+        if (_result.httpCode === 200) { // success
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+          this.tableInputData.forEach(item => {
+            if (item.id === data.id) {
+              item.defaultInstitution = true;
+            } else {
+              item.defaultInstitution = false;
+            }
+          });
+
+        } else {
+          $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      });
   }
 }
 
