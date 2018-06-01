@@ -46,9 +46,17 @@
                 {{ actionColumnConfig.displayName }}
             </mat-header-cell>
             <mat-cell *matCellDef="let row">
-                <button class="table-case-history-btn" (click)="actionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Case'" >{{ actionColumnConfig.btnText[0] }}</button>
-                <button class="table-make-default-inst-btn" (click)="actionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution" >{{ actionColumnConfig.btnText[0] }}</button>
-                <button class="table-default-inst-btn" (click)="actionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution" >{{ actionColumnConfig.btnText[1] }}</button>
+                <button class="table-case-history-btn" (click)="onActionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Case'">{{ actionColumnConfig.btnText[0] }}</button>
+                <button class="table-make-default-inst-btn" (click)="onActionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution">{{ actionColumnConfig.btnText[0] }}</button>
+                <button class="table-default-inst-btn" (click)="onActionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution">{{ actionColumnConfig.btnText[1] }}</button>
+
+                <a *ngIf="actionColumnConfig.showEdit" (click)="onActionBtnClick($event, row, 'edit')">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <span *ngIf="actionColumnConfig.showEdit && actionColumnConfig.showHistory">&nbsp;</span>
+                <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
+                    <i class="fa fa-history"></i>
+                </a>
             </mat-cell>
         </ng-container>
 

@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { SharedService } from '../../../shared/services/shared.service';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { forInstitutionTableConfig } from './for-intitution-config';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 
 declare let $;
 @Component({
@@ -26,10 +27,11 @@ declare let $;
 
 export class ForInstitutionComponent implements OnInit {
     tableInputData = [];
+    actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
     rowSelect = true;
     hoverTableRow = true;
-
+    showSearchFilter = true;
     arInstitution = [];
     arRecourse: any[] = [];
     InstitutionValue: any;
@@ -51,13 +53,13 @@ export class ForInstitutionComponent implements OnInit {
     isPageLoad: boolean = true;
     constructor(private fb: FormBuilder,
         private _router: Router,
-        private _datePipe: DatePipe,
         private _institutionService: InstitutionService,
         private _recourseService: RecourseService,
         private _sharedService: SharedService,
         private _storageService: StorageService) { }
 
     ngOnInit() {
+        this.setActionConfig();
         this.getInstitutionList();
         this.bindFilterType();
         this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
@@ -66,59 +68,54 @@ export class ForInstitutionComponent implements OnInit {
             }
             this.isPageLoad = false;
         });
+        this.getRecourse();
+        const selfnew = this;
+        $($.document).ready(function () {
 
-        // this.bindFilterType();
+            document.ondragover = document.ondragenter = function (evt) {
+                $('#addForInstitutionModal').modal('show');
+                evt.preventDefault();
+            };
 
-        // this.getRecourse();
-        // var selfnew = this;
-        // $($.document).ready(function () {
+            document.getElementById('addForInstitutionModal').ondrop = function (evt) {
+                $('#ERROR_casefile').hide();
+                if (!validateFile(evt.dataTransfer.files[0].name)) {
+                    $('#ERROR_casefile').show();
+                } else {
+                    $('#casefile')[0].files = evt.dataTransfer.files;
+                    $('#ERROR_casefile').hide();
+                }
+                evt.preventDefault();
+            };
 
-        //     document.ondragover = document.ondragenter = function (evt) {
-        //         $('#addForInstitutionModal').modal('show');
-        //         evt.preventDefault();
-        //     };
+            function validateFile(name: string) {
+                const ext = name.substring(name.lastIndexOf('.'));
+                if (ext.toLowerCase() === '.csv') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
 
-        //     document.getElementById("addForInstitutionModal").ondrop = function (evt) {
-        //         $("#ERROR_casefile").hide();
-        //         if (!validateFile(evt.dataTransfer.files[0].name)) {
-        //             $("#ERROR_casefile").show();
-        //         }
-        //         else {
-        //             $("#casefile")[0].files = evt.dataTransfer.files;
-        //             $("#ERROR_casefile").hide();
-        //         }
-        //         evt.preventDefault();
-        //     };
+            $('#txtFromToDate').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    format: 'DD MMM YYYY'
+                }
+            }, function (start_date, end_date) {
+                $('#txtFromToDate').val(start_date.format('DD MMM YYYY') + ' To ' + end_date.format('DD MMM YYYY'));
+            });
 
-        //     function validateFile(name: string) {
-        //         var ext = name.substring(name.lastIndexOf('.'));
-        //         if (ext.toLowerCase() == '.csv') {
-        //             return true;
-        //         }
-        //         else {
-        //             return false;
-        //         }
-        //     }
-
-        //     $('#txtFromToDate').daterangepicker({
-        //         autoUpdateInput: false,
-        //         locale: {
-        //             format: 'DD-MM-YYYY'
-        //         }
-        //     }, function (start_date, end_date) {
-        //         $('#txtFromToDate').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
-        //     });
-
-        //     $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
-        //         let isNewHearingDate = $(evt.target).hasClass("newHiringDate");
-        //         selfnew.updateNewHearingDate($(this).val(), isNewHearingDate)
-        //     });
-        // });
+            $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
+                const isNewHearingDate = $(evt.target).hasClass('newHiringDate');
+                selfnew.updateNewHearingDate($(this).val(), isNewHearingDate);
+            });
+        });
     }
 
-    filterTypeChange(id) {
+    filterTypeChange(id: number) {
 
-        this.filterTypeId = id;
+        this.filterTypeId = Number(id);
         if (this.filterTypeId === 0) {
             $('#txtFromToDate').val('');
         }
@@ -176,14 +173,59 @@ export class ForInstitutionComponent implements OnInit {
             });
     }
 
+    bindFilterType() {
+        this.arFilterType.push(
+            { value: 0, text: 'No Filter' },
+            { value: 1, text: 'Next Hearing Date' },
+            { value: 2, text: 'Last Hearing Date' },
+            { value: 3, text: 'Case Created Date' },
+            { value: 4, text: 'Last Update Date' },
+            { value: 5, text: 'Compliance' });
+    }
+
+    filterTable() {
+        this.dataTableComponent.sortTable((this.recourseFilter === undefined) ? '' : this.recourseFilter.recourseCode, 'recourse');
+        if (this.filterTypeId === 0) {
+            this.dataTableComponent.dateRangeFilter('', '', 'nextHearingDate');
+            this.dataTableComponent.dateRangeFilter('', '', 'previousHearingDate');
+            this.dataTableComponent.dateRangeFilter('', '', 'createdDate');
+            this.dataTableComponent.dateRangeFilter('', '', 'lastUpdated');
+        } else {
+            const fromToDate = $('#txtFromToDate').val().split(' To ');
+            if (this.filterTypeId === 1) { // Next Hearing Date
+                this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
+                    this._sharedService.convertStrToDate(fromToDate[1]), 'nextHearingDate');
+            } else if (this.filterTypeId === 2) { // Last Hearing Date
+                this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
+                    this._sharedService.convertStrToDate(fromToDate[1]), 'previousHearingDate');
+            } else if (this.filterTypeId === 3) { // Case Created Date
+                this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
+                    this._sharedService.convertStrToDate(fromToDate[1]), 'createdDate');
+            } else if (this.filterTypeId === 4) { // Last Update Date
+                this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
+                    this._sharedService.convertStrToDate(fromToDate[1]), 'lastUpdated');
+            }
+        }
+    }
+
+    search() {
+        this.filterTable();
+    }
+
     changeRecourse(data: any) {
         this.recourseFilter = data;
-        this.filterDatatableData();
-
+        this.filterTable();
     }
 
     checkboxChange(checked) {
         this.checkboxCounter = (checked) ? this.checkboxCounter + 1 : this.checkboxCounter - 1;
+    }
+
+    setActionConfig() {
+        this.actionColumnConfig = new ActionColumnModel();
+        this.actionColumnConfig.displayName = 'Action';
+        this.actionColumnConfig.showEdit = true;
+        this.actionColumnConfig.showHistory = true;
     }
 
     GetAllForIntitution() {
@@ -253,7 +295,7 @@ export class ForInstitutionComponent implements OnInit {
                             ndohNullReason: obj.ndohNullReason,
                             nextActionDate: obj.nextActionDate,
                             nextActionPlan: obj.nextActionPlan,
-                            nextHearingDate: new Date(obj.nextHearingDate),
+                            nextHearingDate: this._sharedService.convertDateToStr(obj.nextHearingDate),
                             noticeAmount: obj.noticeAmount,
                             noticeDate: obj.noticeDate,
                             noticeDateAppointmentArbitrator: obj.noticeDateAppointmentArbitrator,
@@ -275,7 +317,7 @@ export class ForInstitutionComponent implements OnInit {
                             posOnEpFilingDate: obj.posOnEpFilingDate,
                             posOnFilingDate: obj.posOnFilingDate,
                             posOnNoticeDate: obj.posOnNoticeDate,
-                            previousHearingDate: new Date(obj.previousHearingDate),
+                            previousHearingDate: this._sharedService.convertDateToStr(obj.previousHearingDate),
                             product: obj.product,
                             productGroup: obj.productGroup,
                             publicationDatePhysicalPossessionNotice: obj.publicationDatePhysicalPossessionNotice,
@@ -341,6 +383,12 @@ export class ForInstitutionComponent implements OnInit {
         console.log(event);
     }
 
+    onActionBtnClick(event) {
+        if (event.eventType === 'edit') {
+            this._router.navigate(['/admin/institution/editforinstitution/' + event.data.institutionId + '/' + event.data.id]);
+        }
+    }
+
     bindDatatable() {
 
         const arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, 'All']];
@@ -395,20 +443,6 @@ export class ForInstitutionComponent implements OnInit {
             });
             // end Recourse filter
         });
-    }
-
-    bindFilterType() {
-        this.arFilterType.push(
-            { value: 0, text: 'No Filter' },
-            { value: 1, text: 'Next Hearing Date' },
-            { value: 2, text: 'Last Hearing Date' },
-            { value: 3, text: 'Case Created Date' },
-            { value: 4, text: 'Last Update Date' },
-            { value: 5, text: 'Compliance' });
-    }
-
-    search() {
-        this.filterDatatableData();
     }
 
     filterDatatableData() {
@@ -536,9 +570,6 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     caseSaved() {
-        if (this.$table) {
-            this.$table.destroy();
-        }
         this.GetAllForIntitution();
     }
 }
