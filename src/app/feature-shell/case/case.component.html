@@ -198,6 +198,8 @@
                 </div>
               </div>
             </div>
+           
+            <!-- <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker> -->
             <!-- <p>Simple datepicker</p>
 
             <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
@@ -218,7 +220,7 @@
 
     </div>
   </section>
-  <!-- <app-edit-case [caseRunning]="caseRunning"></app-edit-case> -->
+  <app-edit-case [tableInputData]="tableInputData"></app-edit-case>
   <app-add-case></app-add-case>
   <app-history-case></app-history-case>
   <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
@@ -230,13 +232,13 @@
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 class="modal-title caseHeading">Filter </h4>
-          <div class="caseBranch">
+          <!-- <div class="caseBranch">
             <label style="width:85px" class="caseSearchLabel">Branch:</label>
             <select id="ddlCaseBranch" class="caseFilterDropDown1">
               <option value="All">All</option>
               <option *ngFor="let item of arrListCaseBranch" [ngValue]="item.id">{{item.branchName}}</option>
             </select>
-          </div>
+          </div> -->
         </div>
         <div style="width:120px;height:10%;background-color:black;"></div>
         <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
@@ -244,20 +246,20 @@
             <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
               <label class="caseSearchLabel">Recourse Type:</label>
               <select id="ddlCaseRecource" class="caseFilterDropDown1">
-                <option value="All">All</option>
+                <option value="">All</option>
                 <option *ngFor="let option of arrListCaseRecource" [ngValue]="option.id">{{ option.recourseName }}</option>
               </select>
               <label style="width:102px" class="caseSearchLabel">Case Stage:</label>
               <select id="ddlCaseStage" class="caseFilterDropDown1">
-                <option value="All">All</option>
+                <option value="">All</option>
                 <option *ngFor="let option of arrListCaseStage" [ngValue]="option.id">{{ option.stageName }}</option>
               </select>
 
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
-              <div class="form-group">
-                <label class="dateRange">Date range:</label>
+            <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">               
 
+              <div class="form-group">
+                <label class="dateRange">Date range:</label>                
                 <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
@@ -270,7 +272,7 @@
           </div>
           <div class="modal-footer FilterSearch">
             <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Reset</button>
-            <button type="submit" id="btnSearch" class="btn btn-default caseSearch">Search</button>
+            <button type="submit" id="btnSearch" (click) = "filterCaseData()" class="btn btn-default caseSearch">Search</button>
           </div>
 
         </div>

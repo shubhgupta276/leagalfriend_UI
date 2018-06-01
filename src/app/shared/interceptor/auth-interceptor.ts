@@ -25,7 +25,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
         if (req.url.indexOf('login') >= 0 || (req.url.indexOf('password-reset') >= 0)) {
 
-            return next.handle(req);
+            return next.handle(req).do((event: HttpEvent<any>) => { }, (err: any) => {
+                if (err instanceof HttpErrorResponse)
+                loadingContainer.style.display = 'none';
+                });
         }
         else if (req.url.indexOf('users/user') >= 0) {
 

@@ -101,12 +101,12 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   closeModal() {
     $('#closebtn').click();
   }
-  createForm(data: Compliance) {
+  createForm(data: any) {
     this.editComplianceMasterForm = this.fb.group({
 
-      recourse: [data == null ? null : data.recourse, Validators.required],
-      stage: [data == null ? null : data.stage, Validators.required],
-      compliance: [data == null ? null : data.compliance, Validators.required],
+      recourse: [data == null ? null : data.recourseId, Validators.required],
+      stage: [data == null ? null : data.stageId, Validators.required],
+      compliance: [data == null ? null : data.complianceName, Validators.required],
       status: [data == null ? null : data.statusId, Validators.required],
       id: [data == null ? null : data.id, Validators.required],
     });
