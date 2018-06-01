@@ -55,6 +55,8 @@ export class CaseComponent implements OnInit {
   completedColumns = caseCompletedTableConfig;
   @ViewChild('caseCompletedTable') completedDataTableComponent: DataTableComponent;
 
+  runningCaseTabActive: boolean = true;
+
   lstUploadedDocuments: any;
   caseRunning: any[] = [];
   caseCompleted: Case[];
@@ -113,9 +115,7 @@ export class CaseComponent implements OnInit {
             this.tableInputData.push(ele);
           }
         });
-        console.log('running:', this.tableInputData);
         this.runningDataTableComponent.ngOnInit();
-        console.log('completed:', this.completedTableInputData);
         this.completedDataTableComponent.ngOnInit();
       },
       err => {
@@ -331,7 +331,6 @@ export class CaseComponent implements OnInit {
   filterTable(data) {
     this.runningDataTableComponent.sortTable('SBI', 'branchName');
     this.runningDataTableComponent.sortTable('WINDING_UP', 'recourseCode');
-    // this.runningDataTableComponent.sortTable('', 'stageName');
     this.runningDataTableComponent.dateRangeFilter('2018-05-28', '2018-5-30', 'nextHearingDate');
   }
 
@@ -346,7 +345,6 @@ export class CaseComponent implements OnInit {
   filterTableCompleted(data) {
     this.completedDataTableComponent.sortTable('SBI', 'branchName');
     this.completedDataTableComponent.sortTable('WINDING_UP', 'recourseCode');
-    // this.completedDataTableComponent.sortTable('', 'stageName');
     this.completedDataTableComponent.dateRangeFilter('2018-05-28', '2018-5-30', 'nextHearingDate');
   }
 
@@ -354,7 +352,7 @@ export class CaseComponent implements OnInit {
     this.completedDataTableComponent.resetFilters();
   }
 
-  searchFilterRunningCompleted(value) {
+  searchFilterCompleted(value) {
     this.completedDataTableComponent.applyFilter(value);
   }
 
@@ -507,18 +505,12 @@ export class CaseComponent implements OnInit {
 
   }
 
-  runningTools() {
-    // document.getElementById('pageLength1').style.display = 'block';
-    // document.getElementById('pageLength2').style.display = 'none';
-    // document.getElementById('searchBox1').style.display = 'block';
-    // document.getElementById('searchBox2').style.display = 'none';
+  runningTabActive() {
+    this.runningCaseTabActive = true;
   }
 
-  completedTools() {
-    // document.getElementById('pageLength2').style.display = 'block';
-    // document.getElementById('pageLength1').style.display = 'none';
-    // document.getElementById('searchBox2').style.display = 'block';
-    // document.getElementById('searchBox1').style.display = 'none';
+  completedTabActive() {
+    this.runningCaseTabActive = false;
   }
 
   updateCheckedOptions(items) {
