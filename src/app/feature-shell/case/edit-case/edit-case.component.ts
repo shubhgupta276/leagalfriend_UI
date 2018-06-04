@@ -424,6 +424,7 @@ export class EditCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
+        if (result.httpCode === 200) {
         result.forEach(function (value) {
           if (value.roles.length > 0) {
             if (value.roles[0].roleName == 'MANAGER') {
@@ -444,7 +445,8 @@ export class EditCaseComponent implements OnInit {
         });
 
 
-      },
+      }
+    },
       err => {
         console.log(err);
       });
@@ -501,12 +503,12 @@ export class EditCaseComponent implements OnInit {
     this.authService.bindStageDDL(reqData).subscribe(
 
       result => {
-
+        if (result.httpCode === 200) {
         result.stageRecourses.forEach(function (value) {
 
           $this.Stage.push({ id: value.id, text: value.stageName });
         });
-
+      }
       },
       err => {
         console.log(err);
@@ -525,7 +527,7 @@ export class EditCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-
+        if (result.httpCode === 200) {
         result.forEach(function (value) {
           if (value.roles[0].roleName == 'EMPLOYEE') {
             $this.Employee.push({ id: value.id, text: value.firstName });
@@ -533,7 +535,8 @@ export class EditCaseComponent implements OnInit {
           }
         });
 
-      },
+      }
+    },
       err => {
         console.log(err);
       });
