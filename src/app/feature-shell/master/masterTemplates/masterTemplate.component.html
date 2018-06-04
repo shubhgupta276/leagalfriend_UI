@@ -4,9 +4,9 @@
   </div>
 
   <section class="content">
-   
-    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)"
-      (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+
+    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" [showRowSelect]="rowSelect"
+      [hoverTableRow]="hoverTableRow">
     </app-data-table>
   </section>
   <!-- <section class="content">

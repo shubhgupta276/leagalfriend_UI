@@ -12,6 +12,7 @@ import { Compliance } from './compliance';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 import { complianceTableConfig } from './compliance.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 
 declare let $;
 
@@ -31,10 +32,12 @@ export class ComplianceComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private _complianceService: ComplianceService,
     private _storageService: StorageService, private _recourseService: RecourseService, private _stageService: StageService) {
   }
   ngOnInit() {
+    this.setActionConfig();
     this.getAllCompliance();
     this.getRecourse();
     this.getStage();
@@ -124,6 +127,17 @@ export class ComplianceComponent implements OnInit {
 
   onRowSelect(event) {
     console.log(event);
+  }
+  onActionBtnClick(event) {
+    if (event.eventType === 'edit') {
+      this.editChild.createForm(event.data);
+      $('#editComplianceMasterModal').modal('show');
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
   }
 }
 

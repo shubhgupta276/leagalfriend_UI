@@ -11,6 +11,7 @@ import { SelectModule } from 'ng2-select';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 import { branchTableConfig } from './branch.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 declare let $;
 
 
@@ -30,9 +31,12 @@ export class BranchComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
+
   constructor(private fb: FormBuilder, private _branchService: BranchService, private _cityService: CityService) {
   }
   ngOnInit() {
+    this.setActionConfig();
     this.bindCity();
   }
 
@@ -73,6 +77,17 @@ export class BranchComponent implements OnInit {
 
   onRowSelect(event) {
     console.log(event);
+  }
+  onActionBtnClick(event) {
+    if (event.eventType === 'edit') {
+      this.editChild.createForm(event.data);
+      $('#editBranchMasterModal').modal('show');
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
   }
   bindCity() {
     const $this = this;

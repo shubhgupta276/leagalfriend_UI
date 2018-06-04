@@ -9,6 +9,7 @@ import { State } from './state';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 import { stateTableConfig } from './state.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 
 declare let $;
 @Component({
@@ -24,11 +25,14 @@ export class StateComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
+
   constructor(private fb: FormBuilder, private _stateService: StateService, private _storageService: StorageService) {
 
   }
 
   ngOnInit() {
+    this.setActionConfig();
     this.GetAllState();
   }
   GetAllState() {
@@ -62,7 +66,17 @@ export class StateComponent implements OnInit {
   onRowSelect(event) {
     console.log(event);
   }
-
+  onActionBtnClick(event) {
+    if (event.eventType === 'edit') {
+      this.editChild.createForm(event.data);
+      $('#editStateMasterModal').modal('show');
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
+  }
 }
 
 @NgModule(
