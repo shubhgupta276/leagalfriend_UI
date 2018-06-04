@@ -46,7 +46,7 @@ export class CaseComponent implements OnInit {
   tableInputData = [];
   columns = caseRunningTableConfig;
   @ViewChild('caseRunningTable') runningDataTableComponent: DataTableComponent;
-  rowSelect = true;
+  rowSelect = false;
   hoverTableRow = true;
   showSearchFilter = false;
   actionColumnConfig: ActionColumnModel;

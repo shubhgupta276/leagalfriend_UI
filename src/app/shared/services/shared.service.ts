@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { DatePipe } from '@angular/common';
 @Injectable()
 export class SharedService {
     arrTodayCalendarEvents: UpcomingEvents[];
@@ -10,7 +11,7 @@ export class SharedService {
     private branchHeader = new Subject<any>();
     // Observable string streams
     changeEmitted$ = this.emitChangeSource.asObservable();
-    constructor() {
+    constructor(private _datePipe: DatePipe) {
         this.arrTodayCalendarEvents = [
             { startdate: this.dateFormat(new Date()), endDate: this.dateFormat(new Date()), cssClass: '#0073b7', totalUpcomingEvents: 0 },
             { startdate: this.dateFormat(new Date()), endDate: this.dateFormat(new Date()), cssClass: '#00c0ef', totalUpcomingEvents: 0 },
@@ -59,6 +60,18 @@ export class SharedService {
 
     getHeaderBranch(): Observable<any> {
         return this.branchHeader.asObservable();
+    }
+
+    convertDateToStr(date: Date): string {
+        if (date == null) {
+            return '';
+        } else {
+            return this._datePipe.transform(date, 'dd MMM yyyy');
+        }
+    }
+
+    convertStrToDate(dateStr: string): Date {
+        return new Date(dateStr);
     }
 }
 export interface UpcomingEvents {
