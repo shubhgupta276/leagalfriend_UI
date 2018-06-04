@@ -134,7 +134,7 @@ export class AuthService {
     );
   }
 
-  submitEditCaseUser(customerData: EditCase): Observable<any> {
+  submitEditCaseUser(customerData: any): Observable<any> {
     return this.apiGateWay.post<any>(
       'case/add',
       JSON.stringify(customerData)
@@ -146,7 +146,12 @@ export class AuthService {
       JSON.stringify(customerData)
     );
   }
-
+  updateCaseHearingDate(customerData: any): Observable<any> {
+    return this.apiGateWay.put<any>(
+      '/case/hearing',
+      JSON.stringify(customerData)
+    );
+  }
   caseUpdateCompliance(customerData: any): Observable<EditCase> {
     return this.apiGateWay.post<any>(
       'case/update/compliance',

@@ -40,6 +40,7 @@ export class AddCaseComponent implements OnInit {
   config: any;
   configData: any;
   arDdl: any = [];
+  ChildCases:any;
   public searchStr: string;
   public searchStr1: string;
   public match: any;
@@ -132,7 +133,7 @@ export class AddCaseComponent implements OnInit {
     this.bindRecourseDDL();
     this.getManagers();
     this.getEmployee();
-    this.bindStageDDL();
+    this.bindStageDDL(null);
     this.getRunningCase();
     this.getEmployee();
     this.GetAllCity();
@@ -304,7 +305,6 @@ export class AddCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-        debugger
         if (result == 0) {
           $("#spnEmployee").show();
         }

@@ -97,9 +97,9 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles"></app-add-user>
+  <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles" [Branches]="Branches"></app-add-user>
 
-  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [arrUsers]="arrUsers"></app-edit-user>
+  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [arrUsers]="arrUsers" [Branches]="Branches"></app-edit-user>
   <!-- /.content -->
 </div>
 

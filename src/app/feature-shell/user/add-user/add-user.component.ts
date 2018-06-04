@@ -20,11 +20,14 @@ export class AddUserComponent implements OnInit {
   addForm: FormGroup;
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
+  @Input() Branches = [];
   emailValidationMessage = 'Email address is required.';
   passwordValidationMessage = 'Password is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
-
+  selectedRole = [];
+  roleValue: number;
+  userTypeRole: string;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.AddUser();
   }
@@ -43,7 +46,9 @@ export class AddUserComponent implements OnInit {
       confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [2],
-      status: [1]
+      status: [1],
+      userTypeRole:["user",Validators.nullValidator],
+      branchName:["1",Validators.nullValidator],
     });
   }
 
@@ -162,6 +167,15 @@ export class AddUserComponent implements OnInit {
     } else {
       return '';
     }
+  }
+  rolechange(args, value) {
+    this.selectedRole = args.target.options[args.target.selectedIndex].text;
+    var role = args.target.options[args.target.selectedIndex].value;
+    var arr = role.split(':');
+    this.roleValue = parseInt(arr[1]);
+  }
+  userTypeRoleChange(args, value) {
+    this.userTypeRole = args.target.options[args.target.selectedIndex].value;
   }
 }
 

@@ -225,7 +225,6 @@ export class CaseComponent implements OnInit {
     }, function (start_date, end_date) {
       $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
     });
-
     // $('#reservation').daterangepicker({
     //   autoApply: true,
     //   locale: {
@@ -312,13 +311,13 @@ export class CaseComponent implements OnInit {
 
     //   });
     // }, 100)
-
-    // $('body').on('change', '.newHiringDate', function () {
-    //   self.updateNewHiringDate($(this).val())
-    //   $(this).closest('td')
-    //     .animate({ backgroundColor: '#88d288' }, 1000)
-    //     .animate({ backgroundColor: '' }, 1000);
-    // });
+    var self = this;
+    $('body').on('change', '.newHiringDate', function () {
+      self.updateNewHiringDate($(this).val())
+      $(this).closest('mat-cell')
+        .animate({ backgroundColor: '#88d288' }, 1000)
+        .animate({ backgroundColor: 'none' }, 1000);
+    });
   }
 
   onRowClick(event) {
@@ -336,7 +335,6 @@ export class CaseComponent implements OnInit {
       this.authService.getCaseByCaseId(reqData).subscribe(
 
         result => {
-          debugger
           $this.editChild.createForm(result);
           $('#caseLi a').click();
 
@@ -542,12 +540,11 @@ export class CaseComponent implements OnInit {
     };
     this.authService.bindStageDDL(reqData).subscribe(
       result => {
-        if(result.httpCode===200)
-        {
-        result.stageRecourses.forEach(function (value) {
-          $this.arrListCaseStage.push(value);
-        });
-      }
+        if (result.httpCode === 200) {
+          result.stageRecourses.forEach(function (value) {
+            $this.arrListCaseStage.push(value);
+          });
+        }
 
       },
       err => {
@@ -611,18 +608,29 @@ export class CaseComponent implements OnInit {
       }
     }
   }
-  ShowCalendar(items) {
+  onShowCalendar(items) {
     this.newHiringCasedata = items;
 
   }
   updateNewHiringDate(newHiring) {
+    this.newHiringCasedata.nextHearingDate = newHiring;
+    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
+      result => {
+        if (result.body.httpCode == 200) { //success
+          $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
+        }
+      },
+      err => {
+        console.log(err);
+      });
     this.caseRunning.forEach(element => {
       if (element.id == this.newHiringCasedata.id) {
         element.nextHearingDate = newHiring;
+        return false;
       }
     })
   }
-  OnMouseHover(i) {
+  onMouseHover(i) {
     if ($('.datepicker-dropdown').length == 0) {
       $('.newHiringDate').datepicker();
       this.hoveredIndex = i;

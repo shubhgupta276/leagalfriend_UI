@@ -6,7 +6,7 @@
 
 <div class="example-container mat-elevation-z8">
 
-    <mat-table [dataSource]="dataSource" matSort>
+    <mat-table [dataSource]="dataSource" matSort (mouseleave)="hideCalendar()">
 
         <ng-container matColumnDef="select" *ngIf="showRowSelect">
             <mat-header-cell *matHeaderCellDef>
@@ -38,7 +38,18 @@
                     </mat-form-field>
                 </mat-header-cell>
             </div>
-            <mat-cell *matCellDef="let row">{{ row[column.uniqueId] }}</mat-cell>
+            <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
+                <div [ngClass]="{'mat-col-date-cal': showCalender}">{{ row[column.uniqueId] }}</div>
+                <div *ngIf="showCalender&& column.uniqueId=='nextHearingDate'" style=" margin-left: 41px;position: relative;" class="colCalendar">
+                    <div class="divNewHire input-group date" style="margin-top: -22px;position: absolute" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                        <input style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd"
+                            class="form-control newHiringDate" size="10" formControlName="nextHearingDate">
+                        <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="onShowCalendar($event,row)">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+            </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action" *ngIf="actionColumnConfig">

@@ -22,6 +22,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { userTableConfig } from './user.config';
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
+import { StorageService } from '../../shared/services/storage.service';
+import { AuthService } from '../../auth-shell/auth-shell.service';
 declare var $;
 
 @Component({
@@ -36,7 +38,6 @@ export class UserComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = true;
   hoverTableRow = true;
-
   isDisplayPopup = false;
   arrUsers: any = [];
   userRoles: RoleModel[];
@@ -45,8 +46,9 @@ export class UserComponent implements OnInit {
   filterby = 'All';
   editForm: FormGroup;
   $table: any;
+  Branches=[];
   @ViewChild(EditUserComponent) child: EditUserComponent;
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private _storageService:StorageService,private authService:AuthService) {
     this.setRoles();
     this.setStatus();
   }
@@ -54,6 +56,7 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     this.getUsers();
     this.GetLoggedInUserDetails();
+    this.getBranchDDL();
 
   }
 
@@ -162,7 +165,8 @@ export class UserComponent implements OnInit {
     this.userService.listUsers(client).subscribe(
       result => {
         result.forEach(element => {
-          if (element.roles.lemgth >= 0)  {
+          if (element.roles.length > 0)  {
+            debugger
             element.roleId = element.roles[0].id;
           element.roles = element.roles[0].roleName;
           }
@@ -245,5 +249,23 @@ export class UserComponent implements OnInit {
       error => console.log(error)
     );
 
+  }
+  getBranchDDL() {
+    var $this = this
+    var reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.authService.getBranchDDL(reqData).subscribe(
+
+      result => {
+        result.branches.forEach(function (value) {
+          debugger
+          $this.Branches.push(value);
+        });
+
+      },
+      err => {
+        console.log(err);
+      });
   }
 }
