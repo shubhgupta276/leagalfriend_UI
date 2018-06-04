@@ -162,9 +162,11 @@ export class UserComponent implements OnInit {
     this.userService.listUsers(client).subscribe(
       result => {
         result.forEach(element => {
-          element.roleId = element.roles[0].id;
+          if (element.roles.lemgth >= 0)  {
+            element.roleId = element.roles[0].id;
           element.roles = element.roles[0].roleName;
-           element.statusId = element.status.statusId;
+          }
+          element.statusId = element.status.statusId;
           element.status = element.status.statusName;
           this.tableInputData.push(element);
         });
@@ -195,6 +197,7 @@ export class UserComponent implements OnInit {
     this.userRoles = [];
     this.userService.listRoles().subscribe(
       result => {
+        debugger
         this.userRoles = result;
       },
       err => {
