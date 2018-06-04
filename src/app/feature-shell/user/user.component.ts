@@ -162,7 +162,7 @@ export class UserComponent implements OnInit {
     this.userService.listUsers(client).subscribe(
       result => {
         result.forEach(element => {
-          if (element.roles.lemgth >= 0)  {
+          if (element.roles.length > 0)  {
             element.roleId = element.roles[0].id;
           element.roles = element.roles[0].roleName;
           }

@@ -21,6 +21,7 @@ declare var $;
 })
 export class AddCaseComponent implements OnInit {
   @Input() caseRunning = [];
+  ChildCases: any;
   finalData: any = {};
   fileData: File;
   myDocument: File;
@@ -114,7 +115,7 @@ export class AddCaseComponent implements OnInit {
       remark: [null, Validators.required],
       branch: [null, Validators.required],
       filingdate: [],
-      stage: [null, Validators.required],
+      stage: [null],
       employee: [null, Validators.required],
       courtplace: [null, Validators.required],
       oppLawyer: [],
@@ -123,7 +124,8 @@ export class AddCaseComponent implements OnInit {
       uploadDocument: [],
     });
   }
- constructor(private completerService: CompleterService,private fb: FormBuilder, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
+ constructor(private completerService: CompleterService,private fb: FormBuilder, private apiGateWay: ApiGateway,
+   private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
    
     this.AddCaseUser();
     this.GetAllCourt();
@@ -132,7 +134,7 @@ export class AddCaseComponent implements OnInit {
     this.bindRecourseDDL();
     this.getManagers();
     this.getEmployee();
-    this.bindStageDDL();
+    //this.bindStageDDL();
     this.getRunningCase();
     this.getEmployee();
     this.GetAllCity();
@@ -251,18 +253,18 @@ export class AddCaseComponent implements OnInit {
       clientId: localStorage.getItem('client_id'),
     };
     this.authService.listUsers(reqData).subscribe(
-
       result => {
 
-        if (result.length == 0) {
-          $("#spnCustomer").show();
-          $("#spnManager").show();
+        if (result.length === 0) {
+          $('#spnCustomer').show();
+          $('#spnManager').show();
 
         }
-        if (result.httpCode === 200) {
+       
         result.forEach(function (value) {
 
-          if (value.roles[0].roleName == 'MANAGER') {
+          if (value.roles[0].roleName === 'MANAGER') {
+            
             $this.Manager.push(
               {
 
@@ -284,10 +286,12 @@ export class AddCaseComponent implements OnInit {
               }
             );
           }
+        
         });
 
 
-      }
+
+      
     },
       err => {
         console.log(err);
@@ -304,13 +308,15 @@ export class AddCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-        debugger
+        
         if (result == 0) {
           $("#spnEmployee").show();
         }
-        if (result.httpCode === 200) {
+      
         result.forEach(function (value) {
-          if (value.roles[0].roleName == 'EMPLOYEE') {
+          
+         
+          if (value.roles[0].roleName == 'CLIENT') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
           if (value.roles[0].roleName == 'ADMIN') {
@@ -319,13 +325,15 @@ export class AddCaseComponent implements OnInit {
           if (value.roles[0].roleName == 'MANAGER') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
+        
         });
 
-      }
+      
     }
-      err => {
-        console.log(err);
-      });
+      // err => {
+      //   console.log(err);
+      // }
+    );
   }
 
   bindStageDDL(a) {
@@ -382,11 +390,11 @@ if (event.target.files && event.target.files.length) {
   }
 
   submitAddCaseUser(data) {
-  let objEditCase: FormData = new FormData();
+   const objEditCase: FormData = new FormData();
     const x = {
       'branchId': data.branch[0].id,
   
-      'childCase': (data.childCase == undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf("/") + 1))),
+      'childCase': (data.childCase === undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
       'courtCaseId': data.courtCaseId,
       'courtId': data.court[0].id,
       'customerId': data.customerName[0].id,
@@ -396,27 +404,32 @@ if (event.target.files && event.target.files.length) {
       'managerId': data.manager[0].id,
       'nextHearingDate': this.datePipe.transform(data.nextHearingDate, 'yyyy-MM-dd'),
       'oppLawyer': data.oppLawyer,
-      'parentCaseId': (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
+      'parentCaseId': (data.parentCase === undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
       'recourseId': data.recourse[0].id,
       'remark': data.remark,
-      'stageId': data.stage[0].id,
+     // "stageId": data.stage[0].id,
       'stateId': data.state[0].id,
-      "userId": parseInt(localStorage.getItem('client_id'))
+      'userId': parseInt(localStorage.getItem('client_id'))
     };
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
+    debugger
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
-        if (result.body.httpCode === 200) {
-          $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully'});
+  debugger
+        if (result.body.httpCode == 200) { //success
+          // this.BindCaseGridOnEdit(data)
+          $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
           $(window.location.href = '/admin/case');
           $('#addCaseModal').modal('hide');
           this.closeModal();
-          }
-   },
+        }
+  
+      },
       err => {
         console.log(err);
       });
+  
   }
   BindCaseGridOnEdit(data) {
 

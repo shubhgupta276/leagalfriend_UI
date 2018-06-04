@@ -94,9 +94,9 @@ export class CaseComponent implements OnInit {
 
         });
 
-        setTimeout(() => {
-          this.bindDatatable();
-        }, 1);
+        // setTimeout(() => {
+        //   this.bindDatatable();
+        // }, 1);
       },
       err => {
         console.log(err);
@@ -155,69 +155,7 @@ this.branchData = this._storageService.getBranchData();
     this.getBranchDDL();
     this.bindRecourseDDL();
     this.bindStageDDL();
-    // const self = this;
-    // this.getBranchDDL();
-    // this.bindRecourseDDL();
-    // // Running Case DataTable
-    // $($.document).ready(function () {
-    //   // $(document).on('mouseover', '.rowRunningCase', function () {
-    //   //   $(this).find('.divCal').show();
-    //   // });
-    //   // $(document).on('click', '.rowRunningCase', function () {
-    //   //   $('body').find('.divCal').hide();
-    //   // });
-
-    //   $('#ddlCaseRecource').change(function () {
-
-    //     if ($('#ddlCaseRecource').val() !== 'All') {
-    //       self.bindStageDDL();
-    //     }
-    //     else {
-    //       self.arrListCaseStage = [];
-    //     }
-
-    //   });
-
-    //   $('#btnReset').click(function () {
-
-
-    //     $('#ddlCaseRecource').val('All');
-    //     self.$table.columns(3).search('').draw();
-
-    //     $('#ddlCaseStage').val('All');
-    //     self.$table.columns(4).search('').draw();
-
-    //     $('#ddlCaseBranch').val('All');
-
-    //     $('#ddlCaseBranch1').val('All');
-    //     self.$table.columns(6).search('').draw();
-
-    //     $('#reservation').data('daterangepicker').setStartDate(new Date());
-    //     $('#reservation').data('daterangepicker').setEndDate(new Date());
-
-    //     $.fn.dataTableExt.afnFiltering.length = 0;
-    //     self.$table.columns(5).search('').draw();
-    //   });
-
-    //   $('#btnResetFilter').click(function () {
-    //     $('#btnFilter').removeClass('bgColor');
-
-    //     $('#ddlCaseRecource').val('All');
-    //     self.$table.columns(3).search('').draw();
-
-    //     $('#ddlCaseStage').val('All');
-    //     self.$table.columns(4).search('').draw();
-
-    //     $('#ddlCaseBranch').val('All');
-    //     $('#ddlCaseBranch1').val('All');
-    //     self.$table.columns(6).search('').draw();
-
-    //     $('#reservation').data('daterangepicker').setStartDate(new Date());
-    //     $('#reservation').data('daterangepicker').setEndDate(new Date());
-
-    //     $.fn.dataTableExt.afnFiltering.length = 0;
-    //     self.$table.columns(5).search('').draw();
-    //   });
+    
     $('#reservation').daterangepicker({
       autoUpdateInput: false,
       locale: {
@@ -227,99 +165,7 @@ this.branchData = this._storageService.getBranchData();
       $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
     });
 
-    // $('#reservation').daterangepicker({
-    //   autoApply: true,
-    //   locale: {
-    //     format: 'MM-DD-YYYY'
-    //   },
-    //   autoUpdateInput:false
-
-    //  });
-    //$('#reservation').val('');
-
-    //   //start Branch1 filter
-    //   $('#ddlCaseBranch1').on('change', function () {
-    //     ;
-    //     var status = $(this).val();
-    //     if (status == 'All') {
-    //       $('#ddlCaseBranch').val('All');
-    //       self.$table.columns(6).search('').draw();
-    //     }
-    //     else if (self.$table.columns(6).search() !== this.value) {
-    //       $('#ddlCaseBranch').val($('#ddlCaseBranch1').val());
-    //       self.$table.columns(6).search(this.value).draw();
-    //     }
-    //   });
-    //   //end Branch1 filter
-    //   $('#btnSearch').click(function () {
-    //     $('#btnFilter').addClass('bgColor');
-    //     var recourseVal = $('#ddlCaseRecource').val();
-    //     var caseStageVal = $('#ddlCaseStage').val();
-    //     var caseBranchVal = $('#ddlCaseBranch').val();
-
-
-
-    //     // start recourse filter
-    //     if (recourseVal == 'All') {
-    //       self.$table.columns(3).search('').draw();
-    //     }
-    //     else if (self.$table.columns(3).search() !== recourseVal) {
-    //       self.$table.columns(3).search(recourseVal).draw();
-    //     }
-    //     //end recourse filter
-
-    //     // start Case stage filter
-    //     if (caseStageVal == 'All') {
-    //       self.$table.columns(4).search('').draw();
-    //     }
-    //     else if (self.$table.columns(4).search() !== caseStageVal) {
-    //       self.$table.columns(4).search(caseStageVal).draw();
-    //     }
-    //     //end Case stage filter
-
-    //     // start caseBranchVal filter
-    //     if (caseBranchVal == 'All') {
-    //       $('#ddlCaseBranch1').val('All');
-    //       self.$table.columns(6).search('').draw();
-    //     }
-    //     else if (self.$table.columns(6).search() !== caseBranchVal) {
-    //       $('#ddlCaseBranch1').val(caseBranchVal);
-    //       self.$table.columns(6).search(caseBranchVal).draw();
-    //     }
-
-    //     $.fn.dataTableExt.afnFiltering.push(
-    //       function (oSettings, data, iDataIndex) {
-
-    //         var startDate = new Date($('#reservation').data('daterangepicker').startDate.format('MM-DD-YYYY'));
-    //         var endDate = new Date($('#reservation').data('daterangepicker').endDate.format('MM-DD-YYYY'));
-    //         var rowDate = new Date(data[5]);
-
-    //         if (rowDate >= startDate && rowDate <= endDate) {
-    //           return true;
-    //         }
-    //         else {
-    //           return false;
-    //         }
-
-    //       }
-    //     );
-
-    //     self.$table.draw();
-    //     $('#closebtnFilter').click();
-
-    //   });
-    //   setTimeout(() => {
-
-
-    //   });
-    // }, 100)
-
-    // $('body').on('change', '.newHiringDate', function () {
-    //   self.updateNewHiringDate($(this).val())
-    //   $(this).closest('td')
-    //     .animate({ backgroundColor: '#88d288' }, 1000)
-    //     .animate({ backgroundColor: '' }, 1000);
-    // });
+   
   }
 
   onRowClick(event) {
@@ -453,53 +299,7 @@ this.branchData = this._storageService.getBranchData();
     $('#filterCaseModal').modal('hide');
 
   }
-  bindDatatable() {
-
-    var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, 'All']];
-    var selectedPageLength = 10;
-
-    this.$table = $('#example1,#example2').DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: false,
-      lengthMenu: arLengthMenu,
-      pageLength: selectedPageLength,
-      oLanguage: {
-        sLengthMenu: 'Show _MENU_ rows',
-        sSearch: '',
-        sSearchPlaceholder: 'Search...'
-      },
-      initComplete: function () {
-        var tableid = 'example1';
-        var $rowSearching = $('#' + tableid + '_wrapper');
-        $rowSearching.find('.row:eq(0)').hide();
-
-        for (var i = 0; i < arLengthMenu[0].length; i++) {
-          $('#ddlLengthMenu').append('<option value=' + arLengthMenu[0][i] + '>' + arLengthMenu[1][i] + '</option>');
-        }
-        $('#ddlLengthMenu').val(selectedPageLength);
-
-        $('#ddlLengthMenu').on('change', function () {
-          $rowSearching.find('.row:eq(0)').find('select').val($(this).val()).change();
-        });
-      }
-    });
-
-    this.$table.columns().every(function () {
-
-
-      $('#txtSearch').on('keyup change', function () {
-
-        if (this.$table.search() !== this.value) {
-          this.$table.search(this.value).draw();
-        }
-      });
-    });
-
-  }
+  
 
   getBranchDDL() {
     const $this = this;

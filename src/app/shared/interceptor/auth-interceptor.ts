@@ -77,6 +77,27 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(changepwdReq);
         }
+
+        else if (req.url.indexOf('case/add') >= 0) {
+debugger
+            const authHeader = this.auth.getAuthorizationHeader();
+            const changepwdReq = req.clone({
+                headers: req.headers
+                .set('Authorization', authHeader.access_token.toString())
+                .set('customer-id', authHeader.client_id.toString())
+            });
+            return next.handle(changepwdReq);
+        }
+        else if (req.url.indexOf('case/update') >= 0 || (req.url.indexOf('case/file/upload') >= 0)) {
+
+            const authHeader = this.auth.getAuthorizationHeader();
+            const changepwdReq = req.clone({
+                headers: req.headers
+                .set('Authorization', authHeader.access_token.toString())
+                .set('customer-id', authHeader.client_id.toString())
+            });
+            return next.handle(changepwdReq);
+        }
         else if (req.url.replace(endpoint_url, "").indexOf('institution/upload') >= 0 || req.url.replace(endpoint_url, "").indexOf("institution/for/case") >= 0) {
 
             const authHeader = this.auth.getAuthorizationHeader();
