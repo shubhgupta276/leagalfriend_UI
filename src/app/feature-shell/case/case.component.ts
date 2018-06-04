@@ -108,6 +108,8 @@ export class CaseComponent implements OnInit {
   }
   getCasesData() {
     var $this = this;
+    
+this.branchData = this._storageService.getBranchData();
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
     };
@@ -149,7 +151,7 @@ export class CaseComponent implements OnInit {
     });
     // this.getRunningCase();
     this.setActionConfig();
-    //this.getCasesData();
+    this.getCasesData();
     this.getBranchDDL();
     this.bindRecourseDDL();
     this.bindStageDDL();
@@ -500,8 +502,8 @@ export class CaseComponent implements OnInit {
   }
 
   getBranchDDL() {
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.getBranchDDL(reqData).subscribe(
@@ -519,8 +521,8 @@ export class CaseComponent implements OnInit {
       });
   }
   bindRecourseDDL() {
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.bindRecourseDDL(reqData).subscribe(
@@ -535,15 +537,17 @@ export class CaseComponent implements OnInit {
   }
   bindStageDDL() {
 
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.bindStageDDL(reqData).subscribe(
       result => {
+        if (result.httpCode === 200) {
         result.stageRecourses.forEach(function (value) {
           $this.arrListCaseStage.push(value);
         });
+      }
 
       },
       err => {
