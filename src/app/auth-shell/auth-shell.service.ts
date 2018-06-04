@@ -179,6 +179,12 @@ export class AuthService {
       
     );
   }
+  GetAllCity(reqData): Observable<any> {    
+    return this.apiGateWay.get<any>(
+      'master/cities'+ '?email='+ reqData.email.replace('"',''), null,
+      
+    );
+  }
 
   saveEvent(customerData: Calender): Observable<Calender> {
     return this.apiGateWay.post<Calender>(
