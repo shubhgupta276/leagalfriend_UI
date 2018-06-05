@@ -421,21 +421,19 @@ export class CaseComponent implements OnInit {
   }
   updateNewHiringDate(newHiring) {
     this.newHiringCasedata.nextHearingDate = newHiring;
-    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
-      result => {
-        if (result.body.httpCode == 200) { //success
-          $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
-        }
-      },
-      err => {
-        console.log(err);
-      });
     this.caseRunning.forEach(element => {
       if (element.id == this.newHiringCasedata.id) {
         element.nextHearingDate = newHiring;
         return false;
       }
     })
+    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
+      result => {
+      },
+      err => {
+        console.log(err);
+      });
+   
   }
   onMouseHover(i) {
     if ($('.datepicker-dropdown').length == 0) {
