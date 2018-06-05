@@ -41,7 +41,7 @@ export class EditCaseComponent implements OnInit {
   id: any = [];
   caseId: any = [];
   complianceGridData = [];
-  caseFile: any= [];
+  caseFile: any = [];
   public searchStr1: string;
   protected dataService: CompleterData;
   protected dataService1: CompleterData;
@@ -58,7 +58,7 @@ export class EditCaseComponent implements OnInit {
     var a = value.id;
     this.selectedRecourse = value;
 
-    this.bindStageDDL(a,null);
+    this.bindStageDDL(a, null);
     this.Stage.length = 0;
 
 
@@ -153,16 +153,16 @@ export class EditCaseComponent implements OnInit {
   customerSelected: Array<any> = [];
   courtPlaceSelected: Array<any> = [];
   recourseId: any;
-  parentcaseSelectedauto:Array<any>=[];
-  childcaseSelectedauto:Array<any>=[];
+  parentcaseSelectedauto: Array<any> = [];
+  childcaseSelectedauto: Array<any> = [];
   stageId: any;
-  
-  childCaseText:string;
-  childParentText:string;
+
+  childCaseText: string;
+  childParentText: string;
   // emailValidationMessage: string = "Email address is required.";
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
-     private authService: AuthService,private completerService: CompleterService,
-      private _storageService: StorageService, private datePipe: DatePipe) {
+    private authService: AuthService, private completerService: CompleterService,
+    private _storageService: StorageService, private datePipe: DatePipe) {
     this.createForm(null);
   }
 
@@ -198,7 +198,7 @@ export class EditCaseComponent implements OnInit {
     debugger
     this.caseFile = [];
     var $this = this;
-    (c.caseFiles.forEach(function(value){
+    (c.caseFiles.forEach(function (value) {
       $this.caseFile.push(value);
     }));
     $('#editCaseModal').modal('show');
@@ -207,17 +207,17 @@ export class EditCaseComponent implements OnInit {
     this.caseId = c.caseId;
     this.id = c.id;
     if (c.parentCaseId != null) {
-    const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
-    this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
-   this.childCaseText = this.parentcaseSelectedauto[0].text;
-  }
-  if (c.childCase != null) {
-    this.childcaseSelectedauto = [];
-    const objchild = this.ChildCases.filter(x => x.id === c.childCase);
-    this.childcaseSelectedauto.push({ id: c.childCase, text: objchild[0].text });
-   this.childParentText = this.childcaseSelectedauto[0].text;
-  }
-  
+      const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
+      this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
+      this.childCaseText = this.parentcaseSelectedauto[0].text;
+    }
+    if (c.childCase != null) {
+      this.childcaseSelectedauto = [];
+      const objchild = this.ChildCases.filter(x => x.id === c.childCase);
+      this.childcaseSelectedauto.push({ id: c.childCase, text: objchild[0].text });
+      this.childParentText = this.childcaseSelectedauto[0].text;
+    }
+
     this.recourseSelected = [];
     const objFilter = this.Resource.filter(x => x.id === c.recourseId);
     this.recourseSelected.push({ id: c.recourseId, text: objFilter[0].text });
@@ -229,20 +229,20 @@ export class EditCaseComponent implements OnInit {
     this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
     this.selectedCourt = this.courtSelected[0];
     if (c.stateId != null) {
-    this.stateSelected = [];
-    const objstate = this.State.filter(x => x.id === c.stateId);
-    this.stateSelected.push({ id: c.stateId, text: objstate[0].text });
-    this.selectedState = this.stateSelected[0];
+      this.stateSelected = [];
+      const objstate = this.State.filter(x => x.id === c.stateId);
+      this.stateSelected.push({ id: c.stateId, text: objstate[0].text });
+      this.selectedState = this.stateSelected[0];
     }
     this.branchSelected = [];
     const objBranch = this.Branch.filter(x => x.id === c.branchId);
     this.branchSelected.push({ id: c.branchId, text: objBranch[0].text });
     this.selectedBranch = this.branchSelected[0];
     if (c.stageId != null) {
-    this.stageSelected = [];
-    const objStage = this.Stage.filter(x => x.id === c.stageId);
-    this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
-    this.selectedStage = this.stageSelected[0];
+      this.stageSelected = [];
+      const objStage = this.Stage.filter(x => x.id === c.stageId);
+      this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
+      this.selectedStage = this.stageSelected[0];
     }
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
@@ -253,7 +253,7 @@ export class EditCaseComponent implements OnInit {
     const objmanagerSelected = this.Manager.filter(x => x.id === c.managerId);
     this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
     this.selectedManager = this.managerSelected[0];
-debugger
+    debugger
     this.employeeSelected = [];
     const objemployeeSelected = this.Employee.filter(x => x.id === c.employeeId);
     this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
@@ -263,7 +263,7 @@ debugger
     const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c.id);
     this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
     this.selectedCourtPlace = this.courtPlaceSelected[0];
-    
+
   }
   createForm(c) {
     if (c != null) {
@@ -281,7 +281,7 @@ debugger
       manager: [c == null ? null : c.managerId],
       court: [c == null ? null : c.courtId],
       state: [c == null ? null : c.stateId],
-     parentCase: [c == null ? null : this.childParentText],
+      parentCase: [c == null ? null : this.childParentText],
       nextHearingDate: [c == null ? null : this.datePipe.transform(c.nextHearingDate, 'yyyy-MM-dd')],
       customerName: [c == null ? null : c.customerId],
       remark: [c == null ? null : c.remark, Validators.required],
@@ -454,7 +454,7 @@ debugger
                   id: value.id, text: value.firstName
                 }
               );
-            }   else  if (value.roles[0].roleName === 'CUSTOMER') {
+            } else if (value.roles[0].roleName === 'CUSTOMER') {
               $this.CustomerName.push(
                 {
                   id: value.id, text: value.firstName
@@ -462,8 +462,8 @@ debugger
               );
             }
           }
-        }); 
-    },
+        });
+      },
       err => {
         console.log(err);
       });
@@ -522,14 +522,14 @@ debugger
 
       result => {
         if (result.httpCode === 200) {
-        result.stageRecourses.forEach(function (value) {
+          result.stageRecourses.forEach(function (value) {
 
-          $this.Stage.push({ id: value.id, text: value.stageName });
-        });
-      }
+            $this.Stage.push({ id: value.id, text: value.stageName });
+          });
+        }
         if (c != null) {
           this.bindDataOnEdit(c)
-      }
+        }
       },
       err => {
         console.log(err);
@@ -556,7 +556,7 @@ debugger
 
           }
         });
-    },
+      },
       err => {
         console.log(err);
       });
@@ -664,53 +664,53 @@ debugger
   submitEditCaseUser(data) {
 
     debugger
-        //const objEditCase = new EditCase();
+    //const objEditCase = new EditCase();
+    debugger
+    let objEditCase: FormData = new FormData();
+
+    //var a=data.parentCase.substr(data.parentCase.lastIndexOf("/")+1);
+    const x = {
+      "id": this.id,
+      "caseId": this.caseId,
+      "courtCaseId": data.courtCaseId,
+      "userId": parseInt(localStorage.getItem('client_id')),
+      "branchId": this.selectedBranch.id,
+      // "stageId":this.selectedStage.id,
+      "recourseId": this.selectedRecourse.id,
+      "employeeId": this.selectedEmployee.id,
+      "courtId": this.selectedCourt.id,
+      "stateId": this.selectedState.id,
+      "nextHearingDate": this.datePipe.transform(data.nextHearingDate, "yyyy-MM-dd"),
+      "customerId": this.selectedCustomerName.id,
+      "managerId": this.selectedManager.id,
+      "filingDate": this.datePipe.transform(data.filingdate, "yyyy-MM-dd"),
+      "childCase": (data.childCase == undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf("/") + 1))),
+      "oppLawyer": data.oppLawyer,
+      "lastHearingDate": this.datePipe.transform(data.lastHearingDate, "yyyy-MM-dd"),
+      "remark": data.remark,
+      "parentCaseId": (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf("/") + 1))),
+      "completionDate": this.datePipe.transform(data.completionDate, "yyyy-MM-dd"),
+    };
+    debugger
+    objEditCase.append('legalCase', JSON.stringify(x));
+    objEditCase.append('file', this.myDocument);
+    this.authService.updateEditCaseUser(objEditCase).subscribe(
+
+      result => {
         debugger
-        let objEditCase: FormData = new FormData();
-        
-        //var a=data.parentCase.substr(data.parentCase.lastIndexOf("/")+1);
-        const x = {
-          "id": this.id,
-          "caseId":this.caseId,
-          "courtCaseId": data.courtCaseId,
-          "userId": parseInt(localStorage.getItem('client_id')),
-          "branchId": this.selectedBranch.id,
-         // "stageId":this.selectedStage.id,
-          "recourseId": this.selectedRecourse.id,
-          "employeeId": this.selectedEmployee.id,
-          "courtId": this.selectedCourt.id,
-          "stateId":this.selectedState.id,
-          "nextHearingDate": this.datePipe.transform(data.nextHearingDate, "yyyy-MM-dd"),
-          "customerId": this.selectedCustomerName.id,
-          "managerId": this.selectedManager.id,
-          "filingDate":this.datePipe.transform(data.filingdate, "yyyy-MM-dd"),
-          "childCase": (data.childCase==undefined?null:(data.childCase.substr(data.childCase.lastIndexOf("/")+1))),
-          "oppLawyer": data.oppLawyer,
-          "lastHearingDate": this.datePipe.transform(data.lastHearingDate, "yyyy-MM-dd"),
-          "remark": data.remark,
-          "parentCaseId": (data.parentCase==undefined?null:(data.parentCase.substr(data.parentCase.lastIndexOf("/")+1))),
-          "completionDate":this.datePipe.transform(data.completionDate, "yyyy-MM-dd"),
-        };
-    debugger
-        objEditCase.append('legalCase', JSON.stringify(x));
-        objEditCase.append('file', this.myDocument);
-        this.authService.updateEditCaseUser(objEditCase).subscribe(
-    
-          result => {
-    debugger
-            if (result.body.httpCode == 200) { //success
-              this.BindCaseGridOnEdit(data);
-              $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
-              this.closeModal();
-              $('#editCaseModal').modal('hide');
-              $(window.location.href = "/admin/case");
-            }
-          },
-          err => {
-            console.log(err);
-          });
-    
-      }
+        if (result.body.httpCode == 200) { //success
+          this.BindCaseGridOnEdit(data);
+          $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
+          this.closeModal();
+          $('#editCaseModal').modal('hide');
+          $(window.location.href = "/admin/case");
+        }
+      },
+      err => {
+        console.log(err);
+      });
+
+  }
   BindCaseGridOnEdit(data) {
 
     this.tableInputData.filter(
@@ -739,22 +739,17 @@ debugger
       });
 
   }
-  deleteCaseFile(item)
-  {
-  debugger
-  var a=item.id;
-  this.authService.deleteCaseById(a).subscribe(
-
-    result => {
-debugger
-  
-         $.toaster({ priority: 'success', title: 'Success', message: 'Case File deleted successfully' });
-         $(window.location.href = "/admin/case");
+  deleteCaseFile(item) {
+    var a = item.id;
+    this.authService.deleteCaseById(a).subscribe(
+      result => {
+        $.toaster({ priority: 'success', title: 'Success', message: 'Case File deleted successfully' });
+        $(window.location.href = "/admin/case");
       }
-    )};
+    )
+  };
 
-    downloadCaseFile(data)
-  {
+  downloadCaseFile(data) {
     this.authService.downloadFile(data.id).subscribe(
       (result) => {
         let blob = new Blob([result]);
@@ -763,8 +758,8 @@ debugger
       err => {
         console.log(err);
       })
-    };
-  
+  };
+
   closeModal() {
     $("#closebtn1").click();
   }
