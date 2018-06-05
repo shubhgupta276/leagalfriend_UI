@@ -175,6 +175,7 @@ export class EditUserComponent implements OnInit {
       userTypeRole:["user",Validators.nullValidator],
       branchName:["1",Validators.nullValidator],
     });
+    this.roleValue=user == null ? 1 : user.roleId;
   }
   subscriberFields() {
     this.editForm.get('email').valueChanges.subscribe(
