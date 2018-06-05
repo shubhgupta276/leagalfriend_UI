@@ -87,7 +87,7 @@ export class ComplianceComponent implements OnInit {
 
     this._stageService.getStages().subscribe(
       result => {
-
+debugger
         if (result != null) {
           this.arStage = result.stageRecourses;
         } else {

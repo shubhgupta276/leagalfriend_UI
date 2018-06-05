@@ -146,6 +146,17 @@ export class AuthService {
      // JSON.stringify(customerData)
     );
   }
+  deleteCaseById(id): Observable<EditCase> {
+    return this.apiGateWay.delete<any>(
+      'case/file' + '?caseFileId=' + id, null,
+    );
+  }
+
+  downloadFile(fileId: any): Observable<File> {
+    return this.apiGateWay.getFile(
+      '/case/file/download' + "?fileId=" + fileId
+    );
+}
   updateCaseHearingDate(customerData: any): Observable<any> {
     return this.apiGateWay.put<any>(
       '/case/hearing',
