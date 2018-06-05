@@ -63,7 +63,7 @@ export class EditUserComponent implements OnInit {
       result => {
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
-          window.location.href = '/admin/user';
+          // window.location.href = '/admin/user';
           this.BindGridOnEdit(data);
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
