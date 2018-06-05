@@ -20,7 +20,6 @@ export class EditUserComponent implements OnInit {
   editForm: FormGroup;
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
-  @Input() arrUsers: any;
   @Input() tableInputData: any;
   selectedStatus: string;
   selectedRole: string;
@@ -56,14 +55,13 @@ export class EditUserComponent implements OnInit {
       data.statusName = this.selectedStatus;
     }
     if (this.isRoleChange) {
-      data.roleName = this.selectedRole;
+      data.roles = this.selectedRole;
     }
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
-          window.location.href = '/admin/user';
           this.BindGridOnEdit(data);
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
@@ -72,10 +70,10 @@ export class EditUserComponent implements OnInit {
       err => {
         console.log(err);
       });
-
     $('#editUserModal').modal('hide');
   }
   BindGridOnEdit(data) {
+    
     this.tableInputData.forEach((item, index) => {
       if (data.id === item.id) {
         this.tableInputData[index].firstName = data.firstName;
@@ -85,24 +83,17 @@ export class EditUserComponent implements OnInit {
         this.tableInputData[index].addressLine2 = data.addressLine2;
         this.tableInputData[index].email = data.email;
         this.tableInputData[index].mobileNumber = data.mobileNumber;
-        this.tableInputData[index].roles = [
-          {
-            id: data.role,
-            roleName: data.roleName
-          }
-        ];
+        this.tableInputData[index].roleId = data.role;
+        this.tableInputData[index].roles= data.roles;
         this.tableInputData[index].address = {
           address1: data.addressLine1,
           address2: data.addressLine2,
           city: '',
           state: '',
           zipCode: data.postalCode
-        }
-          ;
-        this.tableInputData[index].status = {
-          statusId: data.status,
-          statusName: data.statusName
-        };
+        } ;
+        this.tableInputData[index].statusId = data.status;
+        this.tableInputData[index].status = data.statusName;
       }
     });
   }
@@ -172,7 +163,7 @@ export class EditUserComponent implements OnInit {
       roles: [user == null ? 1 : user.roles],
       status: [user == null ? 1 : user.statusId],
       statusName: [user == null ? 1 : user.status],
-      userTypeRole:["user",Validators.nullValidator],
+      userTypeRole:["Individual",Validators.nullValidator],
       branchName:["1",Validators.nullValidator],
     });
     this.roleValue=user == null ? 1 : user.roleId;

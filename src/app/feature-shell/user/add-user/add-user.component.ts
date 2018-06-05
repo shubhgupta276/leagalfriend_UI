@@ -47,7 +47,7 @@ export class AddUserComponent implements OnInit {
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [2],
       status: [1],
-      userTypeRole:["user",Validators.nullValidator],
+      userTypeRole:["Individual",Validators.nullValidator],
       branchName:["1",Validators.nullValidator],
     });
   }
@@ -83,7 +83,6 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        debugger
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
           console.log(result);
