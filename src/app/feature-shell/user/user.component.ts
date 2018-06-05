@@ -39,7 +39,6 @@ export class UserComponent implements OnInit {
   rowSelect = true;
   hoverTableRow = true;
   isDisplayPopup = false;
-  arrUsers: any = [];
   userRoles: RoleModel[];
   userRoles1: any= [];
   userStatus: StatusModel[];
@@ -166,7 +165,6 @@ export class UserComponent implements OnInit {
       result => {
         result.forEach(element => {
           if (element.roles.length > 0)  {
-            debugger
             element.roleId = element.roles[0].id;
           element.roles = element.roles[0].roleName;
           }
@@ -201,7 +199,6 @@ export class UserComponent implements OnInit {
     this.userRoles = [];
     this.userService.listRoles().subscribe(
       result => {
-        debugger
         this.userRoles = result;
       },
       err => {
@@ -259,7 +256,6 @@ export class UserComponent implements OnInit {
 
       result => {
         result.branches.forEach(function (value) {
-          debugger
           $this.Branches.push(value);
         });
 
