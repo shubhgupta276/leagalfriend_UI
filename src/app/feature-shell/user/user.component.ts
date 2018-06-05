@@ -38,6 +38,7 @@ export class UserComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = true;
   hoverTableRow = true;
+  showSearchFilter = false;
   isDisplayPopup = false;
   userRoles: RoleModel[];
   userRoles1: any= [];
@@ -263,5 +264,8 @@ export class UserComponent implements OnInit {
       err => {
         console.log(err);
       });
+  } 
+  searchFilter(value) {
+    this.dataTableComponent.applyFilter(value);
   }
 }

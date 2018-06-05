@@ -8,17 +8,11 @@
   <div class="page-heading">
     User Management
   </div>
+
   <section class="content">
-
-    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)" [showRowSelect]="rowSelect"
-      [hoverTableRow]="hoverTableRow">
-    </app-data-table>
-  </section>
-
-  <!-- <section class="content">
     <div class="row">
       <div class="col-xs-12">
-      
+
         <div class="box">
           <div class="box-body">
             <div>
@@ -27,67 +21,26 @@
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2">
-                  <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label>
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
+                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilter($event.target.value)">
                 </div>
               </div>
             </div>
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th class="padding-bottom">Id</th>
-                  <th class="padding-bottom">Name</th>
-                  <th class="padding-bottom">Email</th>
-                  <th class="padding-bottom">Phone</th>
-                  <th>Role
-                    <select id="ddlUserFilter" class="role input-sm">
-                      <option value="All">All</option>
-                      <option *ngFor="let option of userRoles" [ngValue]="option.id">
-                        {{ option.roleName }}
-                      </option>
-                    </select>
-                  </th>
-                  <th>Status
-                    <select id="ddlStatusFilter" class="status input-sm">
-                      <option value="All">All</option>
-                      <option *ngFor="let option of userStatus" [ngValue]="option.statusId">
-                        {{ option.statusName }}
-                      </option>
-                    </select>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of arrUsers; let i=index" (dblclick)="editUser(user)">
-                  <td>{{i+1}}</td>
-                  <td>{{user.firstName + ' ' + user.lastName}}</td>
-                  <td>{{user.email}}</td>
-                  <td>{{user.mobileNumber}}</td>
-                  <td>{{user.roles[0].roleName}}</td>
-                  <td >
-                    <button *ngIf="user.status.statusName==='ACTIVE'" class="btn btn-block btn-success btn-xs btn2" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
-                    <button *ngIf="user.status.statusName==='SUSPEND'" class="btn btn-block btn-warning btn-xs btn3" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
-                    <button  *ngIf="user.status.statusName==='DEACTIVE'" class="btn btn-block btn-danger btn-xs btn4" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
-                  </td>
-                
-                </tr>
-              </tbody>
-
-            </table>
+            <div style="margin-top: 10px">
+              <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)" [showRowSelect]="rowSelect"
+                [hoverTableRow]="hoverTableRow" [showSearchFilter]="showSearchFilter">
+              </app-data-table>
+            </div>
           </div>
-         
+
         </div>
-       
+
       </div>
-     
+
     </div>
-    
-  </section> -->
+
+  </section>
 
   <div class="favicon" data-toggle="modal" data-target="#addUserModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
