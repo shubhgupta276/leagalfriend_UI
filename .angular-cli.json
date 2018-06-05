@@ -41,7 +41,7 @@
         "../node_modules/jquery-ui-dist/jquery-ui.min.js",
         "../src/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js",
         "../node_modules/moment/min/moment.min.js",
-        "../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
+        "../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js",
         "../node_modules/bootstrap-daterangepicker/daterangepicker.js",
         "../node_modules/fullcalendar/dist/fullcalendar.min.js",
         "../src/assets/dist/js/jquery.toaster.js",
