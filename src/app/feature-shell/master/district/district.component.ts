@@ -9,6 +9,7 @@ import { District } from './district';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 import { districtTableConfig } from './district.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 declare let $;
 
 
@@ -23,12 +24,14 @@ export class DistrictComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private _districtService: DistrictService, private _storageService: StorageService) {
 
   }
   editDistrictMasterForm: FormGroup;
   @ViewChild(EditDistrictMasterComponent) editChild: EditDistrictMasterComponent;
   ngOnInit() {
+    this.setActionConfig();
     this.GetAllDistrict();
 
   }
@@ -62,6 +65,17 @@ export class DistrictComponent implements OnInit {
 
   onRowSelect(event) {
     console.log(event);
+  }
+  onActionBtnClick(event) {
+    if (event.eventType === 'edit') {
+      this.editChild.createForm(event.data);
+      $('#editDistrictMasterModal').modal('show');
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
   }
 
 }

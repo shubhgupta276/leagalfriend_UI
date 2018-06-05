@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserRoles, UserStatus, KeyValue } from '../../../shared/Utility/util-common';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
@@ -7,6 +7,7 @@ import { User } from '../../../shared/models/user/user';
 import { UserModel } from '../../../shared/models/user/user.model';
 import { StatusModel } from '../../../shared/models/auth/status.model';
 import { RoleModel } from '../../../shared/models/auth/role.model';
+import { SharedService } from '../../../shared/services/shared.service';
 declare var $;
 
 @Component({
@@ -15,7 +16,7 @@ declare var $;
   styleUrls: ['./edit-user.component.css'],
   providers: [UserService]
 })
-export class EditUserComponent {
+export class EditUserComponent implements OnInit {
   editForm: FormGroup;
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
@@ -28,17 +29,27 @@ export class EditUserComponent {
   emailValidationMessage = 'Email address is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
-
-  constructor(private userService: UserService, private fb: FormBuilder) {
+  roleValue: number;
+  userTypeRole: string;
+  @Input() Branches = [];
+  constructor(private userService: UserService, private fb: FormBuilder, private _sharedService: SharedService) {
     this.createForm(null);
+  }
+  ngOnInit() {
   }
   statuschange(args) {
     this.isStatusChange = true;
     this.selectedStatus = args.target.options[args.target.selectedIndex].text;
   }
-  rolechange(args) {
+  rolechange(args, value) {
     this.isRoleChange = true;
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
+    var role = args.target.options[args.target.selectedIndex].value;
+    var arr = role.split(':');
+    this.roleValue = parseInt(arr[1]);
+  }
+  userTypeRoleChange(args, value) {
+    this.userTypeRole = args.target.options[args.target.selectedIndex].value;
   }
   submitEditUser(data) {
     if (this.isStatusChange) {
@@ -54,7 +65,7 @@ export class EditUserComponent {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
           window.location.href = '/admin/user';
           this.BindGridOnEdit(data);
-        }else {
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
         }
       },
@@ -80,13 +91,13 @@ export class EditUserComponent {
             roleName: data.roleName
           }
         ];
-        this.tableInputData[index].address =  {
-            address1: data.addressLine1,
-            address2: data.addressLine2,
-            city: '',
-            state: '',
-            zipCode: data.postalCode
-          }
+        this.tableInputData[index].address = {
+          address1: data.addressLine1,
+          address2: data.addressLine2,
+          city: '',
+          state: '',
+          zipCode: data.postalCode
+        }
           ;
         this.tableInputData[index].status = {
           statusId: data.status,
@@ -132,7 +143,7 @@ export class EditUserComponent {
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],
-      lastName: [user == null ? null : user.lastName, Validators.required], 
+      lastName: [user == null ? null : user.lastName, Validators.required],
       organisation: [
         user == null ? null : user.organization,
         Validators.nullValidator
@@ -160,8 +171,11 @@ export class EditUserComponent {
       role: [user == null ? 1 : user.roleId],
       roles: [user == null ? 1 : user.roles],
       status: [user == null ? 1 : user.statusId],
-      statusName: [user == null ? 1 : user.status]
+      statusName: [user == null ? 1 : user.status],
+      userTypeRole:["user",Validators.nullValidator],
+      branchName:["1",Validators.nullValidator],
     });
+    this.roleValue=user == null ? 1 : user.roleId;
   }
   subscriberFields() {
     this.editForm.get('email').valueChanges.subscribe(

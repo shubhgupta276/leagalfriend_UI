@@ -3,6 +3,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FilterModel } from '../../models/data-table/filter.model';
 import { ActionColumnModel } from '../../models/data-table/action-column.model';
+declare var $;
 
 @Component({
   selector: 'app-data-table',
@@ -33,8 +34,10 @@ export class DataTableComponent implements OnInit {
   @Output() rowDoubleClick = new EventEmitter<any>();
   @Output() actionBtnClick = new EventEmitter<any>();
   @Output() selectedRows = new EventEmitter<any>();
+  @Output() rowClickShowCalendar = new EventEmitter<any>();
   selection = new SelectionModel<Element>(true, []);
-
+  showCalender = true;
+  hoveredIndex: number;
   constructor() { }
 
   ngOnInit() {
@@ -96,7 +99,20 @@ export class DataTableComponent implements OnInit {
     const data = { eventType: type, data: row };
     this.actionBtnClick.emit(data);
   }
+  onShowCalendar(event, row) {
+    this.rowClickShowCalendar.emit(row);
+  }
+  onMouseHover(event, row) {
+    if ($('.datepicker-dropdown').length == 0) {
+      $('.newHiringDate').datepicker();
+      this.hoveredIndex = row;
+    }
+  }
+  hideCalendar() {
+    if ($('.datepicker-dropdown').length == 0)
+      this.hoveredIndex = null;
 
+  }
   addColumnHeader() {
     this.tableColumns.forEach(
       column => {
@@ -105,6 +121,7 @@ export class DataTableComponent implements OnInit {
         this.columnFilter.push(column.dropDownFilter);
       });
   }
+
 
   createDropdowns() {
     if (this.tableColumns) {

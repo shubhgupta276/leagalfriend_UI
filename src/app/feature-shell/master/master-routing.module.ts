@@ -13,10 +13,10 @@ import { BranchComponent } from './branch/branch.component';
 import { MasterTemplatesComponent } from './masterTemplates/masterTemplate.component';
 import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
 const masterRoutes: Routes = [
-    { path: 'state', component: StateComponent},
+    // { path: 'state', component: StateComponent},
     { path: 'stage', component: StageComponent},
-    { path: 'city', component: CityComponent},
-    { path: 'district', component: DistrictComponent},
+    // { path: 'city', component: CityComponent},
+    // { path: 'district', component: DistrictComponent},
     { path: 'court', component: CourtComponent},
     { path: 'billing', component: BillingComponent},
     { path: 'institution', component: InstitutionComponent},
@@ -25,7 +25,7 @@ const masterRoutes: Routes = [
     { path: 'branch', component: BranchComponent},
     { path: 'templates', component: MasterTemplatesComponent},
     { path: 'invoice', component: InvoiceInfoComponent},
-    { path: '', redirectTo: 'city', pathMatch: 'full' }
+    { path: '', redirectTo: 'court', pathMatch: 'full' }
     ];
 
 @NgModule({

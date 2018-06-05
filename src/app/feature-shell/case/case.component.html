@@ -104,7 +104,7 @@
                 <div class="tab-pane active" id="tab_running">
                   <app-data-table #caseRunningTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
                     (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
-                    [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)">
+                    [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" (rowClickShowCalendar)="onShowCalendar($event)">
                   </app-data-table>
                   <!-- <table id="example1" on-mouseleave="hideCalendar()" class="table table-bordered table-hover">
                     <thead>

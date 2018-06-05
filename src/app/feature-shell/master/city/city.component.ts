@@ -10,6 +10,7 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { cityTableConfig } from './city.config';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 declare let $;
 
 @Component({
@@ -24,12 +25,15 @@ export class CityComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
+
   constructor(private fb: FormBuilder, private _cityService: CityService, private _storageService: StorageService) {
 
   }
   editCityMasterForm: FormGroup;
 
   ngOnInit() {
+    this.setActionConfig();
     this.getCityData();
   }
 
@@ -59,10 +63,21 @@ export class CityComponent implements OnInit {
   onRowDoubleClick(event) {
     this.editChild.createForm(event);
     $('#editCityMasterModal').modal('show');
-   }
+  }
 
   onRowSelect(event) {
     console.log(event);
+  }
+  onActionBtnClick(event) {
+    if (event.eventType === 'edit') {
+      this.editChild.createForm(event.data);
+      $('#editCityMasterModal').modal('show');
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
   }
 }
 

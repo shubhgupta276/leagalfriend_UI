@@ -9,6 +9,7 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { resourceTableConfig } from './resource.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 
 declare let $;
 
@@ -25,10 +26,12 @@ export class ResourceComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private _recourseService: RecourseService, private _storageService: StorageService) {
   }
   editResourceMasterForm: FormGroup;
   ngOnInit() {
+    this.setActionConfig();
     this.GetAllResource();
   }
   GetAllResource() {
@@ -50,12 +53,29 @@ export class ResourceComponent implements OnInit {
         console.log(err);
       });
   }
-
-  showEditModal(data: Recourse) {
-    this.editChild.createForm(data);
+  onRowClick(event) {
+    console.log(event);
+  }
+  onRowDoubleClick(event) {
+    this.editChild.createForm(event);
     $('#editResourceMasterModal').modal('show');
   }
 
+  onRowSelect(event) {
+    console.log(event);
+  }
+  
+  onActionBtnClick(event) {
+    if (event.eventType === 'edit') {
+      this.editChild.createForm(event.data);
+      $('#editResourceMasterModal').modal('show');
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
+  }
 }
 
 @NgModule({

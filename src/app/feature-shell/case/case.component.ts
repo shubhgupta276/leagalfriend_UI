@@ -108,11 +108,10 @@ export class CaseComponent implements OnInit {
   }
   getCasesData() {
     var $this = this;
-    
-this.branchData = this._storageService.getBranchData();
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
     };
+    this.branchData = this._storageService.getBranchData();
     this.tableInputData = [];
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
@@ -164,7 +163,13 @@ this.branchData = this._storageService.getBranchData();
     }, function (start_date, end_date) {
       $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
     });
-
+    var self = this;
+    $('body').on('change', '.newHiringDate', function () {
+      self.updateNewHiringDate($(this).val())
+      $(this).closest('mat-cell')
+        .animate({ backgroundColor: '#88d288' }, 1000)
+        .animate({ backgroundColor: '' }, 1000);
+    });
    
   }
 
@@ -183,7 +188,6 @@ this.branchData = this._storageService.getBranchData();
       this.authService.getCaseByCaseId(reqData).subscribe(
 
         result => {
-          debugger
           $this.editChild.createForm(result);
           $('#caseLi a').click();
 
@@ -302,8 +306,8 @@ this.branchData = this._storageService.getBranchData();
   
 
   getBranchDDL() {
-    const $this = this;
-    const reqData = {
+    var $this = this
+    var reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.getBranchDDL(reqData).subscribe(
@@ -321,8 +325,8 @@ this.branchData = this._storageService.getBranchData();
       });
   }
   bindRecourseDDL() {
-    const $this = this;
-    const reqData = {
+    var $this = this
+    var reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.bindRecourseDDL(reqData).subscribe(
@@ -337,17 +341,17 @@ this.branchData = this._storageService.getBranchData();
   }
   bindStageDDL() {
 
-    const $this = this;
-    const reqData = {
+    var $this = this
+    var reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.bindStageDDL(reqData).subscribe(
       result => {
         if (result.httpCode === 200) {
-        result.stageRecourses.forEach(function (value) {
-          $this.arrListCaseStage.push(value);
-        });
-      }
+          result.stageRecourses.forEach(function (value) {
+            $this.arrListCaseStage.push(value);
+          });
+        }
 
       },
       err => {
@@ -411,18 +415,29 @@ this.branchData = this._storageService.getBranchData();
       }
     }
   }
-  ShowCalendar(items) {
+  onShowCalendar(items) {
     this.newHiringCasedata = items;
 
   }
   updateNewHiringDate(newHiring) {
+    this.newHiringCasedata.nextHearingDate = newHiring;
+    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
+      result => {
+        if (result.body.httpCode == 200) { //success
+          $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
+        }
+      },
+      err => {
+        console.log(err);
+      });
     this.caseRunning.forEach(element => {
       if (element.id == this.newHiringCasedata.id) {
         element.nextHearingDate = newHiring;
+        return false;
       }
     })
   }
-  OnMouseHover(i) {
+  onMouseHover(i) {
     if ($('.datepicker-dropdown').length == 0) {
       $('.newHiringDate').datepicker();
       this.hoveredIndex = i;

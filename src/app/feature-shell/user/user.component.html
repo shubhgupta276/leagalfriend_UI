@@ -1,20 +1,20 @@
 <style>
   .ui-dialog-titlebar-close {
     visibility: hidden;
-}
+  }
 </style>
 
 <div class="content-wrapper">
   <div class="page-heading">
-    User Management    
+    User Management
   </div>
   <section class="content">
-   
-    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)"
-      (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+
+    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)" [showRowSelect]="rowSelect"
+      [hoverTableRow]="hoverTableRow">
     </app-data-table>
   </section>
- 
+
   <!-- <section class="content">
     <div class="row">
       <div class="col-xs-12">
@@ -89,7 +89,7 @@
     
   </section> -->
 
-  <div class="favicon"  data-toggle="modal" data-target="#addUserModal">
+  <div class="favicon" data-toggle="modal" data-target="#addUserModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
       <span class="tooltip-text">Add User</span>
     </div>
@@ -97,143 +97,138 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles"></app-add-user>
+  <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles" [Branches]="Branches"></app-add-user>
 
-  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [arrUsers]="arrUsers"></app-edit-user>
+  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [arrUsers]="arrUsers" [Branches]="Branches"></app-edit-user>
   <!-- /.content -->
 </div>
 
-<div class="modal fade" id="subscriptionModal" >
-    <div class="modal-dialog">
-      <div class="modal-content" style="border-radius: 5px;">
-        <div class="modal-header modal-header-addedit">
-          <button type="button" id="closebtn" class="close close-addedit"  >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title">LegalFriend Subscription</h4>
-        </div>
-        <div style="background-color: #f44242; color: white; border-color: #ddd; border-radius: 5px;
+<div class="modal fade" id="subscriptionModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">LegalFriend Subscription</h4>
+      </div>
+      <div style="background-color: #f44242; color: white; border-color: #ddd; border-radius: 5px;
         height:99px ">
-     
-       <img src="/assets/dist/img/expired.ico" style="width:70px;margin-left:250px" />
-     
-     
-    </div>
-        <div style="width:120px;height:10%;background-color:black;"></div>
-        <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
-           
-          <div class="row">
-            <!-- <div class="col-md-12"> -->
-            <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-            <div>
-              <div class="box-body widget-content">
-                 
-                <form  class="form-horizontal" >
-                  <div class="form-body">
-                  
-                    <div class="tab-content">
-                        
-                      <div class="tab-pane active">
-                          
-                        <div class="form-group row">
-                            
-                          <h2 style="margin-left:110px">Your license has expired</h2>
-                          <p style="margin-left:115px">don't worry, You can avail this service by Pay</p>
+
+        <img src="/assets/dist/img/expired.ico" style="width:70px;margin-left:250px" />
+
+
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+
+              <form class="form-horizontal">
+                <div class="form-body">
+
+                  <div class="tab-content">
+
+                    <div class="tab-pane active">
+
+                      <div class="form-group row">
+
+                        <h2 style="margin-left:110px">Your license has expired</h2>
+                        <p style="margin-left:115px">don't worry, You can avail this service by Pay</p>
                         <div class="form-group row">
                           <div class="col-md-4">
-                            
+
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div style="margin-left:215px">
-                    
-                      <a class="btn btn-success" href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>Continue</a>
-                  </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <!-- </div> -->
-          </div>
-          <!-- Create User ends -->
-        </div>
-        
-  
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-    
-  </div>
 
-  <div class="modal fade" id="subscriptionWarningModal" >
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-radius: 5px;">
-          <div class="modal-header modal-header-addedit">
-            <button type="button" id="closebtn" class="close close-addedit"  >
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">LegalFriend Subscription</h4>
+                    <a class="btn btn-success" href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>Continue</a>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-          <div style="background-color:yellow; color: white; border-color: #ddd; border-radius: 5px;
-          height:99px ">
-       
-         <img src="/assets/dist/img/warning.png" style="width:70px;margin-left:250px" />
-       
-       
+          <!-- </div> -->
+        </div>
+        <!-- Create User ends -->
       </div>
-          <div style="width:120px;height:10%;background-color:black;"></div>
-          <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
-             
-            <div class="row">
-              <!-- <div class="col-md-12"> -->
-              <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-              <div>
-                <div class="box-body widget-content">
-                   
-                  <form  class="form-horizontal" >
-                    <div class="form-body">
-                    
-                      <div class="tab-content">
-                          
-                        <div class="tab-pane active">
-                            
-                          <div class="form-group row">
-                              
-                            <h2 style="margin-left:110px">Your license is going to expire</h2>
-                            <p style="margin-left:115px">click on continue to pay</p>
-                          <div class="form-group row">
-                            <div class="col-md-4">
-                              
-                            </div>
+
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+
+</div>
+
+<div class="modal fade" id="subscriptionWarningModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">LegalFriend Subscription</h4>
+      </div>
+      <div style="background-color:yellow; color: white; border-color: #ddd; border-radius: 5px;
+          height:99px ">
+
+        <img src="/assets/dist/img/warning.png" style="width:70px;margin-left:250px" />
+
+
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+
+              <form class="form-horizontal">
+                <div class="form-body">
+
+                  <div class="tab-content">
+
+                    <div class="tab-pane active">
+
+                      <div class="form-group row">
+
+                        <h2 style="margin-left:110px">Your license is going to expire</h2>
+                        <p style="margin-left:115px">click on continue to pay</p>
+                        <div class="form-group row">
+                          <div class="col-md-4">
+
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div style="margin-left:215px">
-                      <button type="submit" class="btn btn-primary" data-dismiss="modal">Trial User</button>
-                        <a class="btn btn-success" href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>Continue</a>
-                    </div>
-                    </div>
-                  </form>
+                  </div>
+                  <div style="margin-left:215px">
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Trial User</button>
+                    <a class="btn btn-success" href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>Continue</a>
+                  </div>
                 </div>
-              </div>
-              <!-- </div> -->
+              </form>
             </div>
-            <!-- Create User ends -->
           </div>
-          
-    
+          <!-- </div> -->
         </div>
-        <!-- /.modal-content -->
+        <!-- Create User ends -->
       </div>
-      <!-- /.modal-dialog -->
-      
-    </div>
-  
-  
-  
-  
 
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+
+</div>
