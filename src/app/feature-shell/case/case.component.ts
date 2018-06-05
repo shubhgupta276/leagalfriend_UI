@@ -80,29 +80,6 @@ export class CaseComponent implements OnInit {
     this.caseCompleted = CasesCompleted;
   }
 
-  getRunningCase() {
-    var $this = this;
-    var reqData = {
-      userId: this._storageService.getUserId(),
-    };
-    this.authService.getCaseRunning(reqData).subscribe(
-
-      result => {
-        result.forEach(function (value) {
-          $this.caseRunning.push(value);
-
-
-        });
-
-        // setTimeout(() => {
-        //   this.bindDatatable();
-        // }, 1);
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
   selectToday() {
     this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
@@ -136,9 +113,8 @@ export class CaseComponent implements OnInit {
 
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
-    this.actionColumnConfig.displayName = 'Action';
-    this.actionColumnConfig.btnText = ['View History'];
-    this.actionColumnConfig.moduleName = 'Case';
+    this.actionColumnConfig.showHistory = true;
+    this.actionColumnConfig.showEdit = true;
   }
   ngOnInit() {
 
@@ -154,7 +130,7 @@ export class CaseComponent implements OnInit {
     this.getBranchDDL();
     this.bindRecourseDDL();
     this.bindStageDDL();
-    
+
     $('#reservation').daterangepicker({
       autoUpdateInput: false,
       locale: {
@@ -168,16 +144,15 @@ export class CaseComponent implements OnInit {
       self.updateNewHiringDate($(this).val())
       $(this).closest('mat-cell')
         .animate({ backgroundColor: '#88d288' }, 1000)
-        .animate({ backgroundColor: '' }, 1000);
+        .animate({ backgroundColor: '' }, 2000);
     });
-   
+
   }
 
   onRowClick(event) {
     console.log(event);
   }
-
-  onRowDoubleClick(c) {
+  showEditPop(c) {
     $('#editCaseModal').modal('show');
     var $this = this
     var reqData = {
@@ -222,15 +197,23 @@ export class CaseComponent implements OnInit {
         });
     }
   }
+  onRowDoubleClick(c) {
+    this.showEditPop(c);
+  }
 
   onRowSelect(event) {
     console.log(event);
   }
 
   onActionBtnClick(event) {
-    $('#modal-default1').modal('show');
+    if (event.eventType === "history")
+      $('#modal-default1').modal('show');
+    else
+      this.showEditPop(event.data);
   }
-
+  onActionHistoryBtnClick(event) {
+    this.showEditPop(event);
+  }
   onRowClickCompleted(event) {
     console.log(event);
   }
@@ -303,7 +286,7 @@ export class CaseComponent implements OnInit {
     $('#filterCaseModal').modal('hide');
 
   }
-  
+
 
   getBranchDDL() {
     var $this = this
@@ -421,21 +404,19 @@ export class CaseComponent implements OnInit {
   }
   updateNewHiringDate(newHiring) {
     this.newHiringCasedata.nextHearingDate = newHiring;
-    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
-      result => {
-        if (result.body.httpCode == 200) { //success
-          $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
-        }
-      },
-      err => {
-        console.log(err);
-      });
     this.caseRunning.forEach(element => {
       if (element.id == this.newHiringCasedata.id) {
         element.nextHearingDate = newHiring;
         return false;
       }
     })
+    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
+      result => {
+      },
+      err => {
+        console.log(err);
+      });
+
   }
   onMouseHover(i) {
     if ($('.datepicker-dropdown').length == 0) {
