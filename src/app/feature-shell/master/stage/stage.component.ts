@@ -8,6 +8,10 @@ import { Stage } from './stage';
 import { StageService } from './stage.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { RecourseService } from '../resource/recourse.service';
+import { stageTableConfig } from './stage.config';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 
 declare let $;
 
@@ -18,16 +22,24 @@ declare let $;
   styleUrls: ['./stage.component.css']
 })
 export class StageComponent implements OnInit {
-  arr: Stage[] = [];
+  //arr: Stage[] = [];
   arStatus: any[] = [];
   arRecourse: any[] = [];
   editStageMasterForm: FormGroup;
   @ViewChild(EditStageMasterComponent) editChild: EditStageMasterComponent;
+  tableInputData = [];
+  columns = stageTableConfig;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = false;
+  hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
+
   constructor(private fb: FormBuilder, private _stageService: StageService, private _storageService: StorageService,
     private _recourseService: RecourseService) {
   }
 
   ngOnInit() {
+    this.setActionConfig();
     this.GetAllStage();
     this.getStatus();
     this.getRecourse();
@@ -42,7 +54,7 @@ export class StageComponent implements OnInit {
           for (var i = 0; i < result.stageRecourses.length; i++) {
             const obj = result.stageRecourses[i];
 
-            this.arr.push(
+            this.tableInputData.push(
               {
                 stageCode: obj.stageCode,
                 stageName: obj.stageName,
@@ -54,9 +66,7 @@ export class StageComponent implements OnInit {
             );
 
           }
-          setTimeout(() => {
-            this.bindDatatable();
-          }, 1);
+          this.dataTableComponent.ngOnInit();
         }
         else {
           console.log(result);
@@ -64,7 +74,6 @@ export class StageComponent implements OnInit {
       },
       err => {
         console.log(err);
-        this.arr = [];
 
       });
 
@@ -83,7 +92,6 @@ export class StageComponent implements OnInit {
       },
       err => {
         console.log(err);
-        this.arr = [];
 
       });
   }
@@ -152,15 +160,38 @@ export class StageComponent implements OnInit {
 
   showEditModal(data: Stage) {
     this.editChild.createForm(data);
-
     $('#editStageMasterModal').modal('show');
+  }
+  onRowClick(event) {
+    console.log(event);
+  }
+  onRowDoubleClick(event) {
+    this.editChild.createForm(event);
+    $('#editStageMasterModal').modal('show');
+  }
+
+  onRowSelect(event) {
+    console.log(event);
+  }
+  onActionBtnClick(event) {
+    if (event.eventType === 'edit') {
+      this.editChild.createForm(event.data);
+      $('#editStageMasterModal').modal('show');
+    }
+
+  }
+
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
   }
 
 }
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
     declarations: [
       StageComponent,
       AddStageMasterComponent,
@@ -170,5 +201,5 @@ export class StageComponent implements OnInit {
   }
 )
 
-export class StageModule {}
+export class StageModule { }
 

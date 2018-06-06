@@ -110,7 +110,7 @@ export class EditUserComponent implements OnInit {
     userdata.roles = [
       {
         id: data.role,
-        roleName: data.roleName
+        roleName: data.roles
       }
     ];
     userdata.address =
