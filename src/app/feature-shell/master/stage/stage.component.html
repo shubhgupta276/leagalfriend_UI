@@ -16,45 +16,9 @@
             </div> -->
           <!-- /.box-header -->
           <div class="box-body">
-            <div>
-              <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Stage</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                  <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label>
-                </div>
-                <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                </div>
-              </div>
-            </div>
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>Recource</th>
-                  <th>Stage Code</th>
-                  <th>Stage Name</th>
-                  <th>Action</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of arr" (dblclick)="showEditModal(item)" data-target="#editStageMasterModal">
-                  <td>{{item.recourseCode}}</td>
-                  <td>{{item.stageCode}}</td>
-                  <td>{{item.stageName}}</td>
-                  <td><a title="Edit" (click)="showEditModal(item)"><i class="fa fa-edit"></i></a></td>
-                </tr>
-                <tr *ngIf="!arr || arr.length==0">
-                  <td colspan="4"> No Record Found...!</td>
-                </tr>
-              </tbody>
-
-            </table>
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="onRowDoubleClick($event)" [showRowSelect]="rowSelect"
+              [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" (actionBtnClick)="onActionBtnClick($event)">
+            </app-data-table>
           </div>
           <!-- /.box-body -->
         </div>
@@ -73,6 +37,6 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-add-stage [arStage]="arr" [arStatus]="arStatus" [arRecourse]="arRecourse"></app-add-stage>
-  <app-edit-stage [arStage]="arr" [arStatus]="arStatus" [arRecourse]="arRecourse"></app-edit-stage>
+  <app-add-stage [arStage]="tableInputData" [arStatus]="arStatus" [arRecourse]="arRecourse"></app-add-stage>
+  <app-edit-stage [arStage]="tableInputData" [arStatus]="arStatus" [arRecourse]="arRecourse"></app-edit-stage>
 </div>

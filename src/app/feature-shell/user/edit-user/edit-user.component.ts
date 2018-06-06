@@ -58,20 +58,18 @@ export class EditUserComponent implements OnInit {
       data.roles = this.selectedRole;
     }
     const finalData = this.GetUserEditData(data);
-    debugger
-    console.log(finalData);
-    // this.userService.editUser(finalData).subscribe(
-    //   result => {
-    //     if (result.body.httpCode === 200) {
-    //       $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
-    //       this.BindGridOnEdit(data);
-    //     } else {
-    //       $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-    //     }
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   });
+    this.userService.editUser(finalData).subscribe(
+      result => {
+        if (result.body.httpCode === 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
+          this.BindGridOnEdit(data);
+        } else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      });
     $('#editUserModal').modal('hide');
   }
   BindGridOnEdit(data) {
@@ -112,7 +110,7 @@ export class EditUserComponent implements OnInit {
     userdata.roles = [
       {
         id: data.role,
-        roleName: data.roleName
+        roleName: data.roles
       }
     ];
     userdata.address =

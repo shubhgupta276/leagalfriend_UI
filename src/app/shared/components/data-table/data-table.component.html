@@ -1,7 +1,5 @@
 <div class="example-header" *ngIf="showSearchFilter">
-    <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
+    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." (keyup)="applyFilter($event.target.value)">
 </div>
 
 <div class="example-container mat-elevation-z8">

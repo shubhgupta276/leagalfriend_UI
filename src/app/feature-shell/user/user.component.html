@@ -2,92 +2,92 @@
   .ui-dialog-titlebar-close {
     visibility: hidden;
   }
+  body {
+  background: #ecf0f1;
+  color: #8e44ad;
+}
+.center-on-page {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+input[type="checkbox"],
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+label {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 10px;
+  line-height: 36px;
+  cursor: pointer;
+}
+label::before {
+  content: " ";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #8e44ad;
+  border-radius: 4px;
+  z-index: -1;
+}
+input[type="radio"] + label::before {
+  border-radius: 18px;
+}
+/* Checked */
+input[type="checkbox"]:checked + label,
+input[type="radio"]:checked + label {
+  padding-left: 10px;
+  color: #fff;
+}
+input[type="checkbox"]:checked + label::before,
+input[type="radio"]:checked + label::before {
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #8e44ad;
+}
+/* Transition */
+label,
+label::before {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
 </style>
 
 <div class="content-wrapper">
   <div class="page-heading">
     User Management
   </div>
+
   <section class="content">
-
-    <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)" [showRowSelect]="rowSelect"
-      [hoverTableRow]="hoverTableRow">
-    </app-data-table>
-  </section>
-
-  <!-- <section class="content">
     <div class="row">
       <div class="col-xs-12">
-      
+
         <div class="box">
           <div class="box-body">
-            <div>
-              <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Users</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                  <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label>
-                </div>
-                <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                </div>
-              </div>
-            </div>
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th class="padding-bottom">Id</th>
-                  <th class="padding-bottom">Name</th>
-                  <th class="padding-bottom">Email</th>
-                  <th class="padding-bottom">Phone</th>
-                  <th>Role
-                    <select id="ddlUserFilter" class="role input-sm">
-                      <option value="All">All</option>
-                      <option *ngFor="let option of userRoles" [ngValue]="option.id">
-                        {{ option.roleName }}
-                      </option>
-                    </select>
-                  </th>
-                  <th>Status
-                    <select id="ddlStatusFilter" class="status input-sm">
-                      <option value="All">All</option>
-                      <option *ngFor="let option of userStatus" [ngValue]="option.statusId">
-                        {{ option.statusName }}
-                      </option>
-                    </select>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of arrUsers; let i=index" (dblclick)="editUser(user)">
-                  <td>{{i+1}}</td>
-                  <td>{{user.firstName + ' ' + user.lastName}}</td>
-                  <td>{{user.email}}</td>
-                  <td>{{user.mobileNumber}}</td>
-                  <td>{{user.roles[0].roleName}}</td>
-                  <td >
-                    <button *ngIf="user.status.statusName==='ACTIVE'" class="btn btn-block btn-success btn-xs btn2" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
-                    <button *ngIf="user.status.statusName==='SUSPEND'" class="btn btn-block btn-warning btn-xs btn3" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
-                    <button  *ngIf="user.status.statusName==='DEACTIVE'" class="btn btn-block btn-danger btn-xs btn4" style="width:90px;font-size:small;cursor:auto">{{user.status.statusName}}</button>
-                  </td>
-                
-                </tr>
-              </tbody>
-
-            </table>
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="onRowDoubleClick($event)" [showRowSelect]="rowSelect"
+              [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" (actionBtnClick)="onActionBtnClick($event)">
+            </app-data-table>
           </div>
-         
+
         </div>
-       
+
       </div>
-     
+
     </div>
-    
-  </section> -->
+
+  </section>
 
   <div class="favicon" data-toggle="modal" data-target="#addUserModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
@@ -216,6 +216,80 @@
                     <button type="submit" class="btn btn-primary" data-dismiss="modal">Trial User</button>
                     <a class="btn btn-success" href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>Continue</a>
                   </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+        <!-- Create User ends -->
+      </div>
+
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+
+</div>
+
+
+<div class="modal fade" id="customerList">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 5px;">
+      <div class="modal-header modal-header-addedit">
+        <button type="button" id="closebtn" class="close close-addedit">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Customer List</h4>
+      </div>
+      <div style="background-color:rgb(95, 95, 45); color: white; border-color: #ddd; border-radius: 5px;
+          height:200px ">
+
+        <img src="/assets/dist/img/customer.png" style="width:200px;margin-left:200px" />
+
+
+      </div>
+      <div style="width:120px;height:10%;background-color:black;"></div>
+      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+
+        <div class="row">
+          <!-- <div class="col-md-12"> -->
+          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+          <div>
+            <div class="box-body widget-content">
+
+              <form class="form-horizontal">
+                <div class="form-body">
+
+                  <div class="tab-content">
+
+                    <div class="tab-pane active">
+
+                      <div class="form-group row">
+
+                        
+                        <div class="center-on-page">
+  
+                          <input type="radio" name="rb" id="rb1" />
+                          <label for="rb1">Puneet</label>
+                          <input type="radio" name="rb" id="rb2" />
+                          <label for="rb2">vipin</label>
+                          <input type="radio" name="rb" id="rb3" />
+                          <label for="rb3">anup</label>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-4">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div style="margin-left:215px">
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Trial User</button>
+                    <a class="btn btn-success" href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>Continue</a>
+                  </div> -->
                 </div>
               </form>
             </div>

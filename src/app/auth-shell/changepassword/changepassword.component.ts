@@ -24,7 +24,6 @@ export class changepasswordComponent implements OnInit {
             newPassword: [null, Validators.required],
             confirmPassword: [null, Validators.required]
         });
-       
     }
 
     ngOnInit() {
@@ -36,7 +35,6 @@ export class changepasswordComponent implements OnInit {
         const changepassworddetails = new ChangePassword();
         var userId = parseInt(localStorage.getItem('client_id'));
         var accesstoken=localStorage.getItem('access_token');
-       
         changepassworddetails.userId = userId;
         changepassworddetails.oldPassword = data.newPassword;
         changepassworddetails.password = data.confirmPassword;
@@ -45,15 +43,12 @@ export class changepasswordComponent implements OnInit {
         this.authService.changepassword(changepassworddetails).subscribe(
 
             result => {
-                debugger;
                 console.log(result);
 
             },
             err => {
                 console.log(err);
             });
-        
-
     }
 
 
