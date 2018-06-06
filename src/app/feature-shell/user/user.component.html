@@ -15,23 +15,9 @@
 
         <div class="box">
           <div class="box-body">
-            <div>
-              <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Users</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                </div>
-                <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilter($event.target.value)">
-                </div>
-              </div>
-            </div>
-            <div style="margin-top: 10px">
-              <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="editUser($event)" [showRowSelect]="rowSelect"
-                [hoverTableRow]="hoverTableRow" [showSearchFilter]="showSearchFilter">
-              </app-data-table>
-            </div>
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="onRowDoubleClick($event)" [showRowSelect]="rowSelect"
+              [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" (actionBtnClick)="onActionBtnClick($event)">
+            </app-data-table>
           </div>
 
         </div>
