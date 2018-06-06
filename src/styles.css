@@ -22,3 +22,9 @@
     font-size: 15px;
     font-weight: 700;
 }
+.mat-header-row {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: inherit;
+}
