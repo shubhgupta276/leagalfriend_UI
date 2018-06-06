@@ -6,8 +6,8 @@ import {
   RequestOptions,
   Response,
   URLSearchParams
-} from "@angular/http";
-import { ApiGateway } from "../shared/services/api-gateway";
+} from '@angular/http';
+import { ApiGateway } from '../shared/services/api-gateway';
 import {
   HttpClient,
   HttpRequest,
@@ -15,19 +15,19 @@ import {
   HttpHeaders,
   HttpErrorResponse,
   HttpParams
-} from "@angular/common/http";
+} from '@angular/common/http';
 // const featureConfig = require('./auth-shell.config');
-import { login, resetPassword } from "./auth-shell.config";
-import { signup } from "./auth-shell.config";
-import { changepassword } from "./auth-shell.config";
-import { forgot_password  } from "./auth-shell.config";
-import { verifyEmail } from "./auth-shell.config";
-import { LoginModel } from "../shared/models/auth/login.model";
-import { UserModel } from "../shared/models/user/user.model";
-import { SignUpModel } from "../shared/models/auth/signup.model";
-import { TokenModel } from "../shared/models/auth/token.model";
-import { ResetPassword } from "../shared/models/auth/resetpassword.model";
-import { ChangePassword } from "../shared/models/auth/changepassword.model";
+import { login, resetPassword } from './auth-shell.config';
+import { signup } from './auth-shell.config';
+import { changepassword } from './auth-shell.config';
+import { forgot_password  } from './auth-shell.config';
+import { verifyEmail } from './auth-shell.config';
+import { LoginModel } from '../shared/models/auth/login.model';
+import { UserModel } from '../shared/models/user/user.model';
+import { SignUpModel } from '../shared/models/auth/signup.model';
+import { TokenModel } from '../shared/models/auth/token.model';
+import { ResetPassword } from '../shared/models/auth/resetpassword.model';
+import { ChangePassword } from '../shared/models/auth/changepassword.model';
 import { Branch } from '../shared/models/auth/case.model';
 import { Recourse } from '../shared/models/auth/recourse.model';
 import {EditCase} from '../shared/models/auth/editcase.model';
@@ -103,14 +103,14 @@ export class AuthService {
   }
   getBranchDDL(reqData): Observable<any> {    
     return this.apiGateWay.get<Branch>(
-      'master/branches'+ '?email='+ reqData.email.replace('"',''), null,
+      'master/branches' + '?email=' + reqData.email.replace('"',''), null,
       
     );
   }
 
   getCourtDDL(reqData): Observable<any> {    
     return this.apiGateWay.get<any>(
-      'master/courts'+ '?email='+ reqData.email.replace('"',''), null,
+      'master/courts' + '?email=' + reqData.email.replace('"',''), null,
       
     );
   }
@@ -185,20 +185,17 @@ export class AuthService {
 
   getCaseByCaseId(reqData): Observable<any> {    
     return this.apiGateWay.get<Recourse>(
-      'case/getCase'+ '?caseId='+ reqData.caseId,null,
-      
+      'case/getCase'+ '?caseId='+ reqData.caseId, null,
     );
   }
   getCaseCompliance(reqData): Observable<any> {    
     return this.apiGateWay.get<Recourse>(
-      'case/compliance'+ '?caseId='+ reqData.caseId,null,
-      
+      'case/compliance'+ '?caseId='+ reqData.caseId, null,
     );
   }
   GetAllCity(reqData): Observable<any> {    
     return this.apiGateWay.get<any>(
-      'master/cities'+ '?email='+ reqData.email.replace('"',''), null,
-      
+      'master/cities' + '?email=' + reqData.email.replace('"', ''), null,
     );
   }
 
