@@ -75,7 +75,12 @@ export class AuthService {
     );
     
   }
-
+  checkUserClient(email): Observable<any> {
+    debugger
+    return this.apiGateWay.post<any>(
+      'users/client' + '?email=' + email, null
+    );
+  }
   verifyemail(token,isReferral): Observable<any> {
     return this.apiGateWay.post<any>(
       verifyEmail + '?token=' + token+'&isReferral='+ isReferral, null
