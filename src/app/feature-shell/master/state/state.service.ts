@@ -18,7 +18,7 @@ export class StateService {
     getStates(): Observable<any> {
         
         return this.apiGateWay.get<State>(
-            getStatesUrl+ "?email=" + this._storageService.getUserEmail()
+            getStatesUrl+ "?userId=" + this._storageService.getUserId()
         );
     }
 
