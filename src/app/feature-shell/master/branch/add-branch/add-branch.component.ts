@@ -35,7 +35,9 @@ export class AddBranchMasterComponent implements OnInit {
   }
 
   submitAddBranchMaster(data) {
+    debugger
     const finalData = this.GetBranchData(data);
+    
     this._branchService.addBranch(finalData).subscribe(
       result => {
         if (result.body.httpCode === 200) {
@@ -84,15 +86,16 @@ export class AddBranchMasterComponent implements OnInit {
     this.subscriberFields();
   }
   subscriberFields() {
-    this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
-      (e) => {
-        if (e === 'test') { // right now this is hardcode later it will be checked from service(database)
-          this.isBranchcodeAlreadyExists = true;
-        } else {
-          this.isBranchcodeAlreadyExists = false;
-        }
-      }
-    );
+    // this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
+    //   (e) => {
+    //     debugger
+    //     if (e === 'test') { // right now this is hardcode later it will be checked from service(database)
+    //       this.isBranchcodeAlreadyExists = true;
+    //     } else {
+    //       this.isBranchcodeAlreadyExists = false;
+    //     }
+    //   }
+    // );
   }
   private get disabledV(): string {
     return this._disabledV;

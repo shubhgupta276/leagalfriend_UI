@@ -69,7 +69,7 @@
       <ul class="nav navbar-nav">
         <!-- Notifications: style can be found in dropdown.less -->
         <li>
-          <div style="width: 200px;padding: 9px;" *ngIf="arBranches.length > 0">
+          <div style="width: 200px;padding: 9px;" *ngIf="arBranches && arBranches.length > 0">
             <app-custom-single-select [data]="arBranches" [config]="branchConfig" (valueChanged)="changeBranch($event)"></app-custom-single-select>
             <!-- <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown> -->
           </div>

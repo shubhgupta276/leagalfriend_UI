@@ -18,7 +18,7 @@ export class CourtService {
     getCourts(): Observable<any> {
 
         return this.apiGateWay.get<Court>(
-            getCourtsUrl + "?email=" + this._storageService.getUserEmail()
+            getCourtsUrl + "?userId=" + this._storageService.getUserId()
         );
     }
 

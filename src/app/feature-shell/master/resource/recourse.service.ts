@@ -18,7 +18,7 @@ export class RecourseService {
     getResources(): Observable<any> {
        
         return this.apiGateWay.get<Recourse>(
-            getRecoursesUrl+ "?email=" + this._storageService.getUserEmail()
+            getRecoursesUrl+ "?userId=" + this._storageService.getUserId()
         );
     }
 

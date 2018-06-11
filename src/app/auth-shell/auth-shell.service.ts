@@ -20,7 +20,7 @@ import {
 import { login, resetPassword } from "./auth-shell.config";
 import { signup } from "./auth-shell.config";
 import { changepassword } from "./auth-shell.config";
-import { forgot_password  } from "./auth-shell.config";
+import { forgot_password } from "./auth-shell.config";
 import { verifyEmail } from "./auth-shell.config";
 import { LoginModel } from "../shared/models/auth/login.model";
 import { UserModel } from "../shared/models/user/user.model";
@@ -30,12 +30,13 @@ import { ResetPassword } from "../shared/models/auth/resetpassword.model";
 import { ChangePassword } from "../shared/models/auth/changepassword.model";
 import { Branch } from '../shared/models/auth/case.model';
 import { Recourse } from '../shared/models/auth/recourse.model';
-import {EditCase} from '../shared/models/auth/editcase.model';
-import {Calender} from '../shared/models/auth/calender.model';
+import { EditCase } from '../shared/models/auth/editcase.model';
+import { Calender } from '../shared/models/auth/calender.model';
+import { StorageService } from "../shared/services/storage.service";
 
 @Injectable()
 export class AuthService {
-  constructor(public apiGateWay: ApiGateway) {
+  constructor(public apiGateWay: ApiGateway, private _storageService: StorageService) {
     window.addEventListener('storage', function (event) {
       if (event.key == 'access_token') {
         window.location.href = "/login";
@@ -43,8 +44,8 @@ export class AuthService {
     });
   }
 
- 
- 
+
+
 
   login(customerData: LoginModel): Observable<LoginModel> {
     return this.apiGateWay.post<LoginModel>(
@@ -59,11 +60,11 @@ export class AuthService {
   // }
   getUserSubscription(): Observable<any> {
     return this.apiGateWay.get<any>('users/subscription');
-}
-  getusersType(): Observable<any> {    
+  }
+  getusersType(): Observable<any> {
     return this.apiGateWay.get<any>(
-      'users/type',null
-      
+      'users/type', null
+
     );
   }
   signup(customerData: SignUpModel): Observable<SignUpModel> {
@@ -71,22 +72,22 @@ export class AuthService {
     return this.apiGateWay.post<SignUpModel>(
       signup,
       JSON.stringify(customerData)
-      
+
     );
-    
+
   }
 
-  verifyemail(token,isReferral): Observable<any> {
+  verifyemail(token, isReferral): Observable<any> {
     return this.apiGateWay.post<any>(
-      verifyEmail + '?token=' + token+'&isReferral='+ isReferral, null
+      verifyEmail + '?token=' + token + '&isReferral=' + isReferral, null
     );
   }
   forgot_password(email): Observable<any> {
-    
-   return  this.apiGateWay.get<any>(
+
+    return this.apiGateWay.get<any>(
       forgot_password + '?email=' + email, null
     );
-  
+
   }
   resetPassword(customerData: ResetPassword): Observable<ResetPassword> {
     return this.apiGateWay.post<ResetPassword>(
@@ -95,42 +96,42 @@ export class AuthService {
     );
   }
   changepassword(customerData: ChangePassword): Observable<ChangePassword> {
-    
+
     return this.apiGateWay.post<ChangePassword>(
       'usermanagement/updatePassword',
       JSON.stringify(customerData)
     );
   }
-  getBranchDDL(reqData): Observable<any> {    
+  getBranchDDL(reqData): Observable<any> {
     return this.apiGateWay.get<Branch>(
-      'master/branches'+ '?email='+ reqData.email.replace('"',''), null,
-      
+      'master/branches' + '?userId=' + this._storageService.getUserId(), null,
+
     );
   }
 
-  getCourtDDL(reqData): Observable<any> {    
+  getCourtDDL(reqData): Observable<any> {
     return this.apiGateWay.get<any>(
-      'master/courts'+ '?email='+ reqData.email.replace('"',''), null,
-      
+      'master/courts' + '?userId=' + this._storageService.getUserId(), null,
+
     );
   }
 
-  bindStateDDL(reqData): Observable<any> {    
+  bindStateDDL(reqData): Observable<any> {
     return this.apiGateWay.get<any>(
-      'master/states'+ '?email='+ reqData.email.replace('"',''), null,
-      
+      'master/states' + '?userId=' + this._storageService.getUserId(), null,
+
     );
   }
-  bindRecourseDDL(reqData): Observable<any> {    
+  bindRecourseDDL(reqData): Observable<any> {
     return this.apiGateWay.get<any>(
-      'master/recourses'+ '?email='+ reqData.email.replace('"',''), null,
-      
+      'master/recourses' + '?userId=' + this._storageService.getUserId(), null,
+
     );
   }
-  bindStageDDL(reqData): Observable<any> {    
+  bindStageDDL(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'master/stages'+ '?email='+ reqData.email.replace('"',''), null,
-      
+      'master/stages' + '?userId=' + this._storageService.getUserId(), null,
+
     );
   }
 
@@ -142,8 +143,8 @@ export class AuthService {
   }
   updateEditCaseUser(customerData: any): Observable<EditCase> {
     return this.apiGateWay.post<EditCase>(
-      'case/update',customerData
-     // JSON.stringify(customerData)
+      'case/update', customerData
+      // JSON.stringify(customerData)
     );
   }
   deleteCaseById(id): Observable<EditCase> {
@@ -156,7 +157,7 @@ export class AuthService {
     return this.apiGateWay.getFile(
       '/case/file/download' + "?fileId=" + fileId
     );
-}
+  }
   updateCaseHearingDate(customerData: any): Observable<any> {
     return this.apiGateWay.put<any>(
       '/case/hearing',
@@ -172,33 +173,33 @@ export class AuthService {
 
   closeCase(id): Observable<any> {
     return this.apiGateWay.put<any>(
-      'case/compliance'+ '?caseComplianceId='+id,null,
-     
+      'case/compliance' + '?caseComplianceId=' + id, null,
+
     );
   }
-  getCaseRunning(reqData): Observable<any> {    
+  getCaseRunning(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'case/caseList'+ '?userId='+ reqData.userId,null,
-      
+      'case/caseList' + '?userId=' + reqData.userId, null,
+
     );
   }
 
-  getCaseByCaseId(reqData): Observable<any> {    
+  getCaseByCaseId(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'case/getCase'+ '?caseId='+ reqData.caseId,null,
-      
+      'case/getCase' + '?caseId=' + reqData.caseId, null,
+
     );
   }
-  getCaseCompliance(reqData): Observable<any> {    
+  getCaseCompliance(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'case/compliance'+ '?caseId='+ reqData.caseId,null,
-      
+      'case/compliance' + '?caseId=' + reqData.caseId, null,
+
     );
   }
-  GetAllCity(reqData): Observable<any> {    
+  GetAllCity(reqData): Observable<any> {
     return this.apiGateWay.get<any>(
-      'master/cities'+ '?email='+ reqData.email.replace('"',''), null,
-      
+      'master/cities' + '?userId=' + this._storageService.getUserId(), null,
+
     );
   }
 
@@ -209,29 +210,29 @@ export class AuthService {
     );
   }
 
-  getEvent(reqData): Observable<any> {    
+  getEvent(reqData): Observable<any> {
     return this.apiGateWay.post<Recourse>(
-      'events/eventList'+ '?userId='+ reqData.userId,null,
-      
+      'events/eventList' + '?userId=' + reqData.userId, null,
+
     );
   }
   getCompliances(reqData): Observable<any> {
 
     return this.apiGateWay.get<any>(
-        
-        'master/compliances'+ '?email='+ reqData.email.replace('"',''), null,
-    );
-}
 
-  listUsers(reqData): Observable<any> {    
+      'master/compliances' + '?userId=' + this._storageService.getUserId(), null,
+    );
+  }
+
+  listUsers(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'usermanagement/listusers'+ '?clientId='+ reqData.clientId,null,
-      
+      'usermanagement/listusers' + '?clientId=' + reqData.clientId, null,
+
     );
   }
 
 
-  
+
 
 
 
@@ -244,12 +245,12 @@ export class AuthService {
       localStorage.removeItem("refresh_token");
     }
   }
-  
+
   isLoggedIn(): boolean {
     if (localStorage.getItem("access_token"))
       return true;
     else
-    
+
       return false;
   }
 

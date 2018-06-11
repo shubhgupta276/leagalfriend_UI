@@ -17,12 +17,12 @@ export class InstitutionService {
 
     getInstitutions(): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getInstitutionsUrl + "?email=" +this._storageService.getUserEmail()
+            getInstitutionsUrl + "?userId=" +this._storageService.getUserId()
         );
     }
     getBilFrom(): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getBillFrom + "?email=" +this._storageService.getUserEmail()
+            getBillFrom + "?userId=" +this._storageService.getUserId()
         );
     }
     addInstitution(reqData: any): Observable<any> {

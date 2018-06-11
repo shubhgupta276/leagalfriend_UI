@@ -17,7 +17,7 @@ export class BranchService {
 
     getBranches(): Observable<any> {
         return this.apiGateWay.get<Branch>(
-            getBranchesUrl + "?email=" + this._storageService.getUserEmail()
+            getBranchesUrl + "?userId=" + this._storageService.getUserId()
         );
     }
 

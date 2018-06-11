@@ -18,7 +18,7 @@ export class DistrictService {
     getDistricts(): Observable<any> {
         
         return this.apiGateWay.get<District>(
-            getDistrictsUrl + "?email=" + this._storageService.getUserEmail()
+            getDistrictsUrl + "?userId=" + this._storageService.getUserId()
           
         );
     }

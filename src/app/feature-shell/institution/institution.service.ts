@@ -21,7 +21,7 @@ export class InstitutionService {
 
     getInstitutionList(): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getInstitutionsUrl + "?email=" + this._storageService.getUserEmail()
+            getInstitutionsUrl + "?userId=" + this._storageService.getUserId()
         );
     }
 
