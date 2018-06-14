@@ -17,7 +17,7 @@ export class CityService {
 
     getCities(): Observable<any> {
         return this.apiGateWay.get<City>(
-            getCitiesUrl + "?email=" + this._storageService.getUserEmail()
+            getCitiesUrl + "?userId=" + this._storageService.getUserId()
         );
     }
 

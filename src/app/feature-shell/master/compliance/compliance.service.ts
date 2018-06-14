@@ -17,7 +17,7 @@ export class ComplianceService {
     getCompliances(reqData): Observable<any> {
 
         return this.apiGateWay.get<Compliance>(
-            'master/compliances' + '?email=' + reqData.email.replace('"', ''), null,
+            'master/compliances' + '?userId=' +this._storageService.getUserId(), null,
         );
     }
 

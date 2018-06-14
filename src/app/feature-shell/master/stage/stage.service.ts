@@ -16,7 +16,7 @@ export class StageService {
     getStages(): Observable<any> {
 
         return this.apiGateWay.get<Stage>(
-            getStagesUrl + "?email=" + this._storageService.getUserEmail()
+            getStagesUrl + "?userId=" + this._storageService.getUserId()
 
         );
     }
@@ -24,7 +24,7 @@ export class StageService {
     getRecourseStages(recourseId: any): Observable<any> {
 
         return this.apiGateWay.get<Stage>(
-            getRecourseStagesUrl + "?email=" + this._storageService.getUserEmail() + "&recourseId=" + recourseId
+            getRecourseStagesUrl + "?userId=" + this._storageService.getUserId() + "&recourseId=" + recourseId
 
         );
     }

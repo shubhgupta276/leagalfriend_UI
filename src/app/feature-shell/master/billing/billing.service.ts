@@ -18,7 +18,7 @@ export class BillingService {
 
     getBilling(): Observable<any> {
         return this.apiGateWay.get<Billing>(
-            getBillingUrl + '?email=' + this._storageService.getUserEmail()
+            getBillingUrl + '?userId=' + this._storageService.getUserId()
         );
     }
 

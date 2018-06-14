@@ -27,10 +27,11 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   emailValidationMessage: string = "Email address is required.";
   public _login: any;
-  isLoggedInError=false;
+  isLoggedInError = false;
   public submitted: boolean;
   public events: any[] = [];
-  errLoginMsg="";
+  Customer: any = [];
+  errLoginMsg = "";
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = fb.group({
       email: [null, Validators.required],
@@ -91,16 +92,20 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['signup']);
   }
 
-  forgotPassword(){}
-
+  // forgotPassword(){}
+  getCustomer(a) {
+    const $this = this;
+    this.authService.checkUserClient(a).subscribe(
+      result => {
+        result.forEach(function (value) {
+          $this.Customer.push(value);
+        });
+      });
+  }
   login(data) {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
-    this.authService.checkUserClient(data.email).subscribe(
-      result => {
-  });
-
     this.authService.login(loginDetails).subscribe(
       result => {
         this._login = result;
@@ -112,7 +117,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('user_id', data.email);
           this.router.navigate(['admin/dashboard']);
           this.isLoggedInError = false;
-        }else {
+        } else {
           this.errLoginMsg = 'Your account has been suspended please contact your administrator.';
           this.isLoggedInError = true;
         }
