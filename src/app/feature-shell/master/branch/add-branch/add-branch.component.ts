@@ -35,7 +35,6 @@ export class AddBranchMasterComponent implements OnInit {
   }
 
   submitAddBranchMaster(data) {
-    debugger
     const finalData = this.GetBranchData(data);
     
     this._branchService.addBranch(finalData).subscribe(
@@ -88,7 +87,6 @@ export class AddBranchMasterComponent implements OnInit {
   subscriberFields() {
     // this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
     //   (e) => {
-    //     debugger
     //     if (e === 'test') { // right now this is hardcode later it will be checked from service(database)
     //       this.isBranchcodeAlreadyExists = true;
     //     } else {

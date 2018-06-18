@@ -36,7 +36,6 @@ this.verifyEmailPageLayout();
   }
 
   verifyEmail() {
-debugger
 var isReferral;
 var str1 = window.location.href.slice(window.location.href.indexOf('/'));
 var str2 = "verifyReferralEmail";

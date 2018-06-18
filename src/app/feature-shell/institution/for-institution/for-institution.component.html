@@ -41,7 +41,7 @@
 
             <app-data-table [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
-              [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)">
+              [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" (rowClickShowCalendar)="onShowCalendar($event)">
             </app-data-table>
             <!-- <table id="example1" class="table table-bordered table-hover" on-mouseleave="hideCalendar()">
               <thead>
@@ -121,13 +121,14 @@
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
-        <ng-container *ngIf="checkboxCounter>0">
+        <ng-container>
+            <!-- <ng-container *ngIf="checkboxCounter>0"> -->
           <div class="export1">
             <img src="/assets/dist/img/download1.png" height="40">
           </div>
 
           <div class="export2">
-            <img src="/assets/dist/img/download2.png" height="40">
+            <a (click)="ExportCase()"> <img src="/assets/dist/img/download2.png" height="40"></a>
           </div>
         </ng-container>
       </div>

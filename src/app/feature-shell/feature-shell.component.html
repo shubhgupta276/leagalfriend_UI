@@ -14,25 +14,43 @@
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-}
+  }
 
-@-moz-keyframes blinker {  
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
+  @-moz-keyframes blinker {
+    0% {
+      opacity: 1.0;
+    }
+    50% {
+      opacity: 0.0;
+    }
+    100% {
+      opacity: 1.0;
+    }
+  }
 
-@-webkit-keyframes blinker {  
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
+  @-webkit-keyframes blinker {
+    0% {
+      opacity: 1.0;
+    }
+    50% {
+      opacity: 0.0;
+    }
+    100% {
+      opacity: 1.0;
+    }
+  }
 
-@keyframes blinker {  
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
+  @keyframes blinker {
+    0% {
+      opacity: 1.0;
+    }
+    50% {
+      opacity: 0.0;
+    }
+    100% {
+      opacity: 1.0;
+    }
+  }
 </style>
 <header class="main-header">
 
@@ -56,16 +74,16 @@
       <span class="sr-only">Toggle navigation</span>
     </a>
     <div>
-</div>
+    </div>
 
-
-<div class='pm-button' style="margin-left:600px;height:34px;margin-top:6px" id=flash>
-    <span class="blink_me" style="color:red;"> Subscription is going to end on {{subscriptionEndDate.subscriptionEndDate}}</span>
-  <a href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'><img src='https://www.payumoney.com/media/images/payby_payumoney/new_buttons/21.png' /></a></div>
-   
-<!-- Navbar Right Menu -->
+    <!-- Navbar Right Menu -->
     <div class="navbar-custom-menu">
-
+      <div class='pm-button' style="float: left;" id=flash>
+        <span class="blink_me" style="color:red;"> Subscription is going to end on {{subscriptionEndDate.subscriptionEndDate}}</span>
+        <a href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>
+          <img src='https://www.payumoney.com/media/images/payby_payumoney/new_buttons/21.png' />
+        </a>
+      </div>
       <ul class="nav navbar-nav">
         <!-- Notifications: style can be found in dropdown.less -->
         <li>
@@ -261,12 +279,12 @@
 
     <ul class="sidebar-menu" data-widget="tree">
 
-        <li [routerLinkActive]="['active']">
-          <a routerLink="dashboard">
-            <i class="fa fa-dashboard"></i>
-            <span>Dashboard</span>
-          </a>
-        </li>
+      <li [routerLinkActive]="['active']">
+        <a routerLink="dashboard">
+          <i class="fa fa-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
       <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CUSTOMER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="user">
@@ -351,26 +369,26 @@
         </li>
       </ng-template>
       <ng-template [ngxPermissionsExcept]="['CUSTOMER']">
-      <li class="treeview" [routerLinkActive]="['active']">
-        <a (click)="showinstitutionalmenu()">
-          <i class="fa fa-institution"></i>
-          <span>Institutional Clients</span>
-          <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-          </span>
-        </a>
-        <ul class="treeview-menu"  id="liinstitutionalmenu">
-          <li [routerLinkActive]="['active']">
-            <a routerLink="institution/againstinstitution">
-              <i class="fa fa-circle-o"></i>Against Institution</a>
-          </li>
-          <li [routerLinkActive]="['active']">
-            <a routerLink="institution/forinstitution">
-              <i class="fa fa-circle-o"></i>For Institution</a>
-          </li>
-        </ul>
-      </li>
-    </ng-template>
+        <li class="treeview" [routerLinkActive]="['active']">
+          <a (click)="showinstitutionalmenu()">
+            <i class="fa fa-institution"></i>
+            <span>Institutional Clients</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" id="liinstitutionalmenu">
+            <li [routerLinkActive]="['active']">
+              <a routerLink="institution/againstinstitution">
+                <i class="fa fa-circle-o"></i>Against Institution</a>
+            </li>
+            <li [routerLinkActive]="['active']">
+              <a routerLink="institution/forinstitution">
+                <i class="fa fa-circle-o"></i>For Institution</a>
+            </li>
+          </ul>
+        </li>
+      </ng-template>
       <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CUSTOMER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="invoices">
@@ -380,23 +398,23 @@
         </li>
       </ng-template>
       <ng-template [ngxPermissionsExcept]="['CUSTOMER']">
-      <li [routerLinkActive]="['active']">
-        <a routerLink="calendar">
-          <i class="fa fa-calendar"></i>
-          <span>Calendar</span>
-          <span class="pull-right-container">
-            <ng-container *ngFor="let item of arrTodayEvents">
-              <small class="label pull-right" [style.backgroundColor]="item.cssClass">{{item.totalEventCount}}</small>
-            </ng-container>
-            <!-- <small class="label pull-right bg-blue">1</small>
+        <li [routerLinkActive]="['active']">
+          <a routerLink="calendar">
+            <i class="fa fa-calendar"></i>
+            <span>Calendar</span>
+            <span class="pull-right-container">
+              <ng-container *ngFor="let item of arrTodayEvents">
+                <small class="label pull-right" [style.backgroundColor]="item.cssClass">{{item.totalEventCount}}</small>
+              </ng-container>
+              <!-- <small class="label pull-right bg-blue">1</small>
             <small class="label pull-right bg-red">1</small>
             <small class="label pull-right bg-green">1</small>
             <small class="label pull-right bg-blue">1</small>
             <small class="label pull-right bg-blue">1</small> -->
-            <!-- <small class="label pull-right bg-blue">1</small> -->
-          </span>
-        </a>
-      </li>
+              <!-- <small class="label pull-right bg-blue">1</small> -->
+            </span>
+          </a>
+        </li>
       </ng-template>
     </ul>
   </section>
@@ -413,4 +431,3 @@
 <!-- Add the sidebar's background. This div must be placed
      immediately after the control sidebar -->
 <div class="control-sidebar-bg"></div>
-

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import {
   UserRoles, UserStatus, KeyValue, ListBillingBank, ListBillingRecourse,
@@ -10,6 +10,7 @@ import { StorageService } from '../../../../shared/services/storage.service';
 import { Billing } from '../billing';
 import { HttpClientModule } from '@angular/common/http';
 import { StageService } from '../../stage/stage.service';
+import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 declare let $;
 @Component({
   selector: 'app-add-bill-modal',
@@ -27,6 +28,8 @@ export class AddBillingComponent implements OnInit {
   arListBranch: KeyValue[] = ListBranch;
   isCombinationAlreadyExits: boolean = false;
   defaultInstitutionId: number;
+  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+
   AddbillingMaster() {
   }
   constructor(private fb: FormBuilder, private _stageService: StageService,
@@ -81,9 +84,9 @@ export class AddBillingComponent implements OnInit {
   }
 
   submitAddBill(data: any) {
-    const objRecourse = this.arAllRecourses.find(x => x.id === data.recourseId);
-    const objStage = this.arListStage.find(x => x.id === data.stageId);
-    const objInstitution = this.arAllInstitution.find(x => x.id === data.institutionId);
+    const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
+    const objStage = this.arListStage.find(x => x.id == data.stageId);
+    const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
 
     const reqData = {
       amount: data.amount,
@@ -105,7 +108,7 @@ export class AddBillingComponent implements OnInit {
         statusId: objStage.stageStatusId,
         userId: objStage.userId
       },
-      userId: this._storageservice.getUserId()
+      userId: parseInt(this._storageservice.getUserId())
     };
     this._billingservice.addBilling(reqData).subscribe(
       result => {
@@ -113,17 +116,29 @@ export class AddBillingComponent implements OnInit {
         if (_result.httpCode === 200) { // success
 
           this.tableInputData.push({
-            id: _result.id, institutionId: objInstitution.id, institutionName: objInstitution.institutionName, recourseId: data.recourseId,
-            recourseName: objRecourse.recourseName, stageName: objStage.stageName,
-            stageId: data.stageId, amount: data.amount, userId: data.userId
+            id: _result.id,
+            amount: parseFloat(data.amount),
+            recourseName: objRecourse.recourseName,
+            recourseId: parseInt(data.recourseId),
+            stageId: parseInt(data.stageId),
+            stageName: objStage.stageName,
+            userId: this._storageservice.getUserId(),
+            address: "",
+            billingAddr: "",
+            contactName: "",
+            fkCity: 0,
+            phone: "",
+            institutionId: parseInt(objInstitution.id),
+            institutionName: objInstitution.institutionName
           });
+          this.dataTableComponent.ngOnInit();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
-          $('#closebtn').click();
           this.addBillForm();
           this.subscriberFields();
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
         }
+        $('#closebtn').click();
       },
       err => {
         console.log(err);

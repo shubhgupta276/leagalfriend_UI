@@ -27,15 +27,18 @@ export class AuthInterceptor implements HttpInterceptor {
 
             return next.handle(req).do((event: HttpEvent<any>) => { }, (err: any) => {
                 if (err instanceof HttpErrorResponse)
-                loadingContainer.style.display = 'none';
-                });
+                    loadingContainer.style.display = 'none';
+            });
         }
         else if (req.url.indexOf('users/user') >= 0) {
 
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq);
+            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
+                if (err instanceof HttpErrorResponse)
+                    loadingContainer.style.display = 'none';
+            });;
         }
 
         else if (req.url.indexOf('subscription') >= 0) {
@@ -43,14 +46,20 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq);
+            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
+                if (err instanceof HttpErrorResponse)
+                    loadingContainer.style.display = 'none';
+            });;
         }
         else if (req.url.indexOf('type') >= 0) {
 
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq);
+            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
+                if (err instanceof HttpErrorResponse)
+                    loadingContainer.style.display = 'none';
+            });;
         }
 
         else if (req.url.indexOf('verifyEmail') >= 0) {
@@ -58,7 +67,10 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq);
+            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
+                if (err instanceof HttpErrorResponse)
+                    loadingContainer.style.display = 'none';
+            });;
         }
 
         else if (req.url.indexOf('forgotpwd') >= 0) {
@@ -66,7 +78,10 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq);
+            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
+                if (err instanceof HttpErrorResponse)
+                    loadingContainer.style.display = 'none';
+            });;
         }
 
         else if (req.url.indexOf('users/updatePassword') >= 0) {
@@ -75,16 +90,19 @@ export class AuthInterceptor implements HttpInterceptor {
             const changepwdReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(changepwdReq);
+            return next.handle(changepwdReq).do((event: HttpEvent<any>) => { }, (err: any) => {
+                if (err instanceof HttpErrorResponse)
+                    loadingContainer.style.display = 'none';
+            });;
         }
 
         else if (req.url.indexOf('case/add') >= 0) {
-debugger
+
             const authHeader = this.auth.getAuthorizationHeader();
             const changepwdReq = req.clone({
                 headers: req.headers
-                .set('Authorization', authHeader.access_token.toString())
-                .set('customer-id', authHeader.client_id.toString())
+                    .set('Authorization', authHeader.access_token.toString())
+                    .set('customer-id', authHeader.client_id.toString())
             });
             return next.handle(changepwdReq);
         }
@@ -93,8 +111,8 @@ debugger
             const authHeader = this.auth.getAuthorizationHeader();
             const changepwdReq = req.clone({
                 headers: req.headers
-                .set('Authorization', authHeader.access_token.toString())
-                .set('customer-id', authHeader.client_id.toString())
+                    .set('Authorization', authHeader.access_token.toString())
+                    .set('customer-id', authHeader.client_id.toString())
             });
             return next.handle(changepwdReq);
         }
@@ -108,6 +126,8 @@ debugger
             });
             return next.handle(authReq).do(event => {
                 if (event instanceof HttpResponse)
+                    loadingContainer.style.display = 'none';
+                if (event instanceof HttpErrorResponse)
                     loadingContainer.style.display = 'none';
             });
         }
@@ -123,6 +143,8 @@ debugger
 
             return next.handle(authReq).do(event => {
                 if (event instanceof HttpResponse)
+                    loadingContainer.style.display = 'none';
+                if (event instanceof HttpErrorResponse)
                     loadingContainer.style.display = 'none';
             });
         }

@@ -16,7 +16,7 @@ import { SharedService } from '../../../shared/services/shared.service';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { forInstitutionTableConfig } from './for-intitution-config';
 import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
-
+import { saveAs } from 'file-saver';
 declare let $;
 @Component({
     selector: 'app-for-institution',
@@ -51,6 +51,7 @@ export class ForInstitutionComponent implements OnInit {
     @ViewChild(AddForInstitutionComponent) _addForInstitution: AddForInstitutionComponent;
     @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
     isPageLoad: boolean = true;
+    selectedRowsCheckbox: any;
     constructor(private fb: FormBuilder,
         private _router: Router,
         private _institutionService: InstitutionService,
@@ -231,7 +232,6 @@ export class ForInstitutionComponent implements OnInit {
         if (this.branchData) {
             this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
                 result => {
-
                     for (let i = 0; i < result.length; i++) {
                         const obj = result[i];
                         this.tableInputData.push({
@@ -377,7 +377,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     onRowSelect(event) {
-        console.log(event);
+        this.selectedRowsCheckbox = event;
     }
 
     onActionBtnClick(event) {
@@ -530,12 +530,11 @@ export class ForInstitutionComponent implements OnInit {
         this._addForInstitution.bindBranch();
     }
 
-    ShowCalendar(items) {
+    onShowCalendar(items) {
         this.newHiringdata = items;
     }
 
     updateNewHearingDate(date, isNewHearingDate) {
-
         const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
         if (isNewHearingDate) {
             obj.nextHearingDate = new Date(date);
@@ -568,6 +567,30 @@ export class ForInstitutionComponent implements OnInit {
 
     caseSaved() {
         this.GetAllForIntitution();
+    }
+    ExportCase() {
+        var arrInsitituionId = [];
+        if (this.selectedRowsCheckbox.length > 0) {
+            this.selectedRowsCheckbox.forEach(item => {
+                arrInsitituionId.push(item.id);
+            });
+        }
+        var data = {
+            branchId: this.branchData.id,
+            institutionId: this.InstitutionValue.id,
+            institutionalCaseIds: arrInsitituionId
+
+        };
+        this._institutionService.exportCase(data).subscribe(
+            (result) => {
+                let blob = new Blob([result]);
+                saveAs(blob, "file.csv");
+            },
+            err => {
+                console.log(err);
+            })
+
+
     }
 }
 
