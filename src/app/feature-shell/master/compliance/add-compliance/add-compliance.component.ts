@@ -5,6 +5,7 @@ import { matchValidator } from '../../../../shared/Utility/util-custom.validatio
 import { Compliance } from '../compliance';
 import { ComplianceService } from '../compliance.service';
 import { StorageService } from '../../../../shared/services/storage.service';
+import { StageService } from '../../stage/stage.service';
 
 export interface KeyValue {
   id: number;
@@ -21,7 +22,7 @@ export class AddComplianceMasterComponent implements OnInit {
 
   @Input() tableInputData: any[];
   @Input() arRecourse: any[];
-  @Input() arStage: any[];
+  arStage: any[];
   @Input() arStatus: any[];
   addComplianceMasterForm: FormGroup;
   isComplianceAlreadyExists: boolean = false;
@@ -34,20 +35,33 @@ export class AddComplianceMasterComponent implements OnInit {
     });
   }
 
-  constructor(private fb: FormBuilder, private _complianceService: ComplianceService, private _storageService: StorageService) {
+  constructor(private fb: FormBuilder, private _complianceService: ComplianceService,
+    private _stageService: StageService,
+    private _storageService: StorageService) {
     this.AddComplianceMaster();
   }
 
+  changeRecourse(recourseId) {
+    this.arStage = [];
+    this._stageService.getRecourseStages(recourseId).subscribe(
+      result => {
+        if (result.httpCode === 200) {
+          result.stageRecourses.forEach(element => {
+            this.arStage.push(element);
+          });
+        }
+      });
+  }
+
   submitAddComplianceMaster(data) {
+
     const reqData = {
       recourse: {
-        id: data.recourse.id,
+        id: data.recourse,
       },
-
       stage: {
         id: data.stage.id,
       },
-
       complianceName: data.compliance,
       statusId: data.status.statusId,
       userId: this._storageService.getUserId()
@@ -58,9 +72,7 @@ export class AddComplianceMasterComponent implements OnInit {
         const _result = result.body;
 
         if (_result.httpCode === 200) { // success
-
-
-          // this.arCompliance.push(
+          // this.tableInputData.push(
           //   {
           //     recourse: data.recourse.recourseCode,
           //     stage: data.stage.stageCode,
@@ -71,7 +83,6 @@ export class AddComplianceMasterComponent implements OnInit {
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           // this.AddComplianceMaster();
           this.closeModal();
-          window.location.href = '/admin/master/compliance';
           // this.subscriberFields();
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
@@ -89,12 +100,12 @@ export class AddComplianceMasterComponent implements OnInit {
   ngOnInit() {
     this.subscriberFields();
   }
+
   subscriberFields() {
     this.addComplianceMasterForm.get('compliance').valueChanges.subscribe(
       (e) => {
-
-        if (this.tableInputData.filter(x => x.compliance.toUpperCase() === e.toUpperCase()).length > 0) {
-        this.isComplianceAlreadyExists = true;
+        if (this.tableInputData.filter(x => x.complianceName.toUpperCase() === e.toUpperCase()).length > 0) {
+          this.isComplianceAlreadyExists = true;
         } else {
           this.isComplianceAlreadyExists = false;
         }

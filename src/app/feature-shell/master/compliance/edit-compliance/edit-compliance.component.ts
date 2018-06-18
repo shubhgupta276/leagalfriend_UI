@@ -5,6 +5,7 @@ import { matchValidator } from '../../../../shared/Utility/util-custom.validatio
 import { Compliance } from '../compliance';
 import { ComplianceService } from '../compliance.service';
 import { StorageService } from '../../../../shared/services/storage.service';
+import { StageService } from '../../stage/stage.service';
 
 export interface KeyValue {
   id: number;
@@ -20,12 +21,13 @@ declare var $;
 export class EditComplianceMasterComponent implements OnInit, OnChanges {
   @Input() tableInputData: any[];
   @Input() arRecourse: any[];
-  @Input() arStage: any[];
+  arStage: any[] = [];
   @Input() arStatus: any[];
   editDetails: Compliance;
   isComplianceAlreadyExists: boolean = false;
   editComplianceMasterForm: FormGroup;
-  constructor(private fb: FormBuilder, private _complianceService: ComplianceService, private _storageService: StorageService) {
+  constructor(private fb: FormBuilder, private _complianceService: ComplianceService,
+    private _stageService: StageService, private _storageService: StorageService) {
   }
 
   ngOnInit() {
@@ -55,23 +57,33 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
     );
   }
 
+  changeRecourse(recourseId) {
+    this.arStage = [];
+    this._stageService.getRecourseStages(recourseId).subscribe(
+      result => {
+        if (result.httpCode === 200) {
+          result.stageRecourses.forEach(element => {
+            this.arStage.push(element);
+          });
+        }
+      });
+  }
+
   submitEditComplianceMaster(data) {
     const reqData = {
+      complianceName: data.compliance,
       id: data.id,
       recourse: {
-        id: data.recourse.id,
+        id: data.recourse,
       },
 
       stage: {
-        id: data.stage.id,
+        id: data.stage,
       },
-
-      complianceName: data.compliance,
-      statusId: data.status.statusId,
-
+      statusId: data.status,
       userId: this._storageService.getUserId()
     };
-
+    
     this._complianceService.updateCompliance(reqData).subscribe(
 
       result => {
@@ -101,6 +113,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   closeModal() {
     $('#closebtn').click();
   }
+
   createForm(data: any) {
     this.editComplianceMasterForm = this.fb.group({
 
@@ -112,6 +125,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
     });
 
     if (data != null) {
+      this.changeRecourse(data.recourseId);
       this.isComplianceAlreadyExists = false;
       this.editDetails = data;
       this.subscriberFields();

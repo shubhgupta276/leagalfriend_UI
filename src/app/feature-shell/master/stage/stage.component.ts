@@ -45,22 +45,23 @@ export class StageComponent implements OnInit {
     this.getRecourse();
 
   }
+ 
   GetAllStage() {
-    ;
+    
     this._stageService.getStages().subscribe(
       result => {
 
         if (result.httpCode == 200) {
-          for (var i = 0; i < result.stageRecourses.length; i++) {
-            const obj = result.stageRecourses[i];
+          
+          for (var i = 0; i < result.stages.length; i++) {
+            const obj = result.stages[i];
 
             this.tableInputData.push(
               {
                 stageCode: obj.stageCode,
                 stageName: obj.stageName,
                 recourse: obj.recourseId,
-                recourseCode: obj.recourseCode,
-                status: obj.stageStatusId,
+                status: obj.statusId,
                 id: obj.id
               }
             );

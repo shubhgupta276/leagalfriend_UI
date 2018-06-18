@@ -34,6 +34,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
         if (result.body.httpCode === 200) {
           this.BindBranchGridOnEdit(data);
           $.toaster({ priority: 'success', title: 'Success', message: 'Branch updated successfully' });
+          this.closeModal();
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
         }
@@ -42,8 +43,9 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
         console.log(err);
       });
 
-    this.closeModal();
+    
   }
+  
   GetBranchData(data): any {
     this.finalData.branchAddress = data.address;
     this.finalData.branchCode = data.branchcode;
@@ -54,6 +56,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
     this.finalData.userId = this._storageService.getUserId();
     return this.finalData;
   }
+  
   BindBranchGridOnEdit(data) {
     this.tableInputData.filter(
       branch => {
@@ -69,6 +72,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
 
 
   }
+  
   closeModal() {
     $('#closebtn1').click();
   }
@@ -101,7 +105,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
     if (data != null) {
       this.citySelected = [];
       const objFilter = this.arCity.filter(x => x.id === data.cityId);
-      this.citySelected.push({ id: data.id, text: objFilter[0].text });
+      this.citySelected.push({ id: objFilter[0].id, text: objFilter[0].text });
       this.selectedCity = this.citySelected[0];
     }
     this.editBranchMasterForm = this.fb.group({

@@ -64,6 +64,7 @@ export class ComplianceComponent implements OnInit {
         console.log(err);
       });
   }
+
   getRecourse() {
 
     this._recourseService.getResources().subscribe(
@@ -87,9 +88,8 @@ export class ComplianceComponent implements OnInit {
 
     this._stageService.getStages().subscribe(
       result => {
-debugger
         if (result != null) {
-          this.arStage = result.stageRecourses;
+          this.arStage = result.stages;
         } else {
           console.log(result);
         }
@@ -100,6 +100,7 @@ debugger
 
       });
   }
+
   getStatus() {
 
     this._complianceService.getStatus().subscribe(
@@ -117,9 +118,11 @@ debugger
 
       });
   }
+
   onRowClick(event) {
     console.log(event);
   }
+
   onRowDoubleClick(event) {
     this.editChild.createForm(event);
     $('#editComplianceMasterModal').modal('show');
@@ -128,12 +131,14 @@ debugger
   onRowSelect(event) {
     console.log(event);
   }
+
   onActionBtnClick(event) {
     if (event.eventType === 'edit') {
       this.editChild.createForm(event.data);
       $('#editComplianceMasterModal').modal('show');
     }
   }
+
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';

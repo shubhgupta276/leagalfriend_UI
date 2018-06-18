@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { Recourse } from '../recourse';
 import { RecourseService } from '../recourse.service';
 import { StorageService } from '../../../../shared/services/storage.service';
+import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 
 declare var $;
 
@@ -14,6 +15,7 @@ declare var $;
 })
 export class AddResourceMasterComponent implements OnInit {
   @Input() tableInputData: any[];
+  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   addResourceMasterForm: FormGroup;
   isResourcecodeAlreadyExists: boolean = false;
 
@@ -45,6 +47,7 @@ export class AddResourceMasterComponent implements OnInit {
           this.tableInputData.push({
             recourseCode: data.recourseCode, recourseName: data.recourseName, recourseDesc: data.recourseDesc, id: _result.id
           });
+          this.dataTableComponent.ngOnInit();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddResourceMaster();
           this.closeModal();
