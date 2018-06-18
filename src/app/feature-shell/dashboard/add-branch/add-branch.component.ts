@@ -32,7 +32,6 @@ export class AddBranchDashboardComponent implements OnInit {
   }
 
   submitAddBranchMaster(data) {
-    debugger
     var finalData = this.GetBranchData(data);
     this._branchService.addBranch(finalData).subscribe(
       result => {

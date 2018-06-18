@@ -42,6 +42,5 @@ export class FeedbackComponent implements OnInit {
       err => {
         console.log(err);
       });
-    debugger
   }
 }

@@ -9,9 +9,10 @@ import { EditBillingComponent } from './edit-bill/edit-bill.component';
 import { StageService } from '../master/stage/stage.service';
 import { RecourseService } from '../master/resource/recourse.service';
 import {BillingService} from './billing.service';
+import { DataTableModule } from '../../shared/components/data-table/data-table.module';
 @NgModule(
     {
-        imports: [BillingRoutingModule, CommonModule,FormsModule,ReactiveFormsModule],
+        imports: [BillingRoutingModule, CommonModule,FormsModule,ReactiveFormsModule,DataTableModule],
         declarations: [BillingComponent, EditBillingComponent],
         providers: [InstitutionService, StorageService,StageService,RecourseService,BillingService]
     }

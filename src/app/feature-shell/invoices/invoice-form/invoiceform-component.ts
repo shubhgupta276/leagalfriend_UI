@@ -137,7 +137,6 @@ export class InvoiceFormComponent implements OnInit {
         var totalAmount = 0;
         $('.invoiceRow').each(function () {
             var $row = $(this);
-            debugger
             //var quantity = $row.find('.quantity').val();
             var amount = parseFloat($row.find('.amount').val());
             // if (quantity > 0) {
@@ -163,7 +162,7 @@ export class InvoiceFormComponent implements OnInit {
             }
             var remarks = $('#remarksInvoice').val();
             self.arrInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, unitPrice: unitPrice, remarks: remarks })
-            debugger
+            
         })
         $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
     }

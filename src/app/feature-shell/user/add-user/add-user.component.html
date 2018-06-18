@@ -168,7 +168,7 @@
                               <option value="Institutional">Institutional</option>
                             </select>
                           </div>
-                          <div class="col-sm-4" *ngIf="roleValue==3 && userTypeRole == 'Institutional'" style="padding-left:0px;">
+                          <div class="col-sm-4" *ngIf="roleValue==3 && userTypeRole.value == '2'" style="padding-left:0px;">
                             <select formControlName="branchName" class="form-control">
                               <option *ngFor="let option of Branches" [ngValue]="option.id">
                                 {{ option.branchName }}

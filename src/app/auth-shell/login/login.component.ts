@@ -97,7 +97,6 @@ export class LoginComponent implements OnInit {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
-    debugger
     this.authService.login(loginDetails).subscribe(
       result => {        
         this._login = result;

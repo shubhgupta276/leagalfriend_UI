@@ -60,9 +60,7 @@ export class CalendarComponent implements OnInit {
       var d = date.getDate(),
         m = date.getMonth(),
         y = date.getFullYear()
-      debugger
       setTimeout(() => {
-        debugger
         $('#calendar').fullCalendar({
           header: {
             left: 'prev,next today',
@@ -95,10 +93,6 @@ export class CalendarComponent implements OnInit {
             copiedEventObject.allDay = allDay
             copiedEventObject.backgroundColor = $(this).css('background-color')
             copiedEventObject.borderColor = $(this).css('border-color')
-
-
-            debugger
-
             const objEvent = new Calender();
 
             objEvent.startDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
@@ -108,7 +102,6 @@ export class CalendarComponent implements OnInit {
             $this.authService.saveEvent(objEvent).subscribe(
 
               result => {
-                debugger
                 $.toaster({ priority: 'success', title: 'Success', message: 'Event created successfully' });
                 console.log(result);
               },
@@ -138,7 +131,6 @@ export class CalendarComponent implements OnInit {
           },
         })
       BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-      debugger
       /* ADDING EVENTS */
       var currColor = '#3c8dbc' //Red by default
       //Color chooser button
@@ -151,14 +143,12 @@ export class CalendarComponent implements OnInit {
         $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
       })
       $('#add-new-event').click(function (e) {
-        debugger
         e.preventDefault()
         //Get value and make sure it is not null
         var val = $('#new-event').val()
         if (val.length == 0) {
           return
         }
-debugger
         //Create events
         var event = $('<div />')
         event.css({
@@ -177,7 +167,6 @@ debugger
       })
     },500);
       function BindUpcomingEvents(data) {
-        debugger
         $('#divUpcomingEvents').empty();
         $this.sharedService.arrTodayCalendarEvents = [];
         $.each(data, function (i, d) {
@@ -226,7 +215,6 @@ debugger
       result => {
         this.arrEvents = [];
         result.body.forEach(function (value) {
-debugger
           $this.arrEvents.push({
             title: value.eventName,
             start: value.startDate,

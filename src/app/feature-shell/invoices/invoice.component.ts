@@ -111,7 +111,6 @@ export class InvoiceComponent implements OnInit {
 
         //start bank filter
         $("#ddlBank").on("change", function () {
-          debugger
           var status = $(this).val();
           if (status == "All") {
             $table.columns(2).search("").draw();
@@ -144,7 +143,6 @@ export class InvoiceComponent implements OnInit {
   }
 
   createForm(c) {
-    debugger
     this.editCaseForm1 = this.fb.group({
 
       Bank: [c == null ? null : c.Bank],

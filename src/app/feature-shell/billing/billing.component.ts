@@ -5,6 +5,9 @@ import { BillingService } from './billing.service';
 import { EditBillingComponent } from './edit-bill/edit-bill.component'
 import { RecourseService } from '../master/resource/recourse.service';
 import { InstitutionService } from '../master/institution/institution.service';
+import { billingTableConfig } from './billing.config';
+import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
+import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
 declare var $;
 
 @Component({
@@ -14,7 +17,12 @@ declare var $;
     // providers: [BillingService]
 })
 export class BillingComponent implements OnInit {
-
+    tableInputData = [];
+    actionColumnConfig: ActionColumnModel;
+    columns = billingTableConfig;
+    rowSelect = false;
+    hoverTableRow = true;
+    showSearchFilter = true;
     arBillingData: any[] = [];
     arListBanks: any[] = [];
     arListRecourse: any[] = [];
@@ -28,12 +36,13 @@ export class BillingComponent implements OnInit {
     JSON: any;
     $table: any;
     @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
-
+    @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
     constructor(private _billingservice: BillingService, private _institutionService: InstitutionService, private _recourseService: RecourseService, ) {
         this.JSON = JSON;
     }
     ngOnInit() {
         const self = this;
+        this.setActionConfig();
         this.getBillingData();
         this.setDropdownUniqueValues();
         this.getAllInstitutions();
@@ -162,12 +171,10 @@ export class BillingComponent implements OnInit {
 
         this._billingservice.getBilling().subscribe(
             result => {
-
-                if (result.length > 0) {
-                    debugger
+                if (result.length > 0) {                    
                     for (var i = 0; i < result.length; i++) {
                         const obj = result[i];
-                        this.arBillingData.push({
+                        this.tableInputData.push({
                             id: obj.id,
                             institutionId: obj.institution.id,
                             institutionName: obj.institution.institutionName,
@@ -181,10 +188,11 @@ export class BillingComponent implements OnInit {
                             billingDate: new Date(obj.billingDate)
                         })
                     }
+                    this.dataTableComponent.ngOnInit();
                     this.setDropdownUniqueValues();
                     setTimeout(() => {
                         //this.bindBillingGridPaging();
-                        this.bindDatatable();
+                      //  this.bindDatatable();
                     }, 1);
                 }
                 else {
@@ -197,6 +205,12 @@ export class BillingComponent implements OnInit {
 
             });
 
+    }
+    setActionConfig() {
+        this.actionColumnConfig = new ActionColumnModel();
+        this.actionColumnConfig.displayName = 'Action';
+        this.actionColumnConfig.showEdit = true;
+        this.actionColumnConfig.showHistory = true;
     }
     getAllRecourses() {
         this._recourseService.getResources().subscribe(
