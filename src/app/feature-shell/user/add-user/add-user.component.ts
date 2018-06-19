@@ -81,8 +81,11 @@ export class AddUserComponent implements OnInit {
       statusId: data.status,
       statusName: this.getStatusName(data.status)
     };
-    if (this.userTypeRole == undefined || this.userTypeRole == null) {
-      this.userTypeRole = null;
+    if (this.userTypeRole === undefined || this.userTypeRole == null) {
+      userDetails.userType = {
+        id: 2,
+        name: 'Institutional'
+      };
     }
     else {
       userDetails.userType = {

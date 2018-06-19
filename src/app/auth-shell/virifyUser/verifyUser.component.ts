@@ -53,7 +53,7 @@ if (str1.indexOf(str2) !== -1) {
                   } else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
                   }
-              // window.location.href = 'login';
+               window.location.href = 'login';
 
             },
             err => {

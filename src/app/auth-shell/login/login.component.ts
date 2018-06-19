@@ -97,6 +97,7 @@ export class LoginComponent implements OnInit {
     const $this = this;
     this.authService.checkUserClient(a).subscribe(
       result => {
+        debugger
         result.forEach(function (value) {
           $this.Customer.push(value);
         });
