@@ -50,7 +50,7 @@ export class StageComponent implements OnInit {
 
     this._stageService.getStages().subscribe(
       result => {
-
+        debugger
         if (result.httpCode == 200) {
 
           for (var i = 0; i < result.stages.length; i++) {
