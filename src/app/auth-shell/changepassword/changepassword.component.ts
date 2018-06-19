@@ -31,7 +31,6 @@ export class changepasswordComponent implements OnInit {
         this.changePasswordPageLayout();
     }
     changePassword(data) {
-        debugger
         const changepassworddetails = new ChangePassword();
         var userId = parseInt(localStorage.getItem('client_id'));
         var accesstoken=localStorage.getItem('access_token');

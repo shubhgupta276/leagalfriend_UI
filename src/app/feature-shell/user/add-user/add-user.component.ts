@@ -27,7 +27,7 @@ export class AddUserComponent implements OnInit {
   mobileNoValidationMessage = 'Mobile number is required.';
   selectedRole = [];
   roleValue: number;
-  userTypeRole: string;
+  userTypeRole: any;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.AddUser();
   }
@@ -47,12 +47,13 @@ export class AddUserComponent implements OnInit {
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [2],
       status: [1],
-      userTypeRole: ['Individual', Validators.nullValidator],
+      userTypeRole: ['1', Validators.nullValidator],
       branchName: ['1', Validators.nullValidator],
     });
   }
 
   submitAddUser(data) {
+    debugger
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;
@@ -80,10 +81,19 @@ export class AddUserComponent implements OnInit {
       statusId: data.status,
       statusName: this.getStatusName(data.status)
     };
+    if (this.userTypeRole == undefined || this.userTypeRole == null) {
+      this.userTypeRole = null;
+    }
+    else {
+      userDetails.userType = {
+        id: this.userTypeRole.value,
+        name: this.userTypeRole.text
+      };
+    }
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        debugger
+debugger
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
           console.log(result);
@@ -176,7 +186,8 @@ export class AddUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args, value) {
-    this.userTypeRole = args.target.options[args.target.selectedIndex].value;
+    debugger
+    this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
 }
 

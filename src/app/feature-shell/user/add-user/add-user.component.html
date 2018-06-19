@@ -164,12 +164,12 @@
                           </div>
                           <div class="col-sm-4" *ngIf="roleValue==3" style="padding-left:0px;">
                             <select (change)="userTypeRoleChange($event)" formControlName="userTypeRole" class="form-control">
-                              <option value="Individual">Individual</option>
-                              <option value="Institutional">Institutional</option>
+                                  <option value="1">Individual</option>
+                                  <option value="2">Institutional</option>
                             </select>
                           </div>
-                          <div class="col-sm-4" *ngIf="roleValue==3 && userTypeRole == 'Institutional'" style="padding-left:0px;">
-                            <select formControlName="branchName" class="form-control">
+                          <div class="col-sm-4" *ngIf="roleValue==3 && userTypeRole.value == '2'" style="padding-left:0px;">
+                            <select  formControlName="branchName" class="form-control">
                               <option *ngFor="let option of Branches" [ngValue]="option.id">
                                 {{ option.branchName }}
                               </option>

@@ -68,7 +68,6 @@ export class AuthService {
     );
   }
   signup(customerData: SignUpModel): Observable<SignUpModel> {
-    debugger
     return this.apiGateWay.post<SignUpModel>(
       signup,
       JSON.stringify(customerData)

@@ -69,7 +69,7 @@ export class ApiGateway {
         const authHeader = this.auth.getAuthorizationHeader();
         myHeaders.append('Authorization', authHeader.access_token.toString());
         myHeaders.append('customer-id', authHeader.client_id.toString());
-        
+
         let options = new RequestOptions({ headers: myHeaders, responseType: ResponseContentType.Blob });
 
         const _url: string = this.createApiUrl(apiPath);
@@ -80,7 +80,23 @@ export class ApiGateway {
         // return this._httpClient.get(_url, )
         //     .map((response: Response) => <Blob>response.blob());
     }
+    public postFile(apiPath: string, data: any): Observable<any> {
 
+        let myHeaders = new Headers();
+        const authHeader = this.auth.getAuthorizationHeader();
+        myHeaders.append('Authorization', authHeader.access_token.toString());
+        myHeaders.append('customer-id', authHeader.client_id.toString());
+
+        let options = new RequestOptions({ headers: myHeaders, responseType: ResponseContentType.Blob });
+
+        const _url: string = this.createApiUrl(apiPath);
+
+        return this._http.post(_url, data, options)
+            .map((response: Response) => <Blob>response.blob());
+
+        // return this._httpClient.get(_url, )
+        //     .map((response: Response) => <Blob>response.blob());
+    }
     public delete<T>(apiPath: string, params?: Object, headers?: string): Observable<any> {
         const _url: string = this.createApiUrl(apiPath);
         const urlParams = new URLSearchParams();

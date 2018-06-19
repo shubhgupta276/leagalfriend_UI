@@ -195,7 +195,6 @@ export class EditCaseComponent implements OnInit {
 
   }
   bindDataOnEdit(c) {
-    debugger
     this.caseFile = [];
     var $this = this;
     (c.caseFiles.forEach(function (value) {
@@ -253,7 +252,6 @@ export class EditCaseComponent implements OnInit {
     const objmanagerSelected = this.Manager.filter(x => x.id === c.managerId);
     this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
     this.selectedManager = this.managerSelected[0];
-    debugger
     this.employeeSelected = [];
     const objemployeeSelected = this.Employee.filter(x => x.id === c.employeeId);
     this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
@@ -548,10 +546,8 @@ export class EditCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-        debugger
         result.forEach(function (value) {
           if (value.roles[0].roleName === 'CLIENT') {
-            debugger
             $this.Employee.push({ id: value.id, text: value.firstName });
 
           }
@@ -580,7 +576,6 @@ export class EditCaseComponent implements OnInit {
           $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
         $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
-        debugger
         $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text');
 
       },
@@ -662,10 +657,7 @@ export class EditCaseComponent implements OnInit {
   }
 
   submitEditCaseUser(data) {
-
-    debugger
     //const objEditCase = new EditCase();
-    debugger
     let objEditCase: FormData = new FormData();
 
     //var a=data.parentCase.substr(data.parentCase.lastIndexOf("/")+1);
@@ -691,13 +683,11 @@ export class EditCaseComponent implements OnInit {
       "parentCaseId": (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf("/") + 1))),
       "completionDate": this.datePipe.transform(data.completionDate, "yyyy-MM-dd"),
     };
-    debugger
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
     this.authService.updateEditCaseUser(objEditCase).subscribe(
 
       result => {
-        debugger
         if (result.body.httpCode == 200) { //success
           this.BindCaseGridOnEdit(data);
           $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
