@@ -32,14 +32,15 @@ export class EditStageMasterComponent implements OnInit, OnChanges {
   submitEditStageMaster(data) {
     
     const reqData = {
-      recourseId: data.recourse,
+      recourse: {
+       id: data.recourse,
+      },
       stageCode: data.stageCode,
       stageName: data.stageName,
       statusId: data.status,
       id: data.id,
       userId: this._storageService.getUserId()
-    };
-
+    }
     this._stageService.updateStage(reqData).subscribe(
 
       result => {
@@ -51,7 +52,6 @@ export class EditStageMasterComponent implements OnInit, OnChanges {
 
           const objFind = this.arStage.find(x => x.id == this.editDetails.id);
           objFind.recourse = data.recourse.id;
-          objFind.recourseCode = $("#ddlRecourse option:selected").text();
           objFind.stageCode = data.stageCode;
           objFind.stageName = data.stageName;
           objFind.status = data.status;
