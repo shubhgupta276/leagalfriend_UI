@@ -539,23 +539,20 @@ export class ForInstitutionComponent implements OnInit {
     updateNewHearingDate(date, isNewHearingDate) {
         const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
         if (isNewHearingDate) {
-            obj.nextHearingDate = new Date(date);
+            obj.nextHearingDate = this._sharedService.convertStrToDate(date);
+            obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
         } else {
-            obj.previousHearingDate = new Date(date);
+            obj.previousHearingDate = this._sharedService.convertStrToDate(date);
+            obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
         }
 
         this._institutionService.updateHearingDate(obj).subscribe(
             (result) => {
-                result = result.body;
 
-                if (result && result.status === 200) {
-                   
-                    if (isNewHearingDate) {
-                        obj.nextHearingDate = this._sharedService.convertDateToStr(date);
-                    } else {
-                        obj.previousHearingDate = this._sharedService.convertDateToStr(date);
-                    }
-                    $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+                if (result.status === 200) {
+                    obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
+                    obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                    $.toaster({ priority: 'success', title: 'Success', message: "Date Update Successfully." });
                 }
             },
             err => {
