@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { InstitutionService } from '../institution.service';
 import { Institution } from '../institution';
+import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 
 
 declare var $;
@@ -16,6 +17,7 @@ declare var $;
 export class AddInstitutionMasterComponent implements OnInit {
   @Input() tableInputData: any[];
   @Input() arCity: any[];
+  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   addInstitutionMasterForm: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
   AddInstitutionMaster() {
@@ -64,6 +66,7 @@ export class AddInstitutionMasterComponent implements OnInit {
           this.AddInstitutionMaster();
           this.closeModal();
           this.subscriberFields();
+          this.dataTableComponent.ngOnInit();
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
         }
