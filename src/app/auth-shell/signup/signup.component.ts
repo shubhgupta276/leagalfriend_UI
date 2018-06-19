@@ -14,7 +14,7 @@ import {
 } from '@angular/common/http';
 import {Http} from '@angular/http';
 import { UserModel } from '../../shared/models/user/user.model';
-import { SignUpModel, LoginCredential, Roles,Address,UserType } from '../../shared/models/auth/signup.model';
+import { SignUpModel, LoginCredential, Roles,Address,CustomerType } from '../../shared/models/auth/signup.model';
 import { AuthService } from '../auth-shell.service';
 import { validateConfig } from '@angular/router/src/config';
 import { CHECKBOX_REQUIRED_VALIDATOR } from '@angular/forms/src/directives/validators';
@@ -209,7 +209,7 @@ subscriptionId:number;
     };
     signUpDetails.subscriptionId=data.subscription;
     
-    signUpDetails.userType = {
+    signUpDetails.customerType = {
       id: data.role,
 
     };

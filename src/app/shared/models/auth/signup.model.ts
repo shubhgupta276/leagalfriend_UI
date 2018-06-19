@@ -9,7 +9,7 @@ export class SignUpModel {
     postcode: number;
     mobileNumber: number;
     password: string;
-    userType: UserType;
+    customerType: CustomerType;
     roles: any[];
     status: Status;
     login: LoginCredential;
@@ -35,7 +35,7 @@ export class Address {
 export class Status{
     statusId: number;
 }
-export class UserType{
+export class CustomerType{
     id: number;
 }
 

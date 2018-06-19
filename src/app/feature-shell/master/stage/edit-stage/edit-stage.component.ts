@@ -51,7 +51,7 @@ export class EditStageMasterComponent implements OnInit, OnChanges {
 
           const objFind = this.arStage.find(x => x.id == this.editDetails.id);
           objFind.recourse = data.recourse.id;
-          objFind.recourseCode = $("#ddlRecourse option:selected").text();
+         
           objFind.stageCode = data.stageCode;
           objFind.stageName = data.stageName;
           objFind.status = data.status;

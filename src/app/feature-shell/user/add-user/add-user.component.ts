@@ -22,7 +22,7 @@ export class AddUserComponent implements OnInit {
   @Input() Status: StatusModel[];
   @Input() Branches = [];
   emailValidationMessage = 'Email address is required.';
-  passwordValidationMessage = 'Password is required.';
+  // passwordValidationMessage = 'Password is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
   selectedRole = [];
@@ -41,14 +41,14 @@ export class AddUserComponent implements OnInit {
       addressLine2: [null, Validators.required],
       postalCode: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
       email: [null, Validators.compose([Validators.required, Validators.email])],
-      password: [null, Validators.compose([Validators.required,
-      Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
-      confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
+      // password: [null, Validators.compose([Validators.required,
+      // Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
+      // confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [2],
       status: [1],
-      userTypeRole:["Individual",Validators.nullValidator],
-      branchName:["1",Validators.nullValidator],
+      userTypeRole: ['1', Validators.nullValidator],
+      branchName: ['1', Validators.nullValidator],
     });
   }
 
@@ -58,7 +58,7 @@ export class AddUserComponent implements OnInit {
     userDetails.lastName = data.lastName;
     userDetails.email = data.email;
     userDetails.organization = data.organisation;
-    userDetails.password = data.password;
+    // userDetails.password = data.password;
     userDetails.isClient = false;
     userDetails.addressLine1 = data.addressLine1;
     userDetails.addressLine2 = data.addressLine2;
@@ -80,10 +80,18 @@ export class AddUserComponent implements OnInit {
       statusId: data.status,
       statusName: this.getStatusName(data.status)
     };
-    userDetails.userType = {
-      id: this.userTypeRole.value,
-      name: this.userTypeRole.text
-    };
+    if (this.userTypeRole === undefined || this.userTypeRole == null) {
+      userDetails.userType = {
+        id: 2,
+        name: 'Institutional'
+      };
+    }
+    else {
+      userDetails.userType = {
+        id: this.userTypeRole.value,
+        name: this.userTypeRole.text
+      };
+    }
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
@@ -120,20 +128,20 @@ export class AddUserComponent implements OnInit {
       }
     );
 
-    this.addForm.get('password').valueChanges.subscribe(
-      (e) => {
-        if (e !== '') {
-          this.passwordValidationMessage = 'Password must use a combination' +
-            ' of these: Atleast 1 upper case letters (A – Z),' +
-            ' one lower case letters (a – z)' +
-            ' one number (0 – 9)' +
-            ' one special symbol (e.g. ‘!@#\$%\^&\’)' +
-            ' and minimum length should be 8 characters.';
-        } else {
-          this.passwordValidationMessage = 'Password is required.';
-        }
-      }
-    );
+    // this.addForm.get('password').valueChanges.subscribe(
+    //   (e) => {
+    //     if (e !== '') {
+    //       this.passwordValidationMessage = 'Password must use a combination' +
+    //         ' of these: Atleast 1 upper case letters (A – Z),' +
+    //         ' one lower case letters (a – z)' +
+    //         ' one number (0 – 9)' +
+    //         ' one special symbol (e.g. ‘!@#\$%\^&\’)' +
+    //         ' and minimum length should be 8 characters.';
+    //     } else {
+    //       this.passwordValidationMessage = 'Password is required.';
+    //     }
+    //   }
+    // );
 
     this.addForm.get('postalCode').valueChanges.subscribe(
       (e) => {
@@ -179,6 +187,7 @@ export class AddUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args, value) {
+
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
 }
