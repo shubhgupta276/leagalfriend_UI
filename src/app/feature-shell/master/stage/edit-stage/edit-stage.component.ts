@@ -30,7 +30,8 @@ export class EditStageMasterComponent implements OnInit, OnChanges {
   }
 
   submitEditStageMaster(data) {
-    var reqData = {
+    
+    const reqData = {
       recourseId: data.recourse,
       stageCode: data.stageCode,
       stageName: data.stageName,
@@ -71,6 +72,7 @@ export class EditStageMasterComponent implements OnInit, OnChanges {
   ngOnInit() {
 
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.editDetails !== undefined && changes.editDetails.currentValue !== undefined) {
 
@@ -93,9 +95,8 @@ export class EditStageMasterComponent implements OnInit, OnChanges {
   }
 
   createForm(data) {
-
     this.editStageMasterForm = this.fb.group({
-      recourse: [data == null ? null : data.recourse, Validators.required],
+      recourse: [data == null ? null : data.recourseId, Validators.required],
       stageCode: [data == null ? null : data.stageCode, Validators.required],
       stageName: [data == null ? null : data.stageName, Validators.required],
       status: [data == null ? null : data.status, Validators.required],

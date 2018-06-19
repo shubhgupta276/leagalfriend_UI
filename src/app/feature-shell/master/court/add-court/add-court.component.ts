@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { CourtService } from '../court.service';
 import { Court } from '../court';
+import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 
 declare var $;
 
@@ -14,6 +15,7 @@ declare var $;
 })
 export class AddCourtMasterComponent implements OnInit {
   @Input() tableInputData: any[];
+  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   addCourtMasterForm: FormGroup;
   isCourtNameAlreadyExists: boolean = false;
   AddCourtMaster() {
@@ -40,6 +42,7 @@ export class AddCourtMasterComponent implements OnInit {
 
         if (_result.httpCode === 200) { // success
           this.tableInputData.push({ courtName: data.courtName, courtDesc: data.courtDesc, id: _result.id });
+          this.dataTableComponent.ngOnInit();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddCourtMaster();
           this.closeModal();

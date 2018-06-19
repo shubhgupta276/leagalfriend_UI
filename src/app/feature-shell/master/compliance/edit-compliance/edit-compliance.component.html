@@ -25,10 +25,11 @@
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                          <select id="ddlRecourse" tabindex="3" class="form-control select2me" formControlName="recourse">
+                          <select id="ddlRecourse" [(ngModel)]="selectedRecourse" tabindex="3" class="form-control select2me" formControlName="recourse"
+                            (ngModelChange)="changeRecourse($event)">
                             <option value="">Select Recourse</option>
-                            <option *ngFor="let option of arRecourse" [ngValue]="option.id">
-                              {{ option.recourseCode }}
+                            <option *ngFor="let option of arRecourse" [ngValue]="option" [selected]="selectedRecourse && option.id === selectedRecourse.id">
+                              {{ option.recourseName }}
                             </option>
                           </select>
                         </div>
@@ -46,10 +47,10 @@
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                          <select id="ddlStage" name="stage" tabindex="3" class="form-control select2me" formControlName="stage">
+                          <select [(ngModel)]="selectedStage" name="stage" tabindex="3" class="form-control select2me" formControlName="stage">
                             <option value="">Select Stage</option>
-                            <option *ngFor="let option of arStage" [ngValue]="option.id">
-                              {{ option.stageCode }}
+                            <option *ngFor="let option of arStage" [ngValue]="option" [selected]="selectedStage && option.id === selectedStage.id">
+                              {{ option.stageName }}
                             </option>
                           </select>
                         </div>
@@ -89,9 +90,9 @@
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                          <select id="ddlStatus" name="Status" tabindex="3" class="form-control select2me" formControlName="status">
+                          <select [(ngModel)]="selectedStatus"  name="Status" tabindex="3" class="form-control select2me" formControlName="status">
                             <option value="">Select Status</option>
-                            <option *ngFor="let option of arStatus" [ngValue]="option.statusId">
+                            <option *ngFor="let option of arStatus" [ngValue]="option" [selected]="selectedStatus && option.id === selectedStatus.id">
                               {{ option.statusName }}
                             </option>
                           </select>
