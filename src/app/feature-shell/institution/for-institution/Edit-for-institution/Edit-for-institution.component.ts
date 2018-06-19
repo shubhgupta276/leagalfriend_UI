@@ -8,6 +8,7 @@ import { Institution } from '../../institution';
 import { ActivatedRoute } from "@angular/router";
 import { DatePipe } from "@angular/common";
 import { saveAs } from 'file-saver';
+import { StageService } from "../../../master/stage/stage.service";
 declare let $;
 
 @Component({
@@ -22,12 +23,13 @@ export class EditForInstitutionComponent implements OnInit {
   institutionalCaseId: number;
   editData: any;
   caseFiles: any;
-
+  arStage: any = [];
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
     private _activatedRoute: ActivatedRoute,
     private _datePipe: DatePipe,
+    private _stageService: StageService,
     private _storageService: StorageService) {
 
     this._activatedRoute.params.subscribe((params) => {
@@ -49,8 +51,22 @@ export class EditForInstitutionComponent implements OnInit {
     });
   }
 
-  createForm(obj) {
+  getStages(recourseId) {
+    this._stageService.getRecourseStages(recourseId).subscribe(
+      result => {
+        if (result.httpCode === 200) {
+          result.stageRecourses.forEach(element => {
+            this.arStage.push(element);
+          });
+        }
+      });
+  }
 
+  createForm(obj) {
+    if (obj !== null) {
+      this.getStages(obj.recourseId);
+    }
+    
     this.editForInstitutionForm = this.fb.group({
       accountStatus: obj == null ? null : obj.accountStatus,
       advocateofEp: obj == null ? null : obj.advocateofEp,

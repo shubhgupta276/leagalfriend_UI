@@ -17,6 +17,7 @@ import { DataTableComponent } from '../../../shared/components/data-table/data-t
 import { forInstitutionTableConfig } from './for-intitution-config';
 import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 import { saveAs } from 'file-saver';
+import { StageService } from '../../master/stage/stage.service';
 declare let $;
 @Component({
     selector: 'app-for-institution',
