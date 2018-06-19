@@ -25,10 +25,10 @@
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                          <select tabindex="3" class="form-control select2me" formControlName="recourse" (change)="changeRecourse($event.target.value);">
+                          <select tabindex="3" class="form-control select2me" formControlName="recourse" (ngModelChange)="changeRecourse($event)">
                             <option value="">Select Recourse</option>
-                            <option *ngFor="let option of arRecourse" value="{{option.id}}">
-                              {{ option.recourseCode }}
+                            <option *ngFor="let option of arRecourse" [ngValue]="option">
+                              {{ option.recourseName }}
                             </option>
                           </select>
                         </div>

@@ -51,9 +51,23 @@ export class ComplianceComponent implements OnInit {
     this._complianceService.getCompliances(reqData).subscribe(
       result => {
         if (result.httpCode === 200) {
-          for (let i = 0; i < result.complianceStageRecourses.length; i++) {
-            const obj = result.complianceStageRecourses[i];
-            this.tableInputData.push(result.complianceStageRecourses[i]);
+          for (let i = 0; i < result.compliances.length; i++) {
+            const obj = result.compliances[i];
+            this.tableInputData.push({
+              id: obj.id,
+              complianceName: obj.complianceName,
+              recourse: obj.recourse,
+              recourseName: obj.recourse.recourseName,
+              recourseCode: obj.recourse.recourseCode,
+              recourseId: obj.recourse.id,
+              stage: obj.stage,
+              stageName: obj.stage.stageName,
+              stageCode: obj.stage.stageCode,
+              stageId: obj.stage.id,
+              status: obj.statusId,
+              statusId: obj.statusId.statusId,
+              statusName: obj.statusId.statusName
+            });
           }
           this.dataTableComponent.ngOnInit();
         } else {

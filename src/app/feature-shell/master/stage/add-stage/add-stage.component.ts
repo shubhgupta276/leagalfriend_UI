@@ -42,24 +42,28 @@ export class AddStageMasterComponent implements OnInit {
   }
 
   submitAddStageMaster(data) {
-    var reqData = {
-      recourseId: data.recourse.id,
+    const reqData = {
+      recourse: { id: data.recourse.id },
       stageCode: data.stageCode,
       stageName: data.stageName,
       statusId: data.status,
       userId: this._storageService.getUserId()
     };
-    
+
     this._stageService.addStage(reqData).subscribe(
       result => {
         var _result = result.body;
-        
+
         if (_result.httpCode == 200) { //success
-          
+
           this.arStage.push(
             {
-              recourse: data.recourse.id, recourseCode: data.recourse.recourseCode, stageName: data.stageName,
-              stageCode: data.stageCode, status: data.status, id: _result.id
+              recourseId: data.recourse.id,
+              recourse: data.recourse.recourseName,
+              stageName: data.stageName,
+              stageCode: data.stageCode,
+              status: data.status,
+              id: _result.id
             }
           );
           this.dataTableComponent.ngOnInit();
@@ -75,7 +79,7 @@ export class AddStageMasterComponent implements OnInit {
         console.log(err);
       });
   }
- 
+
   closeModal() {
     $("#closebtn").click();
   }
