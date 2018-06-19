@@ -14,14 +14,7 @@ declare var System: any;
   styleUrls: ['./masterTemplate.component.css'],
   providers:[]
 })
-@NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  declarations: [
-    MasterTemplatesComponent
-  ]
-}
 
-)
 export class MasterTemplatesComponent implements OnInit {
   table: any;
   fileIdSelected: string;
@@ -245,4 +238,17 @@ export class MasterTemplatesComponent implements OnInit {
     // $('#previewFile').modal('hide');
   }
 
+}
+
+@NgModule({
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  declarations: [
+    MasterTemplatesComponent
+  ]
+}
+
+)
+export class MasterTemplatesModule
+{
+  
 }

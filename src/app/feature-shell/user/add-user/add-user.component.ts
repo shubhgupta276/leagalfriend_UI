@@ -180,13 +180,13 @@ export class AddUserComponent implements OnInit {
       return '';
     }
   }
-  rolechange(args, value) {
+  rolechange(args) {
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
     var role = args.target.options[args.target.selectedIndex].value;
     var arr = role.split(':');
     this.roleValue = parseInt(arr[1]);
   }
-  userTypeRoleChange(args, value) {
+  userTypeRoleChange(args) {
 
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }

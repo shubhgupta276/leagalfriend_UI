@@ -43,8 +43,8 @@ export class EditCaseComponent implements OnInit {
   complianceGridData = [];
   caseFile: any = [];
   public searchStr1: string;
-  protected dataService: CompleterData;
-  protected dataService1: CompleterData;
+  dataService: CompleterData;
+  dataService1: CompleterData;
   private get disabledV(): string {
     return this._disabledV;
   }

@@ -15,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
 import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
-import { MasterTemplatesComponent } from './masterTemplates/masterTemplate.component';
+import { MasterTemplatesComponent, MasterTemplatesModule } from './masterTemplates/masterTemplate.component';
 
 @NgModule({
   imports: [
@@ -33,8 +33,7 @@ import { MasterTemplatesComponent } from './masterTemplates/masterTemplate.compo
     ComplianceModule,
     MasterInstitutionModule,
     RecourseModule,
-    MasterTemplatesComponent,
-
+    MasterTemplatesModule,
     StateModule
   ],
   declarations: [InvoiceInfoComponent]
