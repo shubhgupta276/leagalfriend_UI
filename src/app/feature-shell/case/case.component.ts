@@ -29,6 +29,8 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
+import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
+import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
 const now = new Date();
 
 
@@ -46,13 +48,13 @@ export class CaseComponent implements OnInit {
   tableInputData = [];
   columns = caseRunningTableConfig;
   @ViewChild('caseRunningTable') runningDataTableComponent: DataTableComponent;
-  rowSelect = false;
+  rowSelect = true;
   hoverTableRow = true;
   showSearchFilter = false;
   actionColumnConfig: ActionColumnModel;
   model: NgbDateStruct;
   date: { year: number, month: number };
-
+  selectedRowsCheckbox: any;
   completedTableInputData = [];
   completedColumns = caseCompletedTableConfig;
   @ViewChild('caseCompletedTable') completedDataTableComponent: DataTableComponent;
@@ -76,7 +78,7 @@ export class CaseComponent implements OnInit {
   branchSubscription: Subscription;
   branchData: any;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
+  constructor(private masterTemplateService: MasterTemplateService, private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
 
@@ -202,7 +204,15 @@ export class CaseComponent implements OnInit {
   }
 
   onRowSelect(event) {
-    console.log(event);
+    var flagPrint = false;
+    this.selectedRowsCheckbox = event;
+    if (this.selectedRowsCheckbox.length > 0) {
+      flagPrint = true;
+      this.IsPrintable = true;
+    }
+    if (flagPrint == false) {
+      this.IsPrintable = false;
+    }
   }
 
   onActionBtnClick(event) {
@@ -350,22 +360,22 @@ export class CaseComponent implements OnInit {
     this.runningCaseTabActive = false;
   }
 
-  updateCheckedOptions(items) {
-    var flagPrint = false;
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].IsChecked == true) {
-        flagPrint = true;
-        this.IsPrintable = true;
-      }
-    }
-    if (flagPrint == false) {
-      this.IsPrintable = false;
-    }
-  }
-
-  // getUploadedDocuments() {
-  //   this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+  // updateCheckedOptions(items) {
+  //   var flagPrint = false;
+  //   for (var i = 0; i < items.length; i++) {
+  //     if (items[i].IsChecked == true) {
+  //       flagPrint = true;
+  //       this.IsPrintable = true;
+  //     }
+  //   }
+  //   if (flagPrint == false) {
+  //     this.IsPrintable = false;
+  //   }
   // }
+
+  getUploadedDocuments() {
+    this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+  }
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
       this.SelectedFileIds.push(FileId);
@@ -378,12 +388,11 @@ export class CaseComponent implements OnInit {
 
   }
   getMappingFilesTodownload() {
-
     for (var i = 0; i < this.SelectedFileIds.length; i++) {
       var data = this.lstUploadedDocuments.find(x => x.Id === this.SelectedFileIds[i]);
       const localData = JSON.parse(JSON.stringify(data))
-      var selectedCases = this.caseRunning.filter(function (x) {
-        return x.IsChecked == true;
+      var selectedCases = this.selectedRowsCheckbox.filter(function (x) {
+        return true;
       })
       var selectedCasescompelted = this.caseCompleted.filter(function (x) {
         return x.IsChecked == true;
@@ -392,12 +401,13 @@ export class CaseComponent implements OnInit {
 
       for (var j = 0; j < selectedCases.length; j++) {
         let value = localData.Value;
-        // value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
-        // value = value.replace('@CustomerName', ' ' + selectedCases[j].customerFirstName);
+        value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
+        value = value.replace('@CustomerName', + selectedCases[j].customerFirstName);
         saveAs(new Blob([value], { type: localData.FileType }), localData.FileName);
       }
     }
   }
+
   onShowCalendar(items) {
     this.newHiringCasedata = items;
 
