@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { BranchService } from '../branch.service';
 import { StorageService } from '../../../../shared/services/storage.service';
+import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 declare var $;
 
 @Component({
@@ -16,6 +17,7 @@ export class AddBranchMasterComponent implements OnInit {
   finalData: any = {};
   @Input() arCity = [];
   @Input() tableInputData = [];
+  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
@@ -36,12 +38,13 @@ export class AddBranchMasterComponent implements OnInit {
 
   submitAddBranchMaster(data) {
     const finalData = this.GetBranchData(data);
-    
+
     this._branchService.addBranch(finalData).subscribe(
       result => {
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
           this.BindBranchGridOnAdd(data, result.body.id);
+          this.dataTableComponent.ngOnInit();
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
         }

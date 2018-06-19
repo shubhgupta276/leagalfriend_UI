@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
@@ -6,6 +6,7 @@ import { Stage } from '../stage';
 import { StageService } from '../stage.service';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { Recourse } from '../../resource/recourse';
+import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 
 export interface KeyValue {
   id: number;
@@ -23,7 +24,7 @@ export class AddStageMasterComponent implements OnInit {
   @Input() arStage: Stage[];
   @Input() arStatus: any[];
   @Input() arRecourse: any[];
-  
+  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   addStageMasterForm: FormGroup;
   isStagecodeAlreadyExists: boolean = false;
   AddStageMaster() {
@@ -41,27 +42,31 @@ export class AddStageMasterComponent implements OnInit {
   }
 
   submitAddStageMaster(data) {
-    var reqData = {
-      recourseId: data.recourse.id,
+    const reqData = {
+      recourse: { id: data.recourse.id },
       stageCode: data.stageCode,
       stageName: data.stageName,
       statusId: data.status,
       userId: this._storageService.getUserId()
     };
-    
+
     this._stageService.addStage(reqData).subscribe(
       result => {
         var _result = result.body;
-        
+
         if (_result.httpCode == 200) { //success
-          
+
           this.arStage.push(
             {
-              recourse: data.recourse.id, recourseCode: data.recourse.recourseCode, stageName: data.stageName,
-              stageCode: data.stageCode, status: data.status, id: _result.id
+              recourseId: data.recourse.id,
+              recourse: data.recourse.recourseName,
+              stageName: data.stageName,
+              stageCode: data.stageCode,
+              status: data.status,
+              id: _result.id
             }
           );
-          
+          this.dataTableComponent.ngOnInit();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.AddStageMaster();
           this.closeModal();
@@ -74,7 +79,7 @@ export class AddStageMasterComponent implements OnInit {
         console.log(err);
       });
   }
- 
+
   closeModal() {
     $("#closebtn").click();
   }
