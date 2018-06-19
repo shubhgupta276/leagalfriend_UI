@@ -325,6 +325,7 @@ export class ForInstitutionComponent implements OnInit {
                             receiverOrderReceivedDate: obj.receiverOrderReceivedDate,
                             recieveOrderApplied: obj.recieveOrderApplied,
                             recourse: obj.recourse,
+                            recourseId: obj.recourseId,
                             region: obj.region,
                             remarks: obj.remarks,
                             repoFlag: obj.repoFlag,
@@ -545,8 +546,16 @@ export class ForInstitutionComponent implements OnInit {
 
         this._institutionService.updateHearingDate(obj).subscribe(
             (result) => {
-                if (result.status === 200) {
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Update Successfully.' });
+                result = result.body;
+
+                if (result && result.status === 200) {
+                   
+                    if (isNewHearingDate) {
+                        obj.nextHearingDate = this._sharedService.convertDateToStr(date);
+                    } else {
+                        obj.previousHearingDate = this._sharedService.convertDateToStr(date);
+                    }
+                    $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
                 }
             },
             err => {
@@ -569,6 +578,7 @@ export class ForInstitutionComponent implements OnInit {
     caseSaved() {
         this.GetAllForIntitution();
     }
+
     ExportCase() {
         var arrInsitituionId = [];
         if (this.selectedRowsCheckbox.length > 0) {
