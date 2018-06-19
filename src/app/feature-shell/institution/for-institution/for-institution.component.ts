@@ -546,10 +546,9 @@ export class ForInstitutionComponent implements OnInit {
 
         this._institutionService.updateHearingDate(obj).subscribe(
             (result) => {
-                result = result.body;
 
-                if (result && result.status === 200) {
-                   
+                if (result.status === 200) {
+
                     if (isNewHearingDate) {
                         obj.nextHearingDate = this._sharedService.convertDateToStr(date);
                     } else {
