@@ -171,7 +171,7 @@ export class BillingComponent implements OnInit {
 
         this._billingservice.getBilling().subscribe(
             result => {
-                if (result.length > 0) {                    
+                if (result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         const obj = result[i];
                         this.tableInputData.push({
@@ -192,7 +192,7 @@ export class BillingComponent implements OnInit {
                     this.setDropdownUniqueValues();
                     setTimeout(() => {
                         //this.bindBillingGridPaging();
-                      //  this.bindDatatable();
+                        //  this.bindDatatable();
                     }, 1);
                 }
                 else {
@@ -254,4 +254,8 @@ export class BillingComponent implements OnInit {
         // this.editDetails = data;
         $('#editBillModal').modal('show');
     }
+    onRowClick(event) { }
+    onRowDoubleClick(event) { }
+    onRowSelect(event) { }
+    onActionBtnClick(event) { }
 }

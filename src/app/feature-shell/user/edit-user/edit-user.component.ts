@@ -40,7 +40,7 @@ export class EditUserComponent implements OnInit {
     this.isStatusChange = true;
     this.selectedStatus = args.target.options[args.target.selectedIndex].text;
   }
-  rolechange(args, value) {
+  rolechange(args) {
     this.isRoleChange = true;
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
     var role = args.target.options[args.target.selectedIndex].value;
@@ -51,14 +51,12 @@ export class EditUserComponent implements OnInit {
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
   submitEditUser(data) {
-    debugger
     if (this.isStatusChange) {
       data.statusName = this.selectedStatus;
     }
     if (this.isRoleChange) {
       data.roles = this.selectedRole;
     }
-    debugger
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
@@ -128,7 +126,6 @@ export class EditUserComponent implements OnInit {
       statusId: data.status,
       statusName: data.statusName
     };
-    debugger
     userdata.userType = {
       id: data.role,
       name: data.roles
