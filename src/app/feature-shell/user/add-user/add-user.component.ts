@@ -53,7 +53,6 @@ export class AddUserComponent implements OnInit {
   }
 
   submitAddUser(data) {
-    debugger
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;
@@ -96,7 +95,6 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-debugger
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
           console.log(result);
@@ -189,7 +187,7 @@ debugger
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args, value) {
-    debugger
+
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
 }
