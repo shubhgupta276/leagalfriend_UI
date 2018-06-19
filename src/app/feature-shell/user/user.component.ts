@@ -49,7 +49,8 @@ export class UserComponent implements OnInit {
   Branches=[];
   @ViewChild(EditUserComponent) child: EditUserComponent;
   actionColumnConfig: ActionColumnModel;
-  constructor(private fb: FormBuilder, private userService: UserService, private _storageService:StorageService,private authService:AuthService) {
+  constructor(private fb: FormBuilder, private userService: UserService,
+     private _storageService:StorageService,private authService:AuthService) {
     this.setRoles();
     this.setStatus();
   }
@@ -59,9 +60,9 @@ export class UserComponent implements OnInit {
     this.getUsers();
     this.GetLoggedInUserDetails();
     this.getBranchDDL();
+    $('#customerList').modal('show');
 
   }
-
   getUsers() {
     const $this = this;
     const client = '?clientId=' + localStorage.getItem('client_id');
@@ -82,7 +83,6 @@ export class UserComponent implements OnInit {
         console.log(err);
       });
   }
- 
 
   public addUserToList(user: any) {
     user.roles = user.roles[0].roleName;
@@ -120,7 +120,7 @@ export class UserComponent implements OnInit {
     $('#editUserModal').modal('show');
     this.userRoles1 = [];
     this.child.createForm(event);
-    this.child.subscriberFields();    
+    this.child.subscriberFields();
   }
 
   onRowSelect(event) {
@@ -133,7 +133,6 @@ export class UserComponent implements OnInit {
       this.child.createForm(event.data);
       this.child.subscriberFields();
     }
-    
   }
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
@@ -186,6 +185,5 @@ export class UserComponent implements OnInit {
       err => {
         console.log(err);
       });
-  } 
-  
+  }
 }

@@ -7,6 +7,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { VerifyEmailComponent } from './VerifyEmail/VerifyEmail.component';
+import { VerifyUserComponent } from './virifyUser/verifyUser.component';
 import { changepasswordComponent } from './changepassword/changepassword.component';
 import {HomeComponent} from './home/home.component';
 const authShellRoutes: Routes = [
@@ -21,16 +22,9 @@ const authShellRoutes: Routes = [
         { path: 'updatePassword/:id', component: ResetPasswordComponent },
         { path: 'changepassword', component: changepasswordComponent },
         { path: 'verifyEmail/:id', component: VerifyEmailComponent },
+        { path: 'verifyUser/:id', component: VerifyUserComponent },
         { path: 'home', component: HomeComponent },
-        
-       
-       
     ]}
-      // { path: 'login', component: LoginComponent },
-      // { path: 'forgotpassword', component: ForgotPasswordComponent },
-      // { path: 'resetpassword', component: ResetPasswordComponent },
-      // { path: 'signup', component: SignupComponent },
-      // { path: '', redirectTo: 'login', pathMatch: 'full' }
     ];
 
 @NgModule({
@@ -39,6 +33,6 @@ const authShellRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(authShellRoutes)],
   exports: [RouterModule],
-  declarations: [VerifyEmailComponent]
+  declarations: [VerifyEmailComponent, VerifyUserComponent]
 })
 export class AuthShellRoutingModule {}

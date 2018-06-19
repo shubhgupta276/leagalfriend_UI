@@ -51,12 +51,14 @@ export class EditUserComponent implements OnInit {
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
   submitEditUser(data) {
+    debugger
     if (this.isStatusChange) {
       data.statusName = this.selectedStatus;
     }
     if (this.isRoleChange) {
       data.roles = this.selectedRole;
     }
+    debugger
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
@@ -126,9 +128,10 @@ export class EditUserComponent implements OnInit {
       statusId: data.status,
       statusName: data.statusName
     };
+    debugger
     userdata.userType = {
-      id: this.userTypeRole.value,
-      name: this.userTypeRole.text
+      id: data.role,
+      name: data.roles
     };
     userdata.isClient = false;
     userdata.clientId = Number(localStorage.getItem('client_id'));

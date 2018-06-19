@@ -5,19 +5,17 @@ import { matchValidator } from '../../shared/Utility/util-custom.validation';
 import { Console } from '@angular/core/src/console';
 import { AuthService } from '../auth-shell.service';
 import { ChangePassword } from '../../shared/models/auth/changepassword.model';
-import { changepassword } from '../auth-shell.config';
 
+import { TokenModel } from '../../shared/models/auth/token.model';
 declare let $;
 @Component({
-    selector: 'app-change-password',
-    templateUrl: './changepassword.component.html',
+    selector: 'app-verify-user',
+    templateUrl: './verifyUser.component.html',
 
     providers: [AuthService]
 })
 
-export class changepasswordComponent implements OnInit {
-
-
+export class VerifyUserComponent implements OnInit {
     public changePasswordForm: FormGroup;
     constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
         this.changePasswordForm = fb.group({
@@ -25,32 +23,43 @@ export class changepasswordComponent implements OnInit {
             confirmPassword: [null, Validators.required]
         });
     }
-
     ngOnInit() {
-
         this.changePasswordPageLayout();
     }
     changePassword(data) {
-        const changepassworddetails = new ChangePassword();
-        var userId = parseInt(localStorage.getItem('client_id'));
-        var accesstoken=localStorage.getItem('access_token');
-        changepassworddetails.userId = userId;
-        changepassworddetails.oldPassword = data.newPassword;
-        changepassworddetails.password = data.confirmPassword;
+        debugger
+        var isReferral;
+const str1 = window.location.href.slice(window.location.href.indexOf('/'));
+const str2 = 'verifyReferralEmail';
+if (str1.indexOf(str2) !== -1) {
+  isReferral = 'Y';
+}else{
+  isReferral = 'N'
+}
+    var token = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);  
+    const tokenDetails = new TokenModel();
+    tokenDetails.token = token;
+    tokenDetails.isReferral = isReferral;
+    tokenDetails.oldPassword = data.newPassword;
+    tokenDetails.password = data.confirmPassword;
+   var password = data.confirmPassword;
 
-
-        this.authService.changepassword(changepassworddetails).subscribe(
+        this.authService.verifyUser(token, isReferral, password).subscribe(
 
             result => {
-                console.log(result);
+                debugger
+                if (result.body.httpCode === 200) {
+                    $.toaster({ priority: 'success', title: 'Success', message: 'User Verify Successfully' });
+                  } else {
+                    $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+                  }
+               window.location.href = 'login';
 
             },
             err => {
                 console.log(err);
             });
     }
-
-
     changePasswordPageLayout() {
         $(window.document).ready(function () {
             if ($(".login-page")[0]) {

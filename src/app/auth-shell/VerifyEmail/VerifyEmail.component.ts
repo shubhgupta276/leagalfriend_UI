@@ -37,20 +37,21 @@ this.verifyEmailPageLayout();
 
   verifyEmail() {
 var isReferral;
-var str1 = window.location.href.slice(window.location.href.indexOf('/'));
-var str2 = "verifyReferralEmail";
-if(str1.indexOf(str2) != -1){
-  isReferral="Y"
+const str1 = window.location.href.slice(window.location.href.indexOf('/'));
+const str2 = 'verifyReferralEmail';
+if (str1.indexOf(str2) !== -1) {
+  isReferral = 'Y';
 }
 else{
-  isReferral="N"
+  isReferral= 'N'
 }
     var token = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
-    
+    //var password
     
     const tokenDetails = new TokenModel();
     tokenDetails.token = token;
-    tokenDetails.isReferral=isReferral;
+    tokenDetails.isReferral = isReferral;
+    //tokenDetails.password=
 
 
     this.authService.verifyemail(token,isReferral).subscribe(

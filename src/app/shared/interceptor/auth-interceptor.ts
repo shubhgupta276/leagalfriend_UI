@@ -35,10 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
-                if (err instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
-            });;
+            return next.handle(verifyEmailReq);
         }
 
         else if (req.url.indexOf('subscription') >= 0) {
@@ -46,20 +43,14 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
-                if (err instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
-            });;
+            return next.handle(verifyEmailReq);
         }
         else if (req.url.indexOf('type') >= 0) {
 
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
-                if (err instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
-            });;
+            return next.handle(verifyEmailReq);
         }
 
         else if (req.url.indexOf('verifyEmail') >= 0) {
@@ -67,36 +58,47 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
-                if (err instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
-            });;
-        }
-
-        else if (req.url.indexOf('forgotpwd') >= 0) {
+            return next.handle(verifyEmailReq);
+        } else if (req.url.indexOf('users/client') >= 0) {
 
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq).do((event: HttpEvent<any>) => { }, (err: any) => {
-                if (err instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
-            });;
-        }
 
-        else if (req.url.indexOf('users/updatePassword') >= 0) {
+            return next.handle(verifyEmailReq).do(event => {
+                if (event instanceof HttpResponse) {
+                    loadingContainer.style.display = 'none';
+                }
+            });
+        } else if (req.url.indexOf('verifyUser') >= 0) {
+
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+
+            return next.handle(verifyEmailReq);
+        } else if (req.url.indexOf('forgotpwd') >= 0) {
+
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+            return next.handle(verifyEmailReq);
+        } else if (req.url.indexOf('users/updatePassword') >= 0) {
 
             const authHeader = this.auth.getAuthorizationHeader();
             const changepwdReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(changepwdReq).do((event: HttpEvent<any>) => { }, (err: any) => {
-                if (err instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
-            });;
-        }
-
-        else if (req.url.indexOf('case/add') >= 0) {
+            return next.handle(changepwdReq);
+        } else if (req.url.indexOf('case/add') >= 0) {
+            const authHeader = this.auth.getAuthorizationHeader();
+            const changepwdReq = req.clone({
+                headers: req.headers
+                    .set('Authorization', authHeader.access_token.toString())
+                    .set('customer-id', authHeader.client_id.toString())
+            });
+            return next.handle(changepwdReq);
+        } else if (req.url.indexOf('case/update') >= 0 || (req.url.indexOf('case/file/upload') >= 0)) {
 
             const authHeader = this.auth.getAuthorizationHeader();
             const changepwdReq = req.clone({
@@ -105,18 +107,8 @@ export class AuthInterceptor implements HttpInterceptor {
                     .set('customer-id', authHeader.client_id.toString())
             });
             return next.handle(changepwdReq);
-        }
-        else if (req.url.indexOf('case/update') >= 0 || (req.url.indexOf('case/file/upload') >= 0)) {
-
-            const authHeader = this.auth.getAuthorizationHeader();
-            const changepwdReq = req.clone({
-                headers: req.headers
-                    .set('Authorization', authHeader.access_token.toString())
-                    .set('customer-id', authHeader.client_id.toString())
-            });
-            return next.handle(changepwdReq);
-        }
-        else if (req.url.replace(endpoint_url, "").indexOf('institution/upload') >= 0 || req.url.replace(endpoint_url, "").indexOf("institution/for/case") >= 0) {
+        } else if (req.url.replace(endpoint_url, '').indexOf('institution/upload') >= 0
+            || req.url.replace(endpoint_url, '').indexOf('institution/for/case') >= 0) {
 
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
@@ -125,13 +117,11 @@ export class AuthInterceptor implements HttpInterceptor {
                     .set('customer-id', authHeader.client_id.toString())
             });
             return next.handle(authReq).do(event => {
-                if (event instanceof HttpResponse)
+                if (event instanceof HttpResponse) {
                     loadingContainer.style.display = 'none';
-                if (event instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
+                }
             });
-        }
-        else {
+        } else {
 
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
@@ -142,10 +132,9 @@ export class AuthInterceptor implements HttpInterceptor {
             });
 
             return next.handle(authReq).do(event => {
-                if (event instanceof HttpResponse)
+                if (event instanceof HttpResponse) {
                     loadingContainer.style.display = 'none';
-                if (event instanceof HttpErrorResponse)
-                    loadingContainer.style.display = 'none';
+                }
             });
         }
     }
