@@ -413,10 +413,8 @@ if (event.target.files && event.target.files.length) {
     };
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
-    debugger
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
-  debugger
         if (result.body.httpCode == 200) { //success
           // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });

@@ -43,10 +43,8 @@ export class ForgotPasswordComponent implements OnInit {
  var email=data.email;
      const signUpDetails = new SignUpModel();
      signUpDetails.email=data.email;
-     debugger
      this.authService.forgot_password(email).subscribe(
      result => {
-       debugger
        console.log(result);
        this._signup = result;
        this.isMailSent = true;

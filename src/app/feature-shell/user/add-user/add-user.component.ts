@@ -27,7 +27,7 @@ export class AddUserComponent implements OnInit {
   mobileNoValidationMessage = 'Mobile number is required.';
   selectedRole = [];
   roleValue: number;
-  userTypeRole: string;
+  userTypeRole: any;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.AddUser();
   }
@@ -79,6 +79,10 @@ export class AddUserComponent implements OnInit {
     userDetails.status = {
       statusId: data.status,
       statusName: this.getStatusName(data.status)
+    };
+    userDetails.userType = {
+      id: this.userTypeRole.value,
+      name: this.userTypeRole.text
     };
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
@@ -175,7 +179,7 @@ export class AddUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args, value) {
-    this.userTypeRole = args.target.options[args.target.selectedIndex].value;
+    this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
 }
 

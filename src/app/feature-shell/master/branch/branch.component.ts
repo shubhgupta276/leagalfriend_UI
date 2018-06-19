@@ -98,7 +98,6 @@ export class BranchComponent implements OnInit {
       })
       .subscribe(
         data => {
-          debugger
           data.cities.forEach(item => {
             
             this.arCity.push({ id: item.id, text: item.cityName });

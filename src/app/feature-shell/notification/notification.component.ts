@@ -40,7 +40,6 @@ export class NotificationComponent implements OnInit {
 }
    
     sendreferrelmail(data: any) {
-        debugger
         var  values = '';
         var $elements = [];
         $('input[type=text]').each(function(){

@@ -46,7 +46,6 @@ export class ResetPasswordComponent implements OnInit {
   
 
   resetPassword(data) {
-    debugger
     if (data.newPassword !== '' && data.newPassword === data.confirmPassword) {
       this.router.navigate(['login']);
       var token = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
@@ -60,7 +59,6 @@ export class ResetPasswordComponent implements OnInit {
   this.authService.resetPassword(resetDetails).subscribe(
 
     result => {
-    debugger
     },
     err => {
       console.log(err);
