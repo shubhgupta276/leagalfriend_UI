@@ -49,7 +49,7 @@
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
                           <select [(ngModel)]="selectedStage" name="stage" tabindex="3" class="form-control select2me" formControlName="stage">
                             <option value="">Select Stage</option>
-                            <option *ngFor="let option of arStage" [ngValue]="option" [selected]="selectedStage && option.id === selectedStage.id">
+                            <option *ngFor="let option of arStage" [ngValue]="option" [selected]="selectedStage && option.id == selectedStage.id">
                               {{ option.stageName }}
                             </option>
                           </select>
@@ -92,9 +92,10 @@
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
                           <select [(ngModel)]="selectedStatus"  name="Status" tabindex="3" class="form-control select2me" formControlName="status">
                             <option value="">Select Status</option>
-                            <option *ngFor="let option of arStatus" [ngValue]="option" [selected]="selectedStatus && option.id === selectedStatus.id">
+                            <option *ngFor="let option of arStatus" [ngValue]="option" [selected]="selectedStatus && option.statusId == selectedStatus.statusId">
                               {{ option.statusName }}
                             </option>
+                            
                           </select>
                         </div>
 
