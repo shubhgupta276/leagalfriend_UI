@@ -6,8 +6,8 @@ import {
   RequestOptions,
   Response,
   URLSearchParams
-} from "@angular/http";
-import { ApiGateway } from "../shared/services/api-gateway";
+} from '@angular/http';
+import { ApiGateway } from '../shared/services/api-gateway';
 import {
   HttpClient,
   HttpRequest,
@@ -15,7 +15,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
   HttpParams
-} from "@angular/common/http";
+} from '@angular/common/http';
 // const featureConfig = require('./auth-shell.config');
 import { login, resetPassword } from "./auth-shell.config";
 import { signup } from "./auth-shell.config";
@@ -75,7 +75,12 @@ export class AuthService {
     );
 
   }
+  checkUserClient(email): Observable<any> {
 
+    return this.apiGateWay.get<any>(
+      'users/client' + '?email=' + email, null
+    );
+  }
   verifyemail(token, isReferral): Observable<any> {
     return this.apiGateWay.post<any>(
       verifyEmail + '?token=' + token + '&isReferral=' + isReferral, null
@@ -99,6 +104,12 @@ export class AuthService {
     return this.apiGateWay.post<ChangePassword>(
       'usermanagement/updatePassword',
       JSON.stringify(customerData)
+    );
+  }
+  verifyUser(token, isReferral , password): Observable<any> {
+debugger
+    return this.apiGateWay.post<any>(
+      'users/verifyUser' + '?token=' + token + '&isReferral=' + isReferral + '&password=' + password  , null
     );
   }
   getBranchDDL(reqData): Observable<any> {

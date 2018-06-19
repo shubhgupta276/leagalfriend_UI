@@ -27,10 +27,11 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   emailValidationMessage: string = "Email address is required.";
   public _login: any;
-  isLoggedInError=false;
+  isLoggedInError = false;
   public submitted: boolean;
   public events: any[] = [];
-  errLoginMsg="";
+  Customer: any = [];
+  errLoginMsg = "";
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = fb.group({
       email: [null, Validators.required],
@@ -55,35 +56,35 @@ export class LoginComponent implements OnInit {
 
   loginPageLayout() {
     $(window.document).ready(function () {
-      if ($(".login-page")[0]) {
+      if ($('.login-page')[0]) {
       } else {
-        $("body").addClass("login-page");
+        $('body').addClass('login-page');
       }
-      if ($(".skin-black")[0]) {
-        $("body").removeClass("skin-black");
+      if ($('.skin-black')[0]) {
+        $('body').removeClass('skin-black');
       }
-      if ($(".sidebar-mini")[0]) {
-        $("body").removeClass("sidebar-mini");
+      if ($('.sidebar-mini')[0]) {
+        $('body').removeClass('sidebar-mini');
       }
-      if ($(".hold-transition")[0]) {
+      if ($('.hold-transition')[0]) {
       } else {
-        $("body").addClass("hold-transition");
+        $('body').addClass('hold-transition');
       }
-      if ($(".login-box")[0]) {
+      if ($('.login-box')[0]) {
       } else {
-        $("#wrapper_id").addClass("login-box");
+        $('#wrapper_id').addClass('login-box');
       }
-      if ($(".wrapper")[0]) {
-        $("#wrapper_id").removeClass("wrapper");
+      if ($('.wrapper')[0]) {
+        $('#wrapper_id').removeClass('wrapper');
       }
-      if ($(".register-box")[0]) {
-        $("#wrapper_id").removeClass("register-box");
+      if ($('.register-box')[0]) {
+        $('#wrapper_id').removeClass('register-box');
       }
-      if ($(".register-page")[0]) {
-        $("body").removeClass("register-page");
+      if ($('.register-page')[0]) {
+        $('body').removeClass('register-page');
       }
-      $("body").removeAttr("style");
-      $("#wrapper_id").removeAttr("style");
+      $('body').removeAttr('style');
+      $('#wrapper_id').removeAttr("style");
     });
   }
 
@@ -91,14 +92,22 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['signup']);
   }
 
-  forgotPassword(){}
-
+  // forgotPassword(){}
+  getCustomer(a) {
+    const $this = this;
+    this.authService.checkUserClient(a).subscribe(
+      result => {
+        result.forEach(function (value) {
+          $this.Customer.push(value);
+        });
+      });
+  }
   login(data) {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
     this.authService.login(loginDetails).subscribe(
-      result => {        
+      result => {
         this._login = result;
         const accessToken = this._login.body.token;
         const clientId = this._login.body.clientId;
@@ -107,17 +116,15 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('client_id', clientId);
           localStorage.setItem('user_id', data.email);
           this.router.navigate(['admin/dashboard']);
-          this.isLoggedInError=false;
-        }
-        else
-        {
-          this.errLoginMsg="Your account has been suspended please contact your administrator.";
-          this.isLoggedInError=true;
+          this.isLoggedInError = false;
+        } else {
+          this.errLoginMsg = 'Your account has been suspended please contact your administrator.';
+          this.isLoggedInError = true;
         }
       },
       err => {
-        this.errLoginMsg="Invalid username or password";
-        this.isLoggedInError=true;
+        this.errLoginMsg = 'Invalid username or password';
+        this.isLoggedInError = true;
         console.log(err);
       });
   }
