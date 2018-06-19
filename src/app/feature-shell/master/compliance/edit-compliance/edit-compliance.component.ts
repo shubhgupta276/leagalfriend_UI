@@ -5,6 +5,7 @@ import { matchValidator } from '../../../../shared/Utility/util-custom.validatio
 import { Compliance } from '../compliance';
 import { ComplianceService } from '../compliance.service';
 import { StorageService } from '../../../../shared/services/storage.service';
+import { StageService } from '../../stage/stage.service';
 
 export interface KeyValue {
   id: number;
@@ -20,12 +21,16 @@ declare var $;
 export class EditComplianceMasterComponent implements OnInit, OnChanges {
   @Input() tableInputData: any[];
   @Input() arRecourse: any[];
-  @Input() arStage: any[];
+  arStage: any[] = [];
   @Input() arStatus: any[];
   editDetails: Compliance;
   isComplianceAlreadyExists: boolean = false;
   editComplianceMasterForm: FormGroup;
-  constructor(private fb: FormBuilder, private _complianceService: ComplianceService, private _storageService: StorageService) {
+  selectedRecourse: any;
+  selectedStage: any;
+  selectedStatus: any;
+  constructor(private fb: FormBuilder, private _complianceService: ComplianceService,
+    private _stageService: StageService, private _storageService: StorageService) {
   }
 
   ngOnInit() {
@@ -55,20 +60,31 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
     );
   }
 
+  changeRecourse(recourse: any) {
+    this.arStage = [];
+    if (recourse) {
+      this._stageService.getRecourseStages(recourse.id).subscribe(
+        result => {
+          if (result.httpCode === 200) {
+            result.stageRecourses.forEach(element => {
+              this.arStage.push(element);
+            });
+          }
+        });
+    }
+  }
+
   submitEditComplianceMaster(data) {
     const reqData = {
+      complianceName: data.compliance,
       id: data.id,
       recourse: {
-        id: data.recourse.id,
+        id: this.selectedRecourse.id,
       },
-
       stage: {
-        id: data.stage.id,
+        id: this.selectedStage.id,
       },
-
-      complianceName: data.compliance,
-      statusId: data.status.statusId,
-
+      statusId: { statusId: this.selectedStatus.statusId, statusName: this.selectedStatus.statusName },
       userId: this._storageService.getUserId()
     };
 
@@ -82,13 +98,15 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
           this.closeModal();
 
           const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
-          objFind.compliance = data.compliance;
-          objFind.recourseId = data.recourse;
-          objFind.stageId = data.stage;
-          objFind.statusId = data.status;
-          objFind.recourse = $('#ddlRecourse option:selected').text();
-          objFind.stage = $('#ddlStage option:selected').text();
-          objFind.statusId = $('#ddlStatus option:selected').text();
+          objFind.complianceName = data.compliance;
+          objFind.recourseName = this.selectedRecourse.recourseName;
+          objFind.recourseCode = this.selectedRecourse.recourseCode;
+          objFind.recourseId = this.selectedRecourse.id;
+          objFind.stageName = this.selectedStage.stageName;
+          objFind.stageCode = this.selectedStage.stageCode;
+          objFind.stageId = this.selectedStage.id;
+          objFind.statusId = this.selectedStatus.statusId;
+          objFind.statusName = this.selectedStatus.statusName;
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
         }
@@ -101,17 +119,25 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   closeModal() {
     $('#closebtn').click();
   }
-  createForm(data: any) {
-    this.editComplianceMasterForm = this.fb.group({
 
-      recourse: [data == null ? null : data.recourseId, Validators.required],
-      stage: [data == null ? null : data.stageId, Validators.required],
+  createForm(data: any) {
+    this.selectedRecourse = null;
+    this.selectedStage = null;
+    this.selectedStatus = null;
+    
+    this.editComplianceMasterForm = this.fb.group({
+      recourse: [data == null ? "" : data.recourseId, Validators.required],
+      stage: [data == null ? "" : data.stageId, Validators.required],
       compliance: [data == null ? null : data.complianceName, Validators.required],
-      status: [data == null ? null : data.statusId, Validators.required],
+      status: [data == null ? "" : data.statusId, Validators.required],
       id: [data == null ? null : data.id, Validators.required],
     });
-
+    
     if (data != null) {
+      this.selectedRecourse = data.recourse;
+      this.selectedStage = data.stage;
+      this.selectedStatus = data.status;
+      this.changeRecourse(data.recourse);
       this.isComplianceAlreadyExists = false;
       this.editDetails = data;
       this.subscriberFields();

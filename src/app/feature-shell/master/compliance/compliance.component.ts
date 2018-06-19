@@ -51,9 +51,23 @@ export class ComplianceComponent implements OnInit {
     this._complianceService.getCompliances(reqData).subscribe(
       result => {
         if (result.httpCode === 200) {
-          for (let i = 0; i < result.complianceStageRecourses.length; i++) {
-            const obj = result.complianceStageRecourses[i];
-            this.tableInputData.push(result.complianceStageRecourses[i]);
+          for (let i = 0; i < result.compliances.length; i++) {
+            const obj = result.compliances[i];
+            this.tableInputData.push({
+              id: obj.id,
+              complianceName: obj.complianceName,
+              recourse: obj.recourse,
+              recourseName: obj.recourse.recourseName,
+              recourseCode: obj.recourse.recourseCode,
+              recourseId: obj.recourse.id,
+              stage: obj.stage,
+              stageName: obj.stage.stageName,
+              stageCode: obj.stage.stageCode,
+              stageId: obj.stage.id,
+              status: obj.statusId,
+              statusId: obj.statusId.statusId,
+              statusName: obj.statusId.statusName
+            });
           }
           this.dataTableComponent.ngOnInit();
         } else {
@@ -64,6 +78,7 @@ export class ComplianceComponent implements OnInit {
         console.log(err);
       });
   }
+
   getRecourse() {
 
     this._recourseService.getResources().subscribe(
@@ -88,7 +103,7 @@ export class ComplianceComponent implements OnInit {
     this._stageService.getStages().subscribe(
       result => {
         if (result != null) {
-          this.arStage = result.stageRecourses;
+          this.arStage = result.stages;
         } else {
           console.log(result);
         }
@@ -99,6 +114,7 @@ export class ComplianceComponent implements OnInit {
 
       });
   }
+
   getStatus() {
 
     this._complianceService.getStatus().subscribe(
@@ -116,9 +132,11 @@ export class ComplianceComponent implements OnInit {
 
       });
   }
+
   onRowClick(event) {
     console.log(event);
   }
+
   onRowDoubleClick(event) {
     this.editChild.createForm(event);
     $('#editComplianceMasterModal').modal('show');
@@ -127,12 +145,14 @@ export class ComplianceComponent implements OnInit {
   onRowSelect(event) {
     console.log(event);
   }
+
   onActionBtnClick(event) {
     if (event.eventType === 'edit') {
       this.editChild.createForm(event.data);
       $('#editComplianceMasterModal').modal('show');
     }
   }
+
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';

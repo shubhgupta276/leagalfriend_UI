@@ -2,7 +2,7 @@ export class Stage {
     stageCode: string;
     stageName: string;
     recourse: string;
-    recourseCode: string;
+    recourseId: number;
     status: string;
     id: number;
 }
