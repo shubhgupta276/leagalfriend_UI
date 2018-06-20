@@ -27,7 +27,7 @@
       <!-- /.col -->
     </div>
     <!-- /.row -->
-  </section>
+  </section> 
   <!-- /.content -->
   <div class="favicon" data-toggle="modal" data-target="#addComplianceMasterModal">
     <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
@@ -37,6 +37,6 @@
       <i class="fa fa-plus" type="button"></i>
     </a>
   </div>
-  <app-edit-compliance [tableInputData]="tableInputData" [arRecourse]="arRecourse" [arStatus]="arStatus"></app-edit-compliance>
-  <app-add-compliance [tableInputData]="tableInputData" [arRecourse]="arRecourse" [arStatus]="arStatus" [dataTableComponent]="dataTableComponent"></app-add-compliance>
+  <app-edit-compliance *ngIf="showEditComponent" [tableInputData]="tableInputData" [arRecourse]="arRecourse" [arStatus]="arStatus"></app-edit-compliance>
+  <app-add-compliance  [tableInputData]="tableInputData" [arRecourse]="arRecourse" [arStatus]="arStatus" [dataTableComponent]="dataTableComponent"></app-add-compliance>
 </div>
