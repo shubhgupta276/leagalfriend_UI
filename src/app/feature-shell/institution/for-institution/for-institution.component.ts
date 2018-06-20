@@ -17,6 +17,7 @@ import { DataTableComponent } from '../../../shared/components/data-table/data-t
 import { forInstitutionTableConfig } from './for-intitution-config';
 import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 import { saveAs } from 'file-saver';
+import { StageService } from '../../master/stage/stage.service';
 declare let $;
 @Component({
     selector: 'app-for-institution',
@@ -324,6 +325,7 @@ export class ForInstitutionComponent implements OnInit {
                             receiverOrderReceivedDate: obj.receiverOrderReceivedDate,
                             recieveOrderApplied: obj.recieveOrderApplied,
                             recourse: obj.recourse,
+                            recourseId: obj.recourseId,
                             region: obj.region,
                             remarks: obj.remarks,
                             repoFlag: obj.repoFlag,
@@ -537,15 +539,20 @@ export class ForInstitutionComponent implements OnInit {
     updateNewHearingDate(date, isNewHearingDate) {
         const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
         if (isNewHearingDate) {
-            obj.nextHearingDate = new Date(date);
+            obj.nextHearingDate = this._sharedService.convertStrToDate(date);
+            obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
         } else {
-            obj.previousHearingDate = new Date(date);
+            obj.previousHearingDate = this._sharedService.convertStrToDate(date);
+            obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
         }
 
         this._institutionService.updateHearingDate(obj).subscribe(
             (result) => {
+
                 if (result.status === 200) {
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Update Successfully.' });
+                    obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
+                    obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                    $.toaster({ priority: 'success', title: 'Success', message: "Date Update Successfully." });
                 }
             },
             err => {
@@ -568,6 +575,7 @@ export class ForInstitutionComponent implements OnInit {
     caseSaved() {
         this.GetAllForIntitution();
     }
+
     ExportCase() {
         var arrInsitituionId = [];
         if (this.selectedRowsCheckbox.length > 0) {

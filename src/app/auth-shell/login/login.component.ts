@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['signup']);
   }
 
-  // forgotPassword(){}
+   forgotPassword(){}
   getCustomer(a) {
     const $this = this;
     this.authService.checkUserClient(a).subscribe(
