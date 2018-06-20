@@ -56,6 +56,7 @@ export class EditForInstitutionComponent implements OnInit {
       result => {
         if (result.httpCode === 200) {
           result.stageRecourses.forEach(element => {
+            debugger
             this.arStage.push(element);
           });
         }
