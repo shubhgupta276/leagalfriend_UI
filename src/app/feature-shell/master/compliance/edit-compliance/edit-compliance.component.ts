@@ -33,7 +33,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
     private _stageService: StageService, private _storageService: StorageService) {
   }
 
-  ngOnInit() {
+  ngOnInit() {   
     this.createForm(null);
   }
 
@@ -69,6 +69,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
             result.stageRecourses.forEach(element => {
               this.arStage.push(element);
             });
+            var aa = this.selectedStage;
           }
         });
     }
@@ -119,13 +120,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   closeModal() {
     $('#closebtn').click();
   }
-
-  createForm(data: any) {
-    debugger
-    this.selectedRecourse = null;
-    this.selectedStage = null;
-    this.selectedStatus = null;
-    
+  resetForm(data) {
     this.editComplianceMasterForm = this.fb.group({
       recourse: [data == null ? "" : data.recourseId, Validators.required],
       stage: [data == null ? "" : data.stageId, Validators.required],
@@ -133,15 +128,31 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
       status: [data == null ? "" : data.statusId, Validators.required],
       id: [data == null ? null : data.id, Validators.required],
     });
-    
+  }
+  createForm(data: any) {
+    debugger
+    this.selectedRecourse = null;
+    this.selectedStage = null;
+    this.selectedStatus = null;
+    this.resetForm(null);
+    this.editComplianceMasterForm = this.fb.group({
+      recourse: [data == null ? "" : data.recourseId, Validators.required],
+      stage: [data == null ? "" : data.stageId, Validators.required],
+      compliance: [data == null ? null : data.complianceName, Validators.required],
+      status: [data == null ? "" : data.statusId, Validators.required],
+      id: [data == null ? null : data.id, Validators.required],
+    });
+
     if (data != null) {
+      this.changeRecourse(data.recourse);
       this.selectedRecourse = data.recourse;
       this.selectedStage = data.stage;
       this.selectedStatus = data.status;
-      this.changeRecourse(data.recourse);
+
       this.isComplianceAlreadyExists = false;
       this.editDetails = data;
       this.subscriberFields();
     }
+
   }
 }

@@ -33,6 +33,7 @@ export class ComplianceComponent implements OnInit {
   rowSelect = false;
   hoverTableRow = true;
   actionColumnConfig: ActionColumnModel;
+  showEditComponent = true;
   constructor(private fb: FormBuilder, private _complianceService: ComplianceService,
     private _storageService: StorageService, private _recourseService: RecourseService, private _stageService: StageService) {
   }
@@ -42,6 +43,11 @@ export class ComplianceComponent implements OnInit {
     this.getRecourse();
     this.getStage();
     this.getStatus();
+    var self = this;
+    $("body").on("hidden.bs.modal", "#editComplianceMasterModal", function () {
+      self.showEditComponent = false;
+    })
+
   }
   getAllCompliance() {
     const $this = this;
@@ -136,10 +142,15 @@ export class ComplianceComponent implements OnInit {
   onRowClick(event) {
     console.log(event);
   }
-
   onRowDoubleClick(event) {
-    this.editChild.createForm(event);
-    $('#editComplianceMasterModal').modal('show');
+
+    this.showEditComponent = true;
+    setTimeout(() => {
+      this.editChild.createForm(event);
+      $('#editComplianceMasterModal').modal('show');
+    }, 100);
+
+
   }
 
   onRowSelect(event) {
