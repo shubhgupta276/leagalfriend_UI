@@ -20,7 +20,7 @@ export class BillingComponent implements OnInit {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = billingTableConfig;
-    rowSelect = false;
+    rowSelect = true;
     hoverTableRow = true;
     showSearchFilter = true;
     arBillingData: any[] = [];

@@ -28,3 +28,15 @@
     top: 0;
     background-color: inherit;
 }
+.mat-column-id {
+    flex: 0.3 !important;
+}
+.mat-column-action {
+    flex: 0.3 !important;
+}
+.mat-column-status {
+    flex: 0.3 !important;
+}
+.mat-column-roles {
+    flex: 0.5 !important;
+}

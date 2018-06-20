@@ -37,6 +37,13 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(verifyEmailReq);
         }
+        else if (req.url.indexOf('users/forgotpwd') >= 0) {
+
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+            });
+            return next.handle(verifyEmailReq);
+        }
 
         else if (req.url.indexOf('subscription') >= 0) {
 
