@@ -42,7 +42,13 @@ export class changepasswordComponent implements OnInit {
         this.authService.changepassword(changepassworddetails).subscribe(
 
             result => {
-                console.log(result);
+                debugger
+                if (result.body.httpCode === 200) {
+                    $.toaster({ priority: 'success', title: 'Success', message: 'User Verify Successfully' });
+                  } else {
+                    $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+                  }
+               window.location.href = 'login';
 
             },
             err => {

@@ -99,7 +99,7 @@ export class AuthService {
       JSON.stringify(customerData)
     );
   }
-  changepassword(customerData: ChangePassword): Observable<ChangePassword> {
+  changepassword(customerData: ChangePassword): Observable<any> {
 
     return this.apiGateWay.post<ChangePassword>(
       'usermanagement/updatePassword',
