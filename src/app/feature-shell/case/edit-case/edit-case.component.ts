@@ -195,6 +195,7 @@ export class EditCaseComponent implements OnInit {
 
   }
   bindDataOnEdit(c) {
+    debugger
     this.caseFile = [];
     var $this = this;
     (c.caseFiles.forEach(function (value) {
@@ -202,7 +203,6 @@ export class EditCaseComponent implements OnInit {
     }));
     $('#editCaseModal').modal('show');
     this.parentcaseSelectedauto = [];
-
     this.caseId = c.caseId;
     this.id = c.id;
     if (c.parentCaseId != null) {
@@ -243,6 +243,7 @@ export class EditCaseComponent implements OnInit {
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
     }
+    debugger
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
     this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -452,7 +453,7 @@ export class EditCaseComponent implements OnInit {
                   id: value.id, text: value.firstName
                 }
               );
-            } else if (value.roles[0].roleName === 'CUSTOMER') {
+            } else if (value.roles[0].roleName === 'CLIENT') {
               $this.CustomerName.push(
                 {
                   id: value.id, text: value.firstName
@@ -519,12 +520,12 @@ export class EditCaseComponent implements OnInit {
     this.authService.bindStageDDL(reqData).subscribe(
 
       result => {
-        if (result.httpCode === 200) {
-          result.stageRecourses.forEach(function (value) {
+         if (result.httpCode === 200) {
+          result.stages.forEach(function (value) {
 
             $this.Stage.push({ id: value.id, text: value.stageName });
           });
-        }
+       }
         if (c != null) {
           this.bindDataOnEdit(c)
         }
@@ -547,10 +548,10 @@ export class EditCaseComponent implements OnInit {
 
       result => {
         result.forEach(function (value) {
-          if (value.roles[0].roleName === 'CLIENT') {
+         // if (value.roles[0].roleName === 'CLIENT') {
             $this.Employee.push({ id: value.id, text: value.firstName });
 
-          }
+          //}
         });
       },
       err => {

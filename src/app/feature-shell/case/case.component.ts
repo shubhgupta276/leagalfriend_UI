@@ -165,6 +165,7 @@ export class CaseComponent implements OnInit {
       this.authService.getCaseByCaseId(reqData).subscribe(
 
         result => {
+          debugger
           $this.editChild.createForm(result);
           $('#caseLi a').click();
 
@@ -340,12 +341,9 @@ export class CaseComponent implements OnInit {
     };
     this.authService.bindStageDDL(reqData).subscribe(
       result => {
-        if (result.httpCode === 200) {
-          result.stageRecourses.forEach(function (value) {
+          result.stages.forEach(function (value) {
             $this.arrListCaseStage.push(value);
           });
-        }
-
       },
       err => {
         console.log(err);
