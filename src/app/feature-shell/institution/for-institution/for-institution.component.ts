@@ -37,6 +37,7 @@ export class ForInstitutionComponent implements OnInit {
     arRecourse: any[] = [];
     InstitutionValue: any;
     recourseConfig: any;
+    institutionConfig: any;
     checkboxCounter: number = 0;
     recourseFilter: any;
     $table: any;
@@ -129,12 +130,21 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     getInstitutionList() {
-
         this._institutionService.getInstitutionList().subscribe((result) => {
             if (result.httpCode === 200) {
                 this.arInstitution = result.institutions;
                 this.InstitutionValue = this.arInstitution.find(x => x.defaultInstitution);
                 this.GetAllForIntitution();
+
+                this.institutionConfig = {
+                    displayKey: 'institutionName',
+                    showFirstSelected: true,
+                    showFirstSelectedValue: this.InstitutionValue,
+                    showFirstSelectedKey: "id",
+                    defaultTextAdd: false,
+                    showIcon: false,
+                    hideWhenOneItem: false
+                }
             } else {
                 console.log(result);
             }
@@ -145,7 +155,8 @@ export class ForInstitutionComponent implements OnInit {
         $('#editForInstitutionModal').modal('show');
     }
 
-    changeInstitution() {
+    changeInstitution(data: any) {
+        this.InstitutionValue = data;
         this.resetAllFilter();
         this.GetAllForIntitution();
     }

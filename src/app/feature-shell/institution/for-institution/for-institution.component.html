@@ -7,25 +7,13 @@
   <section class="content">
     <div class="row">
       <div class="col-xs-12">
-
-        <!-- /.box -->
-
         <div class="box">
-          <!-- <div class="box-header">
-            <h3 class="box-title">Data Table With Full Features</h3>
-          </div> -->
-          <!-- /.box-header -->
           <div class="box-body">
             <div>
               <div class="row table-toolbar">
                 <div class="col-sm-2 heading"></div>
-                <div class="col-sm-2" *ngIf="arInstitution.length>0">
-                  <select tabindex="3" class="form-control select2me input-sm" (change)="changeInstitution()" [(ngModel)]="InstitutionValue">
-                    <!-- <option value="">Select Institution</option> -->
-                    <option *ngFor="let option of arInstitution" [ngValue]="option">
-                      {{ option.institutionName }}
-                    </option>
-                  </select>
+                <div class="col-sm-2">
+                  <app-custom-single-select *ngIf="institutionConfig" [data]="arInstitution" [config]="institutionConfig" (valueChanged)="changeInstitution($event)"></app-custom-single-select>
                 </div>
 
                 <div class="col-sm-2">
@@ -43,92 +31,20 @@
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
               [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" (rowClickShowCalendar)="onShowCalendar($event)">
             </app-data-table>
-            <!-- <table id="example1" class="table table-bordered table-hover" on-mouseleave="hideCalendar()">
-              <thead>
-                <tr>
-                  <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
-                    style="width: 35px;" aria-sort="ascending">
-                    <input type="checkbox" id="selectAlluserrep">
-                  </th>
 
-                  <th>Case ID</th>
-                  <th>Stage</th>
-                  <th>Court Case Id</th>
-                  <th>Legal Case Id</th>
-                  <th>Last Hearing Date</th>
-                  <th>Next Hearing Date</th>
-                  <th>Loan Account No</th>
-                  <th>Action</th>
-                  <th style="display: none;">Recourse</th>
-                  <th style="display: none;">Created Date</th>
-                  <th style="display: none;">Last Updated Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of arr; let i = index" data-toggle="modal" on-mouseover="OnMouseHover(i)" (dblclick)="showEditInstitutionModal()">
-                  <th class="sorting_asc" tabindex="0" aria-controls="search-user-case" rowspan="1" colspan="1" aria-label=": activate to sort column descending"
-                    style="width: 35px;" aria-sort="ascending">
-                    <input type="checkbox" #rowChecked (change)="checkboxChange(rowChecked.checked)">
-                  </th>
-
-                  <td>{{item.caseId}}</td>
-                  <td>{{item.caseStage}}</td>
-                  <td>{{item.courtCaseId}}</td>
-                  <td>{{item.legalCaseId}}</td>
-                  <td style="position: relative;">
-                    {{item.previousHearingDate | date:'dd-MM-yyyy'}}
-
-                    <div class="input-group date" style="position:absolute; right: 0;" data-provide="datepicker">
-                      <input style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd" class="form-control lastHiringDate"
-                        size="10">
-                      <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="ShowCalendar(item)">
-                        <span class="fa fa-calendar"></span>
-                      </div>
-                    </div>
-                  </td>
-                  <td style="position: relative;">
-                    {{item.nextHearingDate | date:'dd-MM-yyyy'}}
-                    <div class="divNewHire input-group date" style="position:absolute; right: 0;" data-provide="datepicker">
-                      <input style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd" class="form-control newHiringDate"
-                        size="10">
-                      <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="ShowCalendar(item)">
-                        <span class="fa fa-calendar"></span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{{item.loanAccountNumber}}</td>
-                  <td>
-                    <a routerLink="/admin/institution/editforinstitution/{{item.institutionId}}/{{item.id}}">
-                      <i class="fa fa-edit"></i>
-                    </a>
-                    <a>
-                      <i class="fa fa-history"></i>
-                    </a>
-
-                  </td>
-                  <td style="display: none;">{{item.recourse}}</td>
-                  <td style="display: none;">{{item.createdDate | date:'dd-MM-yyyy'}}</td>
-                  <td style="display: none;">{{item.lastUpdated | date:'dd-MM-yyyy'}}</td>
-                </tr>
-                <tr *ngIf="!arr || arr.length == 0">
-                  <td colspan="11">No Record Found...!</td>
-                  <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11]" style="display: none;"></td>
-                </tr>
-              </tbody>
-
-            </table> -->
           </div>
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
         <ng-container>
-            <!-- <ng-container *ngIf="checkboxCounter>0"> -->
           <div class="export1">
             <img src="/assets/dist/img/download1.png" height="40">
           </div>
 
           <div class="export2">
-            <a (click)="ExportCase()"> <img src="/assets/dist/img/download2.png" height="40"></a>
+            <a (click)="ExportCase()">
+              <img src="/assets/dist/img/download2.png" height="40">
+            </a>
           </div>
         </ng-container>
       </div>
