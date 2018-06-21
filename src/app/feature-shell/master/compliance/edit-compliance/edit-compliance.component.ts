@@ -29,6 +29,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   selectedRecourse: any;
   selectedStage: any;
   selectedStatus: any;
+  currentStage: any;
   constructor(private fb: FormBuilder, private _complianceService: ComplianceService,
     private _stageService: StageService, private _storageService: StorageService) {
   }
@@ -61,20 +62,27 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   }
 
   changeRecourse(recourse: any) {
-    this.arStage = [];
+
     if (recourse) {
       this._stageService.getRecourseStages(recourse.id).subscribe(
         result => {
+          this.arStage = [];
           if (result.httpCode === 200) {
             result.stageRecourses.forEach(element => {
               this.arStage.push(element);
             });
+
           }
+          setTimeout(() => {
+            this.selectedStage = this.currentStage;
+          }, 150);
+
         });
     }
   }
 
   submitEditComplianceMaster(data) {
+    debugger
     const reqData = {
       complianceName: data.compliance,
       id: data.id,
@@ -96,7 +104,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
         if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-
+          debugger
           const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.complianceName = data.compliance;
           objFind.recourseName = this.selectedRecourse.recourseName;
@@ -107,6 +115,30 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
           objFind.stageId = this.selectedStage.id;
           objFind.statusId = this.selectedStatus.statusId;
           objFind.statusName = this.selectedStatus.statusName;
+          objFind.recourse = {
+            id: this.selectedRecourse.id,
+            recourseCode: this.selectedRecourse.recourseCode,
+            recourseDesc: this.selectedRecourse.recourseName,
+            recourseName: this.selectedRecourse.recourseName,
+            userId: null
+          }
+          objFind.stage = {
+            id: this.selectedStage.id,
+            recourse: objFind.recourse,
+            stageCode: this.selectedStage.stageCode,
+            stageName: this.selectedStage.stageName,
+            statusId: this.selectedStatus.statusId,
+            userId: null
+          }
+          objFind.status = {
+            statusId: this.selectedStatus.statusId,
+            statusName: this.selectedStatus.statusName
+          }
+          this.selectedRecourse = objFind.recourse;
+          this.selectedStage = objFind.stage;
+          this.currentStage = objFind.stage;
+          this.selectedStatus = objFind.status;
+
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
         }
@@ -121,11 +153,13 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   }
 
   createForm(data: any) {
-    debugger
+
     this.selectedRecourse = null;
     this.selectedStage = null;
     this.selectedStatus = null;
-    
+    if (data != null) {
+      this.editComplianceMasterForm.reset();
+    }
     this.editComplianceMasterForm = this.fb.group({
       recourse: [data == null ? "" : data.recourseId, Validators.required],
       stage: [data == null ? "" : data.stageId, Validators.required],
@@ -133,15 +167,18 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
       status: [data == null ? "" : data.statusId, Validators.required],
       id: [data == null ? null : data.id, Validators.required],
     });
-    
+
     if (data != null) {
-      this.selectedRecourse = data.recourse;
-      this.selectedStage = data.stage;
-      this.selectedStatus = data.status;
       this.changeRecourse(data.recourse);
+      this.selectedRecourse = data.recourse;
+      //this.selectedStage = data.stage;
+      this.currentStage = data.stage;
+      this.selectedStatus = data.status;
+
       this.isComplianceAlreadyExists = false;
       this.editDetails = data;
       this.subscriberFields();
     }
+
   }
 }

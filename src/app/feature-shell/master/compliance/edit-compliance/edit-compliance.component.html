@@ -41,13 +41,12 @@
                         </div>
 
                       </div>
-                      <div class="form-group row">
+                      <div class="form-group row" *ngIf="arStage.length > 0">
                         <label class="col-sm-3 col-form-label createUserLabel">Stage:
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9">
-                          <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                          <select [(ngModel)]="selectedStage" name="stage" tabindex="3" class="form-control select2me" formControlName="stage">
+                          <select [(ngModel)]="selectedStage"  name="stage" tabindex="3" class="form-control select2me" formControlName="stage">
                             <option value="">Select Stage</option>
                             <option *ngFor="let option of arStage" [ngValue]="option" [selected]="selectedStage && option.id == selectedStage.id">
                               {{ option.stageName }}
@@ -90,12 +89,12 @@
                         </label>
                         <div class="col-md-9">
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
-                          <select [(ngModel)]="selectedStatus"  name="Status" tabindex="3" class="form-control select2me" formControlName="status">
+                          <select [(ngModel)]="selectedStatus" name="Status" tabindex="3" class="form-control select2me" formControlName="status">
                             <option value="">Select Status</option>
                             <option *ngFor="let option of arStatus" [ngValue]="option" [selected]="selectedStatus && option.statusId == selectedStatus.statusId">
                               {{ option.statusName }}
                             </option>
-                            
+
                           </select>
                         </div>
 
