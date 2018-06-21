@@ -386,7 +386,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     onRowDoubleClick(event) {
-        console.log(event);
+        this._router.navigate(['/admin/institution/editforinstitution/' + event.institutionId + '/' + event.id]);
     }
 
     onRowSelect(event) {
