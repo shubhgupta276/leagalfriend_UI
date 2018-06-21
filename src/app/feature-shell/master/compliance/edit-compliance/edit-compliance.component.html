@@ -28,7 +28,7 @@
                           <select id="ddlRecourse" [(ngModel)]="selectedRecourse" tabindex="3" class="form-control select2me" formControlName="recourse"
                             (ngModelChange)="changeRecourse($event)">
                             <option value="">Select Recourse</option>
-                            <option *ngFor="let option of arRecourse" [value]="option" [selected]="selectedRecourse && option.id === selectedRecourse.id">
+                            <option *ngFor="let option of arRecourse" [ngValue]="option" [selected]="selectedRecourse && option.id === selectedRecourse.id">
                               {{ option.recourseName }}
                             </option>
                           </select>
@@ -41,14 +41,14 @@
                         </div>
 
                       </div>
-                      <div class="form-group row" *ngIf="arStage.length>0">
+                      <div class="form-group row" *ngIf="arStage.length > 0">
                         <label class="col-sm-3 col-form-label createUserLabel">Stage:
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9">
-                          <select [(ngModel)]="selectedStage" name="stage" tabindex="3" class="form-control select2me" formControlName="stage">
+                          <select [(ngModel)]="selectedStage"  name="stage" tabindex="3" class="form-control select2me" formControlName="stage">
                             <option value="">Select Stage</option>
-                            <option *ngFor="let option of arStage" [value]="option" [selected]="selectedStage && option.id == selectedStage.id">
+                            <option *ngFor="let option of arStage" [ngValue]="option" [selected]="selectedStage && option.id == selectedStage.id">
                               {{ option.stageName }}
                             </option>
                           </select>
@@ -91,7 +91,7 @@
                           <!-- <input class="form-control" placeholder="Manager" formControlName="manager"> -->
                           <select [(ngModel)]="selectedStatus" name="Status" tabindex="3" class="form-control select2me" formControlName="status">
                             <option value="">Select Status</option>
-                            <option *ngFor="let option of arStatus" [value]="option" [selected]="selectedStatus && option.statusId == selectedStatus.statusId">
+                            <option *ngFor="let option of arStatus" [ngValue]="option" [selected]="selectedStatus && option.statusId == selectedStatus.statusId">
                               {{ option.statusName }}
                             </option>
 

@@ -1,4 +1,5 @@
 export let statusUrl = "usermanagement/liststatus";
+export let complianceStatusUrl = "usermanagement/compliance/status";
 export let addCityUrl = "master/add/city";
 export let getCitiesUrl = "master/cities";
 export let updateCityUrl = "master/update/city";

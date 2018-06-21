@@ -778,38 +778,31 @@ export class DashboardComponent implements OnInit {
   }
   ShowBranchPopup() {
     $('#subscriptionWarningModal').modal('hide');
-    $('#addBranchMasterModal').modal({
-      backdrop: 'static',
-      keyboard: false,
-      closeOnEscape: false,
-      open: function (event, ui) {
-        $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-      }
-    });
-    // if (this.isNoBranch) {
-    //   $('#addBranchMasterModal').modal({
-    //     backdrop: 'static',
-    //     keyboard: false,
-    //     closeOnEscape: false,
-    //     open: function (event, ui) {
-    //       $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-    //     }
-    //   });
-    // }
-    // else if (!this.isNoBranch && this.isNoInsitituion) {
-    //   $('#addInstitutionMasterModal').modal({
-    //     backdrop: 'static',
-    //     keyboard: false,
-    //     closeOnEscape: false,
-    //     open: function (event, ui) {
-    //       $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-    //     }
-    //   });
-    // }
+    if (this.isNoBranch) {
+      $('#addBranchMasterModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+        closeOnEscape: false,
+        open: function (event, ui) {
+          $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+        }
+      });
+    }
+    else if (!this.isNoBranch && this.isNoInsitituion) {
+      $('#addInstitutionMasterModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+        closeOnEscape: false,
+        open: function (event, ui) {
+          $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+        }
+      });
+    }
   }
   CheckBranchPopup() {
     this._branchService.getBranches().subscribe(
       result => {
+        debugger
         if (result.httpCode == 200) {
           if (result.branches.length == 0) {
             this.isNoBranch = true;

@@ -22,7 +22,7 @@ export class BillingComponent implements OnInit {
     columns = billingTableConfig;
     rowSelect = true;
     hoverTableRow = true;
-    showSearchFilter = true;
+    showSearchFilter = false;
     arBillingData: any[] = [];
     arListBanks: any[] = [];
     arListRecourse: any[] = [];
@@ -258,4 +258,7 @@ export class BillingComponent implements OnInit {
     onRowDoubleClick(event) { }
     onRowSelect(event) { }
     onActionBtnClick(event) { }
+    searchFilter(value) {
+        this.dataTableComponent.applyFilter(value);
+      }
 }
