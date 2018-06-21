@@ -143,12 +143,11 @@ export class ComplianceComponent implements OnInit {
     console.log(event);
   }
   onRowDoubleClick(event) {
-
     this.showEditComponent = true;
     setTimeout(() => {
       this.editChild.createForm(event);
       $('#editComplianceMasterModal').modal('show');
-    }, 100);
+    }, 10);
 
 
   }

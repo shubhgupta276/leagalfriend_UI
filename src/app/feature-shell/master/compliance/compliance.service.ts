@@ -3,7 +3,7 @@ import { retry } from 'rxjs/operator/retry';
 import { Compliance } from './compliance';
 import { Observable } from 'rxjs/Observable';
 import { ApiGateway } from '../../../shared/services/api-gateway';
-import { statusUrl, addComplianceUrl, updateComplianceUrl, getCompliancesUrl } from '../master.config';
+import { statusUrl, addComplianceUrl, updateComplianceUrl, getCompliancesUrl, complianceStatusUrl } from '../master.config';
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
 import { StorageService } from '../../../shared/services/storage.service';
@@ -38,7 +38,7 @@ export class ComplianceService {
 
     getStatus(): Observable<any> {
         return this.apiGateWay.get<Compliance>(
-            statusUrl
+            complianceStatusUrl
         );
     }
 }
