@@ -188,6 +188,7 @@ export class EditCaseComponent implements OnInit {
 
   childCaseText: string;
   childParentText: string;
+ 
   // emailValidationMessage: string = "Email address is required.";
 
   BindCompliance() {

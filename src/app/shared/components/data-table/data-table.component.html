@@ -36,7 +36,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <button (click)="onCaseFilterClick($event, row)" *ngIf="moduleName==='Case' && column.uniqueId=='nextHearingDate' ">Filter</button>
+                    <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="moduleName==='Case' && column.uniqueId=='nextHearingDate' "></button>
                 </mat-header-cell>
             </div>
             <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
