@@ -71,7 +71,6 @@ export class AddComplianceMasterComponent implements OnInit {
       statusId: { statusId: data.status.statusId, statusName: data.status.statusName },
       userId: this._storageService.getUserId()
     };
-
     this._complianceService.addCompliance(reqData).subscribe(
       result => {
         const _result = result.body;
@@ -95,6 +94,7 @@ export class AddComplianceMasterComponent implements OnInit {
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
         } else {
+          console.log(_result.failureReason)
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
         }
       },

@@ -1,6 +1,6 @@
 export const billingTableConfig = [
   { uniqueId: 'id', displayName: 'Id', sortable: true, dropDownFilter: false, display: false },
-  { uniqueId: 'institutionName', displayName: 'Institution', sortable: true, dropDownFilter: true, display: true },
+  { uniqueId: 'institutionName', displayName: 'Institution', sortable: false, dropDownFilter: true, display: true },
   { uniqueId: 'institutionId', displayName: 'institutionId', sortable: true, dropDownFilter: false, display: false },
   { uniqueId: 'recourseName', displayName: 'Recourse', sortable: true, dropDownFilter: true, display: true },
   { uniqueId: 'recourseId', displayName: 'recourseId', sortable: true, dropDownFilter: false, display: false },

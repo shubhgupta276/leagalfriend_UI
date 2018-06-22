@@ -27,33 +27,31 @@ export class VerifyUserComponent implements OnInit {
         this.changePasswordPageLayout();
     }
     changePassword(data) {
-        debugger
         var isReferral;
-const str1 = window.location.href.slice(window.location.href.indexOf('/'));
-const str2 = 'verifyReferralEmail';
-if (str1.indexOf(str2) !== -1) {
-  isReferral = 'Y';
-}else{
-  isReferral = 'N'
-}
-    var token = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);  
-    const tokenDetails = new TokenModel();
-    tokenDetails.token = token;
-    tokenDetails.isReferral = isReferral;
-    tokenDetails.oldPassword = data.newPassword;
-    tokenDetails.password = data.confirmPassword;
-   var password = data.confirmPassword;
+        const str1 = window.location.href.slice(window.location.href.indexOf('/'));
+        const str2 = 'verifyReferralEmail';
+        if (str1.indexOf(str2) !== -1) {
+            isReferral = 'Y';
+        } else {
+            isReferral = 'N'
+        }
+        var token = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
+        const tokenDetails = new TokenModel();
+        tokenDetails.token = token;
+        tokenDetails.isReferral = isReferral;
+        tokenDetails.oldPassword = data.newPassword;
+        tokenDetails.password = data.confirmPassword;
+        var password = data.confirmPassword;
 
         this.authService.verifyUser(token, isReferral, password).subscribe(
 
             result => {
-                debugger
                 if (result.body.httpCode === 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: 'User Verify Successfully' });
-                  } else {
+                } else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-                  }
-               window.location.href = 'login';
+                }
+                window.location.href = 'login';
 
             },
             err => {
