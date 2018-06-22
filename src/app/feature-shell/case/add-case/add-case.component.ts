@@ -21,7 +21,7 @@ declare var $;
 })
 export class AddCaseComponent implements OnInit {
   @Input() caseRunning = [];
-  ChildCases: any;
+  ChildCases: any= [];
   finalData: any = {};
   fileData: File;
   myDocument: File;
@@ -134,7 +134,7 @@ export class AddCaseComponent implements OnInit {
     this.bindRecourseDDL();
     this.getManagers();
     this.getEmployee();
-    //this.bindStageDDL();
+    // this.bindStageDDL();
     this.getRunningCase();
     this.getEmployee();
     this.GetAllCity();
@@ -276,7 +276,7 @@ export class AddCaseComponent implements OnInit {
             );
           }
 
-          if (value.roles[0].roleName == 'CUSTOMER') {
+          if (value.roles[0].roleName === 'CLIENT') {
 
             $this.CustomerName.push(
               {
@@ -308,27 +308,20 @@ export class AddCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-        
         if (result == 0) {
           $("#spnEmployee").show();
         }
-      
         result.forEach(function (value) {
-          
-         
-          if (value.roles[0].roleName == 'CLIENT') {
+          if (value.roles[0].roleName === 'CLIENT') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
-          if (value.roles[0].roleName == 'ADMIN') {
+          if (value.roles[0].roleName === 'ADMIN') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
-          if (value.roles[0].roleName == 'MANAGER') {
+          if (value.roles[0].roleName === 'MANAGER') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
-        
         });
-
-      
     }
       // err => {
       //   console.log(err);
@@ -337,7 +330,6 @@ export class AddCaseComponent implements OnInit {
   }
 
   bindStageDDL(a) {
-
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -347,7 +339,7 @@ export class AddCaseComponent implements OnInit {
 
       result => {
         if (result.httpCode === 200) {
-        result.stageRecourses.forEach(function (value) {
+        result.stages.forEach(function (value) {
 
           $this.Stage.push({ id: value.id, text: value.stageName });
         });
@@ -368,14 +360,12 @@ export class AddCaseComponent implements OnInit {
     };
     this.authService.getCaseRunning(reqData).subscribe(
       result => {
-        if (result.httpCode === 200) {
         result.forEach(function (value) {
         $this.ParentCases.push({ id: value.id, text: value.caseId });
           $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
-      }
         $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
-        $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text'); 
+        $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text');
       },
       err => {
         console.log(err);
@@ -407,14 +397,16 @@ if (event.target.files && event.target.files.length) {
       'parentCaseId': (data.parentCase === undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
       'recourseId': data.recourse[0].id,
       'remark': data.remark,
-     // "stageId": data.stage[0].id,
+      'stageId': data.stage[0].id,
       'stateId': data.state[0].id,
       'userId': parseInt(localStorage.getItem('client_id'))
     };
+    debugger
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
+        debugger
         if (result.body.httpCode == 200) { //success
           // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
