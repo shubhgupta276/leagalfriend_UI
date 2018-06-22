@@ -28,8 +28,9 @@ export class DataTableComponent implements OnInit {
   @Input() tableColumns: Array<any>;
   @Input() showRowSelect = false;
   @Input() hoverTableRow = false;
-  @Input() actionColumnConfig: ActionColumnModel;
+  @Input() actionColumnConfig: ActionColumnModel; 
   @Input() showSearchFilter = true;
+  @Input() moduleName = '';
   @Output() rowClick = new EventEmitter<any>();
   @Output() rowDoubleClick = new EventEmitter<any>();
   @Output() actionBtnClick = new EventEmitter<any>();
@@ -91,9 +92,17 @@ export class DataTableComponent implements OnInit {
     this.rowClick.emit(row);
   }
 
+
+  onCaseFilterClick(event, row) {
+    $('#filterCaseModal').modal("show");
+    this.rowClick.emit(row);
+  }
+
+
   onRowDoubleClick(event, row) {
     this.rowDoubleClick.emit(row);
   }
+
 
   onActionBtnClick(event, row, type) {
     const data = { eventType: type, data: row };

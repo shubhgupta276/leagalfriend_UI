@@ -51,6 +51,7 @@ export class CaseComponent implements OnInit {
   rowSelect = true;
   hoverTableRow = true;
   showSearchFilter = false;
+  moduleName = 'Case';
   actionColumnConfig: ActionColumnModel;
   model: NgbDateStruct;
   date: { year: number, month: number };
@@ -77,58 +78,25 @@ export class CaseComponent implements OnInit {
   SelectedFileIds = [];
   branchSubscription: Subscription;
   branchData: any;
-
+  isLoad = true;
   constructor(private masterTemplateService: MasterTemplateService, private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
 
-  selectToday() {
-    this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
-  }
-  getCasesData() {
-    var $this = this;
-    const runningCaseModel = {
-      userId: this._storageService.getUserId(),
-    };
-    this.branchData = this._storageService.getBranchData();
-    this.tableInputData = [];
-    this.completedTableInputData = [];
-    this.authService.getCaseRunning(runningCaseModel).subscribe(
-      result => {
-        result.forEach(ele => {
-          if (ele.branchName == $this.branchData.branchName) {
-            if (ele.completionDate) {
-              this.completedTableInputData.push(ele);
-            } else {
-              this.tableInputData.push(ele);
-            }
-          }
-        });
-
-        this.runningDataTableComponent.ngOnInit();
-        this.completedDataTableComponent.ngOnInit();
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
-  setActionConfig() {
-    this.actionColumnConfig = new ActionColumnModel();
-    this.actionColumnConfig.showHistory = true;
-    this.actionColumnConfig.showEdit = true;
-  }
   ngOnInit() {
-
+    debugger
+    this.getCasesData();
     this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
       this.branchData = this._storageService.getBranchData();
       if (this.branchData) {
-        this.getCasesData();
+        if (this.isLoad) {
+          //alert(this.isLoad)
+          this.getCasesData();
+        }
       }
     });
     // this.getRunningCase();
     this.setActionConfig();
-    this.getCasesData();
     this.getBranchDDL();
     this.bindRecourseDDL();
     this.bindStageDDL();
@@ -151,6 +119,49 @@ export class CaseComponent implements OnInit {
 
   }
 
+  selectToday() {
+    this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
+  }
+  getCasesData() {
+    
+    this.isLoad = false;
+    
+    var $this = this;
+    const runningCaseModel = {
+      userId: this._storageService.getUserId(),
+    };
+    this.branchData = this._storageService.getBranchData();
+    debugger
+    this.tableInputData = [];
+    this.completedTableInputData = [];
+    this.authService.getCaseRunning(runningCaseModel).subscribe(
+      result => {
+        debugger
+        result.forEach(ele => {
+          if (ele.branchName == $this.branchData.branchName) {
+            if (ele.completionDate) {
+              this.completedTableInputData.push(ele);
+            } else {
+              this.tableInputData.push(ele);
+            }
+          }
+        });
+
+        this.runningDataTableComponent.ngOnInit();
+        this.completedDataTableComponent.ngOnInit();
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.showHistory = true;
+    this.actionColumnConfig.showEdit = true;
+    this.actionColumnConfig.displayName = 'Action';
+  }
+
   onRowClick(event) {
     console.log(event);
   }
@@ -165,6 +176,7 @@ export class CaseComponent implements OnInit {
       this.authService.getCaseByCaseId(reqData).subscribe(
 
         result => {
+          
           $this.editChild.createForm(result);
           $('#caseLi a').click();
 
@@ -201,6 +213,11 @@ export class CaseComponent implements OnInit {
   }
   onRowDoubleClick(c) {
     this.showEditPop(c);
+  }
+  onCaseFilterClick(c)
+  {
+    debugger
+    $('#filterCaseModal').modal("show");
   }
 
   onRowSelect(event) {
@@ -340,12 +357,9 @@ export class CaseComponent implements OnInit {
     };
     this.authService.bindStageDDL(reqData).subscribe(
       result => {
-        if (result.httpCode === 200) {
-          result.stageRecourses.forEach(function (value) {
-            $this.arrListCaseStage.push(value);
-          });
-        }
-
+        result.stages.forEach(function (value) {
+          $this.arrListCaseStage.push(value);
+        });
       },
       err => {
         console.log(err);
