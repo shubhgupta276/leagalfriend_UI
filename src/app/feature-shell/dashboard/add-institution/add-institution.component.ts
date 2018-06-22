@@ -43,12 +43,11 @@ export class AddInstitutionDashboardComponent implements OnInit {
       phone: data.contactNo,
       userId: this._storageService.getUserId()
     };
-
     this._institutionService.addInstitution(reqData).subscribe(
       result => {
         var _result = result.body;
 
-        if (_result.httpCode == 200) { 
+        if (_result.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: "Thank you for completing initial setup." });
           $('#addInstitutionMasterModal').modal('hide');
           this.AddInstitutionMaster();
@@ -63,5 +62,5 @@ export class AddInstitutionDashboardComponent implements OnInit {
 
   ngOnInit() {
   }
-  
+
 }

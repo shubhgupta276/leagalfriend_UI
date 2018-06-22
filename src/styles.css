@@ -23,7 +23,6 @@
     font-weight: 700;
 }
 .mat-header-row {
-    position: sticky;
     position: -webkit-sticky;
     top: 0;
     background-color: inherit;
@@ -31,9 +30,9 @@
 .mat-column-id {
     flex: 0.3 !important;
 }
-.mat-column-action {
+/* .mat-column-action {
     flex: 0.3 !important;
-}
+} */
 .mat-column-status {
     flex: 0.3 !important;
 }

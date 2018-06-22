@@ -25,6 +25,7 @@ export class EditForInstitutionComponent implements OnInit {
   caseFiles: any;
   arStage: any = [];
   isCompliance: boolean;
+
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -197,7 +198,7 @@ export class EditForInstitutionComponent implements OnInit {
     });
 
     if (obj != null) {
-      this.isCompliance = obj == null ? false : obj.compliance;
+      //this.isCompliance = obj == null ? false : obj.compliance;
       setTimeout(() => {
         this.disableForm(this.isCompliance);
       }, 10);
@@ -265,7 +266,21 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   updateCaseToCompliance() {
-    this._institutionService.updateToCompliance(this.institutionalCaseId).subscribe(
+    const stageId = this.arStage.filter(x => x.stageCode == this.editData.caseStage)[0].id;
+    const reqData = {
+      compliance: {
+        recourse: {
+          id: this.editData.recourseId
+        },
+        stage: {
+          id: stageId
+        },
+        legalCase: {
+          id: this.editData.id
+        }
+      }
+    }
+    this._institutionService.updateToCompliance(reqData).subscribe(
       (result) => {
         if (result.statusCode === 200) {
           this.editData.compliance = true;

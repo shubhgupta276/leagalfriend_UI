@@ -18,7 +18,7 @@ export class InvoiceInfoComponent implements OnInit {
     isShowUpload = true;
     invoiceForm: FormGroup;
     editTemplate = false;
-    constructor(private fb: FormBuilder, private masterService: MasterService, public sanitizer: DomSanitizer) {}
+    constructor(private fb: FormBuilder, private masterService: MasterService, public sanitizer: DomSanitizer) { }
     ngOnInit() {
         this.getTemplateData();
         this.createForm();
@@ -57,7 +57,7 @@ export class InvoiceInfoComponent implements OnInit {
         if (this.photoUrl || this.photoUrl.changingThisBreaksApplicationSecurity) {
             if (this.photoUrl.changingThisBreaksApplicationSecurity) {
                 this.invoiceForm.get('logo').setValue(this.photoUrl.changingThisBreaksApplicationSecurity.split(',')[1]);
-            }else {
+            } else {
                 this.invoiceForm.get('logo').setValue(this.photoUrl);
             }
         }

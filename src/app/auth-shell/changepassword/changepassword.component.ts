@@ -42,7 +42,6 @@ export class changepasswordComponent implements OnInit {
         this.authService.changepassword(changepassworddetails).subscribe(
 
             result => {
-                debugger
                 if (result.body.httpCode === 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: 'User Verify Successfully' });
                   } else {
