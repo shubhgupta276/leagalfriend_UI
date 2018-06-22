@@ -75,7 +75,7 @@
         </ng-container>
 
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-header-row *matHeaderRowDef="displayedColumns" style="z-index: 10000;"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick($event, row)" (dblclick)="onRowDoubleClick($event, row)"
             [ngClass]="{'mat-row-hover': hoverTableRow}">
         </mat-row>

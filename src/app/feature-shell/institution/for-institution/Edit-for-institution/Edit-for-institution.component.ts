@@ -24,6 +24,7 @@ export class EditForInstitutionComponent implements OnInit {
   editData: any;
   caseFiles: any;
   arStage: any = [];
+  isCompliance: boolean;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -56,7 +57,6 @@ export class EditForInstitutionComponent implements OnInit {
       result => {
         if (result.httpCode === 200) {
           result.stageRecourses.forEach(element => {
-            debugger
             this.arStage.push(element);
           });
         }
@@ -65,9 +65,9 @@ export class EditForInstitutionComponent implements OnInit {
 
   createForm(obj) {
     if (obj !== null) {
+      this.editData = obj;
       this.getStages(obj.recourseId);
     }
-    
     this.editForInstitutionForm = this.fb.group({
       accountStatus: obj == null ? null : obj.accountStatus,
       advocateofEp: obj == null ? null : obj.advocateofEp,
@@ -89,11 +89,14 @@ export class EditForInstitutionComponent implements OnInit {
       caseStage: obj == null ? null : obj.caseStage,
       caseStatus: obj == null ? null : obj.caseStatus,
       caseType: obj == null ? null : obj.caseType,
+      childCase: obj == null ? null : obj.childCase,
       chqNo1: obj == null ? null : obj.chqNo1,
       chqNo2: obj == null ? null : obj.chqNo2,
       chqNo3: obj == null ? null : obj.chqNo3,
       closureDate: obj == null ? null : this._datePipe.transform(obj.closureDate, "yyyy-MM-dd"),
       closureReportingDate: obj == null ? null : this._datePipe.transform(obj.closureReportingDate, "yyyy-MM-dd"),
+      completionDate: obj == null ? null : this._datePipe.transform(obj.completionDate, "yyyy-MM-dd"),
+      compliance: obj == null ? false : obj.compliance == false ? this.isCompliance : obj.compliance,
       coolingPeriodNoticeDate: obj == null ? null : obj.coolingPeriodNoticeDate,
       courtCaseId: obj == null ? null : obj.courtCaseId,
       courtName: obj == null ? null : obj.courtName,
@@ -101,6 +104,7 @@ export class EditForInstitutionComponent implements OnInit {
       customerName: obj == null ? null : obj.customerName,
       dateOfConduct: obj == null ? null : obj.dateOfConduct,
       disbursalDate: obj == null ? null : obj.disbursalDate,
+      disposedOffFileNo: obj == null ? null : obj.disposedOffFileNo,
       dpdOnCurrentDate: obj == null ? null : obj.dpdOnCurrentDate,
       dpdOnEpFilingDate: obj == null ? null : obj.dpdOnEpFilingDate,
       dpdOnFilingDate: obj == null ? null : obj.dpdOnFilingDate,
@@ -111,8 +115,9 @@ export class EditForInstitutionComponent implements OnInit {
       executionFiled: obj == null ? null : obj.executionFiled,
       executionFilingDate: obj == null ? null : obj.executionFilingDate,
       fileName: obj == null ? null : obj.fileName,
-      filingDate: obj == null ? null : obj.filingDate,
+      filingDate: obj == null ? null : this._datePipe.transform(obj.filingDate, "yyyy-MM-dd"),
       generatedBy: obj == null ? null : obj.generatedBy,
+      groundForClosingFile: obj == null ? null : obj.groundForClosingFile,
       guarantorsName: obj == null ? null : obj.guarantorsName,
       id: obj == null ? null : obj.id,
       institutionId: obj == null ? null : obj.institutionId,
@@ -153,7 +158,7 @@ export class EditForInstitutionComponent implements OnInit {
       publicationDatePhysicalPossessionNotice: obj == null ? null : obj.publicationDatePhysicalPossessionNotice,
       receiveOrderStatus: obj == null ? null : obj.receiveOrderStatus,
       receiverName: obj == null ? null : obj.receiverName,
-      receiverOrderAppliedDate: obj == null ? null : obj.receiverOrderAppliedDate,
+      receiverOrderAppliedDate: obj == null ? null : this._datePipe.transform(obj.receiverOrderAppliedDate, "yyyy-MM-dd"),
       receiverOrderReceivedDate: obj == null ? null : obj.receiverOrderReceivedDate,
       recieveOrderApplied: obj == null ? null : obj.recieveOrderApplied,
       recourse: obj == null ? null : obj.recourse,
@@ -188,10 +193,15 @@ export class EditForInstitutionComponent implements OnInit {
       type: obj == null ? null : obj.type,
       valuationAmount: obj == null ? null : obj.valuationAmount,
       valuationDate: obj == null ? null : obj.valuationDate,
-      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended,
-      //
-      uploadFile: null
+      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended
     });
+
+    if (obj != null) {
+      this.isCompliance = obj == null ? false : obj.compliance;
+      setTimeout(() => {
+        this.disableForm(this.isCompliance);
+      }, 10);
+    }
   }
 
   getInstitutionDetail() {
@@ -233,6 +243,46 @@ export class EditForInstitutionComponent implements OnInit {
       err => {
         console.log(err);
       });
+  }
+
+  disableForm(isDisable) { // disable form if compliance is true
+    if (isDisable) {
+      this.editForInstitutionForm.disable();
+    }
+    else {
+      this.editForInstitutionForm.enable();
+    }
+  }
+
+  changeCompliance(isChecked) {
+    this.isCompliance = isChecked;
+    if (isChecked) {
+      if (confirm("Do you want to put this case into compliance?")) {
+        this.updateCaseToCompliance();
+      }
+    }
+    this.disableForm(isChecked);
+  }
+
+  updateCaseToCompliance() {
+    this._institutionService.updateToCompliance(this.institutionalCaseId).subscribe(
+      (result) => {
+        if (result.statusCode === 200) {
+          this.editData.compliance = true;
+          this.submitEditinstitutionUser(this.editData);
+        }
+      },
+      err => {
+        console.log(err);
+      })
+  }
+
+  openCaseDetailTab() {
+
+  }
+
+  openComplianceTab() {
+
   }
 
   deleteFile(data) {
