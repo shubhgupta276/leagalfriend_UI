@@ -62,10 +62,10 @@ export class EditBillingComponent implements OnInit {
   }
 
   submitEditBill(data) {
-    const objRecourse = this.arAllRecourses.find(x => x.id === data.recourse);
-    const objStage = this.arListStage.find(x => x.id === data.stage);
-    const objInstitution = this.arAllInstitution.find(x => x.id === data.institutionId);
-
+    const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
+    const objStage = this.arListStage.find(x => x.id == data.stage);
+    const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
+    debugger
     const reqData = {
       id: data.id,
       institution: {
@@ -157,7 +157,7 @@ export class EditBillingComponent implements OnInit {
         const fieldValue = e;
         if (this.editDetails.recourseId !== fieldValue
           && this.tableInputData.filter(x => x.recourseId === fieldValue).length > 0) {
-        this.isBilingAlreadyExists = true;
+          this.isBilingAlreadyExists = true;
         } else {
           this.isBilingAlreadyExists = false;
         }

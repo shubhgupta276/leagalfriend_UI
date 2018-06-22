@@ -107,7 +107,6 @@ export class AuthService {
     );
   }
   verifyUser(token, isReferral , password): Observable<any> {
-debugger
     return this.apiGateWay.post<any>(
       'users/verifyUser' + '?token=' + token + '&isReferral=' + isReferral + '&password=' + password  , null
     );
