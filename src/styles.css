@@ -8,6 +8,9 @@
 .mat-row-hover:hover{
     background-color: whitesmoke;
 }
+.mat-row-change-bg{
+    background-color: orange;
+}
 .mat-row{
     cursor: pointer;
 }
@@ -15,7 +18,10 @@
     flex: 0.3 !important;
 }
 .mat-column-recourseCode {
-    flex: 2 !important;
+    flex: 1 !important;
+}
+.mat-column-stageName {
+    flex: 0.8 !important;
 }
 .mat-header-cell{
     color: rgb(34, 45, 50);

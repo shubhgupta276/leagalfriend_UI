@@ -45,6 +45,35 @@ export class EditCaseComponent implements OnInit {
   public searchStr1: string;
   dataService: CompleterData;
   dataService1: CompleterData;
+
+  constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
+    private authService: AuthService, private completerService: CompleterService,
+    private _storageService: StorageService, private datePipe: DatePipe) {
+    this.createForm(null);
+  }
+
+  ngOnInit() {
+    const self = this;
+    $(document).ready(function () {
+
+      $('.input-group.date').datepicker().on('changeDate', function (ev) {
+        const attrName = $(this).find('input').attr('formControlName');
+        const attrValue = $(this).find('input').val();
+
+        self.editCaseForm.controls[attrName].setValue(attrValue);
+      });
+    });
+    this.GetAllCourt();
+    this.bindStateDDL();
+    this.getBranchDDL();
+    this.bindRecourseDDL();
+    this.getManagers();
+    this.getEmployee();
+    //this.bindStageDDL();
+    this.getRunningCase();
+    this.BindCompliance();
+
+  }
   private get disabledV(): string {
     return this._disabledV;
   }
@@ -160,62 +189,33 @@ export class EditCaseComponent implements OnInit {
   childCaseText: string;
   childParentText: string;
   // emailValidationMessage: string = "Email address is required.";
-  constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
-    private authService: AuthService, private completerService: CompleterService,
-    private _storageService: StorageService, private datePipe: DatePipe) {
-    this.createForm(null);
-  }
 
-
-
-
-  ngOnInit() {
-    const self = this;
-    $(document).ready(function () {
-
-      $('.input-group.date').datepicker().on('changeDate', function (ev) {
-        const attrName = $(this).find('input').attr('formControlName');
-        const attrValue = $(this).find('input').val();
-
-        self.editCaseForm.controls[attrName].setValue(attrValue);
-      });
-    });
-    this.GetAllCourt();
-    this.bindStateDDL();
-    this.getBranchDDL();
-    this.bindRecourseDDL();
-    this.getManagers();
-    this.getEmployee();
-    //this.bindStageDDL();
-    this.getRunningCase();
-    this.BindCompliance();
-
-  }
   BindCompliance() {
 
   }
   bindDataOnEdit(c) {
-    debugger
     this.caseFile = [];
-    var $this = this;
+    const $this = this;
     (c.caseFiles.forEach(function (value) {
       $this.caseFile.push(value);
     }));
-    $('#editCaseModal').modal('show');
     this.parentcaseSelectedauto = [];
     this.caseId = c.caseId;
     this.id = c.id;
-    if (c.parentCaseId != null) {
-      const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
-      this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
-      this.childCaseText = this.parentcaseSelectedauto[0].text;
-    }
-    if (c.childCase != null) {
-      this.childcaseSelectedauto = [];
-      const objchild = this.ChildCases.filter(x => x.id === c.childCase);
-      this.childcaseSelectedauto.push({ id: c.childCase, text: objchild[0].text });
-      this.childParentText = this.childcaseSelectedauto[0].text;
-    }
+
+    // if (c.parentCaseId != null) {
+    //   const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
+    //   this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
+    //   this.childCaseText = this.parentcaseSelectedauto[0].text;
+    // }
+
+
+    // if (c.childCase != null) {
+    //   this.childcaseSelectedauto = [];
+    //   const objchild = this.ChildCases.filter(x => x.id === parseInt(c.childCase));
+    //   this.childcaseSelectedauto.push({ id: parseInt(c.childCase), text: objchild[0].text });
+    //   this.childParentText = this.childcaseSelectedauto[0].text;
+    // }
 
     this.recourseSelected = [];
     const objFilter = this.Resource.filter(x => x.id === c.recourseId);
@@ -243,7 +243,6 @@ export class EditCaseComponent implements OnInit {
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
     }
-    debugger
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
     this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -262,7 +261,7 @@ export class EditCaseComponent implements OnInit {
     const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c.id);
     this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
     this.selectedCourtPlace = this.courtPlaceSelected[0];
-
+    $('#editCaseModal').modal('show');
   }
   createForm(c) {
     if (c != null) {
@@ -270,8 +269,20 @@ export class EditCaseComponent implements OnInit {
       // this.stageId = c.stageId;
       this.bindStageDDL(c.recourseId, c);
     }
-    this.editCaseForm = this.fb.group({
 
+    if (c != null) {
+      const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
+      this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
+      this.childCaseText = this.parentcaseSelectedauto[0].text;
+    }
+    
+    if (c != null) {
+      this.childcaseSelectedauto = [];
+      const objchild = this.ChildCases.filter(x => x.id === parseInt(c.childCase));
+      this.childcaseSelectedauto.push({ id: parseInt(c.childCase), text: objchild[0].text });
+      this.childParentText = this.childcaseSelectedauto[0].text;
+    }
+    this.editCaseForm = this.fb.group({
 
       caseId: [c == null ? null : c.id, Validators.required],
 
@@ -280,7 +291,7 @@ export class EditCaseComponent implements OnInit {
       manager: [c == null ? null : c.managerId],
       court: [c == null ? null : c.courtId],
       state: [c == null ? null : c.stateId],
-      parentCase: [c == null ? null : this.childParentText],
+      parentCase: [c == null ? null : this.childCaseText],
       nextHearingDate: [c == null ? null : this.datePipe.transform(c.nextHearingDate, 'yyyy-MM-dd')],
       customerName: [c == null ? null : c.customerId],
       remark: [c == null ? null : c.remark, Validators.required],
@@ -292,7 +303,7 @@ export class EditCaseComponent implements OnInit {
       employee: [c == null ? null : c.employeeId],
       courtplace: [c == null ? null : c.courtId],
       oppLawyer: [c == null ? null : c.oppLawyer],
-      childCase: [c == null ? null : this.childCaseText],
+      childCase: [c == null ? null : this.childParentText],
       lastHearingDate: [c == null ? null : this.datePipe.transform(c.lastHearingDate, 'yyyy-MM-dd')],
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, 'yyyy-MM-dd')]
@@ -520,14 +531,17 @@ export class EditCaseComponent implements OnInit {
     this.authService.bindStageDDL(reqData).subscribe(
 
       result => {
-         if (result.httpCode === 200) {
+        if (result.httpCode === 200) {
           result.stages.forEach(function (value) {
 
             $this.Stage.push({ id: value.id, text: value.stageName });
           });
-       }
+        }
         if (c != null) {
-          this.bindDataOnEdit(c)
+          setTimeout(() => {
+            this.bindDataOnEdit(c);
+          }, 10);
+
         }
       },
       err => {
@@ -548,8 +562,8 @@ export class EditCaseComponent implements OnInit {
 
       result => {
         result.forEach(function (value) {
-         // if (value.roles[0].roleName === 'CLIENT') {
-            $this.Employee.push({ id: value.id, text: value.firstName });
+          // if (value.roles[0].roleName === 'CLIENT') {
+          $this.Employee.push({ id: value.id, text: value.firstName });
 
           //}
         });
@@ -592,7 +606,6 @@ export class EditCaseComponent implements OnInit {
     var status = document.getElementById('content');
 
     if (c == true) {
-
       var status = document.getElementById('content');
 
       var reqData = {
@@ -607,16 +620,15 @@ export class EditCaseComponent implements OnInit {
         },
 
         legalCase: {
-          id: this.caseId,
+          id: this.caseId.substr(this.caseId.lastIndexOf("/") + 1),
         },
 
 
       };
-
       this.authService.caseUpdateCompliance(reqData).subscribe(
 
         result => {
-
+          console.log(result);
           if (result.body.httpCode == 200) { //success
 
             $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
@@ -656,7 +668,15 @@ export class EditCaseComponent implements OnInit {
         console.log(err);
       });
   }
+  onFileChange(event) {
 
+    const reader = new FileReader();
+
+    if (event.target.files && event.target.files.length) {
+      this.myDocument = event.target.files[0];
+
+    };
+  }
   submitEditCaseUser(data) {
     //const objEditCase = new EditCase();
     let objEditCase: FormData = new FormData();
@@ -668,7 +688,7 @@ export class EditCaseComponent implements OnInit {
       "courtCaseId": data.courtCaseId,
       "userId": parseInt(localStorage.getItem('client_id')),
       "branchId": this.selectedBranch.id,
-      // "stageId":this.selectedStage.id,
+      "stageId": this.selectedStage.id,
       "recourseId": this.selectedRecourse.id,
       "employeeId": this.selectedEmployee.id,
       "courtId": this.selectedCourt.id,
@@ -687,8 +707,8 @@ export class EditCaseComponent implements OnInit {
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
     this.authService.updateEditCaseUser(objEditCase).subscribe(
-
       result => {
+
         if (result.body.httpCode == 200) { //success
           this.BindCaseGridOnEdit(data);
           $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });

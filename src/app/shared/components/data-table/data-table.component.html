@@ -21,12 +21,14 @@
             <div *ngIf="column.sortable">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                     {{column.displayName}}
+                    
                 </mat-header-cell>
+
             </div>
             <div *ngIf="!column.sortable">
                 <mat-header-cell *matHeaderCellDef>
                     {{column.displayName}}
-                    <mat-form-field class="table-dropdown-sort" *ngIf="column.dropDownFilter">
+                    <mat-form-field class="table-dropdown-sort"  *ngIf="column.dropDownFilter">
                         <mat-select [(value)]="dropdownData[column.uniqueId].selected" (change)="sortTable($event.value,column.uniqueId)">
                             <mat-option value="">Select</mat-option>
                             <mat-option *ngFor="let value of dropdownData[column.uniqueId].values" [value]="value">
@@ -34,6 +36,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <button (click)="onCaseFilterClick($event, row)" *ngIf="moduleName==='Case' && column.uniqueId=='nextHearingDate' ">Filter</button>
                 </mat-header-cell>
             </div>
             <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
@@ -77,7 +80,7 @@
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick($event, row)" (dblclick)="onRowDoubleClick($event, row)"
-            [ngClass]="{'mat-row-hover': hoverTableRow}">
+             [ngClass]="{'mat-row-change-bg': row.compliance}">
         </mat-row>
 
     </mat-table>

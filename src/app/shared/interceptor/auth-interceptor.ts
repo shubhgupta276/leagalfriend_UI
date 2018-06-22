@@ -42,7 +42,18 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq);
+            return next.handle(verifyEmailReq).do(event => {
+                if (event instanceof HttpResponse) {
+                    loadingContainer.style.display = 'none';
+                }
+            });
+        }
+        else if (req.url.indexOf('users/verifyEmail') >= 0) {
+            return next.handle(req).do(event => {
+                if (event instanceof HttpResponse) {
+                    loadingContainer.style.display = 'none';
+                }
+            });
         }
 
         else if (req.url.indexOf('subscription') >= 0) {
@@ -50,6 +61,20 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
+            return next.handle(verifyEmailReq).do(event => {
+                if (event instanceof HttpResponse) {
+                    loadingContainer.style.display = 'none';
+                }
+            });
+        }
+        else if (req.url.indexOf('case/update/compliance') >= 0) {
+            const authHeader = this.auth.getAuthorizationHeader();
+            const verifyEmailReq = req.clone({
+                headers: req.headers.set('Content-Type', 'application/json')
+                .set('Authorization', authHeader.access_token.toString())
+
+            });
+            debugger
             return next.handle(verifyEmailReq).do(event => {
                 if (event instanceof HttpResponse) {
                     loadingContainer.style.display = 'none';
@@ -121,7 +146,11 @@ export class AuthInterceptor implements HttpInterceptor {
                     .set('Authorization', authHeader.access_token.toString())
                     .set('customer-id', authHeader.client_id.toString())
             });
-            return next.handle(changepwdReq);
+            return next.handle(changepwdReq).do(event => {
+                if (event instanceof HttpResponse) {
+                    loadingContainer.style.display = 'none';
+                }
+            });
         } else if (req.url.replace(endpoint_url, '').indexOf('institution/upload') >= 0
             || req.url.replace(endpoint_url, '').indexOf('institution/for/case') >= 0) {
 

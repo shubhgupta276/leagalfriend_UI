@@ -71,7 +71,6 @@ export class AddComplianceMasterComponent implements OnInit {
       statusId: { statusId: data.status.statusId, statusName: data.status.statusName },
       userId: this._storageService.getUserId()
     };
-
     this._complianceService.addCompliance(reqData).subscribe(
       result => {
         const _result = result.body;
