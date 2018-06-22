@@ -258,18 +258,30 @@ export class EditForInstitutionComponent implements OnInit {
     this.isCompliance = isChecked;
     if (isChecked) {
       if (confirm("Do you want to put this case into compliance?")) {
-        this.editData.compliance = true;
-        this.submitEditinstitutionUser(this.editData);
+        this.updateCaseToCompliance();
       }
     }
     this.disableForm(isChecked);
   }
 
-  openCaseDetailTab(){
+  updateCaseToCompliance() {
+    this._institutionService.updateToCompliance(this.institutionalCaseId).subscribe(
+      (result) => {
+        if (result.statusCode === 200) {
+          this.editData.compliance = true;
+          this.submitEditinstitutionUser(this.editData);
+        }
+      },
+      err => {
+        console.log(err);
+      })
+  }
+
+  openCaseDetailTab() {
 
   }
-  
-  openComplianceTab(){
+
+  openComplianceTab() {
 
   }
 
