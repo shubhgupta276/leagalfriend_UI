@@ -26,7 +26,12 @@
         <!-- /.box -->
         <div class="box">
           <div class="box-body">
-            <div class="col-sm-8">
+            <div class="col-sm-8" style="padding-left: 0px;">
+              <div *ngIf="isGenerateInvoice">
+                <button (click)="CreateInvoice()" class="btn btn-default" [routerLink]="['/admin/invoices/invoiceform']">
+                  Create Invoice
+                </button>
+              </div>
             </div>
             <div class="col-sm-2">
               <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilter()">Reset</button>
@@ -41,7 +46,12 @@
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
               [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)">
             </app-data-table>
-
+            <!--             
+           <div id="btncreateInvoice" *ngIf="isGenerateInvoice" style="margin-top: 5px;">
+                <button>
+                  <a class="btn default" (click)="CreateInvoice()" [routerLink]="['/admin/invoices/invoiceform']">Create Invoice</a>
+                </button>
+              </div> -->
             <!-- <div>
               <div class="row table-toolbar">
                 <div class="col-sm-4 heading">Billing</div>
@@ -151,12 +161,7 @@
         <!-- /.box -->
       </div>
       <!-- /.col -->
-      <div style="margin-left:16px;display:none" id="btncreateInvoice">
-        <button>
-          <a class="btn default" (click)="CreateInvoice()" [routerLink]="['/admin/invoices/invoiceform']">Create Invoice</a>
-        </button>
-        <!-- <button  id="btnCreateInvoice"><a class="btn default"  (click)="InvoiceChange()" [routerLink]="['/admin/invoices']">Create Invoice</a></button>  -->
-      </div>
+
     </div>
     <!-- Filter Case Starts -->
     <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">

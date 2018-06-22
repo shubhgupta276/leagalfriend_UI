@@ -8,6 +8,7 @@ import { InstitutionService } from '../master/institution/institution.service';
 import { billingTableConfig } from './billing.config';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
+import { SharedService } from '../../shared/services/shared.service';
 declare var $;
 
 @Component({
@@ -30,14 +31,18 @@ export class BillingComponent implements OnInit {
     arListAmount: any[] = [];
     arListCaseID: any[] = [];
     arListBranch: any[] = [];
-    arrInvoiceDetails = [];
     arAllRecourses: any[] = [];
     arAllInstitution: any = [];
     JSON: any;
     $table: any;
+    isGenerateInvoice = false;
+    selectedRowsCheckbox: any;
     @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
     @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-    constructor(private _billingservice: BillingService, private _institutionService: InstitutionService, private _recourseService: RecourseService, ) {
+    constructor(private _billingservice: BillingService,
+        private _institutionService: InstitutionService,
+        private _recourseService: RecourseService,
+        private _sharedService: SharedService) {
         this.JSON = JSON;
     }
     ngOnInit() {
@@ -48,10 +53,6 @@ export class BillingComponent implements OnInit {
         this.getAllInstitutions();
         this.getAllRecourses();
         $($.document).ready(function () {
-            $('#chkAllInvoice').change(function () {
-                $('.chkInvoice').prop("checked", $(this).prop('checked'));
-            });
-
             $('#reservation').daterangepicker({
                 autoApply: true,
                 locale: {
@@ -79,67 +80,10 @@ export class BillingComponent implements OnInit {
         $("#closebtnFilter").click();
 
     }
-    bindDatatable() {
-        var self = this;
-        var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-        var selectedPageLength = 15;
 
-        this.$table = $("#example1").DataTable({
-            paging: true,
-            lengthChange: true,
-            searching: true,
-            ordering: true,
-            info: true,
-            autoWidth: false,
-            lengthMenu: arLengthMenu,
-            pageLength: selectedPageLength,
-            oLanguage: {
-                sLengthMenu: "Show _MENU_ rows",
-                sSearch: "",
-                sSearchPlaceholder: "Search..."
-            },
-            initComplete: function () {
-                var tableid = "example1";
-                var $rowSearching = $("#" + tableid + "_wrapper");
-                $rowSearching.find(".row:eq(0)").hide();
-
-                for (var i = 0; i < arLengthMenu[0].length; i++) {
-                    $("#ddlLengthMenu").append("<option value=" + arLengthMenu[0][i] + ">" + arLengthMenu[1][i] + "</option>");
-                }
-                $("#ddlLengthMenu").val(selectedPageLength);
-
-                $("#ddlLengthMenu").on("change", function () {
-                    $rowSearching.find(".row:eq(0)").find("select").val($(this).val()).change();
-                });
-            }
-        });
-
-        self.$table.columns().every(function () {
-            $('#txtSearch').on('keyup change', function () {
-                if (self.$table.search() !== this.value) {
-                    self.$table.search(this.value).draw();
-                }
-            });
-        });
-
-    }
 
     CreateInvoice() {
-        var $this = this;
-        $("#example1 tr").each(function (i) {
-            var $row = $(this);
-            if (i > 0) {
-                if ($row.find("input[type=checkbox]").prop('checked')) {
-                    var item = JSON.parse($row.find('#hfItem').val());
-                    $this.arrInvoiceDetails.push(item);
-
-                }
-            }
-
-        });
-
-        //this.arrInvoiceNo.push(invoiceNo);
-        localStorage.setItem('invoiceDetails', JSON.stringify(this.arrInvoiceDetails));
+        localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
     }
     setDropdownUniqueValues() {
         for (var i = 0; i < this.arBillingData.length; i++) {
@@ -185,7 +129,7 @@ export class BillingComponent implements OnInit {
                             stageName: obj.stage.stageName,
                             userId: obj.userId,
                             caseId: obj.caseId,
-                            billingDate: new Date(obj.billingDate)
+                            billingDate: this._sharedService.convertDateToStr(obj.billingDate)
                         })
                     }
                     this.dataTableComponent.ngOnInit();
@@ -254,11 +198,25 @@ export class BillingComponent implements OnInit {
         // this.editDetails = data;
         $('#editBillModal').modal('show');
     }
-    onRowClick(event) { }
-    onRowDoubleClick(event) { }
-    onRowSelect(event) { }
-    onActionBtnClick(event) { }
+    onRowClick(event) {
+
+    }
+    onRowDoubleClick(event) {
+
+    }
+    onRowSelect(event) {
+        this.selectedRowsCheckbox = event;
+        if (this.selectedRowsCheckbox.length > 0) {
+            this.isGenerateInvoice = true;
+        }
+        else {
+            this.isGenerateInvoice = false;
+        }
+    }
+    onActionBtnClick(event) {
+
+    }
     searchFilter(value) {
         this.dataTableComponent.applyFilter(value);
-      }
+    }
 }

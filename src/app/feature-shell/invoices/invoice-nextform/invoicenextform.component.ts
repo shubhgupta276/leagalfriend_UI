@@ -8,6 +8,7 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Routes, RouterModule, Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 declare let $;
 declare let canvas;
 declare let Swiper;
@@ -22,36 +23,37 @@ export class InvoiceNextFormComponent implements OnInit {
     arrSafeInvoice = [];
     arrLocalInvoiceDetails = [];
     arrInvoiceDetails = [];
-    invoiceNo: any = Math.floor(Math.random() * 90000) + 10000;
     totalAmount: number;
+    todayDate: number = Date.now();
     p: number = 1;
     p2: number = 1;
     @Input() id: string;
     @Input() maxSize: number;
     @Output() pageChange: EventEmitter<number>;
     JSON: any;
-    constructor(private _institutionService: InstitutionService, private _storageService: StorageService, private router: Router) {
+    invoiceTemplateInfo: any;
+    constructor(private _institutionService: InstitutionService, private _storageService: StorageService, private router: Router, public sanitizer: DomSanitizer) {
         Window["InvoiceFormComponent"] = this;
         this.JSON = JSON;
     }
 
     ngOnInit() {
-        this.GetAllInstitute();
-        this.GetBillFrom();
         this.BindInvoice();
-
+        this.StoreInvoiceTemplateInfo();
 
     }
-    next()
-    {
-        alert();
+    StoreInvoiceTemplateInfo() {
+        this.invoiceTemplateInfo = JSON.parse(localStorage.getItem('invoiceTemplateInfo'));
+        this.invoiceTemplateInfo.isLoadFirstTime = false;
+        this.invoiceTemplateInfo.photoUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + this.invoiceTemplateInfo.url);
+        localStorage.setItem("invoiceTemplateInfo", JSON.stringify(this.invoiceTemplateInfo));
     }
     PreviousCheck() {
         if (this.p2 == 0) {
             this.router.navigate(['/admin/invoices/invoiceform']);
         }
         else
-        this.CalculateFinalAmount(null);
+            this.CalculateFinalAmount(null);
     }
     BindInvoice() {
         this.arrLocalInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
@@ -59,64 +61,17 @@ export class InvoiceNextFormComponent implements OnInit {
         var totalDescription = "";
         this.arrLocalInvoiceDetails.forEach((element, index) => {
             totalDescription = "";
-            totalDescription = totalDescription + ("CaseId : " + element.CaseID + "  Recourse : " + element.Recourse + " Stage : " + element.Stage);
-            this.arrInvoiceDetails.push({ billingId: element.BillingId, description: totalDescription, amount: element.Amount, quantity: 1 })
+            totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName);
+            this.arrInvoiceDetails.push(
+                {
+                    id: element.id, description: totalDescription,
+                    amount: element.amount, quantity: 1, billingDate: element.billingDate
+
+                })
             if (index < 5)
-                this.totalAmount += parseFloat(element.Amount);
+                this.totalAmount += parseFloat(element.amount);
         });
 
-    }
-    anyForm: any;
-    generatepdf() {
-        var hiddenDiv = document.getElementById('pdfdownload')
-        hiddenDiv.style.display = 'block';
-        var pdf;
-        pdf = new jsPDF();
-        pdf.addHTML(document.getElementById('pdfdownload'), function () {
-
-            pdf.save('stacking-plan.pdf');
-            hiddenDiv.style.display = 'none';
-        });
-
-    }
-    GetBillFrom() {
-
-        this._institutionService.getBilFrom().subscribe(
-            result => {
-
-                if (result.httpCode == 200) {
-                    $("#companyNameBillFrom").val(result.branches[0].branchName + ", " + result.branches[0].branchAddress + ", " + result.branches[0].branchContact, );
-
-
-                }
-                else {
-                    console.log(result);
-                }
-            },
-            err => {
-                console.log(err);
-                this.arr = [];
-
-            });
-    }
-    GetAllInstitute() {
-
-        this._institutionService.getInstitutions().subscribe(
-            result => {
-
-                if (result.httpCode == 200) {
-                    $("#companyName").val(result.institutions[2].institutionName);
-
-                }
-                else {
-                    console.log(result);
-                }
-            },
-            err => {
-                console.log(err);
-                this.arr = [];
-
-            });
     }
 
     AddMoreInvoice() {
@@ -152,25 +107,26 @@ export class InvoiceNextFormComponent implements OnInit {
 
             this.arrLocalInvoiceDetails.filter(
                 invoiceDetails => {
-                    if (invoiceDetails.BillingId == $(currentRow).find('#hfBillingId').val()) {
-                        invoiceDetails.Amount = $(currentRow).find('.amount').val();
+                    if (invoiceDetails.id == $(currentRow).find('#hfBillingId').val()) {
+                        invoiceDetails.amount = $(currentRow).find('.amount').val();
                     }
                 });
             localStorage.setItem("invoiceDetails", JSON.stringify(this.arrLocalInvoiceDetails));
         }
         $('#totalAmount').html(totalAmount);
     }
+
     SaveInvoice() {
         var self = this;
         var totalAmount = 0;
         $('.invoiceRow').each(function () {
             var $row = $(this);
             var amount = $row.find('.amount').val();
-            var productName = $row.find('.productName').val();
-            var quantity = $row.find('.quantity').val();
+            var description = $row.find('.description').val();
+          //  var quantity = $row.find('.quantity').val();
 
             var remarks = $('#remarksInvoice').val();
-            self.arrSafeInvoice.push({ InvoiceNo: self.invoiceNo, ProductName: productName, quantity: quantity, remarks: remarks })
+            self.arrSafeInvoice.push({ InvoiceNo: self.invoiceTemplateInfo.invoiceNo, description: description,  remarks: remarks })
 
         })
         $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });

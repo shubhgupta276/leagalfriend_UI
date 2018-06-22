@@ -32,11 +32,12 @@ export class ForInstitutionComponent implements OnInit {
     columns = forInstitutionTableConfig;
     rowSelect = true;
     hoverTableRow = true;
-    showSearchFilter = true;
+    showSearchFilter = false;
     arInstitution = [];
     arRecourse: any[] = [];
     InstitutionValue: any;
     recourseConfig: any;
+    institutionConfig: any;
     checkboxCounter: number = 0;
     recourseFilter: any;
     $table: any;
@@ -129,12 +130,21 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     getInstitutionList() {
-
         this._institutionService.getInstitutionList().subscribe((result) => {
             if (result.httpCode === 200) {
                 this.arInstitution = result.institutions;
                 this.InstitutionValue = this.arInstitution.find(x => x.defaultInstitution);
                 this.GetAllForIntitution();
+
+                this.institutionConfig = {
+                    displayKey: 'institutionName',
+                    showFirstSelected: true,
+                    showFirstSelectedValue: this.InstitutionValue,
+                    showFirstSelectedKey: "id",
+                    defaultTextAdd: false,
+                    showIcon: false,
+                    hideWhenOneItem: false
+                }
             } else {
                 console.log(result);
             }
@@ -145,9 +155,12 @@ export class ForInstitutionComponent implements OnInit {
         $('#editForInstitutionModal').modal('show');
     }
 
-    changeInstitution() {
+    changeInstitution(data: any) {
+        this.InstitutionValue = data;
         this.resetAllFilter();
-        this.GetAllForIntitution();
+        if (!this.isPageLoad) {
+            this.GetAllForIntitution();
+        }
     }
 
     getRecourse() {
@@ -186,7 +199,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     filterTable() {
-        this.dataTableComponent.sortTable((this.recourseFilter === undefined) ? '' : this.recourseFilter.recourseCode, 'recourse');
+        this.dataTableComponent.sortTable((this.recourseFilter === undefined || this.recourseFilter === null) ? '' : this.recourseFilter.recourseCode, 'recourse');
         if (this.filterTypeId === 0) {
             this.dataTableComponent.resetDateFilter();
         } else {
@@ -370,12 +383,16 @@ export class ForInstitutionComponent implements OnInit {
         }
     }
 
+    applyFilter(filterValue: string) {
+       this.dataTableComponent.applyFilter(filterValue);
+    }
+
     onRowClick(event) {
         console.log(event);
     }
 
     onRowDoubleClick(event) {
-        console.log(event);
+        this._router.navigate(['/admin/institution/editforinstitution/' + event.institutionId + '/' + event.id]);
     }
 
     onRowSelect(event) {
@@ -550,8 +567,19 @@ export class ForInstitutionComponent implements OnInit {
             (result) => {
 
                 if (result.status === 200) {
-                    obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
-                    obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                    if (!isNaN(obj.nextHearingDate.getTime())) {
+                        obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
+                    }
+                    else {
+                        obj.nextHearingDate = "";
+                    }
+
+                    if (!isNaN(obj.previousHearingDate.getTime())) {
+                        obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                    }
+                    else {
+                        obj.previousHearingDate = "";
+                    }
                     $.toaster({ priority: 'success', title: 'Success', message: "Date Update Successfully." });
                 }
             },

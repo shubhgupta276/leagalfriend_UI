@@ -94,6 +94,7 @@ export class AddComplianceMasterComponent implements OnInit {
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
         } else {
+          console.log(_result.failureReason)
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
         }
       },

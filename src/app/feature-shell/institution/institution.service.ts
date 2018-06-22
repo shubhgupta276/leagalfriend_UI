@@ -4,8 +4,8 @@ import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
 import {
-    updateHearingDate,
-    addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile,exportForInstitutionsUrl
+    updateHearingDate, updateToCompliance,
+    addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile, exportForInstitutionsUrl
 } from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
 import { getInstitutionsUrl } from '../master/master.config';
@@ -57,6 +57,12 @@ export class InstitutionService {
         );
     }
 
+    updateToCompliance(caseComplianceId: number): Observable<any> {
+        return this.apiGateWay.put<any>(
+            updateToCompliance + "?caseComplianceId=" + caseComplianceId, null
+        );
+    }
+
     deleteFile(fileId: any): Observable<any> {
         return this.apiGateWay.delete<any>(
             deleteFile + "?fileId=" + fileId
@@ -68,6 +74,7 @@ export class InstitutionService {
             downloadFile + "?fileId=" + fileId
         );
     }
+  
     exportCase(data: any): Observable<any> {
         return this.apiGateWay.postFile(
             exportForInstitutionsUrl,
