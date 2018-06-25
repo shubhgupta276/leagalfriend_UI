@@ -144,10 +144,10 @@
                                         <label>Bill To</label>
                                     </div>
                                     <div class="col-md-5" style="text-align:left">
-                                        <textarea id="txtBillToAddress" value={{invoiceTemplateInfo.billToAddress}} disabled rows="2" class="form-control"></textarea>
+                                        <textarea id="txtBillToAddress" value={{invoiceTemplateInfo.billToAddress}} rows="2" class="form-control"></textarea>
                                     </div>
                                     <div class="col-md-5" style="text-align:right">
-                                        <textarea id="txtcompanyAddress" value={{invoiceTemplateInfo.CompanyAddress}} disabled rows="2" class="form-control"></textarea>
+                                        <textarea id="txtcompanyAddress" value={{invoiceTemplateInfo.CompanyAddress}} rows="2" class="form-control"></textarea>
                                     </div>
 
                                 </div>
@@ -227,10 +227,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <textarea disabled style="white-space: pre-line;" rows="4" id="remarksInvoice" class="form-control" placeholder="Type your notes here">
-                                                    {{invoiceTemplateInfo.termEndCond}}
-                                                </textarea>
-
+                                                <textarea rows="4" id="remarksInvoice" class="form-control" placeholder="Type your notes here">{{invoiceTemplateInfo.termEndCond}}</textarea>
                                             </td>
                                         </tr>
                                         <tr>
