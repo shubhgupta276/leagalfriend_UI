@@ -11,6 +11,7 @@ import { SelectModule } from 'ng2-select';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { DataTableModule } from '../../shared/components/data-table/data-table.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../../shared/shared.module';
 @NgModule(
     {
         imports: [
@@ -22,7 +23,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
             SelectModule,
             Ng2CompleterModule,
             DataTableModule,
-            NgbModule
+            NgbModule,
+            SharedModule
         ],
         declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent ]
     }

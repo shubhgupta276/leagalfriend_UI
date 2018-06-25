@@ -47,6 +47,7 @@ export class AddCaseComponent implements OnInit {
   public captain: string;
   public dataService: CompleterData;
   public dataService1: CompleterData;
+  public dataService2: CompleterData;
   public searchData = [
     { color: 'red', value: '#f00' },
     { color: 'green', value: '#0f0' },
@@ -138,7 +139,7 @@ export class AddCaseComponent implements OnInit {
     this.getRunningCase();
     this.getEmployee();
     this.GetAllCity();
-
+ 
   }
   GetAllCourt(){ 
      const $this = this;
@@ -269,7 +270,7 @@ export class AddCaseComponent implements OnInit {
               {
 
 
-                id: value.id, text: value.firstName
+                id: value.id, text: value.firstName + " " + value.lastName
 
 
               }
@@ -281,7 +282,7 @@ export class AddCaseComponent implements OnInit {
             $this.CustomerName.push(
               {
 
-                id: value.id, text: value.firstName
+                id: value.id, text: value.firstName+ " " + value.lastName
 
               }
             );
@@ -312,12 +313,11 @@ export class AddCaseComponent implements OnInit {
           $("#spnEmployee").show();
         }
         result.forEach(function (value) {
-          if (value.roles[0].roleName === 'CLIENT') {
-            $this.Employee.push({ id: value.id, text: value.firstName, });
+         
+          if (value.roles[0].roleName === 'EMPLOYEE') {
+            $this.Employee.push({ id: value.id, text: value.firstName , });
           }
-          if (value.roles[0].roleName === 'ADMIN') {
-            $this.Employee.push({ id: value.id, text: value.firstName, });
-          }
+         
           if (value.roles[0].roleName === 'MANAGER') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
@@ -364,8 +364,9 @@ export class AddCaseComponent implements OnInit {
         $this.ParentCases.push({ id: value.id, text: value.caseId });
           $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
-        $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
-        $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text');
+        
+        $this.dataService = $this.completerService.local($this.ParentCases, 'text', 'text');
+        $this.dataService1 = $this.completerService.local($this.ChildCases, 'text', 'text');
       },
       err => {
         console.log(err);
@@ -401,12 +402,12 @@ if (event.target.files && event.target.files.length) {
       'stateId': data.state[0].id,
       'userId': parseInt(localStorage.getItem('client_id'))
     };
-    debugger
+    
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
-        debugger
+        
         if (result.body.httpCode == 200) { //success
           // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
@@ -434,6 +435,7 @@ if (event.target.files && event.target.files.length) {
       $('.input-group.date').datepicker().on('changeDate', function (ev) {
         const attrName = $(this).find('input').attr('formControlName');
         const attrValue = $(this).find('input').val();
+      
         self.addCaseForm.controls[attrName].setValue(attrValue);
       });
     });

@@ -137,6 +137,12 @@ export class AuthService {
 
     );
   }
+  getResources(): Observable<any> {
+       
+    return this.apiGateWay.get<Recourse>(
+      'master/recourses'+ "?userId=" + this._storageService.getUserId()
+    );
+}
   bindStageDDL(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
       'master/stages' + '?userId=' + this._storageService.getUserId(), null,

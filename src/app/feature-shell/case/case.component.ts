@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,OnDestroy } from '@angular/core';
 import { debuglog } from 'util';
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
@@ -31,6 +31,7 @@ import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
 import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
 import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
+
 const now = new Date();
 
 
@@ -43,7 +44,7 @@ const now = new Date();
     '../node_modules/ngx-select-dropdown/dist/assets/style.css'
   ],
 })
-export class CaseComponent implements OnInit {
+export class CaseComponent implements OnInit,OnDestroy {
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   tableInputData = [];
   columns = caseRunningTableConfig;
@@ -79,23 +80,30 @@ export class CaseComponent implements OnInit {
   branchSubscription: Subscription;
   branchData: any;
   isLoad = true;
+  arRecourse: any[] = [];
+  recourseConfig: any;
   constructor(private masterTemplateService: MasterTemplateService, private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
-
+ngOnDestroy()
+{
+  this.branchSubscription.unsubscribe();
+  this.isLoad=true;
+}
   ngOnInit() {
     
     this.getCasesData();
     this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
       this.branchData = this._storageService.getBranchData();
       if (this.branchData) {
-        if (this.isLoad) {
-          //alert(this.isLoad)
+        if (!this.isLoad) {
           this.getCasesData();
         }
+        this.isLoad=false;
       }
     });
     // this.getRunningCase();
+    this.getRecourse();
     this.setActionConfig();
     this.getBranchDDL();
     this.bindRecourseDDL();
@@ -123,10 +131,7 @@ export class CaseComponent implements OnInit {
     this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
   getCasesData() {
-    
-    this.isLoad = false;
-    
-    var $this = this;
+     var $this = this;
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
     };
@@ -136,7 +141,6 @@ export class CaseComponent implements OnInit {
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
-        
         result.forEach(ele => {
           if (ele.branchName == $this.branchData.branchName) {
             if (ele.completionDate) {
@@ -386,7 +390,32 @@ export class CaseComponent implements OnInit {
   //     this.IsPrintable = false;
   //   }
   // }
+  getRecourse() {
 
+    this.recourseConfig = {
+        displayKey: 'recourseName',
+        defaultText: 'All Recourses',
+        defaultTextAdd: true,
+        showIcon: false,
+        hideWhenOneItem: false
+    }
+
+    this.authService.getResources().subscribe(
+        result => {
+            if (result != null) {
+                this.arRecourse = result.recourses;
+            } else {
+                console.log(result);
+            }
+        },
+        err => {
+            console.log(err);
+            this.arRecourse = [];
+        });
+}
+ changeRecourse(data: any) {
+  this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
+ }
   getUploadedDocuments() {
     this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   }
