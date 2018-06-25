@@ -188,14 +188,13 @@ export class EditCaseComponent implements OnInit {
 
   childCaseText: string;
   childParentText: string;
- 
+
   // emailValidationMessage: string = "Email address is required.";
 
   BindCompliance() {
 
   }
   bindDataOnEdit(c) {
-    debugger
     this.caseFile = [];
     const $this = this;
     (c.caseFiles.forEach(function (value) {
@@ -271,18 +270,20 @@ export class EditCaseComponent implements OnInit {
       // this.stageId = c.stageId;
       this.bindStageDDL(c.recourseId, c);
     }
+    if (c != null) {
+      if (c.parentCaseId != null) {
+        
+        const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
+        this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
+        this.childCaseText = this.parentcaseSelectedauto[0].text;
+      }
 
-    if (c != null) {
-      const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
-      this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
-      this.childCaseText = this.parentcaseSelectedauto[0].text;
-    }
-    
-    if (c != null) {
-      this.childcaseSelectedauto = [];
-      const objchild = this.ChildCases.filter(x => x.id === parseInt(c.childCase));
-      this.childcaseSelectedauto.push({ id: parseInt(c.childCase), text: objchild[0].text });
-      this.childParentText = this.childcaseSelectedauto[0].text;
+      if (c.childCase != null) {
+        this.childcaseSelectedauto = [];
+        const objchild = this.ChildCases.filter(x => x.id === parseInt(c.childCase));
+        this.childcaseSelectedauto.push({ id: parseInt(c.childCase), text: objchild[0].text });
+        this.childParentText = this.childcaseSelectedauto[0].text;
+      }
     }
     this.editCaseForm = this.fb.group({
 
@@ -564,10 +565,14 @@ export class EditCaseComponent implements OnInit {
 
       result => {
         result.forEach(function (value) {
-          // if (value.roles[0].roleName === 'CLIENT') {
-          $this.Employee.push({ id: value.id, text: value.firstName });
-
-          //}
+         
+          if (value.roles[0].roleName === 'EMPLOYEE') {
+            $this.Employee.push({ id: value.id, text: value.firstName + " " + value.lastName, });
+          }
+         
+          if (value.roles[0].roleName === 'MANAGER') {
+            $this.Employee.push({ id: value.id, text: value.firstName + " " + value.lastName, });
+          }
         });
       },
       err => {
@@ -592,8 +597,8 @@ export class EditCaseComponent implements OnInit {
           $this.ParentCases.push({ id: value.id, text: value.caseId });
           $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
-        $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
-        $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text');
+        $this.dataService = $this.completerService.local($this.ParentCases, 'text', 'text');
+        $this.dataService1 = $this.completerService.local($this.ChildCases, 'text', 'text');
 
       },
       err => {
