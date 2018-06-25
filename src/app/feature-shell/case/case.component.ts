@@ -84,7 +84,7 @@ export class CaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger
+    
     this.getCasesData();
     this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
       this.branchData = this._storageService.getBranchData();
@@ -131,12 +131,12 @@ export class CaseComponent implements OnInit {
       userId: this._storageService.getUserId(),
     };
     this.branchData = this._storageService.getBranchData();
-    debugger
+    
     this.tableInputData = [];
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
-        debugger
+        
         result.forEach(ele => {
           if (ele.branchName == $this.branchData.branchName) {
             if (ele.completionDate) {
@@ -216,7 +216,7 @@ export class CaseComponent implements OnInit {
   }
   onCaseFilterClick(c)
   {
-    debugger
+    
     $('#filterCaseModal').modal("show");
   }
 
