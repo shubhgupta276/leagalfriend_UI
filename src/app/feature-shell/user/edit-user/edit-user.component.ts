@@ -40,7 +40,7 @@ export class EditUserComponent implements OnInit {
     this.isStatusChange = true;
     this.selectedStatus = args.target.options[args.target.selectedIndex].text;
   }
-  rolechange(args, value) {
+  rolechange(args) {
     this.isRoleChange = true;
     this.selectedRole = args.target.options[args.target.selectedIndex].text;
     var role = args.target.options[args.target.selectedIndex].value;

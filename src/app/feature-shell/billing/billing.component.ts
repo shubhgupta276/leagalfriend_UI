@@ -219,4 +219,7 @@ export class BillingComponent implements OnInit {
     searchFilter(value) {
         this.dataTableComponent.applyFilter(value);
     }
+    resetTableFilter() {
+        this.dataTableComponent.resetFilters();
+    }
 }
