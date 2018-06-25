@@ -41,16 +41,16 @@ export class UserComponent implements OnInit {
   hoverTableRow = true;
   isDisplayPopup = false;
   userRoles: RoleModel[];
-  userRoles1: any= [];
+  userRoles1: any = [];
   userStatus: StatusModel[];
   filterby = 'All';
   editForm: FormGroup;
   $table: any;
-  Branches=[];
+  Branches = [];
   @ViewChild(EditUserComponent) child: EditUserComponent;
   actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private userService: UserService,
-     private _storageService:StorageService,private authService:AuthService) {
+    private _storageService: StorageService, private authService: AuthService) {
     this.setRoles();
     this.setStatus();
   }
@@ -69,12 +69,13 @@ export class UserComponent implements OnInit {
     this.userService.listUsers(client).subscribe(
       result => {
         result.forEach(element => {
-          if (element.roles.length > 0)  {
+          if (element.roles.length > 0) {
             element.roleId = element.roles[0].id;
-          element.roles = element.roles[0].roleName;
+            element.roles = element.roles[0].roleName;
           }
           element.statusId = element.status.statusId;
           element.status = element.status.statusName;
+          element.name = element.firstName + ' ' + element.lastName;
           this.tableInputData.push(element);
         });
         this.dataTableComponent.ngOnInit();
@@ -148,19 +149,19 @@ export class UserComponent implements OnInit {
         $this.isDisplayPopup = data.subscriptionEnded;
         if (data.daysLeftForRenew <= 5) {
           $('#subscriptionWarningModal').modal('show');
-        }else {
-           $('#subscriptionWarningModal').modal('hide');
-          }
+        } else {
+          $('#subscriptionWarningModal').modal('hide');
+        }
         if (data.subscriptionEnded === true) {
           $('#subscriptionModal').modal({
             backdrop: 'static',
             keyboard: false,
             closeOnEscape: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
               $('.ui-dialog-titlebar-close', ui.dialog || ui).hide();
-          }
+            }
           });
-        }else {
+        } else {
           $('#subscriptionModal').modal('hide');
         }
 

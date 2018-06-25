@@ -29,7 +29,11 @@ export class EditUserComponent implements OnInit {
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
   roleValue: number;
-  userTypeRole: any;
+  userTypeRole: number;
+  userTypeOption = [
+    { id: 1, text: "Individual" },
+    { id: 2, text: "Institutional" }
+  ]
   @Input() Branches = [];
   constructor(private userService: UserService, private fb: FormBuilder, private _sharedService: SharedService) {
     this.createForm(null);
@@ -47,18 +51,18 @@ export class EditUserComponent implements OnInit {
     var arr = role.split(':');
     this.roleValue = parseInt(arr[1]);
   }
-  userTypeRoleChange(args, value) {
-    this.userTypeRole = args.target.options[args.target.selectedIndex];
+  userTypeRoleChange(args) {
+    debugger
+    var arr = args.target.value.split(':');
+    this.userTypeRole = parseInt(arr[1]);
   }
   submitEditUser(data) {
-    debugger
     if (this.isStatusChange) {
       data.statusName = this.selectedStatus;
     }
     if (this.isRoleChange) {
       data.roles = this.selectedRole;
     }
-    debugger
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
@@ -80,6 +84,7 @@ export class EditUserComponent implements OnInit {
       if (data.id === item.id) {
         this.tableInputData[index].firstName = data.firstName;
         this.tableInputData[index].lastName = data.lastName;
+        this.tableInputData[index].name = data.firstName + ' ' + data.lastName;
         this.tableInputData[index].organization = data.organisation;
         this.tableInputData[index].addressLine1 = data.addressLine1;
         this.tableInputData[index].addressLine2 = data.addressLine2;
@@ -96,11 +101,19 @@ export class EditUserComponent implements OnInit {
         };
         this.tableInputData[index].statusId = data.status;
         this.tableInputData[index].status = data.statusName;
+        debugger
+        const userTypeData = this.userTypeOption.filter(x => x.id == data.userTypeRole);
+        this.tableInputData[index].userType = {
+          id: userTypeData[0].id,
+          name: userTypeData[0].text
+        };
+        this.userTypeRole = userTypeData[0].id;
       }
     });
   }
   GetUserEditData(data): UserModel {
     const userdata = new UserModel();
+    const userTypeData = this.userTypeOption.filter(x => x.id == data.userTypeRole);
     userdata.id = data.id;
     userdata.firstName = data.firstName;
     userdata.lastName = data.lastName;
@@ -129,14 +142,15 @@ export class EditUserComponent implements OnInit {
       statusName: data.statusName
     };
     userdata.userType = {
-      id: data.role,
-      name: data.roles
+      id: userTypeData[0].id,
+      name: userTypeData[0].text
     };
     userdata.isClient = false;
     userdata.clientId = Number(localStorage.getItem('client_id'));
     return userdata;
   }
   createForm(user) {
+
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],
@@ -169,9 +183,10 @@ export class EditUserComponent implements OnInit {
       roles: [user == null ? 1 : user.roles],
       status: [user == null ? 1 : user.statusId],
       statusName: [user == null ? 1 : user.status],
-      userTypeRole: ["1", Validators.nullValidator],
-      branchName: ["1", Validators.nullValidator],
+      userTypeRole: [user == null ? 1 : user.userType.id],
+      branchName: [1, Validators.nullValidator],
     });
+    this.userTypeRole = user == null ? 1 : user.userType.id;
     this.roleValue = user == null ? 1 : user.roleId;
   }
   subscriberFields() {

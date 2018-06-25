@@ -56,6 +56,7 @@ export class AddUserComponent implements OnInit {
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;
+    userDetails.name = data.firstName + ' ' + data.lastName;
     userDetails.email = data.email;
     userDetails.organization = data.organisation;
     userDetails.password = data.password;
@@ -95,7 +96,8 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        if (result.body.httpCode === 200) {
+        debugger
+        if (result.body.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
           console.log(result);
           userDetails.id = result.body.id;

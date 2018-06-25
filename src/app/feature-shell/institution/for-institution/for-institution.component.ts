@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { KeyValue, ListBranch } from '../../../shared/Utility/util-common';
 import { AddForInstitutionComponent } from './add-for-institution/add-for-institution.component';
 import { EditForInstitutionComponent } from './Edit-for-institution/Edit-for-institution.component';
@@ -26,7 +26,7 @@ declare let $;
     providers: [RecourseService]
 })
 
-export class ForInstitutionComponent implements OnInit {
+export class ForInstitutionComponent implements OnInit, OnDestroy {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
@@ -60,7 +60,9 @@ export class ForInstitutionComponent implements OnInit {
         private _recourseService: RecourseService,
         private _sharedService: SharedService,
         private _storageService: StorageService) { }
-
+    ngOnDestroy() {
+        this.branchSubscription.unsubscribe();
+    }
     ngOnInit() {
         this.setActionConfig();
         this.getInstitutionList();
@@ -384,7 +386,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     applyFilter(filterValue: string) {
-       this.dataTableComponent.applyFilter(filterValue);
+        this.dataTableComponent.applyFilter(filterValue);
     }
 
     onRowClick(event) {
