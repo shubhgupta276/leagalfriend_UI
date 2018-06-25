@@ -195,6 +195,7 @@ export class EditCaseComponent implements OnInit {
 
   }
   bindDataOnEdit(c) {
+    debugger
     this.caseFile = [];
     const $this = this;
     (c.caseFiles.forEach(function (value) {
