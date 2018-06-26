@@ -26,7 +26,7 @@ declare let $;
     providers: [RecourseService]
 })
 
-export class ForInstitutionComponent implements OnInit, OnDestroy {
+export class ForInstitutionComponent implements OnInit {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
@@ -60,17 +60,15 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
         private _recourseService: RecourseService,
         private _sharedService: SharedService,
         private _storageService: StorageService) { }
-    ngOnDestroy() {
-        this.branchSubscription.unsubscribe();
-    }
+
     ngOnInit() {
         this.setActionConfig();
         this.getInstitutionList();
         this.bindFilterType();
         this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
-            if (!this.isPageLoad) {
+            setTimeout(() => {
                 this.GetAllForIntitution();
-            }
+            }, 100);
             this.isPageLoad = false;
         });
         this.getRecourse();
@@ -117,6 +115,10 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
             });
         });
     }
+
+    // ngOnDestroy() {
+    //     //this.branchSubscription.unsubscribe();
+    // }
 
     filterTypeChange(id: number) {
 

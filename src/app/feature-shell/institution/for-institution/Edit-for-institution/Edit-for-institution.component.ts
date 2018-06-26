@@ -194,7 +194,8 @@ export class EditForInstitutionComponent implements OnInit {
       type: obj == null ? null : obj.type,
       valuationAmount: obj == null ? null : obj.valuationAmount,
       valuationDate: obj == null ? null : obj.valuationDate,
-      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended
+      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended,
+      uploadFile: null
     });
 
     if (obj != null) {
