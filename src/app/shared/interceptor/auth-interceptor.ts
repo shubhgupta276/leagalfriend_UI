@@ -74,7 +74,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 .set('Authorization', authHeader.access_token.toString())
 
             });
-            debugger
             return next.handle(verifyEmailReq).do(event => {
                 if (event instanceof HttpResponse) {
                     loadingContainer.style.display = 'none';

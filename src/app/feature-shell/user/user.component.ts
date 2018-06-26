@@ -86,7 +86,9 @@ export class UserComponent implements OnInit {
   }
 
   public addUserToList(user: any) {
+    user.roleId = user.roles[0].id;
     user.roles = user.roles[0].roleName;
+    user.statusId = user.status.statusId;
     user.status = user.status.statusName;
     this.tableInputData.push(user);
     console.log(user);

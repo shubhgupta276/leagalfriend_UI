@@ -52,7 +52,6 @@ export class EditUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args) {
-    debugger
     var arr = args.target.value.split(':');
     this.userTypeRole = parseInt(arr[1]);
   }
@@ -101,7 +100,6 @@ export class EditUserComponent implements OnInit {
         };
         this.tableInputData[index].statusId = data.status;
         this.tableInputData[index].status = data.statusName;
-        debugger
         const userTypeData = this.userTypeOption.filter(x => x.id == data.userTypeRole);
         this.tableInputData[index].userType = {
           id: userTypeData[0].id,

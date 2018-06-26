@@ -63,7 +63,7 @@ export class AddUserComponent implements OnInit {
     userDetails.isClient = false;
     userDetails.addressLine1 = data.addressLine1;
     userDetails.addressLine2 = data.addressLine2;
-    userDetails.mobileNumber = data.mobileNumber;
+    userDetails.mobileNumber = data.mobileNumber;    
     userDetails.roles = [
       {
         id: data.role,
@@ -96,7 +96,6 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        debugger
         if (result.body.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
           console.log(result);
@@ -114,7 +113,6 @@ export class AddUserComponent implements OnInit {
       err => {
         console.log(err);
       });
-
     $('#addUserModal').modal('hide');
     this.AddUser();
   }
