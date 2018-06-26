@@ -6,8 +6,9 @@ export const listStatus = 'usermanagement/liststatus';
 export const getUser = 'usermanagement/user';
 
 export const userTableConfig = [
-    { uniqueId: 'id', displayName: 'ID', sortable: true, dropDownFilter: false, display: true },
-    { uniqueId: 'firstName', displayName: 'Name', sortable: true, dropDownFilter: false, display: true },
+    { uniqueId: 'id', displayName: 'ID', sortable: true, dropDownFilter: false, display: false },
+    { uniqueId: 'name', displayName: 'Name', sortable: true, dropDownFilter: false, display: true },
+    { uniqueId: 'firstName', displayName: 'firstName', sortable: true, dropDownFilter: false, display: false },
     { uniqueId: 'lastName', displayName: 'lastName', sortable: true, dropDownFilter: false, display: false },
     { uniqueId: 'organization', displayName: 'Recourse Code', sortable: false, dropDownFilter: true, display: false },
     { uniqueId: 'address', displayName: 'address', sortable: true, dropDownFilter: false, display: false },

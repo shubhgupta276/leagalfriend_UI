@@ -200,7 +200,9 @@ export class EditForInstitutionComponent implements OnInit {
     if (obj != null) {
       //this.isCompliance = obj == null ? false : obj.compliance;
       setTimeout(() => {
-        this.disableForm(this.isCompliance);
+        if (this.isCompliance) {
+          this.disableForm(this.isCompliance);
+        }
       }, 10);
     }
   }
@@ -262,29 +264,38 @@ export class EditForInstitutionComponent implements OnInit {
         this.updateCaseToCompliance();
       }
     }
-    this.disableForm(isChecked);
+    else {
+      this.disableForm(isChecked);
+    }
   }
 
   updateCaseToCompliance() {
     const stageId = this.arStage.filter(x => x.stageCode == this.editData.caseStage)[0].id;
     const reqData = {
       compliance: {
+        id: this.editData.id,
         recourse: {
           id: this.editData.recourseId
         },
         stage: {
           id: stageId
-        },
-        legalCase: {
-          id: this.editData.id
         }
+      },
+      legalCase: {
+        id: this.editData.id
       }
     }
     this._institutionService.updateToCompliance(reqData).subscribe(
       (result) => {
-        if (result.statusCode === 200) {
+        result = result.body;
+        if (result.httpCode === 200) {
           this.editData.compliance = true;
           this.submitEditinstitutionUser(this.editData);
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+          this.disableForm(true);
+        }
+        else if (result.httpCode === 500) {
+          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
         }
       },
       err => {

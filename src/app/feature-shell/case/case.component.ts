@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,OnDestroy } from '@angular/core';
 import { debuglog } from 'util';
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
@@ -31,6 +31,7 @@ import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
 import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
 import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
+
 const now = new Date();
 
 
@@ -43,7 +44,7 @@ const now = new Date();
     '../node_modules/ngx-select-dropdown/dist/assets/style.css'
   ],
 })
-export class CaseComponent implements OnInit {
+export class CaseComponent implements OnInit,OnDestroy {
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   tableInputData = [];
   columns = caseRunningTableConfig;
@@ -51,6 +52,7 @@ export class CaseComponent implements OnInit {
   rowSelect = true;
   hoverTableRow = true;
   showSearchFilter = false;
+  moduleName = 'Case';
   actionColumnConfig: ActionColumnModel;
   model: NgbDateStruct;
   date: { year: number, month: number };
@@ -77,20 +79,64 @@ export class CaseComponent implements OnInit {
   SelectedFileIds = [];
   branchSubscription: Subscription;
   branchData: any;
-
+  isLoad = true;
+  arRecourse: any[] = [];
+  recourseConfig: any;
   constructor(private masterTemplateService: MasterTemplateService, private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
+  }
+ngOnDestroy()
+{
+  this.branchSubscription.unsubscribe();
+  this.isLoad=true;
+}
+  ngOnInit() {
+    
+    this.getCasesData();
+    this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
+      this.branchData = this._storageService.getBranchData();
+      if (this.branchData) {
+        if (!this.isLoad) {
+          this.getCasesData();
+        }
+        this.isLoad=false;
+      }
+    });
+    // this.getRunningCase();
+    this.getRecourse();
+    this.setActionConfig();
+    this.getBranchDDL();
+    this.bindRecourseDDL();
+    this.bindStageDDL();
+
+    $('#reservation').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+        format: 'DD-MM-YYYY'
+      }
+    }, function (start_date, end_date) {
+      $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
+    });
+    var self = this;
+    $('body').on('change', '.newHiringDate', function () {
+      self.updateNewHiringDate($(this).val())
+      $(this).closest('mat-cell')
+        .animate({ backgroundColor: '#88d288' }, 1000)
+        .animate({ backgroundColor: '' }, 2000);
+    });
+
   }
 
   selectToday() {
     this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
   getCasesData() {
-    var $this = this;
+     var $this = this;
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
     };
     this.branchData = this._storageService.getBranchData();
+    
     this.tableInputData = [];
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
@@ -117,38 +163,7 @@ export class CaseComponent implements OnInit {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.showHistory = true;
     this.actionColumnConfig.showEdit = true;
-  }
-  ngOnInit() {
-
-    this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
-      this.branchData = this._storageService.getBranchData();
-      if (this.branchData) {
-        this.getCasesData();
-      }
-    });
-    // this.getRunningCase();
-    this.setActionConfig();
-    this.getCasesData();
-    this.getBranchDDL();
-    this.bindRecourseDDL();
-    this.bindStageDDL();
-
-    $('#reservation').daterangepicker({
-      autoUpdateInput: false,
-      locale: {
-        format: 'DD-MM-YYYY'
-      }
-    }, function (start_date, end_date) {
-      $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
-    });
-    var self = this;
-    $('body').on('change', '.newHiringDate', function () {
-      self.updateNewHiringDate($(this).val())
-      $(this).closest('mat-cell')
-        .animate({ backgroundColor: '#88d288' }, 1000)
-        .animate({ backgroundColor: '' }, 2000);
-    });
-
+    this.actionColumnConfig.displayName = 'Action';
   }
 
   onRowClick(event) {
@@ -165,6 +180,7 @@ export class CaseComponent implements OnInit {
       this.authService.getCaseByCaseId(reqData).subscribe(
 
         result => {
+          
           $this.editChild.createForm(result);
           $('#caseLi a').click();
 
@@ -201,6 +217,11 @@ export class CaseComponent implements OnInit {
   }
   onRowDoubleClick(c) {
     this.showEditPop(c);
+  }
+  onCaseFilterClick(c)
+  {
+    
+    $('#filterCaseModal').modal("show");
   }
 
   onRowSelect(event) {
@@ -340,12 +361,9 @@ export class CaseComponent implements OnInit {
     };
     this.authService.bindStageDDL(reqData).subscribe(
       result => {
-        if (result.httpCode === 200) {
-          result.stageRecourses.forEach(function (value) {
-            $this.arrListCaseStage.push(value);
-          });
-        }
-
+        result.stages.forEach(function (value) {
+          $this.arrListCaseStage.push(value);
+        });
       },
       err => {
         console.log(err);
@@ -372,7 +390,32 @@ export class CaseComponent implements OnInit {
   //     this.IsPrintable = false;
   //   }
   // }
+  getRecourse() {
 
+    this.recourseConfig = {
+        displayKey: 'recourseName',
+        defaultText: 'All Recourses',
+        defaultTextAdd: true,
+        showIcon: false,
+        hideWhenOneItem: false
+    }
+
+    this.authService.getResources().subscribe(
+        result => {
+            if (result != null) {
+                this.arRecourse = result.recourses;
+            } else {
+                console.log(result);
+            }
+        },
+        err => {
+            console.log(err);
+            this.arRecourse = [];
+        });
+}
+ changeRecourse(data: any) {
+  this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
+ }
   getUploadedDocuments() {
     this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   }

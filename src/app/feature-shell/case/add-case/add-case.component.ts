@@ -21,7 +21,7 @@ declare var $;
 })
 export class AddCaseComponent implements OnInit {
   @Input() caseRunning = [];
-  ChildCases: any;
+  ChildCases: any= [];
   finalData: any = {};
   fileData: File;
   myDocument: File;
@@ -47,6 +47,7 @@ export class AddCaseComponent implements OnInit {
   public captain: string;
   public dataService: CompleterData;
   public dataService1: CompleterData;
+  public dataService2: CompleterData;
   public searchData = [
     { color: 'red', value: '#f00' },
     { color: 'green', value: '#0f0' },
@@ -134,11 +135,11 @@ export class AddCaseComponent implements OnInit {
     this.bindRecourseDDL();
     this.getManagers();
     this.getEmployee();
-    //this.bindStageDDL();
+    // this.bindStageDDL();
     this.getRunningCase();
     this.getEmployee();
     this.GetAllCity();
-
+ 
   }
   GetAllCourt(){ 
      const $this = this;
@@ -269,19 +270,19 @@ export class AddCaseComponent implements OnInit {
               {
 
 
-                id: value.id, text: value.firstName
+                id: value.id, text: value.firstName + " " + value.lastName
 
 
               }
             );
           }
 
-          if (value.roles[0].roleName == 'CUSTOMER') {
+          if (value.roles[0].roleName === 'CLIENT') {
 
             $this.CustomerName.push(
               {
 
-                id: value.id, text: value.firstName
+                id: value.id, text: value.firstName+ " " + value.lastName
 
               }
             );
@@ -308,27 +309,19 @@ export class AddCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-        
         if (result == 0) {
           $("#spnEmployee").show();
         }
-      
         result.forEach(function (value) {
-          
          
-          if (value.roles[0].roleName == 'CLIENT') {
+          if (value.roles[0].roleName === 'EMPLOYEE') {
+            $this.Employee.push({ id: value.id, text: value.firstName , });
+          }
+         
+          if (value.roles[0].roleName === 'MANAGER') {
             $this.Employee.push({ id: value.id, text: value.firstName, });
           }
-          if (value.roles[0].roleName == 'ADMIN') {
-            $this.Employee.push({ id: value.id, text: value.firstName, });
-          }
-          if (value.roles[0].roleName == 'MANAGER') {
-            $this.Employee.push({ id: value.id, text: value.firstName, });
-          }
-        
         });
-
-      
     }
       // err => {
       //   console.log(err);
@@ -337,7 +330,6 @@ export class AddCaseComponent implements OnInit {
   }
 
   bindStageDDL(a) {
-
     var $this = this
     var reqData = {
       email: this._storageService.getUserEmail(),
@@ -347,7 +339,7 @@ export class AddCaseComponent implements OnInit {
 
       result => {
         if (result.httpCode === 200) {
-        result.stageRecourses.forEach(function (value) {
+        result.stages.forEach(function (value) {
 
           $this.Stage.push({ id: value.id, text: value.stageName });
         });
@@ -368,14 +360,13 @@ export class AddCaseComponent implements OnInit {
     };
     this.authService.getCaseRunning(reqData).subscribe(
       result => {
-        if (result.httpCode === 200) {
         result.forEach(function (value) {
         $this.ParentCases.push({ id: value.id, text: value.caseId });
           $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
-      }
-        $this.dataService = $this.completerService.local($this.ParentCases, 'id', 'text');
-        $this.dataService1 = $this.completerService.local($this.ChildCases, 'id', 'text'); 
+        
+        $this.dataService = $this.completerService.local($this.ParentCases, 'text', 'text');
+        $this.dataService1 = $this.completerService.local($this.ChildCases, 'text', 'text');
       },
       err => {
         console.log(err);
@@ -407,14 +398,16 @@ if (event.target.files && event.target.files.length) {
       'parentCaseId': (data.parentCase === undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
       'recourseId': data.recourse[0].id,
       'remark': data.remark,
-     // "stageId": data.stage[0].id,
+      'stageId': data.stage[0].id,
       'stateId': data.state[0].id,
       'userId': parseInt(localStorage.getItem('client_id'))
     };
+    
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
+        
         if (result.body.httpCode == 200) { //success
           // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
@@ -442,6 +435,7 @@ if (event.target.files && event.target.files.length) {
       $('.input-group.date').datepicker().on('changeDate', function (ev) {
         const attrName = $(this).find('input').attr('formControlName');
         const attrValue = $(this).find('input').val();
+      
         self.addCaseForm.controls[attrName].setValue(attrValue);
       });
     });

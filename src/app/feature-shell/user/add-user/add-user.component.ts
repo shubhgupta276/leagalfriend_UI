@@ -22,7 +22,7 @@ export class AddUserComponent implements OnInit {
   @Input() Status: StatusModel[];
   @Input() Branches = [];
   emailValidationMessage = 'Email address is required.';
-  // passwordValidationMessage = 'Password is required.';
+  passwordValidationMessage = 'Password is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
   mobileNoValidationMessage = 'Mobile number is required.';
   selectedRole = [];
@@ -41,9 +41,9 @@ export class AddUserComponent implements OnInit {
       addressLine2: [null, Validators.required],
       postalCode: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
       email: [null, Validators.compose([Validators.required, Validators.email])],
-      // password: [null, Validators.compose([Validators.required,
-      // Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
-      // confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
+      password: [null, Validators.compose([Validators.required,
+      Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
+      confirmPassword: [null, Validators.compose([Validators.required, matchValidator('password')])],
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [2],
       status: [1],
@@ -56,9 +56,10 @@ export class AddUserComponent implements OnInit {
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;
+    userDetails.name = data.firstName + ' ' + data.lastName;
     userDetails.email = data.email;
     userDetails.organization = data.organisation;
-    // userDetails.password = data.password;
+    userDetails.password = data.password;
     userDetails.isClient = false;
     userDetails.addressLine1 = data.addressLine1;
     userDetails.addressLine2 = data.addressLine2;
@@ -95,7 +96,8 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
-        if (result.body.httpCode === 200) {
+        debugger
+        if (result.body.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
           console.log(result);
           userDetails.id = result.body.id;
@@ -128,20 +130,20 @@ export class AddUserComponent implements OnInit {
       }
     );
 
-    // this.addForm.get('password').valueChanges.subscribe(
-    //   (e) => {
-    //     if (e !== '') {
-    //       this.passwordValidationMessage = 'Password must use a combination' +
-    //         ' of these: Atleast 1 upper case letters (A – Z),' +
-    //         ' one lower case letters (a – z)' +
-    //         ' one number (0 – 9)' +
-    //         ' one special symbol (e.g. ‘!@#\$%\^&\’)' +
-    //         ' and minimum length should be 8 characters.';
-    //     } else {
-    //       this.passwordValidationMessage = 'Password is required.';
-    //     }
-    //   }
-    // );
+    this.addForm.get('password').valueChanges.subscribe(
+      (e) => {
+        if (e !== '') {
+          this.passwordValidationMessage = 'Password must use a combination' +
+            ' of these: Atleast 1 upper case letters (A – Z),' +
+            ' one lower case letters (a – z)' +
+            ' one number (0 – 9)' +
+            ' one special symbol (e.g. ‘!@#\$%\^&\’)' +
+            ' and minimum length should be 8 characters.';
+        } else {
+          this.passwordValidationMessage = 'Password is required.';
+        }
+      }
+    );
 
     this.addForm.get('postalCode').valueChanges.subscribe(
       (e) => {

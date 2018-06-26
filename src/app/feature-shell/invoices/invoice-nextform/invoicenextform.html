@@ -177,9 +177,9 @@
                                             <th>
                                                 Date
                                             </th>
-                                            <!-- <th>
+                                            <th>
                                                 Quantity
-                                            </th> -->
+                                            </th>
                                             <!-- <th class="mount-header">
                                         Unit price
                                     </th> -->
@@ -196,14 +196,14 @@
                                         <tr *ngFor="let item of arrInvoiceDetails |  paginate: { itemsPerPage: 5, currentPage: p2 }" description="Description" qty="1"
                                             unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td style="width: 500px">
-                                                <textarea  disabled rows="2" class="form-control description" type="text" placeholder="Description">{{item.description}}</textarea>
+                                                <textarea disabled rows="2" class="form-control description" type="text" placeholder="Description">{{item.description}}</textarea>
                                             </td>
                                             <td>
                                                 <input class="form-control date" disabled value="{{item.billingDate}}" style="width:100px" placeholder="Date">
                                             </td>
-                                            <!-- <td>
+                                            <td>
                                                 <input class="form-control quantity" disabled value="{{item.quantity}}" style="width:100px" placeholder="Quantity">
-                                            </td> -->
+                                            </td>
 
 
                                             <td>
@@ -247,9 +247,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <textarea style="white-space: pre-line;" disabled id="remarksInvoice" rows="4" class="form-control" placeholder="Type your notes here">
-                                                    {{invoiceTemplateInfo.termEndCond}}
-                                                </textarea>
+                                                <textarea  id="remarksInvoice" rows="4" class="form-control" placeholder="Type your notes here">{{invoiceTemplateInfo.termEndCond}}</textarea>
 
                                             </td>
                                         </tr>
