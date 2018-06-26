@@ -21,14 +21,14 @@
             <div *ngIf="column.sortable">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                     {{column.displayName}}
-                    
+
                 </mat-header-cell>
 
             </div>
             <div *ngIf="!column.sortable">
                 <mat-header-cell *matHeaderCellDef>
                     {{column.displayName}}
-                    <mat-form-field class="table-dropdown-sort"  *ngIf="column.dropDownFilter">
+                    <mat-form-field class="table-dropdown-sort" *ngIf="column.dropDownFilter">
                         <mat-select [(value)]="dropdownData[column.uniqueId].selected" (change)="sortTable($event.value,column.uniqueId)">
                             <mat-option value="">Select</mat-option>
                             <mat-option *ngFor="let value of dropdownData[column.uniqueId].values" [value]="value">
@@ -40,15 +40,15 @@
                 </mat-header-cell>
             </div>
             <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
-                <div [ngClass]="{'mat-col-date-cal': showCalender}">{{ row[column.uniqueId] }}</div>
+                <div class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId] }}</div>
                 <div *ngIf="showCalender && (column.uniqueId=='nextHearingDate' || column.uniqueId=='previousHearingDate')" style=" margin-left: 41px;position: relative;"
                     class="colCalendar">
                     <div class="divNewHire input-group date" style="margin-top: -22px;position: absolute" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                         <input *ngIf="column.uniqueId=='nextHearingDate'" style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE"
                             readonly="" placeholder="yyyy-mm-dd" class="form-control newHiringDate" size="10" formControlName="nextHearingDate">
-                        
-                            <input *ngIf="column.uniqueId=='previousHearingDate'" style="display:none" type="text" tabindex="14"
-                            readonly="" placeholder="yyyy-mm-dd" class="form-control lastHiringDate" size="10" formControlName="lastHiringDate">
+
+                        <input *ngIf="column.uniqueId=='previousHearingDate'" style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd"
+                            class="form-control lastHiringDate" size="10" formControlName="lastHiringDate">
 
                         <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="onShowCalendar($event,row)">
                             <span class="fa fa-calendar"></span>
@@ -78,9 +78,9 @@
         </ng-container>
 
 
-        <mat-header-row *matHeaderRowDef="displayedColumns" style="z-index: 10000;"></mat-header-row>
+        <mat-header-row *matHeaderRowDef="displayedColumns" style="z-index: 1;"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick($event, row)" (dblclick)="onRowDoubleClick($event, row)"
-             [ngClass]="{'mat-row-change-bg': row.compliance}">
+            [ngClass]="{'mat-row-change-bg': row.compliance}">
         </mat-row>
 
     </mat-table>

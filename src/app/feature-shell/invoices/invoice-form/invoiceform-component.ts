@@ -40,7 +40,6 @@ export class InvoiceFormComponent implements OnInit {
         // this.arrInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
     }
     StoreInvoiceTemplateInfo() {
-        debugger
         localStorage.setItem("invoiceTemplateInfo", JSON.stringify(this.invoiceTemplateInfo));
     }
     BindInvoice() {
