@@ -65,7 +65,6 @@ export class EditBillingComponent implements OnInit {
     const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
     const objStage = this.arListStage.find(x => x.id == data.stage);
     const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
-    debugger
     const reqData = {
       id: data.id,
       institution: {

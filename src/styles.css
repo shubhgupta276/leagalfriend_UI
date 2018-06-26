@@ -5,6 +5,7 @@
     display: none !important;
     border: 1px solid red;
 }
+
 .mat-row-hover:hover{
     background-color: whitesmoke;
 }
@@ -14,6 +15,12 @@
 .mat-row{
     cursor: pointer;
 }
+.mat-cell-text{    
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 140px;
+}
 .mat-column-select {
     flex: 0.3 !important;
 }
@@ -22,6 +29,11 @@
 }
 .mat-column-stageName {
     flex: 2 !important;
+}
+.mat-header-row{
+    position: sticky;
+    top: 0;
+    background-color: inherit;
 }
 .mat-header-cell{
     color: rgb(34, 45, 50);
