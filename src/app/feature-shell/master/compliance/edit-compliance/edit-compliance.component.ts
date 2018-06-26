@@ -82,7 +82,6 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   }
 
   submitEditComplianceMaster(data) {
-    debugger
     const reqData = {
       complianceName: data.compliance,
       id: data.id,
@@ -104,7 +103,6 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
         if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.closeModal();
-          debugger
           const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.complianceName = data.compliance;
           objFind.recourseName = this.selectedRecourse.recourseName;
