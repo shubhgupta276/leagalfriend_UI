@@ -25,6 +25,7 @@ export class EditForInstitutionComponent implements OnInit {
   caseFiles: any;
   arStage: any = [];
   isCompliance: boolean;
+  isCaseComplete: boolean = false;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -48,6 +49,9 @@ export class EditForInstitutionComponent implements OnInit {
         const attrName = $(this).find('input').attr('formControlName');
         const attrValue = $(this).find('input').val();
         self.editForInstitutionForm.controls[attrName].setValue(attrValue);
+      });
+      $('body').on('change', '#txtCompletionDate', function (evt) {
+        self.changeCompletionDate($(this).val());
       });
     });
   }
@@ -86,7 +90,7 @@ export class EditForInstitutionComponent implements OnInit {
       caseCriticalityLevel: obj == null ? null : obj.caseCriticalityLevel,
       caseFiledAgainst: obj == null ? null : obj.caseFiledAgainst,
       caseId: obj == null ? null : obj.caseId,
-      caseStage: obj == null ? null : obj.caseStage,
+      caseStage: [obj == null ? null : obj.caseStage, Validators.required],
       caseStatus: obj == null ? null : obj.caseStatus,
       caseType: obj == null ? null : obj.caseType,
       childCase: obj == null ? null : obj.childCase,
@@ -161,7 +165,7 @@ export class EditForInstitutionComponent implements OnInit {
       receiverOrderAppliedDate: obj == null ? null : this._datePipe.transform(obj.receiverOrderAppliedDate, "yyyy-MM-dd"),
       receiverOrderReceivedDate: obj == null ? null : obj.receiverOrderReceivedDate,
       recieveOrderApplied: obj == null ? null : obj.recieveOrderApplied,
-      recourse: obj == null ? null : obj.recourse,
+      recourse: [obj == null ? null : obj.recourse, Validators.required],
       region: obj == null ? null : obj.region,
       remarks: obj == null ? null : obj.remarks,
       repoFlag: obj == null ? null : obj.repoFlag,
@@ -193,13 +197,17 @@ export class EditForInstitutionComponent implements OnInit {
       type: obj == null ? null : obj.type,
       valuationAmount: obj == null ? null : obj.valuationAmount,
       valuationDate: obj == null ? null : obj.valuationDate,
-      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended
+      whetherCustomerAttended: obj == null ? null : obj.whetherCustomerAttended,
+      uploadFile: null
     });
 
     if (obj != null) {
-      this.isCompliance = obj == null ? false : obj.compliance;
+      //this.isCompliance = obj == null ? false : obj.compliance;
       setTimeout(() => {
-        this.disableForm(this.isCompliance);
+        this.isCaseComplete = (obj.completionDate) ? true : false;
+        if (this.isCompliance || this.isCaseComplete) {
+          this.disableForm(true);
+        }
       }, 10);
     }
   }
@@ -261,20 +269,50 @@ export class EditForInstitutionComponent implements OnInit {
         this.updateCaseToCompliance();
       }
     }
-    this.disableForm(isChecked);
+    else {
+      this.disableForm(isChecked);
+    }
   }
 
   updateCaseToCompliance() {
-    this._institutionService.updateToCompliance(this.institutionalCaseId).subscribe(
+    const stageId = this.arStage.filter(x => x.stageCode == this.editData.caseStage)[0].id;
+    const reqData = {
+      compliance: {
+        id: this.editData.id,
+        recourse: {
+          id: this.editData.recourseId
+        },
+        stage: {
+          id: stageId
+        }
+      },
+      legalCase: {
+        id: this.editData.id
+      }
+    }
+    this._institutionService.updateToCompliance(reqData).subscribe(
       (result) => {
-        if (result.statusCode === 200) {
+        result = result.body;
+        if (result.httpCode === 200) {
           this.editData.compliance = true;
           this.submitEditinstitutionUser(this.editData);
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+          this.disableForm(true);
+        }
+        else if (result.httpCode === 500) {
+          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
         }
       },
       err => {
         console.log(err);
       })
+  }
+
+  changeCompletionDate(val) {
+    if (val && val.length > 0) {
+      this.editForInstitutionForm.controls['groundForClosingFile'].setValidators(Validators.required);
+      this.editForInstitutionForm.controls['groundForClosingFile'].updateValueAndValidity();
+    }
   }
 
   openCaseDetailTab() {

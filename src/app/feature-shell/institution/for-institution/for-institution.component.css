@@ -3,6 +3,7 @@
     margin-right: 58px;
     position: absolute;
     margin-top: -172px;
+    z-index: 1000;
 }
 
 .export2 {
@@ -10,4 +11,5 @@
     margin-right: 58px;
     position: absolute;
     margin-top: -131px;
+    z-index: 1000;
 }

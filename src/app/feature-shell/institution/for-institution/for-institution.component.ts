@@ -26,7 +26,7 @@ declare let $;
     providers: [RecourseService]
 })
 
-export class ForInstitutionComponent implements OnInit, OnDestroy {
+export class ForInstitutionComponent implements OnInit {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
@@ -54,24 +54,22 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
     @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
     isPageLoad: boolean = true;
     selectedRowsCheckbox: any;
+    isFilterApplied: boolean = false;
     constructor(private fb: FormBuilder,
         private _router: Router,
         private _institutionService: InstitutionService,
         private _recourseService: RecourseService,
         private _sharedService: SharedService,
         private _storageService: StorageService) { }
-    ngOnDestroy() {
-        this.branchSubscription.unsubscribe();
-    }
+
     ngOnInit() {
         this.setActionConfig();
         this.getInstitutionList();
         this.bindFilterType();
         this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
-            if (!this.isPageLoad) {
+            if (this.branchData) {
                 this.GetAllForIntitution();
             }
-            this.isPageLoad = false;
         });
         this.getRecourse();
         const selfnew = this;
@@ -224,6 +222,22 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
 
     search() {
         this.filterTable();
+        if (this.filterTypeId > 0) {
+            this.isFilterApplied = true;
+        }
+    }
+
+    resetAllFilter() {
+        $('#txtFromToDate').val('');
+        this.showDateFilter = false;
+        this.filterTypeId = 0;
+        //this.recourseFilter = null;
+    }
+
+    clearFilters() {
+        this.isFilterApplied = false;
+        this.resetAllFilter();
+        this.filterTable();
     }
 
     changeRecourse(data: any) {
@@ -248,6 +262,7 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
         if (this.branchData) {
             this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
                 result => {
+                    this.isPageLoad = false;
                     for (let i = 0; i < result.length; i++) {
                         const obj = result[i];
                         this.tableInputData.push({
@@ -377,6 +392,10 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
                     }
 
                     this.dataTableComponent.ngOnInit();
+                    setTimeout(() => {
+                        this.filterTable();
+                    }, 100);
+
                 },
                 err => {
                     console.log(err);
@@ -538,13 +557,6 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
 
     convertDateToDDMMYYYY(dateStr) {
         return new Date(dateStr.split('-')[2], dateStr.split('-')[1] - 1, dateStr.split('-')[0]);
-    }
-
-    resetAllFilter() {
-        $('#txtFromToDate').val('');
-        this.showDateFilter = false;
-        this.filterTypeId = 0;
-        this.recourseFilter = null;
     }
 
     openPopup() {

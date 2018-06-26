@@ -57,9 +57,9 @@ export class InstitutionService {
         );
     }
 
-    updateToCompliance(caseComplianceId: number): Observable<any> {
-        return this.apiGateWay.put<any>(
-            updateToCompliance + "?caseComplianceId=" + caseComplianceId, null
+    updateToCompliance(data: any): Observable<any> {
+        return this.apiGateWay.post<any>(
+            updateToCompliance, JSON.stringify(data)
         );
     }
 
@@ -74,7 +74,7 @@ export class InstitutionService {
             downloadFile + "?fileId=" + fileId
         );
     }
-  
+
     exportCase(data: any): Observable<any> {
         return this.apiGateWay.postFile(
             exportForInstitutionsUrl,
