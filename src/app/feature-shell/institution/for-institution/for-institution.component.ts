@@ -134,6 +134,9 @@ export class ForInstitutionComponent implements OnInit {
             if (result.httpCode === 200) {
                 this.arInstitution = result.institutions;
                 this.InstitutionValue = this.arInstitution.find(x => x.defaultInstitution);
+                if (!this.InstitutionValue) {
+                    this.InstitutionValue = this.arInstitution[0];
+                }
                 this.GetAllForIntitution();
 
                 this.institutionConfig = {
