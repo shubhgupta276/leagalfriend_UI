@@ -23,7 +23,17 @@ declare let $;
   providers: [AuthService]
 })
 export class LoginComponent implements OnInit {
-
+//   columns = [
+//     {
+//       'name': 'stageName'
+//     }
+//   ];
+//   stage = 'stageName';
+// dropdownData = {
+//   'stageName' : {
+//     selected: 'yes'
+//   }
+// };
   public loginForm: FormGroup;
   emailValidationMessage: string = "Email address is required.";
   public _login: any;

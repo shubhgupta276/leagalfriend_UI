@@ -36,7 +36,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                            <!-- <p >{{dropdownData['stageName'].selected}} </p> -->
+                        <p *ngIf="dropdownData[column.uniqueId].selected" >{{dropdownData[column.uniqueId].selected}} </p>
                     <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="moduleName==='Case' && column.uniqueId=='nextHearingDate' "></button>
                 </mat-header-cell>
             </div>

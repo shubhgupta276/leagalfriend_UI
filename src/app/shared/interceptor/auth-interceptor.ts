@@ -35,7 +35,11 @@ export class AuthInterceptor implements HttpInterceptor {
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
             });
-            return next.handle(verifyEmailReq);
+            return next.handle(verifyEmailReq).do(event => {
+                if (event instanceof HttpResponse) {
+                    loadingContainer.style.display = 'none';
+                }
+            });
         }
         else if (req.url.indexOf('users/forgotpwd') >= 0) {
 
