@@ -11,6 +11,7 @@ declare var $;
   styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent implements OnInit {
+  variable = "";
   filterArray: FilterModel[];
   dropdownData = {};
   columnFilter = [];
@@ -218,6 +219,7 @@ export class DataTableComponent implements OnInit {
       if (filter.columnId === uniqueId) {
         // filter.value = this.dropdownData[uniqueId].selected;
         filter.value = searchValue;
+        debugger
         if (this.dropdownData[uniqueId]) {
           this.dropdownData[uniqueId].selected = filter.value;
         }
