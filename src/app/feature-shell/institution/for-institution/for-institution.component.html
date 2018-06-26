@@ -21,7 +21,10 @@
                 </div>
               </div>
               <div class="col-sm-2">
-                <img src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterForInstitutionModal">
+                <img *ngIf="isFilterApplied" height="22" width="28" src="assets/dist/img/filter_applied.jpg" title="Filter" data-toggle="modal"
+                  data-target="#filterForInstitutionModal">
+                <img *ngIf="!isFilterApplied" src="assets/dist/img/filter.png" title="Filter" data-toggle="modal" data-target="#filterForInstitutionModal">
+                <img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();">
               </div>
               <div class="col-sm-2">
                 <input type="text" class="input-sm custom-search" placeholder="Search..." (keyup)="applyFilter($event.target.value)">
@@ -38,7 +41,7 @@
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
-        <ng-container>
+        <ng-container *ngIf="tableInputData && tableInputData.length>0">
           <div class="export1">
             <img src="/assets/dist/img/download1.png" height="40">
           </div>
@@ -89,7 +92,7 @@
 
           <div class="col-md-12">
             <div class="col-md-6">
-              <select class="form-control" (change)="filterTypeChange($event.target.value)">
+              <select class="form-control" (change)="filterTypeChange($event.target.value)" [(ngModel)]="filterTypeId">
                 <option *ngFor="let item of arFilterType" [value]="item.value">{{item.text}}</option>
               </select>
             </div>
