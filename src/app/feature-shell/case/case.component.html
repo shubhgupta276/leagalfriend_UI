@@ -177,7 +177,7 @@
                 <div class="tab-pane" id="tab_completed">
                   <app-data-table #caseCompletedTable [tableData]="completedTableInputData" [tableColumns]="completedColumns" (rowClick)="onRowClickCompleted($event)"
                     (rowDoubleClick)="onRowDoubleClickCompleted($event)" (selectedRows)="onRowSelectCompleted($event)" [showRowSelect]="rowSelect"
-                    [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" [showSearchFilter]="showSearchFilter"
+                    [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)"
                     (actionBtnClick)="onActionBtnClickCompleted($event)">
                   </app-data-table>
                   <!-- <table id="example2" class="table table-bordered table-hover">

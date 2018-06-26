@@ -572,7 +572,7 @@ export class EditCaseComponent implements OnInit {
             }
 
 
-          }, 10);
+          }, 20);
 
         }
       },
