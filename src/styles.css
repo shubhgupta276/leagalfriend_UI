@@ -52,3 +52,7 @@
 .mat-column-action {
     flex: 0 0 100px !important;
 }
+.hearing-date{
+    position: absolute;
+    margin-top: -24px;
+}
