@@ -203,7 +203,7 @@ export class EditCaseComponent implements OnInit {
     this.parentcaseSelectedauto = [];
     this.caseId = c.caseId;
     this.id = c.id;
-
+    debugger
     // if (c.parentCaseId != null) {
     //   const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
     //   this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
@@ -272,7 +272,7 @@ export class EditCaseComponent implements OnInit {
     }
     if (c != null) {
       if (c.parentCaseId != null) {
-        
+
         const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
         this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
         this.childCaseText = this.parentcaseSelectedauto[0].text;
@@ -315,8 +315,7 @@ export class EditCaseComponent implements OnInit {
 
 
   //............................................for compliance........................
-
-  createFormforcompliance(c) {
+  bindDataOnEditForCompliance(c) {
     this._disabledV = '1';
     this.disabled = true;
     var self = this;
@@ -327,6 +326,7 @@ export class EditCaseComponent implements OnInit {
         self.complianceGridData.push(value.compliance);
       });
       // this.complianceGridData=[c[0].compliance];
+
       this.recourseSelected = [];
 
       const objFilter = this.Resource.filter(x => x.id === c[0].legalCase.recourseId);
@@ -348,11 +348,13 @@ export class EditCaseComponent implements OnInit {
       const objBranch = this.Branch.filter(x => x.id === c[0].legalCase.branchId);
       this.branchSelected.push({ id: c[0].legalCase.branchId, text: objBranch[0].text });
       this.selectedBranch = this.branchSelected[0];
-      this.stageSelected = [];
-      const objStage = this.Stage.filter(x => x.id === c[0].legalCase.stageId);
-      this.stageSelected.push({ id: c[0].legalCase.stageId, text: objStage[0].text });
-      this.selectedStage = this.stageSelected[0];
-
+      
+      if (c[0].legalCase.stageId != null) {
+        this.stageSelected = [];
+        const objStage = this.Stage.filter(x => x.id === c[0].legalCase.stageId);
+        this.stageSelected.push({ id: c[0].legalCase.stageId, text: objStage[0].text });
+        this.selectedStage = this.stageSelected[0];
+      }
       this.customerSelected = [];
       const objcustomerSelected = this.CustomerName.filter(x => x.id === c[0].legalCase.customerId);
       this.customerSelected.push({ id: c[0].legalCase.customerId, text: objcustomerSelected[0].text });
@@ -371,11 +373,28 @@ export class EditCaseComponent implements OnInit {
       this.courtPlaceSelected.push({ id: c[0].legalCase.id, text: objcourtPlaceSelected[0].text });
       this.selectedCourtPlace = this.courtPlaceSelected[0];
     }
+  }
+  createFormforcompliance(c) {
+    
+    var self = this;
+    this.bindStageDDL(c.recourseId, c);
 
 
+    if (c != null) {
+      if (c[0].legalCase.parentCaseId != null) {
 
+        const objparentCase = this.ParentCases.filter(x => x.id == c[0].legalCase.parentCaseId);
+        this.parentcaseSelectedauto.push({ id: c[0].legalCase.parentCaseId, text: objparentCase[0].text });
+        this.childCaseText = this.parentcaseSelectedauto[0].text;
+      }
 
-
+      if (c[0].legalCase.childCase != null) {
+        this.childcaseSelectedauto = [];
+        const objchild = this.ChildCases.filter(x => x.id === parseInt(c[0].legalCase.childCase));
+        this.childcaseSelectedauto.push({ id: parseInt(c[0].legalCase.childCase), text: objchild[0].text });
+        this.childParentText = this.childcaseSelectedauto[0].text;
+      }
+    }
     this.editCaseForm = this.fb.group({
 
 
@@ -386,7 +405,7 @@ export class EditCaseComponent implements OnInit {
       manager: [c == null ? null : c.managerId],
       court: [c == null ? null : c.courtId],
       state: [c == null ? null : c.stateId],
-      parentCase: [c == null ? null : c.parentCaseId],
+      parentCase: [c == null ? null : this.childCaseText],
       nextHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.nextHearingDate, 'yyyy-MM-dd')],
       customerName: [c == null ? null : c.customerId],
       remark: [c == null ? null : c[0].legalCase.remark, Validators.required],
@@ -398,7 +417,7 @@ export class EditCaseComponent implements OnInit {
       employee: [c == null ? null : c.employeeId],
       courtplace: [c == null ? null : c.courtId],
       oppLawyer: [c == null ? null : c[0].legalCase.oppLawyer],
-      childCase: [c == null ? null : c[0].legalCase.childCase],
+      childCase: [c == null ? null : this.childParentText],
       lastHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.lastHearingDate, 'yyyy-MM-dd')],
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.completionDate, 'yyyy-MM-dd')]
@@ -541,8 +560,18 @@ export class EditCaseComponent implements OnInit {
           });
         }
         if (c != null) {
+
           setTimeout(() => {
-            this.bindDataOnEdit(c);
+            
+            if (c[0] != undefined) {
+
+              this.bindDataOnEditForCompliance(c);
+            }
+            else {
+              this.bindDataOnEdit(c);
+            }
+
+
           }, 10);
 
         }
@@ -565,11 +594,11 @@ export class EditCaseComponent implements OnInit {
 
       result => {
         result.forEach(function (value) {
-         
+
           if (value.roles[0].roleName === 'EMPLOYEE') {
             $this.Employee.push({ id: value.id, text: value.firstName + " " + value.lastName, });
           }
-         
+
           if (value.roles[0].roleName === 'MANAGER') {
             $this.Employee.push({ id: value.id, text: value.firstName + " " + value.lastName, });
           }
