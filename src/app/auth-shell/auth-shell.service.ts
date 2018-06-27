@@ -67,7 +67,7 @@ export class AuthService {
 
     );
   }
-  signup(customerData: SignUpModel): Observable<SignUpModel> {
+  signup(customerData: SignUpModel): Observable<any> {
     return this.apiGateWay.post<SignUpModel>(
       signup,
       JSON.stringify(customerData)
@@ -143,9 +143,9 @@ export class AuthService {
       'master/recourses'+ "?userId=" + this._storageService.getUserId()
     );
 }
-  bindStageDDL(reqData): Observable<any> {
+  bindStageDDL(recourseId): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'master/stages' + '?userId=' + this._storageService.getUserId(), null,
+      'master/recourse/stage' + '?userId=' + this._storageService.getUserId() + '&recourseId=' + recourseId, null,
 
     );
   }

@@ -14,6 +14,11 @@ export class DataTableComponent implements OnInit {
   variable = "";
   filterArray: FilterModel[];
   dropdownData = {};
+  // dropdownData = {
+  //   'stageName' : {
+  //     selected: 'yes'
+  //   }
+  // };
   columnFilter = [];
   columnSorting = [];
   columnNames = [];

@@ -184,8 +184,8 @@ subscriptionId:number;
     const signUpDetails = new SignUpModel();
     {
       signUpDetails.address= {
-        address1: data.address1,
-        address2: data.address2,
+        address1: data.addressLine1,
+        address2: data.addressLine2,
         city: "test",
         state: "UP",
         zipCode: "201301"
@@ -218,10 +218,19 @@ subscriptionId:number;
 
       result => {
         
-        this.loading = false;
-        this._signup = result;
-        this.isMailSent = true;
-       $('#registermsg').hide();
+        if(result.body.httpCode==200)
+        {
+          this.loading = false;
+          this._signup = result;
+          this.isMailSent = true;
+         $('#registermsg').hide();
+        }
+        else
+        {
+          this.loading = false;
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+       
       },
       err => {
         console.log(err);
