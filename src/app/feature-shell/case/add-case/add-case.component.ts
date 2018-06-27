@@ -336,11 +336,11 @@ export class AddCaseComponent implements OnInit {
      var  recourseId;
      recourseId=a;
   //  };
-    debugger
+    
     this.authService.bindStageDDL(recourseId).subscribe(
 
       result => {
-        debugger
+        
         if (result.httpCode === 200 && result.stageRecourses.length>0) {
         result.stageRecourses.forEach(function (value) {
 
@@ -412,10 +412,10 @@ if (event.target.files && event.target.files.length) {
     
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
-    debugger
+    
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
-        debugger
+        
         if (result.body.httpCode == 200) { //success
           // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });

@@ -56,7 +56,7 @@ export class EditUserComponent implements OnInit {
     this.userTypeRole = parseInt(arr[1]);
   }
   submitEditUser(data) {
-    debugger
+    
     if (this.isStatusChange) {
       data.statusName = this.selectedStatus;
     }

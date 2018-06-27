@@ -203,7 +203,7 @@ export class EditCaseComponent implements OnInit {
     this.parentcaseSelectedauto = [];
     this.caseId = c.caseId;
     this.id = c.id;
-    debugger
+    
     // if (c.parentCaseId != null) {
     //   const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
     //   this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });

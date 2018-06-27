@@ -107,7 +107,7 @@ export class LoginComponent implements OnInit {
     const $this = this;
     this.authService.checkUserClient(a).subscribe(
       result => {
-        debugger
+        
        if(result.clientId!=null)
        {
           result.forEach(function (value) {
@@ -121,13 +121,13 @@ export class LoginComponent implements OnInit {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
-    debugger
+    
     this.authService.login(loginDetails).subscribe(
       result => {
         this._login = result;
         const accessToken = this._login.body.token;
         const clientId = this._login.body.clientId;
-        debugger
+        
         if (accessToken) {
           localStorage.setItem('access_token', accessToken);
           localStorage.setItem('client_id', clientId);
