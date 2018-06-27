@@ -31,6 +31,7 @@ import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
 import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
 import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
+import { setTimeout } from 'timers';
 
 const now = new Date();
 
@@ -88,19 +89,22 @@ export class CaseComponent implements OnInit,OnDestroy {
 ngOnDestroy()
 {
   this.branchSubscription.unsubscribe();
-  this.isLoad=true;
+  //this.isLoad=true;
 }
   ngOnInit() {
     
     this.getCasesData();
     this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
       this.branchData = this._storageService.getBranchData();
+     setTimeout(() => {
       if (this.branchData) {
         if (!this.isLoad) {
           this.getCasesData();
         }
         this.isLoad=false;
       }
+     }, 10); 
+     
     });
     // this.getRunningCase();
     this.getRecourse();
@@ -141,6 +145,7 @@ ngOnDestroy()
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
+        
         result.forEach(ele => {
           if (ele.branchName == $this.branchData.branchName) {
             if (ele.completionDate) {
