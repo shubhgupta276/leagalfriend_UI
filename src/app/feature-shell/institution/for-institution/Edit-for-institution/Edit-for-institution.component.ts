@@ -208,7 +208,7 @@ export class EditForInstitutionComponent implements OnInit {
     });
 
     if (obj != null) {
-      //this.isCompliance = obj == null ? false : obj.compliance;
+      this.isCompliance = obj == null ? false : obj.compliance;
       setTimeout(() => {
         this.isCaseComplete = (obj.completionDate) ? true : false;
         if (this.isCompliance || this.isCaseComplete) {
@@ -328,7 +328,7 @@ export class EditForInstitutionComponent implements OnInit {
         result = result.body;
         if (result.httpCode === 200) {
           this.editData.compliance = true;
-          this.submitEditinstitutionUser(this.editData);
+          // this.submitEditinstitutionUser(this.editData);
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
           this.disableForm(true);
         }
