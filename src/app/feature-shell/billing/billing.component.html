@@ -179,19 +179,10 @@
           <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
             <div class="row caseModalRow">
               <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
-                <label class="caseSearchLabel">Bank:</label>
+                <label class="caseSearchLabel">Institution:</label>
                 <select id="ddlBank1" class="caseFilterDropDown1">
-                  <!-- <option value="All">All</option> -->
-                  <option value="DCB BANK LTD.">DCB BANK LTD.</option>
-                  <option value="HDFC BANK LTD.">HDFC BANK LTD.</option>
-                  <option></option>
+                  <option *ngFor="let item of arAllInstitution" value="item.id">{{item.institutionName}}</option>>
                 </select>
-                <!-- <label style="width:102px" class="caseSearchLabel">Date:</label>
-                <select id="ddlCaseStage" class="caseFilterDropDown1">
-                  <option value="All">All</option>
-                  <option ></option>
-                </select> -->
-
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
                 <div class="form-group">
