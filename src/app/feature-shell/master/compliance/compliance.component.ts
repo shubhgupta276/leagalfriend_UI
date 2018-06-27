@@ -57,7 +57,7 @@ export class ComplianceComponent implements OnInit {
     this._complianceService.getCompliances(reqData).subscribe(
       result => {
         if (result.httpCode === 200) {
-          debugger
+          
           for (let i = 0; i < result.compliances.length; i++) {
             const obj = result.compliances[i];
             this.tableInputData.push({

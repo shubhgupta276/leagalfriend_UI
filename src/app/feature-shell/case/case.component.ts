@@ -111,7 +111,7 @@ ngOnDestroy()
     this.setActionConfig();
     this.getBranchDDL();
     this.bindRecourseDDL();
-    this.bindStageDDL();
+   // this.bindStageDDL();
 
     $('#reservation').daterangepicker({
       autoUpdateInput: false,
@@ -358,22 +358,22 @@ ngOnDestroy()
         console.log(err);
       });
   }
-  bindStageDDL() {
+  // bindStageDDL() {
 
-    var $this = this
-    var reqData = {
-      email: this._storageService.getUserEmail(),
-    };
-    this.authService.bindStageDDL(reqData).subscribe(
-      result => {
-        result.stages.forEach(function (value) {
-          $this.arrListCaseStage.push(value);
-        });
-      },
-      err => {
-        console.log(err);
-      });
-  }
+  //   var $this = this
+  //   var reqData = {
+  //     email: this._storageService.getUserEmail(),
+  //   };
+  //   this.authService.bindStageDDL(reqData).subscribe(
+  //     result => {
+  //       result.stages.forEach(function (value) {
+  //         $this.arrListCaseStage.push(value);
+  //       });
+  //     },
+  //     err => {
+  //       console.log(err);
+  //     });
+  // }
 
   runningTabActive() {
     this.runningCaseTabActive = true;
