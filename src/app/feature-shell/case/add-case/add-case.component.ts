@@ -341,6 +341,7 @@ export class AddCaseComponent implements OnInit {
 
       result => {
         
+        $this.Stage=[];
         if (result.httpCode === 200 && result.stageRecourses.length>0) {
         result.stageRecourses.forEach(function (value) {
 

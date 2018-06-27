@@ -68,7 +68,7 @@
                               <div class="col-md-9" *ngIf="Resource.length > 0" id="divRecourse">
                                 <ng-select [allowClear]="true" [active]="recourseSelected" [items]="Resource" [disabled]="disabled" (data)="refreshValue($event)"
                                   (selected)="selectedRecourse1($event)" [(ngModel)]="recourseData" (removed)="removed($event)"
-                                  (typed)="typed($event)" placeholder="No recourse selected">
+                                  (typed)="typed($event)" placeholder="No recourse selected" formControlName="recourse">
                                 </ng-select>
                                
                               </div>
