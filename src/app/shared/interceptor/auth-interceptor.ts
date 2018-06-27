@@ -71,7 +71,7 @@ export class AuthInterceptor implements HttpInterceptor {
             const authHeader = this.auth.getAuthorizationHeader();
             const verifyEmailReq = req.clone({
                 headers: req.headers.set('Content-Type', 'application/json')
-                .set('Authorization', authHeader.access_token.toString())
+                    .set('Authorization', authHeader.access_token.toString())
 
             });
             return next.handle(verifyEmailReq).do(event => {
@@ -153,6 +153,10 @@ export class AuthInterceptor implements HttpInterceptor {
         } else if (req.url.replace(endpoint_url, '').indexOf('institution/upload') >= 0
             || req.url.replace(endpoint_url, '').indexOf('institution/for/case') >= 0) {
 
+            if (req.url.replace(endpoint_url, '').indexOf('institution/for/case') >= 0) {
+                // hide loading in page because file loading is showing there in edit for institution
+                loadingContainer.style.display = 'none';
+            }
             const authHeader = this.auth.getAuthorizationHeader();
             const authReq = req.clone({
                 headers: req.headers
