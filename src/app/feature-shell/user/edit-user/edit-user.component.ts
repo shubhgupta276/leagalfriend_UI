@@ -56,6 +56,7 @@ export class EditUserComponent implements OnInit {
     this.userTypeRole = parseInt(arr[1]);
   }
   submitEditUser(data) {
+    debugger
     if (this.isStatusChange) {
       data.statusName = this.selectedStatus;
     }
@@ -110,6 +111,7 @@ export class EditUserComponent implements OnInit {
     });
   }
   GetUserEditData(data): UserModel {
+    
     const userdata = new UserModel();
     const userTypeData = this.userTypeOption.filter(x => x.id == data.userTypeRole);
     userdata.id = data.id;
@@ -119,6 +121,7 @@ export class EditUserComponent implements OnInit {
     userdata.addressLine1 = data.addressLine1;
     userdata.addressLine2 = data.addressLine2;
     userdata.email = data.email;
+    userdata.password=data.password;
     userdata.mobileNumber = data.mobileNumber;
     userdata.roles = [
       {
@@ -148,7 +151,6 @@ export class EditUserComponent implements OnInit {
     return userdata;
   }
   createForm(user) {
-
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],
@@ -157,6 +159,7 @@ export class EditUserComponent implements OnInit {
         user == null ? null : user.organization,
         Validators.nullValidator
       ],
+     
       addressLine1: [
         (user == null || user.address == null) ? null : user.address.address1,
         Validators.required

@@ -104,8 +104,9 @@
                     <!-- <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button> -->
                   </div>
                   <div class="col-sm-2" *ngIf="!runningCaseTabActive">
-                    <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilterCompleted()">Reset</button>
+                    <!-- <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilterCompleted()">Reset</button>
                     <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
+                   -->
                   </div>
                  
                   <div id="searchBox1" class="col-sm-5 case-search" *ngIf="runningCaseTabActive">
@@ -117,8 +118,13 @@
                       </div>
                   </div>
                 
-                  <div id="searchBox2" class="col-sm-2 case-search" *ngIf="!runningCaseTabActive">
+                  <div id="searchBox2" class="col-sm-5 case-search" *ngIf="!runningCaseTabActive">
                     <input type="text" id="txtSearch2" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilterCompleted($event.target.value)">
+                    <div class="col-sm-2">
+                        <div *ngIf="arRecourse.length>0">
+                          <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                        </div>
+                      </div>
                   </div>
                 </div>
               </div>
@@ -129,50 +135,7 @@
                     [showSearchFilter]="showSearchFilter" (filterBtnClick)="onCaseFilterClick($event)" (actionBtnClick)="onActionBtnClick($event)" (rowClickShowCalendar)="onShowCalendar($event)"
                     [moduleName]="moduleName">
                   </app-data-table>
-                  <!-- <table id="example1" on-mouseleave="hideCalendar()" class="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Case ID</th>
-                        <th>Court Case ID</th>
-                        <th>Customer Name</th>
-                        <th>Resource Type</th>
-                        <th>Case Stage</th>
-                        <th>Next Hearing Date</th>
-                        <th>Branch</th>
-                        <th>Employee</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="rowRunningCase" *ngFor="let items of caseRunning;let i=index" on-mouseover="OnMouseHover(i)" [ngClass]="{'complianceColor': items.compliance}"
-                        (dblclick)="showEditModal(items)" data-target="#editCaseModal">
-                        <td>{{i+1}}</td>
-                        <td>{{items.courtCaseId}}</td>
-                        <td>{{items.customerFirstName}}</td>
-                        <td>{{items.recourseCode}}</td>
-                        <td>{{items.stageName}}</td>
-                        <td style="position:relative">{{items.nextHearingDate}}
-                          <div class="divNewHire input-group date" style="position:absolute; right: 0;" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                            <input style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd"
-                              class="form-control newHiringDate" size="10" formControlName="nextHearingDate">
-                            <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="ShowCalendar(items)">
-                              <span class="fa fa-calendar"></span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>{{items.branchName}}</td>
-                        <td>{{items.empFirstName}}</td>
-                        <td>
-                          <a title="Edit">
-                            <i class="fa fa-edit"></i>
-                          </a> /
-                          <a data-toggle="modal" data-target="#modal-default1" href="#">
-                            <i class="fa fa-history"></i>
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table> -->
+                 
                 </div>
                 <div class="tab-pane" id="tab_completed">
                   <app-data-table #caseCompletedTable [tableData]="completedTableInputData" [tableColumns]="completedColumns" (rowClick)="onRowClickCompleted($event)"
@@ -180,63 +143,12 @@
                     [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)"
                     (actionBtnClick)="onActionBtnClickCompleted($event)">
                   </app-data-table>
-                  <!-- <table id="example2" class="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Select</th>
-                        <th>Court Case ID</th>
-                        <th>Case ID</th>
-                        <th>Filling Date</th>
-                        <th>Completion Date</th>
-                        <th>Branch Name</th>
-                        <th>Court</th>
-                        <th>Manager</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let items of caseCompleted" (dblclick)="showEditModal(items)">
-                        <td>
-                          <input type="checkbox" name="caseCompleted" value="{{items.IsChecked}}" [(ngModel)]="items.IsChecked" (change)="updateCheckedOptions(caseCompleted)"
-                          />
-                        </td>
-                        <td>{{items.CourtCaseId}}</td>
-                        <td>{{items.CaseId}}</td>
-                        <td>{{items.FillingDate}}</td>
-                        <td>{{items.CompletionDate}}</td>
-                        <td>{{items.Branch.name}}</td>
-                        <td>{{items.Court.name}}</td>
-                        <td>{{items.Manager.name}}</td>
-                        <td>
-                          <a title="Edit">
-                            <i class="fa fa-edit"></i>
-                          </a> /
-                          <a data-toggle="modal" data-target="#modal-default1" href="#">
-                            <i class="fa fa-history"></i>
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table> -->
+              
                 </div>
               </div>
             </div>
            
-            <!-- <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker> -->
-            <!-- <p>Simple datepicker</p>
-
-            <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
-
-            <hr/>
-
-            <button class="btn btn-sm btn-outline-primary mr-2" (click)="selectToday()">Select Today</button>
-            <button class="btn btn-sm btn-outline-primary mr-2" (click)="dp.navigateTo()">To current month</button>
-            <button class="btn btn-sm btn-outline-primary mr-2" (click)="dp.navigateTo({year: 2013, month: 2})">To Feb 2013</button>
-
-            <hr/>
-
-            <pre>Month: {{ date.month }}.{{ date.year }}</pre>
-            <pre>Model: {{ model | json }}</pre> -->
+            
           </div>
         </div>
       </div>

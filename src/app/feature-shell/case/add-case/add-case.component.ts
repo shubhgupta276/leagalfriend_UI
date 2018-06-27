@@ -331,19 +331,26 @@ export class AddCaseComponent implements OnInit {
 
   bindStageDDL(a) {
     var $this = this
-    var reqData = {
-      email: this._storageService.getUserEmail(),
-      recourseId: a
-    };
-    this.authService.bindStageDDL(reqData).subscribe(
+    //var reqData = {
+      // email: this._storageService.getUserEmail(),
+     var  recourseId;
+     recourseId=a;
+  //  };
+    debugger
+    this.authService.bindStageDDL(recourseId).subscribe(
 
       result => {
-        if (result.httpCode === 200) {
-        result.stages.forEach(function (value) {
+        debugger
+        if (result.httpCode === 200 && result.stageRecourses.length>0) {
+        result.stageRecourses.forEach(function (value) {
 
           $this.Stage.push({ id: value.id, text: value.stageName });
         });
+        
 
+      }
+      else{
+        $this.Stage=[];
       }
     },
       err => {
@@ -405,9 +412,10 @@ if (event.target.files && event.target.files.length) {
     
     objEditCase.append('legalCase', JSON.stringify(x));
     objEditCase.append('file', this.myDocument);
+    debugger
     this.authService.submitEditCaseUser(objEditCase).subscribe(
       result => {
-        
+        debugger
         if (result.body.httpCode == 200) { //success
           // this.BindCaseGridOnEdit(data)
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });

@@ -217,12 +217,20 @@ subscriptionId:number;
     this.authService.signup(signUpDetails).subscribe(
 
       result => {
-        debugger
         
-      //   this.loading = false;
-      //   this._signup = result;
-      //   this.isMailSent = true;
-      //  $('#registermsg').hide();
+        if(result.body.httpCode==200)
+        {
+          this.loading = false;
+          this._signup = result;
+          this.isMailSent = true;
+         $('#registermsg').hide();
+        }
+        else
+        {
+          this.loading = false;
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+       
       },
       err => {
         console.log(err);

@@ -546,18 +546,21 @@ export class EditCaseComponent implements OnInit {
   bindStageDDL(a, c) {
 
     const $this = this;
-    const reqData = {
-      email: this._storageService.getUserEmail(),
-      recourseId: a
-    };
-    this.authService.bindStageDDL(reqData).subscribe(
+    //const reqData = {
+     // email: this._storageService.getUserEmail(),
+     var  recourseId;
+     recourseId= a;
+    //};
+    this.authService.bindStageDDL(recourseId).subscribe(
 
       result => {
-        if (result.httpCode === 200) {
-          result.stages.forEach(function (value) {
-
+        if (result.httpCode === 200 && result.stageRecourses.length>0) {
+          result.stageRecourses.forEach(function (value) {
+  
             $this.Stage.push({ id: value.id, text: value.stageName });
           });
+          
+  
         }
         if (c != null) {
 

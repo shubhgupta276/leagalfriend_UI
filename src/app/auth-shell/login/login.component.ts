@@ -107,20 +107,27 @@ export class LoginComponent implements OnInit {
     const $this = this;
     this.authService.checkUserClient(a).subscribe(
       result => {
-        result.forEach(function (value) {
-          $this.Customer.push(value);
-        });
+        debugger
+       if(result.clientId!=null)
+       {
+          result.forEach(function (value) {
+            $this.Customer.push(value);
+          });
+        }
+       
       });
   }
   login(data) {
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
+    debugger
     this.authService.login(loginDetails).subscribe(
       result => {
         this._login = result;
         const accessToken = this._login.body.token;
         const clientId = this._login.body.clientId;
+        debugger
         if (accessToken) {
           localStorage.setItem('access_token', accessToken);
           localStorage.setItem('client_id', clientId);
@@ -129,7 +136,7 @@ export class LoginComponent implements OnInit {
           this.isLoggedInError = false;
         } else {
           this.errLoginMsg = 'Your account has been suspended please contact your administrator.';
-          this.isLoggedInError = true;
+          this.isLoggedInError = false;
         }
       },
       err => {
