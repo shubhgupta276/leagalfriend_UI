@@ -4,7 +4,7 @@ import { SharedService } from '../shared/services/shared.service'
 import { BranchService } from './master/branch/branch.service';
 import { StorageService } from '../shared/services/storage.service';
 import { UserService } from './user/user.service';
-import { NgxPermissionsService,NgxRolesService } from 'ngx-permissions';
+import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import 'rxjs/add/observable/of';
 import { DatePipe } from '@angular/common';
 declare var $;
@@ -13,7 +13,7 @@ declare let Zone: any;
   selector: 'app-feature-shell',
   templateUrl: './feature-shell.component.html',
   styleUrls: ['./feature-shell.component.css'],
-  providers: [SharedService, BranchService,UserService,DatePipe]
+  providers: [SharedService, BranchService, UserService, DatePipe]
 })
 export class FeatureShellComponent implements OnInit {
   totalUpcomingEvents = 4;
@@ -24,10 +24,10 @@ export class FeatureShellComponent implements OnInit {
     Name: "",
     profile: null
   }
-  subscriptionEndDate={
-    subscriptionEndDate:""
+  subscriptionEndDate = {
+    subscriptionEndDate: ""
   }
-  
+
   constructor(private authService: AuthService, private sharedService: SharedService,
     private _storageService: StorageService,
     private _branchService: BranchService,
@@ -43,22 +43,10 @@ export class FeatureShellComponent implements OnInit {
     sharedService.GetEventsGroup();
   }
 
-  ngOnInit() {   
+  ngOnInit() {
 
-    var branchData = this._storageService.getBranchData();
-    this.branchConfig = {
-      displayKey: "branchName",
-      showFirstSelected: true,
-      showFirstSelectedValue: branchData,
-      showFirstSelectedKey: "id",
-      defaultTextAdd: false,
-      showIcon: true,
-      hideWhenOneItem: true
-      
-      
-    }
     this.blinker();
-   
+
     this.GetAllBranch();
     this.GetLoggedInUserDetails();
     $(window.document).ready(function () {
@@ -97,18 +85,33 @@ export class FeatureShellComponent implements OnInit {
   signOutButton() {
     this.authService.signOut();
   }
-   blinker() {
+  blinker() {
     $('.blink_me').fadeOut(500);
     $('.blink_me').fadeIn(500);
-}
+  }
 
   GetAllBranch() {
 
     this._branchService.getBranches().subscribe(
       result => {
 
-        if (result != null)
+        if (result != null) {
           this.arBranches = result.branches;
+
+          let branchData = this._storageService.getBranchData();
+          if (!branchData && this.arBranches.length > 0) {
+            branchData = this.arBranches[0];
+          }
+          this.branchConfig = {
+            displayKey: "branchName",
+            showFirstSelected: true,
+            showFirstSelectedValue: branchData,
+            showFirstSelectedKey: "id",
+            defaultTextAdd: false,
+            showIcon: true,
+            hideWhenOneItem: true
+          }
+        }
         else
           console.log(result);
       },
@@ -127,35 +130,31 @@ export class FeatureShellComponent implements OnInit {
   showmastermenu() {
     $("#limastermenu").toggle();
   }
-  showinstitutionalmenu()
-  {
+  showinstitutionalmenu() {
     $("#liinstitutionalmenu").toggle();
   }
-GetLoggedInUserDetails()
-{
-   
-  var $this = this;  
-  var client = '?userId=' + localStorage.getItem('client_id');
-  this.userService.getUser(client).subscribe(
-      data => {   
-      
-         if(data.showSubscriptionFlash==true)
-         {
-           $("#flash").show();
-         }
-         else
-         {
+  GetLoggedInUserDetails() {
+
+    var $this = this;
+    var client = '?userId=' + localStorage.getItem('client_id');
+    this.userService.getUser(client).subscribe(
+      data => {
+
+        if (data.showSubscriptionFlash == true) {
+          $("#flash").show();
+        }
+        else {
           $("#flash").hide();
-         }
-         
+        }
+
         $this.userDetails.Name = data.firstName + " " + data.lastName;
         $this.permissionsService.loadPermissions([data.roles[0].roleName]);
-        localStorage.setItem("userRole",data.roles[0].roleName);
-        $this.subscriptionEndDate.subscriptionEndDate=this.datePipe.transform(data.subscriptionEndDate,"yyyy-MM-dd");
+        localStorage.setItem("userRole", data.roles[0].roleName);
+        $this.subscriptionEndDate.subscriptionEndDate = this.datePipe.transform(data.subscriptionEndDate, "yyyy-MM-dd");
       },
       error => console.log(error)
     );
-    
-}
+
+  }
 }
 

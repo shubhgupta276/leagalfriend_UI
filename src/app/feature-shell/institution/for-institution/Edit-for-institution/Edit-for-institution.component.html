@@ -24,7 +24,7 @@
                 <div class="box-body widget-content">
                   <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.value)">
                     <div style="margin-right: 17px;float: right;">
-                      <input type="submit" class="btn btn-default btn-default-add-edit" routerLink="/admin/institution/forinstitution" value="Back">
+                      <input type="submit" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
                       <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
                         value="Update">
                     </div>
@@ -728,7 +728,7 @@
                               <em class="astrick" *ngIf="editForInstitutionForm.get('groundForClosingFile').invalid">*</em>
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('groundForClosingFile').invalid &&  editForInstitutionForm.get('groundForClosingFile').touched">
-                              <input class="form-control" placeholder="Ground for closing file" formControlName="groundForClosingFile">
+                              <textarea multiple="multiple" class="form-control" placeholder="Ground for closing file" formControlName="groundForClosingFile"></textarea>
                             </div>
                             <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('groundForClosingFile').invalid &&  editForInstitutionForm.get('groundForClosingFile').touched">
                               <small class="text-danger">
@@ -748,8 +748,10 @@
                             </label>
 
                             <div class="col-md-3">
-                              <input type="file" formControlName="uploadFile">
+                              <input #inputFileUpload type="file" formControlName="uploadFile" (change)="uploadFile($event);">
+                              <img *ngIf="isFileUploading" src="assets/dist/img/file_uploading.gif" height="20" width="20">
                             </div>
+                           
                           </div>
 
                           <table class="table table-bordered table-hover" *ngIf="caseFiles && caseFiles.length>0">
@@ -775,8 +777,8 @@
                             </tr>
                           </table>
                           <div class="modal-footer">
-                            <input type="submit" class="btn btn-default btn-default-add-edit" routerLink="/admin/institution/forinstitution" value="Back">
-                            <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
+                            <input type="submit" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
+                            <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit"
                               value="Update">
                           </div>
                         </div>

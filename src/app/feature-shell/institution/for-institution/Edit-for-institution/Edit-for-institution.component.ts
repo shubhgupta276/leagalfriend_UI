@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { InstitutionService } from '../../institution.service';
 import { Institution } from '../../institution';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { DatePipe } from "@angular/common";
 import { saveAs } from 'file-saver';
 import { StageService } from "../../../master/stage/stage.service";
@@ -20,16 +20,21 @@ declare let $;
 export class EditForInstitutionComponent implements OnInit {
   editForInstitutionForm: FormGroup;
   institutionId: number;
+  recourseId: any;
   institutionalCaseId: number;
   editData: any;
   caseFiles: any;
   arStage: any = [];
   isCompliance: boolean;
   isCaseComplete: boolean = false;
+  isFileUploading: boolean = false;
+  @ViewChild('inputFileUpload')
+  myFileUpload: any;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
     private _activatedRoute: ActivatedRoute,
+    private _router: Router,
     private _datePipe: DatePipe,
     private _stageService: StageService,
     private _storageService: StorageService) {
@@ -37,6 +42,7 @@ export class EditForInstitutionComponent implements OnInit {
     this._activatedRoute.params.subscribe((params) => {
       this.institutionalCaseId = params.id;
       this.institutionId = params.institutionId;
+      this.recourseId = params.recourseId;
       this.getInstitutionDetail();
     })
   }
@@ -230,29 +236,56 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   submitEditinstitutionUser(data: any) {
-    data.userId = this._storageService.getUserId();
+    console.log(this.editForInstitutionForm.valid);
+    if (this.editForInstitutionForm.valid) {
+      data.userId = this._storageService.getUserId();
 
-    let document = (data.uploadFile) ? data.uploadFile[0] : null
-    let formdata: FormData = new FormData();
-    formdata.append('file', document);
-    delete data.uploadFile;
-    formdata.append('forInstitutionalCase', JSON.stringify(data));
+      let document = (data.uploadFile) ? data.uploadFile[0] : null
+      let formdata: FormData = new FormData();
+      formdata.append('file', document);
+      delete data.uploadFile;
+      formdata.append('forInstitutionalCase', JSON.stringify(data));
 
-    this._institutionService.updateForInstitution(formdata).subscribe(
+      this._institutionService.updateForInstitution(formdata).subscribe(
 
-      result => {
-
-        result = result.body;
-        if (result.httpCode == 200) {
-          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
-          this.getInstitutionDetail();
-        }
-      },
-      err => {
-        console.log(err);
-      });
+        result => {
+          this.isFileUploading = false;
+          result = result.body;
+          if (result.httpCode == 200) {
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+            this.getInstitutionDetail();
+          }
+        },
+        err => {
+          console.log(err);
+        });
+    }
+    else {
+      this.validateForm();
+    }
   }
 
+  validateForm() {
+    const controls = this.editForInstitutionForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.editForInstitutionForm.get(name).markAsTouched();
+      }
+    }
+  }
+
+  uploadFile($event) {
+    const file = this.editForInstitutionForm.get('uploadFile').value;
+    if (file) {
+      this.isFileUploading = true;
+      this.editData.uploadFile = file;
+      this.submitEditinstitutionUser(this.editData);
+      this.myFileUpload.nativeElement.value = '';
+    }
+    else {
+      this.isFileUploading = false;
+    }
+  }
   disableForm(isDisable) { // disable form if compliance is true
     if (isDisable) {
       this.editForInstitutionForm.disable();
@@ -343,5 +376,9 @@ export class EditForInstitutionComponent implements OnInit {
       err => {
         console.log(err);
       })
+  }
+
+  back() {
+    this._router.navigate(['/admin/institution/forinstitution', { institutionId: this.institutionId, recourseId: this.recourseId }]);
   }
 }
