@@ -30,6 +30,7 @@ export class ForInstitutionComponent implements OnInit {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
+    completeCaseColumns: any;
     rowSelect = true;
     hoverTableRow = true;
     showSearchFilter = false;
@@ -73,6 +74,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.showHideColumns(true);
         this.getRecourse();
         this.setActionConfig();
         this.getInstitutionList();
@@ -82,7 +84,7 @@ export class ForInstitutionComponent implements OnInit {
                 this.GetAllForIntitution();
             }
         });
-       const selfnew = this;
+        const selfnew = this;
         $($.document).ready(function () {
 
             document.ondragover = document.ondragenter = function (evt) {
@@ -262,15 +264,24 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     clickRunningCase() {
+        this.showHideColumns(true);
         this.isRunningCaseTabOpen = true;
         this.GetAllForIntitution();
     }
 
     clickCompletedCase() {
+        this.showHideColumns(false);
         this.isRunningCaseTabOpen = false;
         this.GetAllForIntitution();
     }
 
+    showHideColumns(show) {
+        this.columns.forEach(function (data) {
+            if (data.uniqueId === 'previousHearingDate' || data.uniqueId === 'nextHearingDate') {
+                data.display = show;
+            }
+        });
+    }
 
     resetAllFilter() {
         $('#txtFromToDate').val('');
@@ -313,6 +324,9 @@ export class ForInstitutionComponent implements OnInit {
 
                         if ((this.isRunningCaseTabOpen && !obj.completionDate)
                             || (!this.isRunningCaseTabOpen && obj.completionDate)) {
+                            if (obj.compliance == null) {
+                                obj.compliance = false;
+                            }
                             this.tableInputData.push({
                                 accountStatus: obj.accountStatus,
                                 advocateofEp: obj.advocateofEp,
@@ -337,6 +351,7 @@ export class ForInstitutionComponent implements OnInit {
                                 chqNo2: obj.chqNo2,
                                 chqNo3: obj.chqNo3,
                                 closureDate: obj.closureDate,
+                                compliance: obj.compliance,
                                 closureReportingDate: obj.closureReportingDate,
                                 coolingPeriodNoticeDate: obj.coolingPeriodNoticeDate,
                                 courtCaseId: obj.courtCaseId,
@@ -474,135 +489,6 @@ export class ForInstitutionComponent implements OnInit {
         if (event.eventType === 'edit') {
             this.onRowDoubleClick(event.data);
         }
-    }
-
-    bindDatatable() {
-
-        const arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, 'All']];
-        const selectedPageLength = 15;
-
-        const $table = $('#example1').DataTable({
-            destroy: true,
-            paging: true,
-            lengthChange: true,
-            searching: true,
-            ordering: true,
-            info: true,
-            autoWidth: false,
-            lengthMenu: arLengthMenu,
-            pageLength: selectedPageLength,
-            oLanguage: {
-                sLengthMenu: 'Show _MENU_ rows',
-                sSearch: '',
-                sSearchPlaceholder: 'Search...'
-            },
-            initComplete: function () {
-                const tableid = 'example1';
-                const $rowSearching = $('#' + tableid + '_wrapper');
-                $rowSearching.find('.row:eq(0)').hide();
-
-                for (let i = 0; i < arLengthMenu[0].length; i++) {
-                    $('#ddlLengthMenu').append('<option value=' + arLengthMenu[0][i] + '>' + arLengthMenu[1][i] + '</option>');
-                }
-                $('#ddlLengthMenu').val(selectedPageLength);
-
-                $('#ddlLengthMenu').on('change', function () {
-                    $rowSearching.find('.row:eq(0)').find('select').val($(this).val()).change();
-                });
-            }
-        });
-        this.$table = $table;
-        $table.columns().every(function () {
-            $('#txtSearch').on('keyup change', function () {
-                if ($table.search() !== this.value) {
-                    $table.search(this.value).draw();
-                }
-            });
-
-            // start Recourse filter
-            $('#ddlRecourse').on('change', function () {
-                const status = $(this).val();
-                if (status === 'All') {
-                    $table.columns(3).search('').draw();
-                } else if ($table.columns(3).search() !== this.value) {
-                    $table.columns(3).search(this.value).draw();
-                }
-            });
-            // end Recourse filter
-        });
-    }
-
-    filterDatatableData() {
-        const $table = this.$table;
-        const $this = this;
-
-        let dateColFilter = null;
-
-        $table.columns().every(function () {
-            // start recourse filter
-            if ($this.recourseFilter == null || $this.recourseFilter == undefined) {
-                $table.columns(9).search('').draw();
-            } else if ($table.columns(9).search() !== $this.recourseFilter.recourseCode) {
-                $table.columns(9).search($this.recourseFilter.recourseCode).draw();
-            }
-            // end recourse filter
-        });
-        setTimeout(() => {
-            filterDates();
-        }, 200);
-
-
-        function filterDates() {
-
-            $.fn.dataTableExt.afnFiltering.push(
-                function (oSettings, data, iDataIndex) {
-
-                    if ($this.filterTypeId && $this.filterTypeId > 0) {
-
-                        if ($this.filterTypeId === 1) { // Next Hearing Date
-                            dateColFilter = 6;
-                        } else if ($this.filterTypeId === 2) { // Last Hearing Date
-                            dateColFilter = 5;
-                        } else if ($this.filterTypeId === 3) { // Case Created Date
-                            dateColFilter = 10;
-                        } else if ($this.filterTypeId === 4) { // Last Updated Date
-                            dateColFilter = 11;
-                        }
-
-                        const fromToDate = $('#txtFromToDate').val();
-                        if (dateColFilter && fromToDate && fromToDate.length > 0) {
-                            const arDates = fromToDate.split(' To ');
-
-                            let _startDate = null, _endDate = null;
-                            let _filterDate = data[dateColFilter];
-
-                            if (_filterDate && _filterDate.trim().length > 0) {
-                                _filterDate = $this.convertDateToDDMMYYYY(data[dateColFilter]);
-
-                                if (arDates.length > 1) {
-                                    _startDate = $this.convertDateToDDMMYYYY(arDates[0]);
-                                    _endDate = $this.convertDateToDDMMYYYY(arDates[1]);
-                                }
-
-                                if ((_filterDate >= _startDate && _filterDate <= _endDate)) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                        }
-                        return true;
-                    } else {
-                        return true;
-                    }
-                }
-            );
-
-            $table.draw();
-        }
-
     }
 
     convertDateToDDMMYYYY(dateStr) {

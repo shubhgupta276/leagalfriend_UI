@@ -7,24 +7,27 @@
           <div class="row case-table-toolbar">
             <div class="col-sm-7 pr-zero">
               <ul class="nav nav-tabs">
-                <li class="active">
+                <li [ngClass]="{'active': isCaseCompletedOpen==false}">
                   <a href="#tab_caseDetail" (click)="openCaseDetailTab()" data-toggle="tab">Case Detail</a>
                 </li>
-                <li *ngIf="this.editData && this.editData.compliance">
-                  <a href="#tab_compliance" (click)="openComplianceTab()" data-toggle="tab">Compliance</a>
+                <li *ngIf="this.editData && this.editData.compliance" [ngClass]="{'active':isCaseCompletedOpen==true}">
+                  <a id="linkCompleteCompliance" href="#tab_compliance" (click)="openComplianceTab()" data-toggle="tab">Compliance</a>
                 </li>
               </ul>
+            </div>
+            <div style="float: right;">
+              <input type="submit" *ngIf="isCaseCompletedOpen" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
             </div>
           </div>
 
           <div class="tab-content">
-            <div class="tab-pane active" id="tab_caseDetail">
+            <div class="tab-pane" id="tab_caseDetail" [ngClass]="{'active':isCaseCompletedOpen==false}">
 
               <div class="row">
                 <div class="box-body widget-content">
                   <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.value)">
                     <div style="margin-right: 17px;float: right;">
-                      <input type="submit" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
+                      <input type="submit" *ngIf="!isCaseComplete" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
                       <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
                         value="Update">
                     </div>
@@ -751,7 +754,7 @@
                               <input #inputFileUpload type="file" formControlName="uploadFile" (change)="uploadFile($event);">
                               <img *ngIf="isFileUploading" src="assets/dist/img/file_uploading.gif" height="20" width="20">
                             </div>
-                           
+
                           </div>
 
                           <table class="table table-bordered table-hover" *ngIf="caseFiles && caseFiles.length>0">
@@ -778,8 +781,7 @@
                           </table>
                           <div class="modal-footer">
                             <input type="submit" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
-                            <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit"
-                              value="Update">
+                            <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit" value="Update">
                           </div>
                         </div>
                       </div>
@@ -791,12 +793,27 @@
               <!-- row end-->
 
             </div>
-            <div class="tab-pane" id="tab_compliance">
-
+            <div class="tab-pane" id="tab_compliance" [ngClass]="{'active':isCaseCompletedOpen==true}">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Compliance</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of arCompliances">
+                    <td>{{item.compliance.complianceName}}</td>
+                    <td>
+                      <a *ngIf="item.status!=='OPEN'">{{item.status}}</a>
+                      <a *ngIf="item.status==='OPEN'" style="color:cornflowerblue" (click)="closeCompliance(item);">Verified & Completed</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>

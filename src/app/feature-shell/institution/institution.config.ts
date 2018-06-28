@@ -7,3 +7,4 @@ export let deleteFile = "institution/file/delete";
 export let downloadFile = "institution/file/download";
 export let updateHearingDate = "institution/for/hearing";
 export let updateToCompliance = "institution/update/for/compliance";
+export let compliances = "institution/for/compliance";
