@@ -118,6 +118,13 @@ export class AuthService {
     );
   }
 
+  getInstitution(): Observable<any> {
+    return this.apiGateWay.get<any>(
+      'master/institutions' + '?userId=' + this._storageService.getUserId(), null,
+
+    );
+  }
+
   getCourtDDL(reqData): Observable<any> {
     return this.apiGateWay.get<any>(
       'master/courts' + '?userId=' + this._storageService.getUserId(), null,

@@ -168,13 +168,27 @@
                                   <option value="2">Institutional</option>
                             </select>
                           </div>
-                          <div class="col-sm-4" *ngIf="roleValue==3 && userTypeRole.value == '2'" style="padding-left:0px;">
-                            <select  formControlName="branchName" class="form-control">
-                              <option *ngFor="let option of Branches" [ngValue]="option.id">
-                                {{ option.branchName }}
+                         
+
+                          <div class="col-sm-4"  style="padding-left:0px;" *ngIf="roleValue==3 && userTypeRole.value == '2'">
+                            <select   class="form-control">
+                              <option *ngFor="let option of institutions" [ngValue]="option.id">
+                                {{ option.institutionName }}
                               </option>
                             </select>
                           </div>
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="roleValue==3 && userTypeRole.value == '2'">
+                        <label class="col-sm-3 col-form-label createUserLabel">Branch:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-sm-9"  >
+                          <select  formControlName="branchName" class="form-control">
+                            <option *ngFor="let option of Branches" [ngValue]="option.id">
+                              {{ option.branchName }}
+                            </option>
+                          </select>
                         </div>
                       </div>
                       <div class="form-group row">

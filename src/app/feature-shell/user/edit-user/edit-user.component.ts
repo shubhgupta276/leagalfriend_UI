@@ -63,9 +63,11 @@ export class EditUserComponent implements OnInit {
     if (this.isRoleChange) {
       data.roles = this.selectedRole;
     }
+    
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
+        
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
           this.BindGridOnEdit(data);
@@ -121,6 +123,7 @@ export class EditUserComponent implements OnInit {
     userdata.addressLine1 = data.addressLine1;
     userdata.addressLine2 = data.addressLine2;
     userdata.email = data.email;
+    
     userdata.password=data.password;
     userdata.mobileNumber = data.mobileNumber;
     userdata.roles = [
@@ -151,6 +154,7 @@ export class EditUserComponent implements OnInit {
     return userdata;
   }
   createForm(user) {
+    
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],
@@ -181,11 +185,12 @@ export class EditUserComponent implements OnInit {
         Validators.compose([Validators.required, Validators.minLength(10)])
       ],
       role: [user == null ? 1 : user.roleId],
+      password: [],
       roles: [user == null ? 1 : user.roles],
       status: [user == null ? 1 : user.statusId],
       statusName: [user == null ? 1 : user.status],
       userTypeRole: [user == null ? 1 : user.userType.id],
-      branchName: [1, Validators.nullValidator],
+      branchName: [user == null ? 1 : user.branchName],
     });
     this.userTypeRole = user == null ? 1 : user.userType.id;
     this.roleValue = user == null ? 1 : user.roleId;

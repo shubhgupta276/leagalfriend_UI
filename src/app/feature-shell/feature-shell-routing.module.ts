@@ -17,7 +17,7 @@ const featureShellRoutes: Routes = [
                 path: 'user', loadChildren: 'app/feature-shell/user/user.module#UserModule', canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
-                        only: ['ADMIN', 'MANAGER']
+                        only: ['ADMIN']
                     }
                 }
             },

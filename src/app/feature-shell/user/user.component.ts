@@ -47,6 +47,7 @@ export class UserComponent implements OnInit {
   editForm: FormGroup;
   $table: any;
   Branches = [];
+  institutions= [];
   @ViewChild(EditUserComponent) child: EditUserComponent;
   actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private userService: UserService,
@@ -60,6 +61,7 @@ export class UserComponent implements OnInit {
     this.getUsers();
     this.GetLoggedInUserDetails();
     this.getBranchDDL();
+    this.getInstitution();
     $('#customerList').modal('show');
 
   }
@@ -182,6 +184,24 @@ export class UserComponent implements OnInit {
       result => {
         result.branches.forEach(function (value) {
           $this.Branches.push(value);
+        });
+
+      },
+      err => {
+        console.log(err);
+      });
+  }
+  getInstitution() {
+    var $this = this
+    var reqData = {
+      userId: this._storageService.getUserId(),
+    };
+    this.authService.getInstitution().subscribe(
+
+      result => {
+        debugger
+        result.institutions.forEach(function (value) {
+          $this.institutions.push(value);
         });
 
       },
