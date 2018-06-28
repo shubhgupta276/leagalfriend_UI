@@ -21,6 +21,7 @@ export class AddUserComponent implements OnInit {
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
   @Input() Branches = [];
+  @Input() institutions=[];
   emailValidationMessage = 'Email address is required.';
   passwordValidationMessage = 'Password is required.';
   zipValidationMessage = 'Postal/Zip Code is required.';
@@ -187,8 +188,9 @@ export class AddUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args) {
-
+    debugger
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
+  
 }
 
