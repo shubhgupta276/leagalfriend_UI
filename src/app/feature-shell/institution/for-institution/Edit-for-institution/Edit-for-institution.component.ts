@@ -28,6 +28,7 @@ export class EditForInstitutionComponent implements OnInit {
   isCompliance: boolean;
   isCaseComplete: boolean = false;
   isFileUploading: boolean = false;
+  arCompliances: any[];
   @ViewChild('inputFileUpload')
   myFileUpload: any;
   constructor(
@@ -209,6 +210,9 @@ export class EditForInstitutionComponent implements OnInit {
 
     if (obj != null) {
       this.isCompliance = obj == null ? false : obj.compliance;
+      if (this.isCompliance) {
+
+      }
       setTimeout(() => {
         this.isCaseComplete = (obj.completionDate) ? true : false;
         if (this.isCompliance || this.isCaseComplete) {
@@ -286,6 +290,7 @@ export class EditForInstitutionComponent implements OnInit {
       this.isFileUploading = false;
     }
   }
+
   disableForm(isDisable) { // disable form if compliance is true
     if (isDisable) {
       this.editForInstitutionForm.disable();
@@ -308,7 +313,8 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   updateCaseToCompliance() {
-    const stageId = this.arStage.filter(x => x.stageCode == this.editData.caseStage)[0].id;
+    const stageData = this.arStage.find(x => x.stageCode == this.editData.caseStage);
+    const stageId = (stageData) ? stageData.id : 0;
     const reqData = {
       compliance: {
         id: this.editData.id,
@@ -341,6 +347,33 @@ export class EditForInstitutionComponent implements OnInit {
       })
   }
 
+  getCompliances() {
+    this.arCompliances = [];
+    this._institutionService.GetCompliances(this.institutionalCaseId).subscribe(
+      (result) => {
+        if (result && result.length > 0) {
+          this.arCompliances = result;
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
+  closeCompliance(data) {
+
+    this._institutionService.closeCompliances(data.id).subscribe(
+      (result) => {
+        const index = this.arCompliances.findIndex(x => x.id == data.id);
+        this.arCompliances.splice(index, 1);
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
   changeCompletionDate(val) {
     if (val && val.length > 0) {
       this.editForInstitutionForm.controls['groundForClosingFile'].setValidators(Validators.required);
@@ -349,11 +382,10 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   openCaseDetailTab() {
-
   }
 
   openComplianceTab() {
-
+    this.getCompliances();
   }
 
   deleteFile(data) {

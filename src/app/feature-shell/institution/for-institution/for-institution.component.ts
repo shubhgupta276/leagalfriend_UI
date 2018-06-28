@@ -30,6 +30,7 @@ export class ForInstitutionComponent implements OnInit {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
+    completeCaseColumns: any;
     rowSelect = true;
     hoverTableRow = true;
     showSearchFilter = false;
@@ -73,6 +74,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.showHideColumns(true);
         this.getRecourse();
         this.setActionConfig();
         this.getInstitutionList();
@@ -82,7 +84,7 @@ export class ForInstitutionComponent implements OnInit {
                 this.GetAllForIntitution();
             }
         });
-       const selfnew = this;
+        const selfnew = this;
         $($.document).ready(function () {
 
             document.ondragover = document.ondragenter = function (evt) {
@@ -262,13 +264,23 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     clickRunningCase() {
+        this.showHideColumns(true);
         this.isRunningCaseTabOpen = true;
         this.GetAllForIntitution();
     }
 
     clickCompletedCase() {
+        this.showHideColumns(false);
         this.isRunningCaseTabOpen = false;
         this.GetAllForIntitution();
+    }
+
+    showHideColumns(show) {
+        this.columns.forEach(function (data) {
+            if (data.uniqueId === 'previousHearingDate' || data.uniqueId === 'nextHearingDate') {
+                data.display = show;
+            }
+        });
     }
 
 
