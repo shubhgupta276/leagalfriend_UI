@@ -27,9 +27,12 @@ export class EditForInstitutionComponent implements OnInit {
   arStage: any = [];
   isCompliance: boolean;
   isCaseComplete: boolean = false;
+  isCaseCompletedOpen;
   isFileUploading: boolean = false;
+  arCompliances: any[];
   @ViewChild('inputFileUpload')
   myFileUpload: any;
+  isPageLoad: boolean = true;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -208,7 +211,16 @@ export class EditForInstitutionComponent implements OnInit {
     });
 
     if (obj != null) {
-      //this.isCompliance = obj == null ? false : obj.compliance;
+      this.isCompliance = obj == null ? false : obj.compliance;
+      if (this.isPageLoad) {
+        if (this.isCompliance) {
+          this.openComplianceTab();
+        }
+        else {
+          this.openCaseDetailTab();
+        }
+        this.isPageLoad = false;
+      }
       setTimeout(() => {
         this.isCaseComplete = (obj.completionDate) ? true : false;
         if (this.isCompliance || this.isCaseComplete) {
@@ -286,6 +298,7 @@ export class EditForInstitutionComponent implements OnInit {
       this.isFileUploading = false;
     }
   }
+
   disableForm(isDisable) { // disable form if compliance is true
     if (isDisable) {
       this.editForInstitutionForm.disable();
@@ -308,7 +321,8 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   updateCaseToCompliance() {
-    const stageId = this.arStage.filter(x => x.stageCode == this.editData.caseStage)[0].id;
+    const stageData = this.arStage.find(x => x.stageCode == this.editData.caseStage);
+    const stageId = (stageData) ? stageData.id : 0;
     const reqData = {
       compliance: {
         id: this.editData.id,
@@ -328,7 +342,7 @@ export class EditForInstitutionComponent implements OnInit {
         result = result.body;
         if (result.httpCode === 200) {
           this.editData.compliance = true;
-          this.submitEditinstitutionUser(this.editData);
+          // this.submitEditinstitutionUser(this.editData);
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
           this.disableForm(true);
         }
@@ -341,6 +355,45 @@ export class EditForInstitutionComponent implements OnInit {
       })
   }
 
+  getCompliances() {
+    this.arCompliances = [];
+    this._institutionService.GetCompliances(this.institutionalCaseId).subscribe(
+      (result) => {
+        if (result && result.length > 0) {
+          this.arCompliances = result;
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
+  closeCompliance(data) {
+
+    this._institutionService.closeCompliances(data.id).subscribe(
+      (result) => {
+        result = result.body;
+        if (result.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+
+          const index = this.arCompliances.findIndex(x => x.id == data.id);
+          this.arCompliances.splice(index, 1);
+          if (this.arCompliances.length == 0) {
+            this.isCaseCompletedOpen = false;
+            this.getInstitutionDetail();
+          }
+        }
+        else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
   changeCompletionDate(val) {
     if (val && val.length > 0) {
       this.editForInstitutionForm.controls['groundForClosingFile'].setValidators(Validators.required);
@@ -349,11 +402,12 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   openCaseDetailTab() {
-
+    this.isCaseCompletedOpen = false;
   }
 
   openComplianceTab() {
-
+    this.isCaseCompletedOpen = true;
+    this.getCompliances();
   }
 
   deleteFile(data) {

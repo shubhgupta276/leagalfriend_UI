@@ -4,7 +4,7 @@ import { Institution } from './institution'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
 import {
-    updateHearingDate, updateToCompliance,
+    updateHearingDate, updateToCompliance, compliances,
     addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile, exportForInstitutionsUrl
 } from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
@@ -60,6 +60,18 @@ export class InstitutionService {
     updateToCompliance(data: any): Observable<any> {
         return this.apiGateWay.post<any>(
             updateToCompliance, JSON.stringify(data)
+        );
+    }
+
+    GetCompliances(caseId: any): Observable<any> {
+        return this.apiGateWay.get<any>(
+            compliances + '?caseId=' + caseId
+        );
+    }
+
+    closeCompliances(caseId: any): Observable<any> {
+        return this.apiGateWay.put<any>(
+            compliances + '?caseComplianceId=' + caseId, null
         );
     }
 

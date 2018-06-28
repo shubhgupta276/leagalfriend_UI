@@ -8,5 +8,6 @@ export const forInstitutionTableConfig = [
     { uniqueId: 'loanAccountNumber', displayName: 'Loan Account No', sortable: true, dropDownFilter: false, display: true },
     { uniqueId: 'recourse', displayName: 'recourse', sortable: true, dropDownFilter: true, display: false },
     { uniqueId: 'createdDate', displayName: 'createdDate', sortable: true, dropDownFilter: false, display: false },
-    { uniqueId: 'lastUpdated', displayName: 'lastUpdated', sortable: true, dropDownFilter: false, display: false }
+    { uniqueId: 'lastUpdated', displayName: 'lastUpdated', sortable: true, dropDownFilter: false, display: false },
+    { uniqueId: 'compliance', displayName: 'compliance', sortable: true, dropDownFilter: false, display: false }
 ];

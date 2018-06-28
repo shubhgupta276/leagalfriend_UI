@@ -49,6 +49,17 @@ export class AddInstitutionDashboardComponent implements OnInit {
 
         if (_result.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: "Thank you for completing initial setup." });
+
+          // make default to first institution
+          reqData['id'] = _result.id;
+          reqData['defaultInstitution'] = 1;
+          this._institutionService.updateDefaultInstitution(reqData).subscribe(
+            result => {
+            },
+            err => {
+              console.log(err);
+            });
+
           $('#addInstitutionMasterModal').modal('hide');
           this.AddInstitutionMaster();
         }
