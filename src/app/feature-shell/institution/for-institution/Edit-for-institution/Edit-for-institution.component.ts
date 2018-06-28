@@ -27,10 +27,12 @@ export class EditForInstitutionComponent implements OnInit {
   arStage: any = [];
   isCompliance: boolean;
   isCaseComplete: boolean = false;
+  isCaseCompletedOpen;
   isFileUploading: boolean = false;
   arCompliances: any[];
   @ViewChild('inputFileUpload')
   myFileUpload: any;
+  isPageLoad: boolean = true;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -210,8 +212,14 @@ export class EditForInstitutionComponent implements OnInit {
 
     if (obj != null) {
       this.isCompliance = obj == null ? false : obj.compliance;
-      if (this.isCompliance) {
-
+      if (this.isPageLoad) {
+        if (this.isCompliance) {
+          this.openComplianceTab();
+        }
+        else {
+          this.openCaseDetailTab();
+        }
+        this.isPageLoad = false;
       }
       setTimeout(() => {
         this.isCaseComplete = (obj.completionDate) ? true : false;
@@ -365,8 +373,20 @@ export class EditForInstitutionComponent implements OnInit {
 
     this._institutionService.closeCompliances(data.id).subscribe(
       (result) => {
-        const index = this.arCompliances.findIndex(x => x.id == data.id);
-        this.arCompliances.splice(index, 1);
+        result = result.body;
+        if (result.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+
+          const index = this.arCompliances.findIndex(x => x.id == data.id);
+          this.arCompliances.splice(index, 1);
+          if (this.arCompliances.length == 0) {
+            this.isCaseCompletedOpen = false;
+            this.getInstitutionDetail();
+          }
+        }
+        else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -382,9 +402,11 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   openCaseDetailTab() {
+    this.isCaseCompletedOpen = false;
   }
 
   openComplianceTab() {
+    this.isCaseCompletedOpen = true;
     this.getCompliances();
   }
 
