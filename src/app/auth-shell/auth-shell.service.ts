@@ -106,9 +106,9 @@ export class AuthService {
       JSON.stringify(customerData)
     );
   }
-  verifyUser(token, isReferral , password): Observable<any> {
+  verifyUser(token, isReferral, password): Observable<any> {
     return this.apiGateWay.post<any>(
-      'users/verifyUser' + '?token=' + token + '&isReferral=' + isReferral + '&password=' + password  , null
+      'users/verifyUser' + '?token=' + token + '&isReferral=' + isReferral + '&password=' + password, null
     );
   }
   getBranchDDL(reqData): Observable<any> {
@@ -145,11 +145,11 @@ export class AuthService {
     );
   }
   getResources(): Observable<any> {
-       
+
     return this.apiGateWay.get<Recourse>(
-      'master/recourses'+ "?userId=" + this._storageService.getUserId()
+      'master/recourses' + "?userId=" + this._storageService.getUserId()
     );
-}
+  }
   bindStageDDL(recourseId): Observable<any> {
     return this.apiGateWay.get<Recourse>(
       'master/recourse/stage' + '?userId=' + this._storageService.getUserId() + '&recourseId=' + recourseId, null,
@@ -259,6 +259,7 @@ export class AuthService {
 
 
   signOut(): void {
+    this._storageService.setBranchData(null);
     // clear token remove user from local storage to log user out
     if (localStorage.getItem("access_token")) {
       localStorage.removeItem("access_token");
