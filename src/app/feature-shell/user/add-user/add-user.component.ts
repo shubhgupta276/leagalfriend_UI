@@ -21,6 +21,7 @@ export class AddUserComponent implements OnInit {
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
   @Input() Branches = [];
+  
   @Input() institutions=[];
   emailValidationMessage = 'Email address is required.';
   passwordValidationMessage = 'Password is required.';
@@ -50,6 +51,7 @@ export class AddUserComponent implements OnInit {
       status: [1],
       userTypeRole: ['1', Validators.nullValidator],
       branchName: ['1', Validators.nullValidator],
+      institutions: ['1', Validators.nullValidator],
     });
   }
 
@@ -82,6 +84,14 @@ export class AddUserComponent implements OnInit {
       statusId: data.status,
       statusName: this.getStatusName(data.status)
     };
+    
+    userDetails.branch = {
+      id: data.branchName,
+    };
+    userDetails.institution = {
+      id: data.institutions,
+    };
+    
     if (this.userTypeRole === undefined || this.userTypeRole == null) {
       userDetails.userType = {
         id: 2,
@@ -97,6 +107,7 @@ export class AddUserComponent implements OnInit {
     userDetails.clientId = Number(localStorage.getItem('client_id'));
     this.userService.addNewUser(userDetails).subscribe(
       result => {
+        
         if (result.body.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
           console.log(result);
@@ -188,7 +199,7 @@ export class AddUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args) {
-    debugger
+    
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
   

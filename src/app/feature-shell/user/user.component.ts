@@ -70,11 +70,23 @@ export class UserComponent implements OnInit {
     const client = '?clientId=' + localStorage.getItem('client_id');
     this.userService.listUsers(client).subscribe(
       result => {
+        
         result.forEach(element => {
           if (element.roles.length > 0) {
             element.roleId = element.roles[0].id;
             element.roles = element.roles[0].roleName;
           }
+          if(element.branch !=null)
+          {
+            element.branchId=element.branch.id;
+            element.branchName=element.branch.branchName;
+          }
+          if(element.institution !=null)
+          {
+            element.institutionId=element.institution.id;
+            element.institutionName=element.institution.institutionName;
+          }
+         
           element.statusId = element.status.statusId;
           element.status = element.status.statusName;
           element.name = element.firstName + ' ' + element.lastName;
@@ -199,7 +211,7 @@ export class UserComponent implements OnInit {
     this.authService.getInstitution().subscribe(
 
       result => {
-        debugger
+        
         result.institutions.forEach(function (value) {
           $this.institutions.push(value);
         });

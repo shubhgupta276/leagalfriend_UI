@@ -35,6 +35,7 @@ export class EditUserComponent implements OnInit {
     { id: 2, text: "Institutional" }
   ]
   @Input() Branches = [];
+  @Input() institutions = [];
   constructor(private userService: UserService, private fb: FormBuilder, private _sharedService: SharedService) {
     this.createForm(null);
   }
@@ -56,18 +57,18 @@ export class EditUserComponent implements OnInit {
     this.userTypeRole = parseInt(arr[1]);
   }
   submitEditUser(data) {
-    
+
     if (this.isStatusChange) {
       data.statusName = this.selectedStatus;
     }
     if (this.isRoleChange) {
       data.roles = this.selectedRole;
     }
-    
+
     const finalData = this.GetUserEditData(data);
     this.userService.editUser(finalData).subscribe(
       result => {
-        
+
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
           this.BindGridOnEdit(data);
@@ -83,6 +84,7 @@ export class EditUserComponent implements OnInit {
   BindGridOnEdit(data) {
 
     this.tableInputData.forEach((item, index) => {
+
       if (data.id === item.id) {
         this.tableInputData[index].firstName = data.firstName;
         this.tableInputData[index].lastName = data.lastName;
@@ -101,6 +103,15 @@ export class EditUserComponent implements OnInit {
           state: '',
           zipCode: data.postalCode
         };
+        // this.tableInputData[index].branch = {
+        //   id: data.id,
+        //   branchName: data.branchName,
+        // };
+        this.tableInputData[index].institutionId = data.institution.id;
+        this.tableInputData[index].institutionName = data.institution.name;
+        this.tableInputData[index].branchId = data.branchId;
+        this.tableInputData[index].barnchName = data.barnchName;
+        this.tableInputData[index].roleId = data.role;
         this.tableInputData[index].statusId = data.status;
         this.tableInputData[index].status = data.statusName;
         const userTypeData = this.userTypeOption.filter(x => x.id == data.userTypeRole);
@@ -113,7 +124,7 @@ export class EditUserComponent implements OnInit {
     });
   }
   GetUserEditData(data): UserModel {
-    
+
     const userdata = new UserModel();
     const userTypeData = this.userTypeOption.filter(x => x.id == data.userTypeRole);
     userdata.id = data.id;
@@ -123,8 +134,8 @@ export class EditUserComponent implements OnInit {
     userdata.addressLine1 = data.addressLine1;
     userdata.addressLine2 = data.addressLine2;
     userdata.email = data.email;
-    
-    userdata.password=data.password;
+
+    userdata.password = data.password;
     userdata.mobileNumber = data.mobileNumber;
     userdata.roles = [
       {
@@ -145,6 +156,13 @@ export class EditUserComponent implements OnInit {
       statusId: data.status,
       statusName: data.statusName
     };
+    debugger
+    userdata.institution = {
+      id:data.institutionId
+    };
+    userdata.branch = {
+      id:data.branchId
+    };
     userdata.userType = {
       id: userTypeData[0].id,
       name: userTypeData[0].text
@@ -154,7 +172,6 @@ export class EditUserComponent implements OnInit {
     return userdata;
   }
   createForm(user) {
-    
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],
@@ -163,7 +180,7 @@ export class EditUserComponent implements OnInit {
         user == null ? null : user.organization,
         Validators.nullValidator
       ],
-     
+
       addressLine1: [
         (user == null || user.address == null) ? null : user.address.address1,
         Validators.required
@@ -190,7 +207,10 @@ export class EditUserComponent implements OnInit {
       status: [user == null ? 1 : user.statusId],
       statusName: [user == null ? 1 : user.status],
       userTypeRole: [user == null ? 1 : user.userType.id],
-      branchName: [user == null ? 1 : user.branchName],
+      branchId: [user == null ? null : user.branchId],
+      branchName: [user == null ? null : user.branchName],
+      institutionId: [user == null ? null : user.institutionId],
+      institutionName: [user == null ? null : user.institutionName],
     });
     this.userTypeRole = user == null ? 1 : user.userType.id;
     this.roleValue = user == null ? 1 : user.roleId;
