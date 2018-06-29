@@ -188,7 +188,6 @@ export class AddUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args) {
-    debugger
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
   

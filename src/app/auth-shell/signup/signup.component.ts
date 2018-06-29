@@ -217,7 +217,6 @@ subscriptionId:number;
     this.authService.signup(signUpDetails).subscribe(
 
       result => {
-        debugger
         if(result.body.httpCode==200)
         {
           this.loading = false;
