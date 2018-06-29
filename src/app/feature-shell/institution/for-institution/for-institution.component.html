@@ -23,6 +23,7 @@
                 </div>
               </div>
               <div class="col-sm-2">
+                  <i class="fa fa-institution" style="position: fixed;margin-top: 8px;margin-left: 3px;"></i>
                 <app-custom-single-select *ngIf="institutionConfig" [data]="arInstitution" [config]="institutionConfig" (valueChanged)="changeInstitution($event)"></app-custom-single-select>
               </div>
 
@@ -42,7 +43,7 @@
               </div>
 
             </div>
-            
+
             <app-data-table [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
               [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" (rowClickShowCalendar)="onShowCalendar($event)">
