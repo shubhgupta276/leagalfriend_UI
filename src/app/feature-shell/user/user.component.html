@@ -99,7 +99,7 @@ label::before {
   </div>
   <app-add-user (userAdded)="addUserToList($event)" [Status]="userStatus" [Roles]="userRoles" [institutions]="institutions" [Branches]="Branches"></app-add-user>
 
-  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [tableInputData]="tableInputData" [Branches]="Branches"></app-edit-user>
+  <app-edit-user [Roles]="userRoles" [Status]="userStatus" [tableInputData]="tableInputData" [institutions]="institutions" [Branches]="Branches"></app-edit-user>
   <!-- /.content -->
 </div>
 
