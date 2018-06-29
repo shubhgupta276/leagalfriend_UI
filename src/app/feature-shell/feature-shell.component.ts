@@ -146,7 +146,6 @@ export class FeatureShellComponent implements OnInit {
         else {
           $("#flash").hide();
         }
-debugger
         $this.userDetails.Name = data.firstName + " " + data.lastName;
         $this.permissionsService.loadPermissions([data.roles[0].roleName]);
         localStorage.setItem("userRole", data.roles[0].roleName);

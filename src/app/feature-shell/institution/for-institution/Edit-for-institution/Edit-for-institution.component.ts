@@ -30,8 +30,7 @@ export class EditForInstitutionComponent implements OnInit {
   isCaseCompletedOpen;
   isFileUploading: boolean = false;
   arCompliances: any[];
-  @ViewChild('inputFileUpload')
-  myFileUpload: any;
+  @ViewChild('inputFileUpload') myFileUpload: any;
   isPageLoad: boolean = true;
   constructor(
     private fb: FormBuilder,
@@ -109,7 +108,7 @@ export class EditForInstitutionComponent implements OnInit {
       closureDate: obj == null ? null : this._datePipe.transform(obj.closureDate, "yyyy-MM-dd"),
       closureReportingDate: obj == null ? null : this._datePipe.transform(obj.closureReportingDate, "yyyy-MM-dd"),
       completionDate: obj == null ? null : this._datePipe.transform(obj.completionDate, "yyyy-MM-dd"),
-      compliance: obj == null ? false : obj.compliance == false ? this.isCompliance : obj.compliance,
+      compliance: (obj == null) ? false : obj.compliance,
       coolingPeriodNoticeDate: obj == null ? null : obj.coolingPeriodNoticeDate,
       courtCaseId: obj == null ? null : obj.courtCaseId,
       courtName: obj == null ? null : obj.courtName,
@@ -226,6 +225,9 @@ export class EditForInstitutionComponent implements OnInit {
         if (this.isCompliance || this.isCaseComplete) {
           this.disableForm(true);
         }
+        else {
+          this.disableForm(false);
+        }
       }, 10);
     }
   }
@@ -306,6 +308,7 @@ export class EditForInstitutionComponent implements OnInit {
     else {
       this.editForInstitutionForm.enable();
     }
+    this.myFileUpload.nativeElement.disabled = isDisable;
   }
 
   changeCompliance(isChecked) {

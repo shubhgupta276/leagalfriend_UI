@@ -123,7 +123,7 @@ export class ForInstitutionComponent implements OnInit {
 
             $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
                 const isNewHearingDate = $(evt.target).hasClass('newHiringDate');
-                selfnew.updateNewHearingDate($(this).val(), isNewHearingDate);
+                selfnew.updateNewHearingDate($(this), isNewHearingDate);
             });
         });
     }
@@ -178,8 +178,8 @@ export class ForInstitutionComponent implements OnInit {
 
     changeInstitution(data: any) {
         this.InstitutionValue = data;
-        this.resetAllFilter();
         if (!this.isPageLoad) {
+            this.resetAllFilter();
             this.GetAllForIntitution();
         }
     }
@@ -503,7 +503,9 @@ export class ForInstitutionComponent implements OnInit {
         this.newHiringdata = items;
     }
 
-    updateNewHearingDate(date, isNewHearingDate) {
+    updateNewHearingDate(ref, isNewHearingDate) {
+        const date = $(ref).val();
+
         const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
         if (isNewHearingDate) {
             obj.nextHearingDate = this._sharedService.convertStrToDate(date);
@@ -517,6 +519,7 @@ export class ForInstitutionComponent implements OnInit {
             (result) => {
 
                 if (result.status === 200) {
+                    $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 1000).animate({ backgroundColor: '' }, 2000);
                     if (!isNaN(obj.nextHearingDate.getTime())) {
                         obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
                     }

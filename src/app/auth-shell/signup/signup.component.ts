@@ -217,7 +217,10 @@ subscriptionId:number;
     this.authService.signup(signUpDetails).subscribe(
 
       result => {
+<<<<<<< HEAD
         
+=======
+>>>>>>> 553f85c3f4f004e117b42876ea1e2e9f3e83ba69
         if(result.body.httpCode==200)
         {
           this.loading = false;

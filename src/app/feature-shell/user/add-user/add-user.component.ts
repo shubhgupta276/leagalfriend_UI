@@ -199,7 +199,10 @@ export class AddUserComponent implements OnInit {
     this.roleValue = parseInt(arr[1]);
   }
   userTypeRoleChange(args) {
+<<<<<<< HEAD
     
+=======
+>>>>>>> 553f85c3f4f004e117b42876ea1e2e9f3e83ba69
     this.userTypeRole = args.target.options[args.target.selectedIndex];
   }
   

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { debuglog } from 'util';
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
@@ -32,6 +32,7 @@ import { SharedService } from '../../shared/services/shared.service';
 import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
 import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
 import { setTimeout } from 'timers';
+import { CaseHistoryComponent } from './case-history/case-history-component';
 
 const now = new Date();
 
@@ -45,7 +46,7 @@ const now = new Date();
     '../node_modules/ngx-select-dropdown/dist/assets/style.css'
   ],
 })
-export class CaseComponent implements OnInit,OnDestroy {
+export class CaseComponent implements OnInit, OnDestroy {
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
   tableInputData = [];
   columns = caseRunningTableConfig;
@@ -61,7 +62,7 @@ export class CaseComponent implements OnInit,OnDestroy {
   completedTableInputData = [];
   completedColumns = caseCompletedTableConfig;
   @ViewChild('caseCompletedTable') completedDataTableComponent: DataTableComponent;
-
+  @ViewChild(CaseHistoryComponent) historyChild: CaseHistoryComponent;
   runningCaseTabActive: boolean = true;
 
   lstUploadedDocuments: any;
@@ -86,32 +87,31 @@ export class CaseComponent implements OnInit,OnDestroy {
   constructor(private masterTemplateService: MasterTemplateService, private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
-ngOnDestroy()
-{
-  this.branchSubscription.unsubscribe();
-  //this.isLoad=true;
-}
+  ngOnDestroy() {
+    this.branchSubscription.unsubscribe();
+    //this.isLoad=true;
+  }
   ngOnInit() {
-    
+
     this.getCasesData();
     this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
       this.branchData = this._storageService.getBranchData();
-     setTimeout(() => {
-      if (this.branchData) {
-        if (!this.isLoad) {
-          this.getCasesData();
+      setTimeout(() => {
+        if (this.branchData) {
+          if (!this.isLoad) {
+            this.getCasesData();
+          }
+          this.isLoad = false;
         }
-        this.isLoad=false;
-      }
-     }, 10); 
-     
+      }, 10);
+
     });
     // this.getRunningCase();
     this.getRecourse();
     this.setActionConfig();
     this.getBranchDDL();
     this.bindRecourseDDL();
-   // this.bindStageDDL();
+    // this.bindStageDDL();
 
     $('#reservation').daterangepicker({
       autoUpdateInput: false,
@@ -135,17 +135,17 @@ ngOnDestroy()
     this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
   getCasesData() {
-     var $this = this;
+    var $this = this;
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
     };
     this.branchData = this._storageService.getBranchData();
-    
+
     this.tableInputData = [];
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
-        
+
         result.forEach(ele => {
           if (ele.branchName == $this.branchData.branchName) {
             if (ele.completionDate) {
@@ -185,7 +185,7 @@ ngOnDestroy()
       this.authService.getCaseByCaseId(reqData).subscribe(
 
         result => {
-          
+
           $this.editChild.createForm(result);
           $('#caseLi a').click();
 
@@ -223,9 +223,8 @@ ngOnDestroy()
   onRowDoubleClick(c) {
     this.showEditPop(c);
   }
-  onCaseFilterClick(c)
-  {
-    
+  onCaseFilterClick(c) {
+
     $('#filterCaseModal').modal("show");
   }
 
@@ -242,8 +241,10 @@ ngOnDestroy()
   }
 
   onActionBtnClick(event) {
-    if (event.eventType === "history")
+    if (event.eventType === "history") {
       $('#modal-default1').modal('show');
+      this.historyChild.showHistory(event.data);
+    }
     else
       this.showEditPop(event.data);
   }
@@ -398,29 +399,29 @@ ngOnDestroy()
   getRecourse() {
 
     this.recourseConfig = {
-        displayKey: 'recourseName',
-        defaultText: 'All Recourses',
-        defaultTextAdd: true,
-        showIcon: false,
-        hideWhenOneItem: false
+      displayKey: 'recourseName',
+      defaultText: 'All Recourses',
+      defaultTextAdd: true,
+      showIcon: false,
+      hideWhenOneItem: false
     }
 
     this.authService.getResources().subscribe(
-        result => {
-            if (result != null) {
-                this.arRecourse = result.recourses;
-            } else {
-                console.log(result);
-            }
-        },
-        err => {
-            console.log(err);
-            this.arRecourse = [];
-        });
-}
- changeRecourse(data: any) {
-  this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
- }
+      result => {
+        if (result != null) {
+          this.arRecourse = result.recourses;
+        } else {
+          console.log(result);
+        }
+      },
+      err => {
+        console.log(err);
+        this.arRecourse = [];
+      });
+  }
+  changeRecourse(data: any) {
+    this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
+  }
   getUploadedDocuments() {
     this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
   }
