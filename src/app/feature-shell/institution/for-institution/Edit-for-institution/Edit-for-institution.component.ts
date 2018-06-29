@@ -30,8 +30,7 @@ export class EditForInstitutionComponent implements OnInit {
   isCaseCompletedOpen;
   isFileUploading: boolean = false;
   arCompliances: any[];
-  @ViewChild('inputFileUpload')
-  myFileUpload: any;
+  @ViewChild('inputFileUpload') myFileUpload: any;
   isPageLoad: boolean = true;
   constructor(
     private fb: FormBuilder,
@@ -306,6 +305,7 @@ export class EditForInstitutionComponent implements OnInit {
     else {
       this.editForInstitutionForm.enable();
     }
+    this.myFileUpload.nativeElement.disabled = isDisable;
   }
 
   changeCompliance(isChecked) {
