@@ -12,6 +12,7 @@ import { Ng2CompleterModule } from 'ng2-completer';
 import { DataTableModule } from '../../shared/components/data-table/data-table.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
+import { CaseService } from './case.service';
 @NgModule(
     {
         imports: [
@@ -26,7 +27,8 @@ import { SharedModule } from '../../shared/shared.module';
             NgbModule,
             SharedModule
         ],
-        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent ]
+        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent ],
+        providers:[CaseService]
     }
 )
 export class CaseModule {}
