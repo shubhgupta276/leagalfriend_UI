@@ -285,7 +285,7 @@
           <span>Dashboard</span>
         </a>
       </li>
-      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CUSTOMER']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN']">
         <li [routerLinkActive]="['active']">
           <a routerLink="user">
             <i class="fa fa-users"></i>
