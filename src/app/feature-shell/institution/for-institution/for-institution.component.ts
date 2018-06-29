@@ -178,8 +178,8 @@ export class ForInstitutionComponent implements OnInit {
 
     changeInstitution(data: any) {
         this.InstitutionValue = data;
-        this.resetAllFilter();
         if (!this.isPageLoad) {
+            this.resetAllFilter();
             this.GetAllForIntitution();
         }
     }
