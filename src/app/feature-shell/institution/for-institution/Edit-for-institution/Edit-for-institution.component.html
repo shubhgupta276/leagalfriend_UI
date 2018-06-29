@@ -27,7 +27,7 @@
                 <div class="box-body widget-content">
                   <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.value)">
                     <div style="margin-right: 17px;float: right;">
-                      <input type="submit" *ngIf="!isCaseComplete" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
+                      <input type="submit" *ngIf="!isCaseCompletedOpen" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
                       <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
                         value="Update">
                     </div>
@@ -751,7 +751,7 @@
                             </label>
 
                             <div class="col-md-3">
-                              <input #inputFileUpload type="file" formControlName="uploadFile" (change)="uploadFile($event);">
+                              <input #inputFileUpload [disabled]="true" type="file" formControlName="uploadFile" (change)="uploadFile($event);">
                               <img *ngIf="isFileUploading" src="assets/dist/img/file_uploading.gif" height="20" width="20">
                             </div>
 
