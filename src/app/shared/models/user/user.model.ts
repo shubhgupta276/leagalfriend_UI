@@ -28,5 +28,6 @@ export class UserModel {
     showSubscriptionFlash: boolean;
     subscriptionId: number;
     verified: boolean;
-
+    branch: any = [];
+    institution:  any= [];
 }
