@@ -13,13 +13,14 @@ import { FileValidator } from '../../shared/Directives/fileValidator';
 import { SharedModule } from '../../shared/shared.module';
 import { DataTableModule } from '../../shared/components/data-table/data-table.module';
 import { StageService } from '../master/stage/stage.service';
+import { HistoryForInstitutionComponent } from './for-institution/history-for-institution/history-for-institution.component';
 
 
 @NgModule(
     {
         imports: [DataTableModule, InstitutionRoutingModule, CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
         declarations: [ForInstitutionComponent, AgainstInstitutionComponent, AddForInstitutionComponent,
-            EditForInstitutionComponent, FileValueAccessorDirective, FileValidator],
+            HistoryForInstitutionComponent, EditForInstitutionComponent, FileValueAccessorDirective, FileValidator],
         providers: [InstitutionService, StageService, StorageService]
     }
 )

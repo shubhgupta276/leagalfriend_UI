@@ -12,6 +12,7 @@ import { DataTableModule } from '../../../shared/components/data-table/data-tabl
 import { branchTableConfig } from './branch.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
+import { SharedService } from '../../../shared/services/shared.service';
 declare let $;
 
 
@@ -126,7 +127,7 @@ export class BranchComponent implements OnInit {
       AddBranchMasterComponent,
       EditBranchMasterComponent
     ],
-    providers: [BranchService, StorageService]
+    providers: [BranchService, StorageService, SharedService]
   }
 )
 

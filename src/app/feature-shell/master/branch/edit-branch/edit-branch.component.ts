@@ -5,6 +5,7 @@ import { matchValidator } from '../../../../shared/Utility/util-custom.validatio
 import { BranchService } from '../branch.service';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { SelectModule } from 'ng2-select';
+import { SharedService } from '../../../../shared/services/shared.service';
 declare var $;
 
 @Component({
@@ -23,7 +24,9 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
   private disabled: boolean = false;
   citySelected: Array<any> = [];
   selectedCity: any;
-  constructor(private fb: FormBuilder, private _branchService: BranchService, private _storageService: StorageService) {
+  constructor(private fb: FormBuilder, private _branchService: BranchService, 
+    private _sharedService: SharedService,
+    private _storageService: StorageService) {
     this.createForm(null);
   }
 
@@ -32,6 +35,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
     this._branchService.updateBranch(finalData).subscribe(
       result => {
         if (result.body.httpCode === 200) {
+          this._sharedService.setNewAddedBranch(finalData);
           this.BindBranchGridOnEdit(data);
           $.toaster({ priority: 'success', title: 'Success', message: 'Branch updated successfully' });
           this.closeModal();

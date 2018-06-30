@@ -18,6 +18,7 @@ import { forInstitutionTableConfig } from './for-intitution-config';
 import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 import { saveAs } from 'file-saver';
 import { StageService } from '../../master/stage/stage.service';
+import { HistoryForInstitutionComponent } from './history-for-institution/history-for-institution.component';
 declare let $;
 @Component({
     selector: 'app-for-institution',
@@ -59,6 +60,7 @@ export class ForInstitutionComponent implements OnInit {
     isRunningCaseTabOpen: boolean = true;
     queryInstitutionId: any;
     queryRecourseId: any;
+    @ViewChild(HistoryForInstitutionComponent) historyChild: HistoryForInstitutionComponent;
     constructor(private fb: FormBuilder,
         private _router: Router,
         private _institutionService: InstitutionService,
@@ -84,6 +86,7 @@ export class ForInstitutionComponent implements OnInit {
                 this.GetAllForIntitution();
             }
         });
+
         const selfnew = this;
         $($.document).ready(function () {
 
@@ -489,6 +492,10 @@ export class ForInstitutionComponent implements OnInit {
         if (event.eventType === 'edit') {
             this.onRowDoubleClick(event.data);
         }
+        else if (event.eventType === "history") {
+            $('#modal-default1').modal('show');
+            this.historyChild.showHistory(event.data);
+        }
     }
 
     convertDateToDDMMYYYY(dateStr) {
@@ -519,7 +526,7 @@ export class ForInstitutionComponent implements OnInit {
             (result) => {
 
                 if (result.status === 200) {
-                    $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 1000).animate({ backgroundColor: '' }, 2000);
+                    $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 2000);
                     if (!isNaN(obj.nextHearingDate.getTime())) {
                         obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
                     }

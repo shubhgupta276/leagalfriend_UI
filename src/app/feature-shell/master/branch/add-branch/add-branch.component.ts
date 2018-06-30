@@ -5,6 +5,7 @@ import { matchValidator } from '../../../../shared/Utility/util-custom.validatio
 import { BranchService } from '../branch.service';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
+import { SharedService } from '../../../../shared/services/shared.service';
 declare var $;
 
 @Component({
@@ -32,21 +33,23 @@ export class AddBranchMasterComponent implements OnInit {
       contact: [null, Validators.required],
     });
   }
-  constructor(private fb: FormBuilder, private _branchService: BranchService, private _storageService: StorageService) {
+  constructor(private fb: FormBuilder, private _branchService: BranchService,
+    private _sharedService: SharedService, private _storageService: StorageService) {
     this.AddBranchMaster();
   }
 
   submitAddBranchMaster(data) {
     const finalData = this.GetBranchData(data);
-
     this._branchService.addBranch(finalData).subscribe(
       result => {
-        if (result.body.httpCode === 200) {
-          $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
-          this.BindBranchGridOnAdd(data, result.body.id);
+        result = result.body;
+        if (result.httpCode === 200) {
+          this._sharedService.setNewAddedBranch(data);
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+          this.BindBranchGridOnAdd(data, result.id);
           this.dataTableComponent.ngOnInit();
         } else {
-          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
         }
       },
       err => {
@@ -57,6 +60,7 @@ export class AddBranchMasterComponent implements OnInit {
     this.closeModal();
     this.subscriberFields();
   }
+
   GetBranchData(data): any {
     this.finalData = {};
     this.finalData.branchAddress = data.address;
@@ -68,6 +72,7 @@ export class AddBranchMasterComponent implements OnInit {
     this.finalData.userId = this._storageService.getUserId();
     return this.finalData;
   }
+
   BindBranchGridOnAdd(data, id) {
     this.finalData = {};
     this.finalData.branchName = data.branchname;
@@ -80,6 +85,7 @@ export class AddBranchMasterComponent implements OnInit {
     this.tableInputData.push(this.finalData);
 
   }
+
   closeModal() {
     $('#closebtn').click();
   }
@@ -87,6 +93,7 @@ export class AddBranchMasterComponent implements OnInit {
   ngOnInit() {
     this.subscriberFields();
   }
+
   subscriberFields() {
     // this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
     //   (e) => {
@@ -98,6 +105,7 @@ export class AddBranchMasterComponent implements OnInit {
     //   }
     // );
   }
+
   private get disabledV(): string {
     return this._disabledV;
   }
@@ -111,7 +119,6 @@ export class AddBranchMasterComponent implements OnInit {
     console.log('Selected value is: ', value);
   }
 
-
   public removed(value: any): void {
     console.log('Removed value is: ', value);
   }
@@ -123,6 +130,7 @@ export class AddBranchMasterComponent implements OnInit {
   public refreshValue(value: any): void {
     this.value = value;
   }
+
   public selectedCity1(value: any): void {
     this.selectedCity = value;
   }

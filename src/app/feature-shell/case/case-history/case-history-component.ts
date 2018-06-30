@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Console } from '@angular/core/src/console';
@@ -6,21 +6,24 @@ import { AuthService } from '../../../auth-shell/auth-shell.service';
 import { debounce } from 'rxjs/operators/debounce';
 import { Input } from '@angular/core/src/metadata/directives';
 import { CaseService } from '../case.service';
+import { SharedService } from '../../../shared/services/shared.service';
 declare var $;
 
 @Component({
   selector: 'app-history-case',
   templateUrl: '../case-history/case-history.component.html',
+  styleUrls: ['../case-history/case-history-component.css'],
   providers: [AuthService]
 })
 export class CaseHistoryComponent implements OnInit {
   myDocument: File;
-  htmlToAdd: string;
-  arHistoryData: any = [];
+  @ViewChild('inputFileUpload') myFileUpload: any;
+  arHistoryData: any[] = [];
+  arHistoryFields: any[] = [];
   caseData: any;
   public caseHistoryForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _caseService: CaseService, ) {
+  constructor(private fb: FormBuilder, private _caseService: CaseService, private _sharedService: SharedService) {
     this.creatForm();
   }
 
@@ -28,14 +31,16 @@ export class CaseHistoryComponent implements OnInit {
     this.caseHistoryForm = this.fb.group({
       remarks: [null, Validators.required]
     });
+    this.myDocument = null;
   }
 
   ngOnInit() {
+    this.setShowFieldArray();
     $(document).ready(function () {
+
       $("#dvHistory").click(function () {
         $("#dvHistoryRemark").toggle("Slow");
         if ($("#dvHistory").find("span").hasClass("glyphicon-plus")) {
-
           $("#dvHistory").find("span.clssign").addClass("glyphicon-minus");
           $("#dvHistory").find("span.clssign").removeClass("glyphicon-plus");
         }
@@ -60,6 +65,21 @@ export class CaseHistoryComponent implements OnInit {
         }
       });
     });
+  }
+
+  showHideToggleIcon($event) {
+    let $child = $($event.target);
+    if (!$child.hasClass('clssign')) {
+      $child = $child.find('.clssign');
+    }
+    if ($child.hasClass('glyphicon-plus')) {
+      $child.removeClass("glyphicon-plus");
+      $child.addClass("glyphicon-minus");
+    }
+    else {
+      $child.removeClass("glyphicon-minus");
+      $child.addClass("glyphicon-plus");
+    }
   }
 
   onFileChange(event) {
@@ -89,11 +109,63 @@ export class CaseHistoryComponent implements OnInit {
       });
   }
 
+  setShowFieldArray() {
+    this.arHistoryFields.push(
+      { id: 'stage', name: 'Stage', },
+      { id: 'lastHearingDate', name: 'Last Hearing Date' },
+      { id: 'nextHearingDate', name: 'Next Hearing Date' },
+      { id: 'groundForClosingFile', name: 'Ground For Closing File' },
+    );
+  }
+
   showHistory(data) {
+    this.myFileUpload.nativeElement.value = '';
+
+    this.creatForm();
+    this.arHistoryData = [];
     this.caseData = data;
+    const $this = this;
     this._caseService.getHistory(data.id).subscribe(
       (result) => {
-        this.arHistoryData = result;
+        let arDates = [];
+        let arDateWiseData = []
+        if (result && result.length > 0) {
+          result = $this._sharedService.reverseArray(result);
+          result.forEach(function (data, index) { // get all distinct dates & fill date wise data
+            const date = $this._sharedService.convertDateToStr(data.revTimeStamp);
+            if (arDates.indexOf(date) < 0) {
+              arDates.push(date);
+              arDateWiseData[date] = [];
+            }
+            arDateWiseData[date].push(data);
+          });
+
+          arDates.forEach(function (date) {
+
+            const arDateHistory = arDateWiseData[date];
+            arDateHistory.forEach(function (data, index) {
+
+              $this.arHistoryFields.forEach(function (fieldData) {
+                const newValue = data[fieldData.id];
+                let previousValue = "";
+                if (arDateHistory[index + 1]) {
+                  previousValue = arDateHistory[index + 1][fieldData.id];
+                }
+
+                if (newValue != previousValue && index != arDateHistory.length - 1) {
+                  $this.arHistoryData.push({
+                    fieldName: fieldData.name,
+                    date: date,
+                    dateTime: data.revTimeStamp,
+                    user: '',
+                    newValue: newValue,
+                    preValue: previousValue, remark: data.remark
+                  });
+                }
+              });
+            });
+          });
+        }
       },
       err => {
         console.log(err);
