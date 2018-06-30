@@ -145,7 +145,7 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
-
+debugger
         result.forEach(ele => {
           if (ele.branchName == $this.branchData.branchName) {
             if (ele.completionDate) {
