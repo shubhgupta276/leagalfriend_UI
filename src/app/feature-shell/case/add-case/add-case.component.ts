@@ -111,7 +111,7 @@ export class AddCaseComponent implements OnInit {
       court: [null, Validators.required],
       state: [null, Validators.required],
       parentCase: [null],
-      nextHearingDate: [null, Validators.required],
+      nextHearingDate: [null],
       customerName: [null, Validators.required],
       remark: [null, Validators.required],
       branch: [null, Validators.required],
@@ -121,7 +121,7 @@ export class AddCaseComponent implements OnInit {
       courtplace: [null, Validators.required],
       oppLawyer: [],
       childCase: [],
-      lastHearingDate: [null, Validators.required],
+      lastHearingDate: [null],
       uploadDocument: [],
     });
   }

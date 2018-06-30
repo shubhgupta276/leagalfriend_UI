@@ -8,6 +8,8 @@ import { UserModel } from '../../../shared/models/user/user.model';
 import { StatusModel } from '../../../shared/models/auth/status.model';
 import { RoleModel } from '../../../shared/models/auth/role.model';
 import { SharedService } from '../../../shared/services/shared.service';
+import { ChangePassword } from '../../../shared/models/auth/changepassword.model';
+import { StorageService } from '../../../shared/services/storage.service';
 declare var $;
 
 @Component({
@@ -18,6 +20,7 @@ declare var $;
 })
 export class EditUserComponent implements OnInit {
   editForm: FormGroup;
+  public changePasswordForm: FormGroup;
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
   @Input() tableInputData: any;
@@ -36,8 +39,12 @@ export class EditUserComponent implements OnInit {
   ]
   @Input() Branches = [];
   @Input() institutions = [];
-  constructor(private userService: UserService, private fb: FormBuilder, private _sharedService: SharedService) {
+  constructor(private userService: UserService, private fb: FormBuilder, private _sharedService: SharedService,private _storageService: StorageService) {
     this.createForm(null);
+    this.changePasswordForm = fb.group({
+      newPassword: [null, Validators.required],
+      confirmPassword: [null, Validators.required]
+  });
   }
   ngOnInit() {
   }
@@ -54,7 +61,7 @@ export class EditUserComponent implements OnInit {
   }
   userTypeRoleChange(args) {
     var arr = args.target.value.split(':');
-    debugger
+    
     this.userTypeRole = parseInt(arr[1]);
    
   }
@@ -66,7 +73,7 @@ export class EditUserComponent implements OnInit {
     if (this.isRoleChange) {
       data.roles = this.selectedRole;
     }
-debugger
+
     const finalData = this.GetUserEditData(data);
     // if(finalData.roles[0].roleName=='Admin' || finalData.roles[0].roleName=='EMPLOYEE' || finalData.roles[0].roleName=='MANAGER')
     // {
@@ -75,7 +82,7 @@ debugger
     // }
     this.userService.editUser(finalData).subscribe(
       result => {
-debugger
+
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
           this.BindGridOnEdit(data);
@@ -179,7 +186,7 @@ debugger
     return userdata;
   }
   createForm(user) {
-    debugger
+    
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],
@@ -254,6 +261,34 @@ debugger
       }
     );
   }
+  changepassword()
+  {
+    $('#changePasswordPopUp').modal('show');
+    $('#editUserModal').modal('hide');
+  }
+  changeUserPassword(data) {
+    
+    const changepassworddetails = new ChangePassword();
+     var userId=this._storageService.getUserId();
+     changepassworddetails.userId = parseInt(userId);
+    // changepassworddetails.oldPassword = data.newPassword;
+    changepassworddetails.password = data.confirmPassword;
+    this.userService.changepassword(changepassworddetails).subscribe(
 
+        result => {
+          
+            if (result.body.httpCode === 200) {
+                $.toaster({ priority: 'success', title: 'Success', message: 'Password Updated Successfully' });
+                $('#changePasswordPopUp').modal('hide');
+              } else {
+                $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+              }
+           
+
+        },
+        err => {
+            console.log(err);
+        });
+}
 
 }

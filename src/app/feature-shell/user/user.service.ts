@@ -7,7 +7,7 @@ import { addUser, editUser, listUsers, listRoles, listStatus, getUser } from './
 import { UserModel } from '../../shared/models/user/user.model';
 import { RoleModel } from '../../shared/models/auth/role.model';
 import { StatusModel } from '../../shared/models/auth/status.model';
-
+import { ChangePassword } from "../../shared/models/auth/changepassword.model";
 
 @Injectable()
 export class UserService {
@@ -36,4 +36,11 @@ export class UserService {
     getUser(userId: string): Observable<UserModel> {
         return this.apiGateWay.get<UserModel>(getUser + userId);
     }
+    changepassword(customerData: ChangePassword): Observable<any> {
+
+        return this.apiGateWay.post<ChangePassword>(
+          'usermanagement/changePassword',
+          JSON.stringify(customerData)
+        );
+      }
 }

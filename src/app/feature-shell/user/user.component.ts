@@ -115,6 +115,7 @@ export class UserComponent implements OnInit {
     this.userService.listRoles().subscribe(
       result => {
         result.forEach(function (value){
+          
           if(result[0].roleName =='ADMIN')
          {
            

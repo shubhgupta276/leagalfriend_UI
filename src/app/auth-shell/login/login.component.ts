@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = fb.group({
       email: [null, Validators.required],
       password: [null, Validators.required],
+      clientId:[],
       isRemember: []
     });
   }
@@ -104,7 +105,7 @@ export class LoginComponent implements OnInit {
 
    forgotPassword(){}
   getCustomer(a) {
-    
+    debugger
     if(a.length>0){
       this.Customer=[];
       const $this = this;
@@ -122,10 +123,11 @@ export class LoginComponent implements OnInit {
     
   }
   login(data) {
+    debugger
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;
-    
+    loginDetails.clientId=data.clientId;
     this.authService.login(loginDetails).subscribe(
       result => {
         this._login = result;

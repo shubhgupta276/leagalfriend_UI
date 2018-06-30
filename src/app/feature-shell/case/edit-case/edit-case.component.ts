@@ -287,7 +287,7 @@ export class EditCaseComponent implements OnInit {
     }
     this.editCaseForm = this.fb.group({
 
-      caseId: [c == null ? null : c.id, Validators.required],
+      caseId: [c == null ? null : c.caseId, Validators.required],
 
       courtCaseId: [c == null ? null : c.courtCaseId],
       recourse: [c == null ? null : c.recourseId],
@@ -398,7 +398,7 @@ export class EditCaseComponent implements OnInit {
     this.editCaseForm = this.fb.group({
 
 
-      caseId: [c == null ? null : c[0].legalCase.id, Validators.required],
+      caseId: [c == null ? null : c[0].legalCase.caseId, Validators.required],
 
       courtCaseId: [c == null ? null : c[0].legalCase.courtCaseId],
       recourse: [c == null ? null : c.recourseId],
