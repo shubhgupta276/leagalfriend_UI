@@ -54,26 +54,31 @@ const featureShellRoutes: Routes = [
             { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },
             { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },
             { path: 'wallet', loadChildren: 'app/feature-shell/wallet/wallet.module#WalletModule' },
-            { path: 'dashboard', loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule' },
-            {
-                path: 'calendar', component: CalendarComponent, canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
-                    }
-                },
-            },
-            { path: 'employeeactive', component: EmployeeActiveComponent },
-            { path: '', redirectTo: 'user', pathMatch: 'full' },
-            {
-                path: 'invoices', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule', canActivate: [NgxPermissionsGuard],
-                data: {
-                    permissions: {
-                        only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
-                    }
-                },
-            },
-        ]
+            { path: 'dashboard', loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule', canActivate: [NgxPermissionsGuard],
+            data: {
+                permissions: {
+                    only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
+                }
+            }, },
+    {
+        path: 'calendar', component: CalendarComponent, canActivate: [NgxPermissionsGuard],
+        data: {
+            permissions: {
+                only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
+            }
+        },
+    },
+    { path: 'employeeactive', component: EmployeeActiveComponent },
+    { path: '', redirectTo: 'user', pathMatch: 'full' },
+    {
+        path: 'invoices', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule', canActivate: [NgxPermissionsGuard],
+        data: {
+            permissions: {
+                only: ['ADMIN', 'MANAGER']
+            }
+        },
+    },
+]
     },
 
 ];
@@ -85,6 +90,7 @@ const featureShellRoutes: Routes = [
 export class FeatureShellRoutingModule {
 
     constructor(private permissionsService: NgxPermissionsService) {
-        this.permissionsService.loadPermissions([localStorage.getItem("userRole")]);
+        this.permissionsService.loadPermissions([localStorage.getItem('userRole')]);
+        this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
     }
 }

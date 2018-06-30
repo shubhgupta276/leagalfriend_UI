@@ -91,7 +91,6 @@ export class AddUserComponent implements OnInit {
     userDetails.institution = {
       id: data.institutions,
     };
-    debugger
     if (this.userTypeRole === undefined || this.userTypeRole == null) {
       userDetails.userType = {
         id: 2,

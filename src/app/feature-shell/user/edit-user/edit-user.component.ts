@@ -54,7 +54,6 @@ export class EditUserComponent implements OnInit {
   }
   userTypeRoleChange(args) {
     var arr = args.target.value.split(':');
-    debugger
     this.userTypeRole = parseInt(arr[1]);
    
   }
@@ -66,7 +65,6 @@ export class EditUserComponent implements OnInit {
     if (this.isRoleChange) {
       data.roles = this.selectedRole;
     }
-debugger
     const finalData = this.GetUserEditData(data);
     // if(finalData.roles[0].roleName=='Admin' || finalData.roles[0].roleName=='EMPLOYEE' || finalData.roles[0].roleName=='MANAGER')
     // {
@@ -75,7 +73,6 @@ debugger
     // }
     this.userService.editUser(finalData).subscribe(
       result => {
-debugger
         if (result.body.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
           this.BindGridOnEdit(data);
@@ -179,7 +176,6 @@ debugger
     return userdata;
   }
   createForm(user) {
-    debugger
     this.editForm = this.fb.group({
       id: [user == null ? null : user.id],
       firstName: [user == null ? null : user.firstName, Validators.required],

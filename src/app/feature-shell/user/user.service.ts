@@ -33,7 +33,7 @@ export class UserService {
     listStatus(): Observable<StatusModel[]> {
         return this.apiGateWay.get<StatusModel[]>(listStatus);
     }
-    getUser(userId: string): Observable<UserModel> {
-        return this.apiGateWay.get<UserModel>(getUser + userId);
+    getUser(userId: string): Observable<any> {
+        return this.apiGateWay.get<any>(getUser + userId);
     }
 }
