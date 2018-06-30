@@ -82,9 +82,9 @@
         </div>
         <div class="form-group" *ngIf="Customer.length > 1">
 
-            <select formControlName="customer" class="form-control">
+            <select  class="form-control" >
                 <option *ngFor="let option of Customer" [ngValue]="option.clientId">
-                    {{ option.firstName }}
+                    {{ option.organization }}
                 </option>
             </select>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
