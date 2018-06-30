@@ -110,10 +110,18 @@ export class UserComponent implements OnInit {
   }
 
   setRoles() {
-    this.userRoles = [];
+    var $this = this
+    $this.userRoles = [];
     this.userService.listRoles().subscribe(
       result => {
-        this.userRoles = result;
+        result.forEach(function (value){
+          if(result[0].roleName =='ADMIN')
+         {
+           
+          $this.userRoles = result;
+         }
+        });
+        
       },
       err => {
         console.log(err);

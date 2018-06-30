@@ -112,14 +112,14 @@
                           </small>
                         </div>
                       </div>
-                      <div class="form-group row">
+                      <!-- <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Password:
                           <em class="astrick">*</em>
                         </label>
                         <div class="col-md-9">
                           <input class="form-control" placeholder="Password" formControlName="password">
                         </div>
-                      </div>
+                      </div> -->
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Mobile No:
                           <em class="astrick">*</em>
@@ -152,7 +152,7 @@
                               </option>
                             </select>
                           </div>
-                          <div class="col-sm-4" style="padding-left:0px;">
+                          <div class="col-sm-4" style="padding-left:0px;" *ngIf="roleValue==3 && userTypeRole == 2">
                             <select formControlName="institutionId" class="form-control">
                               <option *ngFor="let option of institutions" [ngValue]="option.id">
                                 {{ option.institutionName }}
@@ -198,6 +198,7 @@
                   </div>
                 </div>
                 <div class="modal-footer modal-footer-addedit">
+                    <a  data-dismiss="modal" data-toggle="modal" data-target="#changePasswordPopUp" class="btn btn-modal-addedit">Change Password</a>
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   <button type="submit" [disabled]="editForm.invalid" class="btn btn-modal-addedit">Submit</button>
                 </div>
@@ -219,3 +220,80 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+
+
+<div class="modal fade" id="changePasswordPopUpgg">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border-radius: 5px;">
+        <div class="modal-header modal-header-addedit">
+          <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Edit User</h4>
+        </div>
+        <div style="width:120px;height:10%;background-color:black;"></div>
+        <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+          <!-- Edit User Starts -->
+          <div class="row">
+            <!-- <div class="col-md-12"> -->
+            <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+            <div>
+              <div class="box-body widget-content">
+                <form [formGroup]="editForm" class="form-horizontal" (ngSubmit)="submitEditUser(editForm.value)">
+                  <input type="hidden" formControlName="id">
+                  <div class="form-body">
+                    <div class="tab-content">
+                      <div class="tab-pane active">
+  
+                     
+                        
+                        <div class="form-group row" style="display: none">
+                          <label class="col-sm-3 col-form-label createUserLabel">Organisation:
+                            <em class="astrick">*</em>
+                          </label>
+                          <div class="col-md-9" [class.has-error]="editForm.get('organisation').invalid &&  editForm.get('organisation').touched">
+                            <input class="form-control" placeholder="Organisation" formControlName="organisation">
+                          </div>
+                          <div class="col-sm-9 valodation-padding" *ngIf="editForm.get('organisation').invalid &&  editForm.get('organisation').touched">
+                            <small class="text-danger">
+                              <span>Organisation is required.</span>
+                            </small>
+                          </div>
+                        </div>
+                    
+  
+                        <div class="form-group row">
+                          <div class="col-md-4">
+                            <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+                        Submit
+                        <i class="m-icon-swapright m-icon-white"></i>
+                      </button> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer modal-footer-addedit">
+                      <button type="submit" class="btn btn-modal-addedit">Change Password</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+          <!-- Create User ends -->
+        </div>
+        <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Submit</button>
+            
+          </div> -->
+  
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
