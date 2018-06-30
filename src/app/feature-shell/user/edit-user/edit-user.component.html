@@ -152,7 +152,7 @@
                               </option>
                             </select>
                           </div>
-                          <div class="col-sm-4" style="padding-left:0px;" *ngIf="roleValue==3 && userTypeRole == '2'">
+                          <div class="col-sm-4" style="padding-left:0px;" *ngIf="roleValue==3 && userTypeRole == 2">
                             <select formControlName="institutionId" class="form-control">
                               <option *ngFor="let option of institutions" [ngValue]="option.id">
                                 {{ option.institutionName }}
