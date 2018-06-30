@@ -78,7 +78,7 @@
 
     <!-- Navbar Right Menu -->
     <div class="navbar-custom-menu">
-      <div class='pm-button' style="float: left;" id=flash>
+      <div class='pm-button' style="float: left;" id=flash *ngIf="showFlash">
         <span class="blink_me" style="color:red;"> Subscription is going to end on {{subscriptionEndDate.subscriptionEndDate}}</span>
         <a href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>
           <img src='https://www.payumoney.com/media/images/payby_payumoney/new_buttons/21.png' />
@@ -360,7 +360,7 @@
           </ul>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CUSTOMER']">
+      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CLIENT']">
         <li [routerLinkActive]="['active']">
           <a routerLink="billing">
             <i class="fa fa-dollar"></i>
@@ -368,7 +368,7 @@
           </a>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['CUSTOMER']">
+      <ng-template [ngxPermissionsExcept]="['CLIENT']">
         <li class="treeview" [routerLinkActive]="['active']">
           <a (click)="showinstitutionalmenu()">
             <i class="fa fa-institution"></i>
@@ -389,7 +389,7 @@
           </ul>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CUSTOMER']">
+      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CLIENT']">
         <li [routerLinkActive]="['active']">
           <a routerLink="invoices">
             <i class="glyphicon glyphicon-file"></i>
@@ -397,7 +397,7 @@
           </a>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['CUSTOMER']">
+      <ng-template [ngxPermissionsExcept]="['CLIENT']">
         <li [routerLinkActive]="['active']">
           <a routerLink="calendar">
             <i class="fa fa-calendar"></i>
