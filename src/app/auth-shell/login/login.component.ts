@@ -104,17 +104,18 @@ export class LoginComponent implements OnInit {
 
    forgotPassword(){}
   getCustomer(a) {
+    
     if(a.length>0){
+      this.Customer=[];
       const $this = this;
       this.authService.checkUserClient(a).subscribe(
         result => {
-          
-         if(result.clientId!=null)
-         {
+          debugger
+        
             result.forEach(function (value) {
               $this.Customer.push(value);
             });
-          }
+          
          
         });
     }
