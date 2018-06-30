@@ -37,7 +37,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {    
     var $this = this;
     this.bindCity();
-    this.CheckBranchPopup();
+    if (localStorage.getItem('userRole') === 'ADMIN') {
+      this.CheckBranchPopup();
+    }
     this.DailyChart(null, null);
     this.CustomerChart(null, null);
     this.CaseChart(null, null);

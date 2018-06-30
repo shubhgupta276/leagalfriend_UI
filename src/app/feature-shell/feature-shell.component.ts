@@ -17,6 +17,7 @@ declare let Zone: any;
 })
 export class FeatureShellComponent implements OnInit {
   totalUpcomingEvents = 4;
+  showFlash = false;
   arrTodayEvents = [];
   arBranches = [];
   branchConfig: any;
@@ -140,11 +141,10 @@ export class FeatureShellComponent implements OnInit {
     this.userService.getUser(client).subscribe(
       data => {
 
-        if (data.showSubscriptionFlash == true) {
-          $("#flash").show();
-        }
-        else {
-          $("#flash").hide();
+        if (data.showSubscriptionFlash) {
+          this.showFlash = true;
+        }else {
+          this.showFlash = false;
         }
         $this.userDetails.Name = data.firstName + " " + data.lastName;
         $this.permissionsService.loadPermissions([data.roles[0].roleName]);
