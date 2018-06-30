@@ -1,0 +1,119 @@
+<div class="modal fade" id="modal-default1">
+    <div class="modal-dialog" style="width:700px;">
+      <div class="modal-content" style="border-radius: 5px;">
+        <div class="modal-header modal-header-addedit">
+          <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Case History</h4>
+        </div>
+        <div style="height:10%;background-color:black;"></div>
+        <div style="margin: -15px -15px 0px -15px" class="modal-body modal-body-adedit">
+          <div style="margin-left:0px;margin-bottom:-50px;">
+            <section class="content-header">
+              <div class="panel panel-default">
+                <div class="panel-headingCaseHistory" style="font-size:16px;" id="dvHistory">Add Remark
+                  <span style="font-size:13px;" id="spnplusminus" class="glyphicon glyphicon-plus clssign"></span>
+                </div>
+                <div class="panel-body" id="dvHistoryRemark" style="display:none;">
+                  <form [formGroup]="caseHistoryForm" class="form-horizontal" (ngSubmit)="SubmitRemarks(caseHistoryForm.value)">
+                    <div class="form-wizard">
+                      <div class="form-body">
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="tab1">
+                            <div class="form-group row">
+                              <label class="col-sm-3 col-form-label createUserLabel">Remark:
+                                <em class="astrick">*</em>
+                              </label>
+                              <div class="col-md-9" [class.has-error]="caseHistoryForm.get('remarks').invalid && 
+                                caseHistoryForm.get('remarks').touched">
+                                <textarea class="form-control" name="CASE_HISTORY" id="CASE_HISTORY" cols="75" formControlName="remarks"></textarea >
+                                </div>
+                               
+                              </div>
+                              <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label createUserLabel">Upload File:
+                                      <em class="astrick">*</em>
+                                  </label>
+                                  <div class="col-md-9">
+                                      <input type="file" #inputFileUpload (change)="onFileChange($event)">
+                                  </div>
+                                 
+                                </div>
+                    
+                    <div class="form-group" >
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-8" style="padding-left:5px;">
+                          
+                          <button type="submit" style="margin-right: 3px !important;" [disabled]="caseHistoryForm.invalid || !myDocument" name="submit" value="submit" class="btn green button-submit btn-modal-addedit" onclick="return historyvalidation();"> Save <i class="m-icon-swapright m-icon-white"></i> </button>&nbsp;
+                                            <a href="" type="button" data-dismiss="modal" class="btn btn-default">Cancel</a>
+                            </div>
+                      </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+          </div>
+        </section>
+        <section class="content skin-blue">
+         <div style="margin-bottom: -15px;margin-top: -15px;font-size:16px;" class="panel-headingCaseHistory">Case History</div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+        
+                <ul class="timeline case-timeline" id="accordion">
+                  <ng-container *ngFor="let item of arHistoryData;let i=index">
+                    <li (click)="showHideToggleIcon($event)" class="time-label bg-red bg-case-li toggleCaseHistory" data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+i">
+                   {{item.date}} &nbsp;&nbsp;|<span class="casehistorySpan">{{item.fieldName}}</span >
+                    <span (click)="showHideToggleIcon($event)" style="font-size:13px;" class="glyphicon glyphicon-plus clssign"></span>
+                    </li>
+                    
+                    <li [attr.id]="'collapse'+i" class="panel-collapse collapse clsListDetails">
+                        <div class="casehistoryDetails">
+                          <table>
+                            <tr>
+                              <td style="width: 100px;" > <b>New Value: </b></td>
+                              <td>{{item.newValue}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px;"><b>Prev Value:  </b></td>
+                                <td>{{item.preValue}}</td>
+                            </tr>
+                              <tr>
+                                  <td style="width: 100px;"> <b>User:</b> </td>
+                                  <td>{{item.user}}</td>
+                              </tr>
+                                <tr>
+                                    <td style="width: 100px;"><b>Remark:</b></td>
+                                    <td>{{item.remark}}</td>
+                                </tr>
+                          </table>
+                          </div>
+                          <!-- <div class="caseHistoryDownloadbtn img-responsive">
+                              <a style="margin-top: 10px;" class="btn btn-default btn-xs">Download</a>
+                          </div> -->
+                         
+                        </li>
+                  </ng-container>
+        
+                  <!-- END timeline item -->
+                </ul>
+               
+              </div>
+             
+              <!-- /.col -->
+            </div>
+          </div>
+        
+        </section>
+        <!-- /.content -->
+      </div>
+    </div>
+   </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+    </div>

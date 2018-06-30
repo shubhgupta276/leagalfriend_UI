@@ -5,13 +5,14 @@ import Chart from 'chart.js';
 import { BranchService } from '../master/branch/branch.service';
 import { InstitutionService } from '../master/institution/institution.service';
 import { CityService } from '../master/city/city.service';
+import { SharedService } from '../../shared/services/shared.service';
 declare let $;
 // declare var Chart: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [BranchService, InstitutionService, CityService]
+  providers: [BranchService, InstitutionService, CityService, SharedService]
 })
 export class DashboardComponent implements OnInit {
   arrMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
