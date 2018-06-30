@@ -5,6 +5,7 @@ import Chart from 'chart.js';
 import { BranchService } from '../master/branch/branch.service';
 import { InstitutionService } from '../master/institution/institution.service';
 import { CityService } from '../master/city/city.service';
+import { UserService } from '../user/user.service';
 declare let $;
 // declare var Chart: any;
 @Component({
@@ -32,14 +33,22 @@ export class DashboardComponent implements OnInit {
   branchPopupBody: string;
   isNoBranch = false;
   isNoInsitituion = false;
-  constructor(private _branchService: BranchService, private _institutionService: InstitutionService, private _cityService: CityService) { }
+  constructor(private userService: UserService, 
+    private _branchService: BranchService, private _institutionService: InstitutionService, private _cityService: CityService) {
+   }
 
   ngOnInit() {    
     var $this = this;
     this.bindCity();
-    if (localStorage.getItem('userRole') === 'ADMIN') {
-      this.CheckBranchPopup();
-    }
+    const client = '?userId=' + localStorage.getItem('client_id');
+    this.userService.getUser(client).subscribe(
+      data => {
+        if (data && data.roles[0].roleName === 'ADMIN') {
+          this.CheckBranchPopup();
+        }
+      },
+      error => console.log(error)
+    );
     this.DailyChart(null, null);
     this.CustomerChart(null, null);
     this.CaseChart(null, null);
