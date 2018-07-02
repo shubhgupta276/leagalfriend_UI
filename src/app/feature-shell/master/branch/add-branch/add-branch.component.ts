@@ -15,6 +15,7 @@ declare var $;
 export class AddBranchMasterComponent implements OnInit {
   addBranchMasterForm: FormGroup;
   isBranchcodeAlreadyExists: boolean = false;
+  isBranchnameAlreadyExists: boolean = false;
   finalData: any = {};
   @Input() arCity = [];
   @Input() tableInputData = [];
@@ -95,15 +96,24 @@ export class AddBranchMasterComponent implements OnInit {
   }
 
   subscriberFields() {
-    // this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
-    //   (e) => {
-    //     if (e === 'test') { // right now this is hardcode later it will be checked from service(database)
-    //       this.isBranchcodeAlreadyExists = true;
-    //     } else {
-    //       this.isBranchcodeAlreadyExists = false;
-    //     }
-    //   }
-    // );
+    this.addBranchMasterForm.get('branchcode').valueChanges.subscribe(
+      (e) => {
+        if (this.tableInputData.filter(x => x.branchCode.toUpperCase() === e.toUpperCase()).length > 0) {
+          this.isBranchcodeAlreadyExists = true;
+        } else {
+          this.isBranchcodeAlreadyExists = false;
+        }
+      }
+    );
+    this.addBranchMasterForm.get('branchname').valueChanges.subscribe(
+      (e) => {
+        if (this.tableInputData.filter(x => x.branchName.toUpperCase() === e.toUpperCase()).length > 0) {
+          this.isBranchnameAlreadyExists = true;
+        } else {
+          this.isBranchnameAlreadyExists = false;
+        }
+      }
+    );
   }
 
   private get disabledV(): string {
