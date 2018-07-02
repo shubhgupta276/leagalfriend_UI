@@ -23,7 +23,7 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
   @Input() arRecourse: any[];
   arStage: any[] = [];
   @Input() arStatus: any[];
-  editDetails: Compliance;
+  editDetails: any;
   isComplianceAlreadyExists: boolean = false;
   editComplianceMasterForm: FormGroup;
   selectedRecourse: any;
@@ -51,8 +51,8 @@ export class EditComplianceMasterComponent implements OnInit, OnChanges {
     this.editComplianceMasterForm.get('compliance').valueChanges.subscribe(
       (e) => {
         const fieldValue = e.toUpperCase();
-        if (this.editDetails.compliance.toUpperCase() !== fieldValue
-          && this.tableInputData.filter(x => x.compliance.toUpperCase() === fieldValue).length > 0) {
+        if (this.editDetails.complianceName.toUpperCase() !== fieldValue
+          && this.tableInputData.filter(x => x.complianceName.toUpperCase() === fieldValue).length > 0) {
           this.isComplianceAlreadyExists = true;
         } else {
           this.isComplianceAlreadyExists = false;
