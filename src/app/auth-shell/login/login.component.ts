@@ -105,13 +105,13 @@ export class LoginComponent implements OnInit {
 
    forgotPassword(){}
   getCustomer(a) {
-    debugger
+    
     if(a.length>0){
       this.Customer=[];
       const $this = this;
       this.authService.checkUserClient(a).subscribe(
         result => {
-          debugger
+          
         
             result.forEach(function (value) {
               $this.Customer.push(value);
@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
     
   }
   login(data) {
-    debugger
+    
     const loginDetails = new LoginModel();
     loginDetails.username = data.email;
     loginDetails.password = data.password;

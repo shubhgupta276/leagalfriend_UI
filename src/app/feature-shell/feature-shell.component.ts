@@ -100,7 +100,7 @@ export class FeatureShellComponent implements OnInit {
     this.arBranches = [];
     this._branchService.getBranches().subscribe(
       result => {
-
+debugger
         if (result != null) {
           this.arBranches = result.branches;
 

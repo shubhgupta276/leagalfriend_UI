@@ -140,12 +140,12 @@ export class CaseComponent implements OnInit, OnDestroy {
       userId: this._storageService.getUserId(),
     };
     this.branchData = this._storageService.getBranchData();
-
+debugger
     this.tableInputData = [];
     this.completedTableInputData = [];
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
-debugger
+
         result.forEach(ele => {
           if (ele.branchName == $this.branchData.branchName) {
             if (ele.completionDate) {
