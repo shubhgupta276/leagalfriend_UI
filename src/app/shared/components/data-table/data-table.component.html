@@ -1,7 +1,7 @@
 <div class="example-header" *ngIf="showSearchFilter">
-    <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." (keyup)="applyFilter($event.target.value)">
+    <input type="text" id="txtSearch" class="input-sm custom-search" value="{{searchFilterValue}}" placeholder="Search..." (keyup)="applyFilter($event.target.value)">
 </div>
-
+<div class="clearfix"></div>
 <div class="example-container mat-elevation-z8">
 
     <mat-table [dataSource]="dataSource" matSort (mouseleave)="hideCalendar()">
@@ -36,7 +36,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="moduleName==='Case' && column.uniqueId=='nextHearingDate' "></button>
+                    <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate') "></button>
                 </mat-header-cell>
             </div>
             <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
@@ -45,10 +45,10 @@
                     class="colCalendar">
                     <div class="divNewHire input-group date" style="margin-top: -22px;position: absolute" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                         <input *ngIf="column.uniqueId=='nextHearingDate'" style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE"
-                            readonly="" placeholder="yyyy-mm-dd" class="form-control newHiringDate" size="10" formControlName="nextHearingDate">
+                            readonly="" placeholder="yyyy-mm-dd" class="form-control newHiringDate" size="10" >
 
                         <input *ngIf="column.uniqueId=='previousHearingDate'" style="display:none" type="text" tabindex="14" readonly="" placeholder="yyyy-mm-dd"
-                            class="form-control lastHiringDate" size="10" formControlName="lastHiringDate">
+                            class="form-control lastHiringDate" size="10">
 
                         <div class="input-group-addon" [ngClass]="{'hide': i!=hoveredIndex}" style="background: none; border: none;" (click)="onShowCalendar($event,row)">
                             <span class="fa fa-calendar"></span>
