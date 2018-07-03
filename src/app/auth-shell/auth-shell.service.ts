@@ -248,7 +248,7 @@ export class AuthService {
 
   listUsers(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'usermanagement/listusers' + '?clientId=' + reqData.clientId, null,
+      'usermanagement/employees' + '?clientId=' + reqData.clientId, null,
 
     );
   }

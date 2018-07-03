@@ -91,7 +91,7 @@ export class AddUserComponent implements OnInit {
     userDetails.institution = {
       id: data.institutions,
     };
-    debugger
+    
     if (this.userTypeRole === undefined || this.userTypeRole == null) {
       userDetails.userType = {
         id: 2,
@@ -110,6 +110,7 @@ export class AddUserComponent implements OnInit {
         
         if (result.body.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: 'User added successfully' });
+          window.location.href='./admin/user'
           console.log(result);
           userDetails.id = result.body.id;
           userDetails.showSubscriptionFlash = result.body.showSubscriptionFlash;

@@ -8,7 +8,6 @@ import { UserModel } from '../../../shared/models/user/user.model';
 import { StatusModel } from '../../../shared/models/auth/status.model';
 import { RoleModel } from '../../../shared/models/auth/role.model';
 import { SharedService } from '../../../shared/services/shared.service';
-import { ChangePassword } from '../../../shared/models/auth/changepassword.model';
 import { StorageService } from '../../../shared/services/storage.service';
 declare var $;
 
@@ -24,8 +23,10 @@ export class EditUserComponent implements OnInit {
   @Input() Roles: RoleModel[];
   @Input() Status: StatusModel[];
   @Input() tableInputData: any;
+  @Input()   rowData: any;
   selectedStatus: string;
   selectedRole: string;
+
   isStatusChange: boolean;
   isRoleChange: boolean;
   emailValidationMessage = 'Email address is required.';
@@ -41,10 +42,7 @@ export class EditUserComponent implements OnInit {
   @Input() institutions = [];
   constructor(private userService: UserService, private fb: FormBuilder, private _sharedService: SharedService,private _storageService: StorageService) {
     this.createForm(null);
-    this.changePasswordForm = fb.group({
-      newPassword: [null, Validators.required],
-      confirmPassword: [null, Validators.required]
-  });
+    
   }
   ngOnInit() {
   }
@@ -227,11 +225,12 @@ export class EditUserComponent implements OnInit {
       institutionId: [user == null ? null : user.institutionId],
       institutionName: [user == null ? null : user.institutionName],
     });
+    
     this.userTypeRole = user == null ? 1 : user.userType.id;
     this.roleValue = user == null ? 1 : user.roleId;
-    this.editForm.controls['role'].disable();
-    this.editForm.controls['userTypeRole'].disable();
-    this.editForm.controls['institutionId'].disable();
+    // this.editForm.controls['role'].disable();
+    // this.editForm.controls['userTypeRole'].disable();
+    // this.editForm.controls['institutionId'].disable();
   }
   subscriberFields() {
     this.editForm.get('email').valueChanges.subscribe(
@@ -264,34 +263,12 @@ export class EditUserComponent implements OnInit {
       }
     );
   }
-  changepassword()
-  {
-    $('#changePasswordPopUp').modal('show');
-    $('#editUserModal').modal('hide');
-  }
-  changeUserPassword(data) {
-    
-    const changepassworddetails = new ChangePassword();
-     var userId=this._storageService.getUserId();
-     changepassworddetails.userId = parseInt(userId);
-    // changepassworddetails.oldPassword = data.newPassword;
-    changepassworddetails.password = data.confirmPassword;
-    this.userService.changepassword(changepassworddetails).subscribe(
+  // changepassword()
+  // {
+  //   $('#changePasswordPopUp').modal('show');
+  //   $('#editUserModal').modal('hide');
+  // }
+  
 
-        result => {
-          
-            if (result.body.httpCode === 200) {
-                $.toaster({ priority: 'success', title: 'Success', message: 'Password Updated Successfully' });
-                $('#changePasswordPopUp').modal('hide');
-              } else {
-                $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-              }
-           
-
-        },
-        err => {
-            console.log(err);
-        });
-}
 
 }

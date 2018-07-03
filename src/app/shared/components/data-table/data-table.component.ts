@@ -26,6 +26,7 @@ export class DataTableComponent implements OnInit {
   displayedColumns = [];
   dataSource: any = [];
   initialData: any = [];
+  rowData: any;
   sortDate = false;
   sortDateReverse = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -42,6 +43,7 @@ export class DataTableComponent implements OnInit {
   @Output() actionBtnClick = new EventEmitter<any>();
   @Output() selectedRows = new EventEmitter<any>();
   @Output() rowClickShowCalendar = new EventEmitter<any>();
+  @Output() actionBtnChangePassword = new EventEmitter<any>();
   selection = new SelectionModel<Element>(true, []);
   showCalender = true;
   hoveredIndex: number;
@@ -128,6 +130,12 @@ export class DataTableComponent implements OnInit {
       this.hoveredIndex = null;
 
   }
+  onActionBtnClickForChangePasswordPopup(event, row)
+  {
+    const data = { eventType: event, data: row };
+    this.actionBtnChangePassword.emit(data);
+    
+  }
   addColumnHeader() {
     this.tableColumns.forEach(
       column => {
@@ -136,6 +144,7 @@ export class DataTableComponent implements OnInit {
         this.columnFilter.push(column.dropDownFilter);
       });
   }
+ 
 
 
   createDropdowns() {
