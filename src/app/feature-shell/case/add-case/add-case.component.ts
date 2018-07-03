@@ -253,6 +253,7 @@ export class AddCaseComponent implements OnInit {
     var reqData = {
       clientId: localStorage.getItem('client_id'),
     };
+    
     this.authService.listUsers(reqData).subscribe(
       result => {
 
@@ -309,6 +310,7 @@ export class AddCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
+        
         if (result == 0) {
           $("#spnEmployee").show();
         }
