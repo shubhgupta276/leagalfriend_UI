@@ -39,6 +39,8 @@ export class BillingComponent implements OnInit {
     selectedRowsCheckbox: any;
     @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
     @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+    moduleName = 'Billing';
+    searchTextbox = '';
     constructor(private _billingservice: BillingService,
         private _institutionService: InstitutionService,
         private _recourseService: RecourseService,
@@ -54,33 +56,47 @@ export class BillingComponent implements OnInit {
         this.getAllRecourses();
         $($.document).ready(function () {
             $('#reservation').daterangepicker({
-                autoApply: true,
+                autoUpdateInput: false,
                 locale: {
-                    format: 'MM-DD-YYYY'
+                    format: 'DD-MM-YYYY'
                 }
-
+            }, function (start_date, end_date) {
+                $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
             });
-
 
         });
     }
-    SearchFilter() {
-        var self = this;
-        var bankVal = $('#ddlBank1').val();
-        // start recourse filter
-        if (bankVal == "All") {
-            self.$table.columns(2).search("").draw();
+    formatDate(date) {
+
+        var arDate = date.split('-');
+        var dd = arDate[0];
+        var mm = arDate[1];
+        var yy = arDate[2];
+        return (yy + '-' + mm + '-' + dd);
+    }
+    filterBillingData() {
+        var arDates;
+        let fromToDate = $("#reservation").val();
+        if (fromToDate && fromToDate.length > 0) {
+            arDates = fromToDate.split(" To ");
+            arDates[0] = this.formatDate(arDates[0]);
+            arDates[1] = this.formatDate(arDates[1]);
         }
-        else if (self.$table.columns(2).search() !== bankVal) {
-            self.$table.columns(2).search(bankVal).draw();
+        if (fromToDate.length > 0) {
+            this.dataTableComponent.dateRangeFilter(arDates[0], arDates[1], 'nextHearingDate');
         }
-        //     //end recourse filter
-        $("#chkInvoice").show();
-        self.$table.draw();
-        $("#closebtnFilter").click();
+        else {
+            this.dataTableComponent.resetDateFilter();
+        }
+
+        $('#filterCaseModal').modal('hide');
 
     }
-
+    clearFilters() {
+        this.searchTextbox = '';
+        this.dataTableComponent.resetFilters();
+        //this.dataTableComponent.resetDateFilter();
+    }
 
     CreateInvoice() {
         localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
@@ -219,7 +235,5 @@ export class BillingComponent implements OnInit {
     searchFilter(value) {
         this.dataTableComponent.applyFilter(value);
     }
-    resetTableFilter() {
-        this.dataTableComponent.resetFilters();
-    }
+   
 }

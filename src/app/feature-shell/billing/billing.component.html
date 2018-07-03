@@ -34,125 +34,20 @@
               </div>
             </div>
             <div class="col-sm-2">
-              <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilter()">Reset</button>
-              <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button>
+              <!-- <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilter()">Reset</button>
+              <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button> -->
+             <a><img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();"></a>
             </div>
             <div class="col-sm-2 case-search">
-              <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilter($event.target.value)">
+              <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." [(ngModel)]="searchTextbox"  (keyup)="searchFilter($event.target.value)">
             </div>
 
 
             <app-data-table [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
-              [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)">
+              [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" [moduleName]="moduleName">
             </app-data-table>
-            <!--             
-           <div id="btncreateInvoice" *ngIf="isGenerateInvoice" style="margin-top: 5px;">
-                <button>
-                  <a class="btn default" (click)="CreateInvoice()" [routerLink]="['/admin/invoices/invoiceform']">Create Invoice</a>
-                </button>
-              </div> -->
-            <!-- <div>
-              <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Billing</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                  <div style="margin-left:-315px;margin-bottom: -35px;">
-                    <label style="width:75px" class="billingLabel">Branch:</label>
-                    <select id="ddlBillingBranch" class="billingDropdown">
-                      <option value="All">All</option>
-                      <option *ngFor="let item of arListBranch" value="{{item}}">{{item}}</option>
-                    </select>
-                    <button class="btn btn-default" data-target="#filterCaseModal" data-toggle="modal" id="btnFilter" style="margin-left: -1px"
-                      type="button">Generate Invoice</button>
-                  </div>
-                  <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label>
-                </div>
-                <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                </div>
-              </div>
-            </div> -->
-            <!-- <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th style="display:none" class="chkInvoice">
-                    <input type="checkbox" id="chkAllInvoice" name="" value="">
-                  </th>
-                  <th>#</th>
-                  <th>Institution
-                    <select class="role input-sm" id="ddlBank">
-                      <option value="All">All</option>
-                      <option *ngFor="let item of arListBanks" value="{{item}}">{{item}}</option>
-                    </select>
-                  </th>
-                  <th>Case ID
-                    <select class="role input-sm" id="ddlCaseID">
-                      <option value="All">All</option>
-                      <option *ngFor="let item of arListCaseID" value="{{item}}">{{item}}</option>
-                    </select>
-                  </th>
-                  <th>Recourse
-                    <select class="role input-sm" id="ddlRecourse">
-                      <option value="All">All</option>
-                      <option *ngFor="let item of arListRecourse" value="{{item}}">{{item}}</option>
-                    </select>
-                  </th>
-                  <th>Stage
-                    <select class="role input-sm" id="ddlStage">
-                      <option value="All">All</option>
-                      <option *ngFor="let item of arListStage" value="{{item}}">{{item}}</option>
-                    </select>
-                  </th>
-                  <th>Amount
-                  </th>
-                  <th>Billing Date</th>
-
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                <tr *ngFor="let item of arBillingData; let i=index" (dblclick)="showEditModal(item)" data-target="#editBillModal">
-                  <td style="display:none" class="chkInvoice">
-                    <input type="checkbox" class="chkInvoice" name="vehicle" value="">
-                    <input type="hidden" id="hfItem" value="{{JSON.stringify(item)}}">
-                  </td>
-
-                  <td>{{i+1}}</td>
-                  <td>{{item.institutionName}}</td>
-                  <td>
-                    <span id="spnCaseId">{{item.caseId}}</span>
-                  </td>
-                  <td>
-                    <span id="spnRecourse">{{item.recourseName}}</span>
-                  </td>
-                  <td>
-                    <span id="spnStage">{{item.stageName}}</span>
-                  </td>
-                  <td contenteditable='true'>
-                    <span id="spnAmount">{{item.amount}}</span>
-                  </td>
-                  <td>
-                    <span id="spnBillingDate"> {{item.billingDate | date:'mediumDate'}}</span>
-                  </td>
-                  <td>
-                    <a  (click)="RemoveBilling(item)">
-                      <i class="fa fa-trash"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr *ngIf="!arBillingData || arBillingData.length==0" colspan="9">
-                  No record found..!!
-                </tr>
-              </tbody>
-
-
-            </table> -->
+           
           </div>
 
 
@@ -177,13 +72,7 @@
           </div>
           <div style="width:20px;height:10%;background-color:black;"></div>
           <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
-            <div class="row caseModalRow">
-              <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
-                <label class="caseSearchLabel">Institution:</label>
-                <select id="ddlBank1" class="caseFilterDropDown1">
-                  <option *ngFor="let item of arAllInstitution" value="item.id">{{item.institutionName}}</option>>
-                </select>
-              </div>
+            <div class="row caseModalRow">             
               <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
                 <div class="form-group">
                   <label class="dateRange">Date range:</label>
@@ -202,7 +91,7 @@
             </div>
             <div class="modal-footer FilterSearch">
               <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal">Reset</button>
-              <button type="submit" id="btnSearch" (click)="SearchFilter" class="btn btn-default caseSearch">Search</button>
+              <button type="submit" id="btnSearch" (click)="filterBillingData()" class="btn btn-default caseSearch">Search</button>
             </div>
 
           </div>
