@@ -25,6 +25,7 @@ import { DataTableComponent } from '../../shared/components/data-table/data-tabl
 import { StorageService } from '../../shared/services/storage.service';
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
+import { ChangePassword } from '../../shared/models/auth/changepassword.model';
 declare var $;
 
 @Component({
@@ -35,6 +36,7 @@ declare var $;
 })
 export class UserComponent implements OnInit {
   tableInputData = [];
+  public changePasswordForm: FormGroup;
   columns = userTableConfig;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
@@ -44,6 +46,8 @@ export class UserComponent implements OnInit {
   userRoles1: any = [];
   userStatus: StatusModel[];
   filterby = 'All';
+ rowData: any;
+  moduleName = 'user';
   editForm: FormGroup;
   $table: any;
   Branches = [];
@@ -54,6 +58,10 @@ export class UserComponent implements OnInit {
     private _storageService: StorageService, private authService: AuthService) {
     this.setRoles();
     this.setStatus();
+    this.changePasswordForm = fb.group({
+      newPassword: [null, Validators.required],
+      confirmPassword: [null, Validators.required]
+  });
   }
 
   ngOnInit() {
@@ -160,10 +168,41 @@ export class UserComponent implements OnInit {
       this.child.subscriberFields();
     }
   }
+  onActionBtnClickForChangePasswordPopup(event)
+  {
+    
+    this.rowData=event;
+    $('#changePasswordPopUp').modal("show");
+  }
+  changeUserPassword(row) {
+    
+    const changepassworddetails = new ChangePassword();
+     changepassworddetails.userId = this.rowData.data.id;
+    // changepassworddetails.oldPassword = data.newPassword;
+    changepassworddetails.password = row.confirmPassword;
+    this.userService.changepassword(changepassworddetails).subscribe(
+
+        result => {
+          
+            if (result.body.httpCode === 200) {
+                $.toaster({ priority: 'success', title: 'Success', message: 'Password Updated Successfully' });
+                $('#changePasswordPopUp').modal('hide');
+              } else {
+                $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+              }
+           
+
+        },
+        err => {
+            console.log(err);
+        });
+}
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';
     this.actionColumnConfig.showEdit = true;
+    this.actionColumnConfig.btnText = ['Make Default','Default'];
+    this.actionColumnConfig.moduleName = 'user';
   }
 
   GetLoggedInUserDetails() {
