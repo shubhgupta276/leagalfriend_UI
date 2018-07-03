@@ -232,9 +232,9 @@ export class AuthService {
     );
   }
 
-  getEvent(reqData): Observable<any> {
-    return this.apiGateWay.post<Recourse>(
-      'events/eventList' + '?userId=' + reqData.userId, null,
+  getEvent(): Observable<any> {
+    return this.apiGateWay.get<Recourse>(
+      'events/eventList' + '?userId=' + this._storageService.getUserId(), null,
 
     );
   }
