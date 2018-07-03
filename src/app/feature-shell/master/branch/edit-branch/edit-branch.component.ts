@@ -16,6 +16,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
   @Input() editDetails: any;
   editBranchMasterForm: FormGroup;
   isBranchcodeAlreadyExists: boolean = false;
+  isBranchnameAlreadyExists: boolean = false;
   finalData: any = {};
   @Input() arCity = [];
   @Input() tableInputData = [];
@@ -24,7 +25,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
   private disabled: boolean = false;
   citySelected: Array<any> = [];
   selectedCity: any;
-  constructor(private fb: FormBuilder, private _branchService: BranchService, 
+  constructor(private fb: FormBuilder, private _branchService: BranchService,
     private _sharedService: SharedService,
     private _storageService: StorageService) {
     this.createForm(null);
@@ -47,9 +48,9 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
         console.log(err);
       });
 
-    
+
   }
-  
+
   GetBranchData(data): any {
     this.finalData.branchAddress = data.address;
     this.finalData.branchCode = data.branchcode;
@@ -60,7 +61,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
     this.finalData.userId = this._storageService.getUserId();
     return this.finalData;
   }
-  
+
   BindBranchGridOnEdit(data) {
     this.tableInputData.filter(
       branch => {
@@ -76,7 +77,7 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
 
 
   }
-  
+
   closeModal() {
     $('#closebtn1').click();
   }
@@ -96,10 +97,23 @@ export class EditBranchMasterComponent implements OnInit, OnChanges {
   subscriberFields() {
     this.editBranchMasterForm.get('branchcode').valueChanges.subscribe(
       (e) => {
-        if (e === 'test') { // right now this is hardcode later it will be checked from service(database)
+        const fieldValue = e.toUpperCase();
+        if (fieldValue != this.editDetails.branchCode &&
+          this.tableInputData.filter(x => x.branchCode.toUpperCase() === e.toUpperCase()).length > 0) {
           this.isBranchcodeAlreadyExists = true;
         } else {
           this.isBranchcodeAlreadyExists = false;
+        }
+      }
+    );
+    this.editBranchMasterForm.get('branchname').valueChanges.subscribe(
+      (e) => {
+        const fieldValue = e.toUpperCase();
+        if (fieldValue != this.editDetails.branchName &&
+          this.tableInputData.filter(x => x.branchName.toUpperCase() === e.toUpperCase()).length > 0) {
+          this.isBranchnameAlreadyExists = true;
+        } else {
+          this.isBranchnameAlreadyExists = false;
         }
       }
     );
