@@ -4,8 +4,8 @@ import { Calender } from '../../shared/models/auth/calender.model';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { StorageService } from "../../shared/services/storage.service";
 import { AuthService } from '../../auth-shell/auth-shell.service';
-import {CalenderService} from './calender.service';
-import {CalenderEvent} from './calender-event';
+import { CalenderService } from './calender.service';
+import { CalenderEvent } from './calender-event';
 import { DatePipe } from '@angular/common';
 declare let $;
 
@@ -23,9 +23,8 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
     this.getEvent();
     var $this = this;
-    var $calenderEvents = [];        
+    var $calenderEvents = [];
     $(function () {
-
 
       /* initialize the external events
        -----------------------------------------------------------------*/
@@ -34,7 +33,7 @@ export class CalendarComponent implements OnInit {
 
           // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
           // it doesn't need to have a start or end
-          var eventObject = {
+          let eventObject = {
             title: $.trim($(this).text()) // use the element's text as the event title
           }
 
@@ -74,7 +73,7 @@ export class CalendarComponent implements OnInit {
             day: 'day'
           },
           //Random default events
-         events: $this.arrEvents,
+          events: $this.arrEvents,
           timezone: 'local',
           ignoreTimezone: false,
           allDay: false,
@@ -83,10 +82,10 @@ export class CalendarComponent implements OnInit {
           drop: function (date, allDay) { // this function is called when something is dropped
 
             // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject')
+            let originalEventObject = $(this).data('eventObject')
 
             // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject)
+            let copiedEventObject = $.extend({}, originalEventObject)
 
             // assign it the date that was reported
             copiedEventObject.start = date
@@ -102,17 +101,16 @@ export class CalendarComponent implements OnInit {
             $this.authService.saveEvent(objEvent).subscribe(
 
               result => {
-                $.toaster({ priority: 'success', title: 'Success', message: 'Event created successfully' });
+                if (result.body.httpCode == 200) {
+                  $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
+                } else {
+                  $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+                }
                 console.log(result);
               },
               err => {
                 console.log(err);
               });
-
-
-
-
-            //$('#divUpcomingEvents').append('<li><span style="background-color:'+copiedEventObject.backgroundColor+';border-color:'+copiedEventObject.borderColor+'">'+copiedEventObject.title+'</span></li>')
 
             // render the event on the calendar
             // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
@@ -130,42 +128,42 @@ export class CalendarComponent implements OnInit {
             BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
           },
         })
-      BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-      /* ADDING EVENTS */
-      var currColor = '#3c8dbc' //Red by default
-      //Color chooser button
-      var colorChooser = $('#color-chooser-btn')
-      $('#color-chooser > li > a').click(function (e) {
-        e.preventDefault()
-        //Save color
-        currColor = $(this).css('color')
-        //Add color effect to button
-        $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
-      })
-      $('#add-new-event').click(function (e) {
-        e.preventDefault()
-        //Get value and make sure it is not null
-        var val = $('#new-event').val()
-        if (val.length == 0) {
-          return
-        }
-        //Create events
-        var event = $('<div />')
-        event.css({
-          'background-color': currColor,
-          'border-color': currColor,
-          'color': '#fff'
-        }).addClass('external-event')
-        event.html(val)
-        $('#external-events').prepend(event)
+        BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
+        /* ADDING EVENTS */
+        let currColor = '#3c8dbc' //Red by default
+        //Color chooser button
+        let colorChooser = $('#color-chooser-btn')
+        $('#color-chooser > li > a').click(function (e) {
+          e.preventDefault()
+          //Save color
+          currColor = $(this).css('color')
+          //Add color effect to button
+          $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
+        })
+        $('#add-new-event').click(function (e) {
+          e.preventDefault()
+          //Get value and make sure it is not null
+          let val = $('#new-event').val()
+          if (val.length == 0) {
+            return
+          }
+          //Create events
+          let event = $('<div />')
+          event.css({
+            'background-color': currColor,
+            'border-color': currColor,
+            'color': '#fff'
+          }).addClass('external-event')
+          event.html(val)
+          $('#external-events').prepend(event)
 
-        //Add draggable funtionality
-        init_events(event)
+          //Add draggable funtionality
+          init_events(event)
 
-        //Remove event from text input
-        $('#new-event').val('')
-      })
-    },500);
+          //Remove event from text input
+          $('#new-event').val('')
+        })
+      }, 500);
       function BindUpcomingEvents(data) {
         $('#divUpcomingEvents').empty();
         $this.sharedService.arrTodayCalendarEvents = [];
@@ -188,52 +186,32 @@ export class CalendarComponent implements OnInit {
         $this.sharedService.GetEventsGroup();
 
       }
-     
 
-    
-      
-    function formatDate(dateString): any {
-       const datepipe: DatePipe = new DatePipe('en-US');
-       return datepipe.transform(dateString, 'yyyy-MM-dd HH:mm:ss');
-    }
-
+      function formatDate(dateString): any {
+        const datepipe: DatePipe = new DatePipe('en-US');
+        return datepipe.transform(dateString, 'yyyy-MM-dd HH:mm:ss');
+      }
     })
-
   }
-
 
   getEvent() {
     var $this = this;
-
-    var reqData = {
-      userId: parseInt(localStorage.getItem('client_id')),
-    };
-
-
-    this.authService.getEvent(reqData).subscribe(
-
+    this.authService.getEvent().subscribe(
       result => {
         this.arrEvents = [];
-        result.body.forEach(function (value) {
-          $this.arrEvents.push({
-            title: value.eventName,
-            start: value.startDate,
-            backgroundColor: '#f56954',
-            borderColor: '#f56954'
+        if (result) {
+          result.forEach(function (value) {
+            $this.arrEvents.push({
+              title: value.eventName,
+              start: value.startDate,
+              backgroundColor: '#f56954',
+              borderColor: '#f56954'
+            });
           });
-
-        });
-
-        console.log(result);
+        }
       },
       err => {
         console.log(err);
       });
   }
-
-
 }
-
-
-
-
