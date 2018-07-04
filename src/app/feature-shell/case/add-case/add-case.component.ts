@@ -139,6 +139,7 @@ export class AddCaseComponent implements OnInit {
     this.getRunningCase();
     this.getEmployee();
     this.GetAllCity();
+    this.getCustomer();
  
   }
   GetAllCourt(){ 
@@ -251,12 +252,11 @@ export class AddCaseComponent implements OnInit {
 
     var $this = this
     var reqData = {
-      clientId: localStorage.getItem('client_id'),
+      userId: this._storageService.getUserId(),
     };
     
-    this.authService.listUsers(reqData).subscribe(
+    this.authService.listManager(reqData).subscribe(
       result => {
-
         if (result.length === 0) {
           $('#spnCustomer').show();
           $('#spnManager').show();
@@ -264,36 +264,13 @@ export class AddCaseComponent implements OnInit {
         }
        
         result.forEach(function (value) {
-
-          if (value.roles[0].roleName === 'MANAGER') {
-            
             $this.Manager.push(
               {
-
-
-                id: value.id, text: value.firstName + " " + value.lastName
-
-
+                id: value.id, text: value.name
               }
             );
-          }
-
-          if (value.roles[0].roleName === 'CLIENT') {
-
-            $this.CustomerName.push(
-              {
-
-                id: value.id, text: value.firstName+ " " + value.lastName
-
-              }
-            );
-          }
-        
-        });
-
-
-
-      
+         
+        }); 
     },
       err => {
         console.log(err);
@@ -305,7 +282,7 @@ export class AddCaseComponent implements OnInit {
 
     var $this = this
     var reqData = {
-      clientId: localStorage.getItem('client_id'),
+      userId: this._storageService.getUserId(),
     };
     this.authService.listUsers(reqData).subscribe(
 
@@ -316,18 +293,37 @@ export class AddCaseComponent implements OnInit {
         }
         result.forEach(function (value) {
          
-          if (value.roles[0].roleName === 'EMPLOYEE') {
-            $this.Employee.push({ id: value.id, text: value.firstName , });
-          }
+        //  if (value.roles[0].roleName === 'EMPLOYEE') {
+            $this.Employee.push({ id: value.id, text: value.name , });
+        //  }
          
-          if (value.roles[0].roleName === 'MANAGER') {
-            $this.Employee.push({ id: value.id, text: value.firstName, });
-          }
         });
     }
-      // err => {
-      //   console.log(err);
-      // }
+      
+    );
+  }
+  getCustomer() {
+
+    var $this = this
+    var reqData = {
+      userId: this._storageService.getUserId(),
+    };
+    this.authService.listCustomers(reqData).subscribe(
+
+      result => {
+        
+        if (result == 0) {
+          $("#spnEmployee").show();
+        }
+        result.forEach(function (value) {
+         
+        //  if (value.roles[0].roleName === 'EMPLOYEE') {
+            $this.CustomerName.push({ id: value.id, text: value.name , });
+        //  }
+         
+        });
+    }
+      
     );
   }
 
