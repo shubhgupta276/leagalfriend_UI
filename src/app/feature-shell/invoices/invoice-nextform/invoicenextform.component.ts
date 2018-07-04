@@ -9,6 +9,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Routes, RouterModule, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { InvoicesService } from '../invoices.service';
 declare let $;
 declare let canvas;
 declare let Swiper;
@@ -20,7 +21,7 @@ declare let Swiper;
 export class InvoiceNextFormComponent implements OnInit {
 
     arr: Institution[] = [];
-    arrSafeInvoice = [];
+    arrSaveInvoice = [];
     arrLocalInvoiceDetails = [];
     arrInvoiceDetails = [];
     totalAmount: number;
@@ -32,7 +33,8 @@ export class InvoiceNextFormComponent implements OnInit {
     @Output() pageChange: EventEmitter<number>;
     JSON: any;
     invoiceTemplateInfo: any;
-    constructor(private _institutionService: InstitutionService, private _storageService: StorageService, private router: Router, public sanitizer: DomSanitizer) {
+    constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
+        private router: Router, public sanitizer: DomSanitizer, private invoiceService: InvoicesService) {
         Window["InvoiceFormComponent"] = this;
         this.JSON = JSON;
     }
@@ -123,12 +125,32 @@ export class InvoiceNextFormComponent implements OnInit {
             var $row = $(this);
             var amount = $row.find('.amount').val();
             var description = $row.find('.description').val();
-          //  var quantity = $row.find('.quantity').val();
+            //  var quantity = $row.find('.quantity').val();
 
             var remarks = $('#remarksInvoice').val();
-            self.arrSafeInvoice.push({ InvoiceNo: self.invoiceTemplateInfo.invoiceNo, description: description,  remarks: remarks })
+            self.arrSaveInvoice.push(
+                {
+                    amount:amount,
+                    amountRecieved:true,
+                    billingIds:[],
+                    fkInstitutionId:0,
+                    id:0,
+                }
+            )
+            self.arrSaveInvoice.push({ InvoiceNo: self.invoiceTemplateInfo.invoiceNo, description: description, remarks: remarks })
 
-        })
+        });
+        this.invoiceService.saveInvoice(self.arrSaveInvoice).subscribe(
+            result => {
+              if (result.body.httpCode === 200) {
+                $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
+              } else {
+                $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+              }
+            },
+            err => {
+              console.log(err);
+            });
         $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
         this.router.navigate(['/admin/invoices']);
     }

@@ -140,12 +140,15 @@
 
                             <div class="invoice-address">
                                 <div class="col-md-12 " style="padding:0px;margin-bottom:30px;">
-                                    <div class="col-md-2" style="padding:0px;">
+                                    <div class="col-md-1" style="padding:0px;">
                                         <label>Bill To</label>
                                     </div>
                                     <div class="col-md-5" style="text-align:left">
                                         <textarea id="txtBillToAddress" value={{invoiceTemplateInfo.billToAddress}} rows="2" class="form-control"></textarea>
                                     </div>
+                                    <div class="col-md-1" style="padding:0px;">
+                                            <label>Bill From</label>
+                                        </div>
                                     <div class="col-md-5" style="text-align:right">
                                         <textarea id="txtcompanyAddress" value={{invoiceTemplateInfo.CompanyAddress}} rows="2" class="form-control"></textarea>
                                     </div>
@@ -226,7 +229,7 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tbody>
                                         <tr>
-                                            <td>
+                                            <td style="padding-left: 0px !important">
                                                 <textarea rows="4" id="remarksInvoice" class="form-control" placeholder="Type your notes here">{{invoiceTemplateInfo.termEndCond}}</textarea>
                                             </td>
                                         </tr>

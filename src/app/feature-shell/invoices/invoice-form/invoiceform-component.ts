@@ -48,7 +48,7 @@ export class InvoiceFormComponent implements OnInit {
         var totalDescription = "";
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + "\n");
+            totalDescription = totalDescription + ("CaseId : " + element.caseId + "\n");
         });
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
