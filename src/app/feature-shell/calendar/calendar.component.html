@@ -19,21 +19,73 @@
             <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
               <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
               <ul class="fc-color-picker" id="color-chooser">
-                <li><a class="text-aqua" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-blue" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
-                <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
+                <li>
+                  <a class="text-aqua" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-blue" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-light-blue" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-teal" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-yellow" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-orange" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-green" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-lime" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-red" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-purple" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-fuchsia" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-muted" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-navy" href="#">
+                    <i class="fa fa-square"></i>
+                  </a>
+                </li>
               </ul>
-              
+
             </div>
             <!-- /btn-group -->
             <div class="input-group">
@@ -48,19 +100,18 @@
           </div>
 
           <div id="external-events">
-              <div class="external-event bg-green">Lunch</div>
-              <div class="external-event bg-yellow">Go home</div>
-              <div class="external-event bg-aqua">Do homework</div>
-              <div class="external-event bg-light-blue">Work on UI design</div>
-              <div class="external-event bg-red">Sleep tight</div>
-              <div class="checkbox">
-                <label for="drop-remove">
-                  <input type="checkbox" id="drop-remove">
-                  remove after drop
-                </label>
-              </div>
-              <div>&nbsp;</div>
+            <div class="external-event bg-green">Lunch</div>
+            <div class="external-event bg-yellow">Go home</div>
+            <div class="external-event bg-aqua">Do homework</div>
+            <div class="external-event bg-light-blue">Work on UI design</div>
+            <div class="external-event bg-red">Sleep tight</div>
+            <div class="checkbox">
+              <label for="drop-remove">
+                <input type="checkbox" (change)="isRemoveAfterDrop=$event.target.checked"> remove after drop
+              </label>
             </div>
+            <div>&nbsp;</div>
+          </div>
         </div>
 
         <div class="box box-solid">
@@ -68,9 +119,8 @@
             <h3 class="box-title">Upcoming Events</h3>
           </div>
           <div class="box-body">
-              <div id="divUpcomingEvents">                    
-                 
-                </div>
+            <div class="external-event" *ngFor="let item of arUpcomingEvents" 
+            [style.background-color]="item.backgroundColor" [style.color]="item.color" [style.border-color]="item.borderColor">{{item.title}}</div>
           </div>
         </div>
       </div>
