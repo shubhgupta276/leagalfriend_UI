@@ -20,15 +20,10 @@
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 140px;
+    float: left;
 }
 .mat-column-select {
     flex: 0.3 !important;
-}
-.mat-column-recourseCode {
-    flex: 2 !important;
-}
-.mat-column-stageName {
-    flex: 2 !important;
 }
 .mat-header-row{
     position: sticky;
@@ -40,7 +35,7 @@
     font-size: 15px;
     font-weight: 700;
 }
-.mat-column-id {
+/* .mat-column-id {
     flex: 0.3 !important;
 }
 .mat-column-status {
@@ -48,9 +43,9 @@
 }
 .mat-column-roles {
     flex: 0.5 !important;
-}
+} */
 .mat-column-action {
-    flex: 0 0 100px !important;
+    flex: 0 0 160px !important;
 }
 .hearing-date{
     position: absolute;
