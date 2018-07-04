@@ -71,17 +71,17 @@ export class HistoryForInstitutionComponent implements OnInit {
     showHideToggleIcon($event) {
         let $child = $($event.target);
         if (!$child.hasClass('clssign')) {
-          $child = $child.find('.clssign');
+            $child = $child.find('.clssign');
         }
         if ($child.hasClass('glyphicon-plus')) {
-          $child.removeClass("glyphicon-plus");
-          $child.addClass("glyphicon-minus");
+            $child.removeClass("glyphicon-plus");
+            $child.addClass("glyphicon-minus");
         }
         else {
-          $child.removeClass("glyphicon-minus");
-          $child.addClass("glyphicon-plus");
+            $child.removeClass("glyphicon-minus");
+            $child.addClass("glyphicon-plus");
         }
-      }
+    }
 
     onFileChange(event) {
         const reader = new FileReader();
@@ -100,6 +100,7 @@ export class HistoryForInstitutionComponent implements OnInit {
                 result = result.body;
                 if (result.httpCode == 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+                    this.showHistory(this.caseData);
                 }
                 else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
@@ -119,9 +120,12 @@ export class HistoryForInstitutionComponent implements OnInit {
         );
     }
 
-    showHistory(data) {
+    clearForm() {
         this.myFileUpload.nativeElement.value = '';
+    }
 
+    showHistory(data) {
+        this.clearForm();
         this.creatForm();
         this.arHistoryData = [];
         this.caseData = data;
