@@ -137,7 +137,7 @@ export class AddCaseComponent implements OnInit {
     this.getEmployee();
     // this.bindStageDDL();
     this.getRunningCase();
-    this.getEmployee();
+    //this.getEmployee();
     this.GetAllCity();
     this.getCustomer();
  
