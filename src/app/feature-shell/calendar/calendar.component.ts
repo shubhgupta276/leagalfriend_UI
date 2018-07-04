@@ -7,6 +7,7 @@ import { AuthService } from '../../auth-shell/auth-shell.service';
 import { CalenderService } from './calender.service';
 import { CalenderEvent } from './calender-event';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 declare let $;
 
 @Component({
@@ -17,7 +18,11 @@ declare let $;
 })
 export class CalendarComponent implements OnInit {
   arrEvents: any = [];
-  constructor(private sharedService: SharedService, private apiGateWay: ApiGateway, private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
+  arUpcomingEvents: any = [];
+  isRemoveAfterDrop: boolean = false;
+  constructor(private sharedService: SharedService, private _router: Router,
+    private apiGateWay: ApiGateway, private authService: AuthService,
+    private _storageService: StorageService, private datePipe: DatePipe) {
   }
 
   ngOnInit() {
@@ -46,7 +51,6 @@ export class CalendarComponent implements OnInit {
             revert: true, // will cause the event to go back to its
             revertDuration: 0  //  original position after the drag
           })
-
         })
       }
 
@@ -55,8 +59,8 @@ export class CalendarComponent implements OnInit {
       /* initialize the calendar
        -----------------------------------------------------------------*/
       //Date for the calendar events (dummy data)
-      var date = new Date()
-      var d = date.getDate(),
+      let date = new Date()
+      let d = date.getDate(),
         m = date.getMonth(),
         y = date.getFullYear()
       setTimeout(() => {
@@ -79,55 +83,61 @@ export class CalendarComponent implements OnInit {
           allDay: false,
           editable: false,
           droppable: true, // this allows things to be dropped onto the calendar !!!
-          drop: function (date, allDay) { // this function is called when something is dropped
+          eventClick: function (event) {
+            if (event.eventType == '') {
 
-            // retrieve the dropped element's stored Event Object
-            let originalEventObject = $(this).data('eventObject')
-
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            let copiedEventObject = $.extend({}, originalEventObject)
-
-            // assign it the date that was reported
-            copiedEventObject.start = date
-            copiedEventObject.allDay = allDay
-            copiedEventObject.backgroundColor = $(this).css('background-color')
-            copiedEventObject.borderColor = $(this).css('border-color')
-            const objEvent = new Calender();
-
-            objEvent.startDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
-            objEvent.eventName = copiedEventObject.title;
-            objEvent.userId = parseInt(localStorage.getItem('client_id'));
-
-            $this.authService.saveEvent(objEvent).subscribe(
-
-              result => {
-                if (result.body.httpCode == 200) {
-                  $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
-                } else {
-                  $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-                }
-                console.log(result);
-              },
-              err => {
-                console.log(err);
-              });
-
-            // render the event on the calendar
-            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
-
-            // is the "remove after drop" checkbox checked?
-            if ($('#drop-remove').is(':checked')) {
-              // if so, remove the element from the "Draggable Events" list
-              $(this).remove()
             }
-            BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
+            else if (event.eventType == '') {
+              $this._router.navigate([]);
+            }
+            else {
+
+            }
+          },
+          drop: function (date, allDay) { // this function is called when something is dropped
+            saveEvent(date, allDay, this);
           },
           eventDrop: function (event, delta, revertFunc) {
-
             BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
           },
         })
+
+        function saveEvent(date, allDay, $dragged) {
+          // retrieve the dropped element's stored Event Object
+          let originalEventObject = $($dragged).data('eventObject')
+
+          // we need to copy it, so that multiple events don't have a reference to the same object
+          let copiedEventObject = $.extend({}, originalEventObject)
+
+          // assign it the date that was reported
+          copiedEventObject.start = date
+          copiedEventObject.allDay = allDay
+          copiedEventObject.backgroundColor = $($dragged).css('background-color')
+          copiedEventObject.borderColor = $($dragged).css('border-color')
+
+          const objEvent = new Calender();
+          objEvent.startDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
+          objEvent.eventName = copiedEventObject.title;
+          objEvent.userId = parseInt($this._storageService.getUserId());
+          
+          $this.authService.saveEvent(objEvent).subscribe(
+            result => {
+              if (result.body.httpCode == 200) {
+                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
+                if ($this.isRemoveAfterDrop) {
+                  $($dragged).remove()
+                }
+                BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
+                $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
+              } else {
+                $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+              }
+            },
+            err => {
+              console.log(err);
+            });
+        }
+
         BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
         /* ADDING EVENTS */
         let currColor = '#3c8dbc' //Red by default
@@ -164,23 +174,24 @@ export class CalendarComponent implements OnInit {
           $('#new-event').val('')
         })
       }, 500);
+
       function BindUpcomingEvents(data) {
-        $('#divUpcomingEvents').empty();
         $this.sharedService.arrTodayCalendarEvents = [];
+        $this.arUpcomingEvents = [];
         $.each(data, function (i, d) {
-          this.totalUpcommingEvents = 0;
           if (d.start._d > new Date()) {
-            this.totalUpcommingEvents++;
-            $('#divUpcomingEvents').append('<div class="external-event" style="background-color:' + d.backgroundColor + ';border-color:' + d.borderColor + ';color:#fff;">' + d.title + '</div>')
+            $this.arUpcomingEvents.push({
+              eventType: d.eventType,
+              title: d.title,
+              backgroundColor: $this.getEventBgColor(d.eventType),
+              borderColor: '',
+              color: "#fff"
+            });
           }
-          // if (d.start._isUTC && d.start._d!=new Date())
-          //   d.start._d = new Date(d.start._d.setDate(d.start._d.getDate() - 1) );
           if (d.end != null) {
             if (d.end._isUTC)
               d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1));
           }
-
-          //  $this.sharedService.emitChange(15);
           $this.sharedService.arrTodayCalendarEvents.push({ startdate: new Date(d.start._d.setHours(0, 0, 0, 0)), endDate: new Date((d.end == null ? d.start : d.end)._d.setHours(0, 0, 0, 0)), cssClass: d.backgroundColor, totalUpcomingEvents: 0 })
         });
         $this.sharedService.GetEventsGroup();
@@ -194,6 +205,31 @@ export class CalendarComponent implements OnInit {
     })
   }
 
+  convertToEventType(referenceNumber): string {
+    if (referenceNumber && referenceNumber.substr(0, 1).toUpperCase() == 'I') {
+      return 'INDIVIDUAL_CASE';
+    }
+    else if (referenceNumber && referenceNumber.substr(0, 1).toUpperCase() == 'O') {
+      return 'INSTITUTIONAL_CASE'
+    }
+    else {
+      return 'INDIVIDUAL_EVENT';
+    }
+  }
+
+  getEventBgColor(eventType): string {
+    if (eventType == 'INDIVIDUAL_CASE') {
+      return '#0073b7';
+    }
+    else if (eventType == 'INSTITUTIONAL_CASE') {
+      return '#ff851b';
+    }
+    else if (eventType == 'INDIVIDUAL_EVENT') {
+      return "#dd4b39";
+    }
+    return '';
+  }
+
   getEvent() {
     var $this = this;
     this.authService.getEvent().subscribe(
@@ -202,9 +238,11 @@ export class CalendarComponent implements OnInit {
         if (result) {
           result.forEach(function (value) {
             $this.arrEvents.push({
+              referenceNumber: value.referenceNumber,
+              eventType: $this.convertToEventType(value.referenceNumber),
               title: value.eventName,
               start: value.startDate,
-              backgroundColor: '#f56954',
+              backgroundColor: $this.getEventBgColor($this.convertToEventType(value.referenceNumber)),
               borderColor: '#f56954'
             });
           });
