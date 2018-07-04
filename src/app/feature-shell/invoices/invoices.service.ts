@@ -5,7 +5,7 @@ import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { StorageService } from '../../shared/services/storage.service';
 import { Observable } from 'rxjs/Observable';
-import { InvoiceTemplate } from './invoices.config';
+import { InvoiceTemplate,Invoice } from './invoices.config';
 @Injectable()
 export class InvoicesService {
 
@@ -16,6 +16,9 @@ export class InvoicesService {
     getInvoiceTemplate(): Observable<any> {
         const apiUrl = InvoiceTemplate + "?userId=" + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
+    }
+    saveInvoice(data:any): Observable<any> {
+        return this.apiGateWay.get<any>(Invoice,data);
     }
 
 }
