@@ -66,7 +66,9 @@
                 <button class="table-case-history-btn" (click)="onActionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Case'">{{ actionColumnConfig.btnText[0] }}</button>
                 <button class="table-make-default-inst-btn btn btn-primary" (click)="onActionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && !row.defaultInstitution">{{ actionColumnConfig.btnText[0] }}</button>
                 <span class="table-default-inst-btn btn btn btn-primary" style="background: green;cursor: default;" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution">{{ actionColumnConfig.btnText[1] }}</span>
-
+                <button class="btn btn-primary" (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'">Change Password </button>
+                <!-- <span class="table-default-inst-btn btn btn btn-primary" style="background: green;cursor: default;" *ngIf="actionColumnConfig.moduleName==='user'">actionColumnConfig.btnText[0] </span> -->
+             
                 <a *ngIf="actionColumnConfig.showEdit" (click)="onActionBtnClick($event, row, 'edit')">
                     <i class="fa fa-edit"></i>
                 </a>
