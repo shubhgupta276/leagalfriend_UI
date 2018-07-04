@@ -140,7 +140,6 @@ export class FeatureShellComponent implements OnInit {
     $("#liinstitutionalmenu").toggle();
   }
   GetLoggedInUserDetails() {
-
     var $this = this;
     var client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(

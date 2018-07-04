@@ -244,6 +244,7 @@ export class EditCaseComponent implements OnInit {
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
     }
+    debugger
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
     this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -471,31 +472,28 @@ export class EditCaseComponent implements OnInit {
 
   getManagers() {
 
-    const $this = this;
-    const reqData = {
-      clientId: localStorage.getItem('client_id'),
+    var $this = this
+    var reqData = {
+      userId: this._storageService.getUserId(),
     };
-    this.authService.listUsers(reqData).subscribe(
-
+    
+    this.authService.listManager(reqData).subscribe(
       result => {
+        if (result.length === 0) {
+          $('#spnCustomer').show();
+          $('#spnManager').show();
+
+        }
+       
         result.forEach(function (value) {
-          if (value.roles.length > 0) {
-            if (value.roles[0].roleName === 'MANAGER') {
-              $this.Manager.push(
-                {
-                  id: value.id, text: value.firstName
-                }
-              );
-            } else if (value.roles[0].roleName === 'CLIENT') {
-              $this.CustomerName.push(
-                {
-                  id: value.id, text: value.firstName
-                }
-              );
-            }
-          }
-        });
-      },
+            $this.Manager.push(
+              {
+                id: value.id, text: value.name
+              }
+            );
+         
+        }); 
+    },
       err => {
         console.log(err);
       });
@@ -589,27 +587,27 @@ export class EditCaseComponent implements OnInit {
 
   getEmployee() {
 
-    const $this = this;
-    const reqData = {
-      clientId: localStorage.getItem('client_id'),
+    var $this = this
+    var reqData = {
+      userId: this._storageService.getUserId(),
     };
     this.authService.listUsers(reqData).subscribe(
 
       result => {
+        
+        if (result == 0) {
+          $("#spnEmployee").show();
+        }
         result.forEach(function (value) {
-
-          if (value.roles[0].roleName === 'EMPLOYEE') {
-            $this.Employee.push({ id: value.id, text: value.firstName + " " + value.lastName, });
-          }
-
-          if (value.roles[0].roleName === 'MANAGER') {
-            $this.Employee.push({ id: value.id, text: value.firstName + " " + value.lastName, });
-          }
+         
+        //  if (value.roles[0].roleName === 'EMPLOYEE') {
+            $this.Employee.push({ id: value.id, text: value.name , });
+        //  }
+         
         });
-      },
-      err => {
-        console.log(err);
-      });
+    }
+      
+    );
   }
 
 

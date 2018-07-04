@@ -238,6 +238,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     filterTable() {
+        
         this.dataTableComponent.sortTable((this.recourseFilter === undefined || this.recourseFilter === null) ? '' : this.recourseFilter.recourseCode, 'recourse');
         if (this.filterTypeId === 0) {
             this.dataTableComponent.resetDateFilter();
