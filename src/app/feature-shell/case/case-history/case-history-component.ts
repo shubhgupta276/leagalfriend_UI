@@ -99,6 +99,7 @@ export class CaseHistoryComponent implements OnInit {
         result = result.body;
         if (result.httpCode == 200) {
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+          this.showHistory(this.caseData);
         }
         else {
           $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
@@ -118,9 +119,12 @@ export class CaseHistoryComponent implements OnInit {
     );
   }
 
-  showHistory(data) {
+  clearForm(){
     this.myFileUpload.nativeElement.value = '';
+  }
 
+  showHistory(data) {
+    this.clearForm();
     this.creatForm();
     this.arHistoryData = [];
     this.caseData = data;

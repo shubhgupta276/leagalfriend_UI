@@ -225,19 +225,6 @@ export class AuthService {
     );
   }
 
-  saveEvent(customerData: Calender): Observable<Calender> {
-    return this.apiGateWay.post<Calender>(
-      '/events/addEvent',
-      JSON.stringify(customerData)
-    );
-  }
-
-  getEvent(): Observable<any> {
-    return this.apiGateWay.get<Recourse>(
-      'events/eventList' + '?userId=' + this._storageService.getUserId(), null,
-
-    );
-  }
   getCompliances(reqData): Observable<any> {
 
     return this.apiGateWay.get<any>(
@@ -248,7 +235,19 @@ export class AuthService {
 
   listUsers(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'usermanagement/employees' + '?clientId=' + reqData.clientId, null,
+      'usermanagement/employees' + '?userId=' + reqData.userId, null,
+
+    );
+  }
+  listManager(reqData): Observable<any> {
+    return this.apiGateWay.get<Recourse>(
+      'usermanagement/managers' + '?userId=' + reqData.userId, null,
+
+    );
+  }
+  listCustomers(reqData): Observable<any> {
+    return this.apiGateWay.get<Recourse>(
+      'usermanagement/customers' + '?userId=' + reqData.userId, null,
 
     );
   }

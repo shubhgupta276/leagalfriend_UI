@@ -45,56 +45,59 @@ export class UserComponent implements OnInit {
   userRoles: RoleModel[];
   userRoles1: any = [];
   userStatus: StatusModel[];
+  passwordValidationMessage = 'Password is required.';
   filterby = 'All';
- rowData: any;
+  rowData: any;
   moduleName = 'user';
   editForm: FormGroup;
   $table: any;
   Branches = [];
-  institutions= [];
+  institutions = [];
   @ViewChild(EditUserComponent) child: EditUserComponent;
   actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private userService: UserService,
     private _storageService: StorageService, private authService: AuthService) {
     this.setRoles();
     this.setStatus();
-    this.changePasswordForm = fb.group({
-      newPassword: [null, Validators.required],
-      confirmPassword: [null, Validators.required]
-  });
   }
 
   ngOnInit() {
+    this.changePasswordValidation();
     this.setActionConfig();
     this.getUsers();
     this.GetLoggedInUserDetails();
     this.getBranchDDL();
     this.getInstitution();
     $('#customerList').modal('show');
+  }
 
+  changePasswordValidation() {
+    this.changePasswordForm = this.fb.group({
+      newPassword: [null, Validators.compose([Validators.required,
+      Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,12}$/)])],
+      confirmPassword: [null, Validators.compose([Validators.required, matchValidator('newPassword')])],
+    });
   }
   getUsers() {
     const $this = this;
     const client = '?clientId=' + localStorage.getItem('client_id');
     this.userService.listUsers(client).subscribe(
       result => {
-        
+
         result.forEach(element => {
           if (element.roles.length > 0) {
             element.roleId = element.roles[0].id;
             element.roles = element.roles[0].roleName;
           }
-          if(element.branch !=null)
-          {
-            element.branchId=element.branch.id;
-            element.branchName=element.branch.branchName;
+          if (element.branch != null) {
+            element.branchId = element.branch.id;
+            element.branchName = element.branch.branchName;
           }
-          if(element.institution !=null)
-          {
-            element.institutionId=element.institution.id;
-            element.institutionName=element.institution.institutionName;
+          if (element.institution != null) {
+            element.institutionId = element.institution.id;
+            element.institutionName = element.institution.institutionName;
           }
-         
+
           element.statusId = element.status.statusId;
           element.status = element.status.statusName;
           element.name = element.firstName + ' ' + element.lastName;
@@ -122,15 +125,14 @@ export class UserComponent implements OnInit {
     $this.userRoles = [];
     this.userService.listRoles().subscribe(
       result => {
-        result.forEach(function (value){
-          
-          if(result[0].roleName =='ADMIN')
-         {
-           
-          $this.userRoles = result;
-         }
+        result.forEach(function (value) {
+
+          if (result[0].roleName == 'ADMIN') {
+             result.splice(0,1)
+            $this.userRoles = result;
+          }
         });
-        
+
       },
       err => {
         console.log(err);
@@ -168,40 +170,41 @@ export class UserComponent implements OnInit {
       this.child.subscriberFields();
     }
   }
-  onActionBtnClickForChangePasswordPopup(event)
-  {
-    
-    this.rowData=event;
+  onActionBtnClickForChangePasswordPopup(event) {
+
+    this.rowData = event;
     $('#changePasswordPopUp').modal("show");
   }
+
+
   changeUserPassword(row) {
-    
+
     const changepassworddetails = new ChangePassword();
-     changepassworddetails.userId = this.rowData.data.id;
+    changepassworddetails.userId = this.rowData.data.id;
     // changepassworddetails.oldPassword = data.newPassword;
     changepassworddetails.password = row.confirmPassword;
     this.userService.changepassword(changepassworddetails).subscribe(
 
-        result => {
-          
-            if (result.body.httpCode === 200) {
-                $.toaster({ priority: 'success', title: 'Success', message: 'Password Updated Successfully' });
-                $('#changePasswordPopUp').modal('hide');
-              } else {
-                $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-              }
-           
+      result => {
 
-        },
-        err => {
-            console.log(err);
-        });
-}
+        if (result.body.httpCode === 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: 'Password Updated Successfully' });
+          $('#changePasswordPopUp').modal('hide');
+        } else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+
+
+      },
+      err => {
+        console.log(err);
+      });
+  }
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';
     this.actionColumnConfig.showEdit = true;
-    this.actionColumnConfig.btnText = ['Make Default','Default'];
+    this.actionColumnConfig.btnText = ['Make Default', 'Default'];
     this.actionColumnConfig.moduleName = 'user';
   }
 
@@ -259,7 +262,7 @@ export class UserComponent implements OnInit {
     this.authService.getInstitution().subscribe(
 
       result => {
-        
+
         result.institutions.forEach(function (value) {
           $this.institutions.push(value);
         });

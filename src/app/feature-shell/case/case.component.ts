@@ -268,6 +268,7 @@ export class CaseComponent implements OnInit, OnDestroy {
   }
 
   filterTable(data) {
+
     this.runningDataTableComponent.sortTable('SBI', 'branchName');
     this.runningDataTableComponent.sortTable('WINDING_UP', 'recourseCode');
     this.runningDataTableComponent.dateRangeFilter('2018-05-28', '2018-5-30', 'nextHearingDate');
@@ -420,7 +421,16 @@ export class CaseComponent implements OnInit, OnDestroy {
       });
   }
   changeRecourse(data: any) {
-    this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
+    
+
+    if(data==undefined)
+    {
+      this.runningDataTableComponent.sortTable((data === undefined || data === null) ? '' : data.recourseCode, 'recourseCode');
+    }
+    else{
+      this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
+    }
+   
   }
   getUploadedDocuments() {
     this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
