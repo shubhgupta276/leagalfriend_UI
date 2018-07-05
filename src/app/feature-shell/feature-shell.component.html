@@ -285,7 +285,7 @@
           <span>Dashboard</span>
         </a>
       </li>
-      <ng-template [ngxPermissionsOnly]="['ADMIN']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="user">
             <i class="fa fa-users"></i>
@@ -293,13 +293,18 @@
           </a>
         </li>
       </ng-template>
-      <li [routerLinkActive]="['active']">
-        <a routerLink="case">
-          <i class="fa fa-balance-scale"></i>
-          <span>Case Management</span>
-        </a>
-      </li>
-      <ng-template [ngxPermissionsOnly]="['ADMIN']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER',
+      'CLIENT_LAWYER_Individual', 'CLIENT_LAWYER_FIRM_Individual']">
+        <li [routerLinkActive]="['active']">
+          <a routerLink="case">
+            <i class="fa fa-balance-scale"></i>
+            <span>Case Management</span>
+          </a>
+        </li>
+      </ng-template>
+
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
         <li class="treeview" [routerLinkActive]="['active']">
           <a (click)="showmastermenu()">
             <i class="fa fa-laptop"></i>
@@ -309,18 +314,6 @@
             </span>
           </a>
           <ul class="treeview-menu" id="limastermenu">
-            <!-- <li [routerLinkActive]="['active']">
-              <a routerLink="master/city">
-                <i class="fa fa-circle-o"></i> City</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/district">
-                <i class="fa fa-circle-o"></i> District</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/state">
-                <i class="fa fa-circle-o"></i> State</a>
-            </li> -->
             <li [routerLinkActive]="['active']">
               <a routerLink="master/court">
                 <i class="fa fa-circle-o"></i> Court</a>
@@ -341,26 +334,29 @@
               <a routerLink="master/branch">
                 <i class="fa fa-circle-o"></i> Branch</a>
             </li>
-            <li [routerLinkActive]="['active']">
+            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']"><li [routerLinkActive]="['active']">
               <a routerLink="master/institution">
                 <i class="fa fa-circle-o"></i> Institution</a>
-            </li>
-            <li [routerLinkActive]="['active']">
+            </li></ng-template>
+            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']"><li [routerLinkActive]="['active']">
               <a routerLink="master/billing">
                 <i class="fa fa-circle-o"></i> Billing</a>
-            </li>
+            </li></ng-template>
+            
+            
             <li [routerLinkActive]="['active']">
               <a routerLink="master/templates">
                 <i class="fa fa-circle-o"></i> Document Templates</a>
             </li>
-            <li [routerLinkActive]="['active']">
+            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']"><li [routerLinkActive]="['active']">
               <a routerLink="master/invoice">
                 <i class="fa fa-circle-o"></i> Invoice Templates</a>
-            </li>
+            </li></ng-template>
+            
           </ul>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
         <li [routerLinkActive]="['active']">
           <a routerLink="billing">
             <i class="fa fa-dollar"></i>
@@ -368,7 +364,7 @@
           </a>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM', 'CLIENT_LAWYER_FIRM_Institutional']">
         <li class="treeview" [routerLinkActive]="['active']">
           <a (click)="showinstitutionalmenu()">
             <i class="fa fa-institution"></i>
@@ -389,7 +385,7 @@
           </ul>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
         <li [routerLinkActive]="['active']">
           <a routerLink="invoices">
             <i class="glyphicon glyphicon-file"></i>
@@ -397,7 +393,8 @@
           </a>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="calendar">
             <i class="fa fa-calendar"></i>

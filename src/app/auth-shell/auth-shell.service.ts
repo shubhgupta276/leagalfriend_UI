@@ -17,7 +17,7 @@ import {
   HttpParams
 } from '@angular/common/http';
 // const featureConfig = require('./auth-shell.config');
-import { login, resetPassword } from "./auth-shell.config";
+import { login, resetPassword, getUser } from "./auth-shell.config";
 import { signup } from "./auth-shell.config";
 import { changepassword } from "./auth-shell.config";
 import { forgot_password } from "./auth-shell.config";
@@ -252,24 +252,27 @@ export class AuthService {
     );
   }
 
-
+  getUser(userId: string): Observable<any> {
+    return this.apiGateWay.get<any>(getUser + userId);
+}
 
 
 
 
   signOut(): void {
-    this._storageService.setBranchData(null);
-    // clear token remove user from local storage to log user out
-    if (localStorage.getItem("access_token")) {
-      localStorage.removeItem("access_token");
-    }
-    if (localStorage.getItem("refresh_token")) {
-      localStorage.removeItem("refresh_token");
-    }
+    // this._storageService.setBranchData(null);
+    // // clear token remove user from local storage to log user out
+    // if (localStorage.getItem("access_token")) {
+    //   localStorage.removeItem("access_token");
+    // }
+    // if (localStorage.getItem("refresh_token")) {
+    //   localStorage.removeItem("refresh_token");
+    // }
+    localStorage.clear();
   }
 
   isLoggedIn(): boolean {
-    if (localStorage.getItem("access_token"))
+    if (localStorage.getItem('access_token'))
       return true;
     else
 
