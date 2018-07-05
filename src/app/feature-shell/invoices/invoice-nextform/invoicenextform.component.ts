@@ -67,7 +67,7 @@ export class InvoiceNextFormComponent implements OnInit {
             this.arrInvoiceDetails.push(
                 {
                     id: element.id, description: totalDescription,
-                    amount: element.amount, quantity: 1, billingDate: element.billingDate
+                    amount: element.amount, quantity: 1, billingDate: element.billingDate,institutionId:element.institutionId
 
                 })
             if (index < 5)
@@ -121,37 +121,45 @@ export class InvoiceNextFormComponent implements OnInit {
     SaveInvoice() {
         var self = this;
         var totalAmount = 0;
+        debugger
+        var dd = this.arrLocalInvoiceDetails;
+        var d = this.invoiceTemplateInfo;
         $('.invoiceRow').each(function () {
             var $row = $(this);
             var amount = $row.find('.amount').val();
             var description = $row.find('.description').val();
-            //  var quantity = $row.find('.quantity').val();
-
-            var remarks = $('#remarksInvoice').val();
+            var billingId = $row.find('.hfBillingId').val();
+            var insitituionId = $row.find('.hfinsitituionId').val();
             self.arrSaveInvoice.push(
                 {
-                    amount:amount,
-                    amountRecieved:true,
-                    billingIds:[],
-                    fkInstitutionId:0,
-                    id:0,
+                    amount: amount,
+                    amountRecieved: true,
+                    billFrom: self.invoiceTemplateInfo.CompanyAddress,
+                    billTo: self.invoiceTemplateInfo.billToAddress,
+                    billingIds: [
+                        billingId
+                    ],
+                    description: description,
+                    fkInstitutionId:insitituionId,
+                    id: 0,
+                    status: "active",
+                    termsCondition: self.invoiceTemplateInfo.termEndCond
                 }
             )
-            self.arrSaveInvoice.push({ InvoiceNo: self.invoiceTemplateInfo.invoiceNo, description: description, remarks: remarks })
 
         });
         this.invoiceService.saveInvoice(self.arrSaveInvoice).subscribe(
             result => {
-              if (result.body.httpCode === 200) {
-                $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
-              } else {
-                $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-              }
+                if (result.body.httpCode === 200) {
+                    $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
+                } else {
+                    $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+                }
             },
             err => {
-              console.log(err);
+                console.log(err);
             });
         $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
-        this.router.navigate(['/admin/invoices']);
+        //this.router.navigate(['/admin/invoices']);
     }
 }
