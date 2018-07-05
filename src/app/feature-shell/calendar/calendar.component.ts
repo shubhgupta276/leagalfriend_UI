@@ -3,7 +3,6 @@ import { SharedService, UpcomingEvents } from '../../shared/services/shared.serv
 import { Calender } from '../../shared/models/auth/calender.model';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { StorageService } from "../../shared/services/storage.service";
-import { AuthService } from '../../auth-shell/auth-shell.service';
 import { CalenderService } from './calender.service';
 import { CalenderEvent } from './calender-event';
 import { DatePipe } from '@angular/common';
@@ -14,14 +13,14 @@ declare let $;
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
-  providers: [StorageService, AuthService, DatePipe]
+  providers: [StorageService, CalenderService, DatePipe]
 })
 export class CalendarComponent implements OnInit {
   arrEvents: any = [];
   arUpcomingEvents: any = [];
   isRemoveAfterDrop: boolean = false;
   constructor(private sharedService: SharedService, private _router: Router,
-    private apiGateWay: ApiGateway, private authService: AuthService,
+    private apiGateWay: ApiGateway, private _calenderService: CalenderService,
     private _storageService: StorageService, private datePipe: DatePipe) {
   }
 
@@ -81,7 +80,7 @@ export class CalendarComponent implements OnInit {
           timezone: 'local',
           ignoreTimezone: false,
           allDay: false,
-          editable: false,
+          editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
           eventClick: function (event) {
             if (event.eventType == '') {
@@ -98,9 +97,11 @@ export class CalendarComponent implements OnInit {
             saveEvent(date, allDay, this);
           },
           eventDrop: function (event, delta, revertFunc) {
+            $this.updateEvent(event);
             BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
           },
         })
+
 
         function saveEvent(date, allDay, $dragged) {
           // retrieve the dropped element's stored Event Object
@@ -119,8 +120,8 @@ export class CalendarComponent implements OnInit {
           objEvent.startDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
           objEvent.eventName = copiedEventObject.title;
           objEvent.userId = parseInt($this._storageService.getUserId());
-          
-          $this.authService.saveEvent(objEvent).subscribe(
+
+          $this._calenderService.saveEvent(objEvent).subscribe(
             result => {
               if (result.body.httpCode == 200) {
                 $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
@@ -205,6 +206,33 @@ export class CalendarComponent implements OnInit {
     })
   }
 
+  updateEvent(data) {
+    const reqData = {
+      startDate: this.datePipe.transform(data.start._d, "yyyy-MM-dd 00:00:00"),
+      endDate: this.datePipe.transform(data.start._d, "yyyy-MM-dd 00:00:00"),
+      eventId: data.eventId,
+      eventName: data.title,
+      eventDescription: data.eventDescription,
+      eventStatus: data.eventStatus,
+      referenceNumber: data.referenceNumber,
+      userId: this._storageService.getUserId()
+    };
+    this._calenderService.updateEvent(reqData).subscribe(
+      (result) => {
+
+        if (result.body.httpCode == 200) {
+          $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
+        }
+        else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
   convertToEventType(referenceNumber): string {
     if (referenceNumber && referenceNumber.substr(0, 1).toUpperCase() == 'I') {
       return 'INDIVIDUAL_CASE';
@@ -232,12 +260,15 @@ export class CalendarComponent implements OnInit {
 
   getEvent() {
     var $this = this;
-    this.authService.getEvent().subscribe(
+    this._calenderService.getEvent().subscribe(
       result => {
         this.arrEvents = [];
         if (result) {
           result.forEach(function (value) {
             $this.arrEvents.push({
+              eventId: value.eventId,
+              eventDescription: value.eventDescription,
+              eventStatus: value.eventStatus,
               referenceNumber: value.referenceNumber,
               eventType: $this.convertToEventType(value.referenceNumber),
               title: value.eventName,

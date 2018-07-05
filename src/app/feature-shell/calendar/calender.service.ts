@@ -3,19 +3,35 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Headers, RequestOptions, Response, URLSearchParams } from '@angular/http';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { HttpClient, HttpRequest, HttpResponse, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import {CalenderEvent} from './calender-event';
-import {addCalenderEvent, getUsersCalenderEvent} from './calender.config';
+import { CalenderEvent } from './calender-event';
+import { addCalenderEvent, getUsersCalenderEvent } from './calender.config';
+import { Calender } from '../../shared/models/auth/calender.model';
+import { Recourse } from '../master/resource/Recourse';
+import { StorageService } from '../../shared/services/storage.service';
 
 @Injectable()
-export class CalenderService{
+export class CalenderService {
 
-    constructor(public apiGateWay: ApiGateway) { }
+    constructor(public apiGateWay: ApiGateway,
+        private _storageService: StorageService) { }
 
-    addCalenderEvent(calenderEvent: CalenderEvent): Observable<CalenderEvent> {
-        return this.apiGateWay.post<CalenderEvent>(addCalenderEvent, JSON.stringify(calenderEvent));
-      }
+    getEvent(): Observable<any> {
+        return this.apiGateWay.get<Recourse>(
+            'events/eventList' + '?userId=' + this._storageService.getUserId(), null,
+        );
+    }
 
-      getUsersCalenderEvent(userId: Number): Observable<any> {
-         return this.apiGateWay.postWithParam<any>(getUsersCalenderEvent, '?userId='+userId);
-      }
+    saveEvent(customerData: Calender): Observable<Calender> {
+        return this.apiGateWay.post<Calender>(
+            '/events/addEvent',
+            JSON.stringify(customerData)
+        );
+    }
+
+    updateEvent(data: any): Observable<Calender> {
+        return this.apiGateWay.put<Calender>(
+            '/events/updateEvent',
+            JSON.stringify(data)
+        );
+    }
 }
