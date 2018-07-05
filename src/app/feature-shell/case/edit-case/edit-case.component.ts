@@ -72,7 +72,7 @@ export class EditCaseComponent implements OnInit {
     //this.bindStageDDL();
     this.getRunningCase();
     this.BindCompliance();
-
+this.getCustomer();
   }
   private get disabledV(): string {
     return this._disabledV;
@@ -244,7 +244,7 @@ export class EditCaseComponent implements OnInit {
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
     }
-    
+    debugger
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
     this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -479,6 +479,7 @@ export class EditCaseComponent implements OnInit {
     
     this.authService.listManager(reqData).subscribe(
       result => {
+        debugger
         if (result.length === 0) {
           $('#spnCustomer').show();
           $('#spnManager').show();
@@ -583,7 +584,30 @@ export class EditCaseComponent implements OnInit {
   }
 
 
+  getCustomer() {
 
+    var $this = this
+    var reqData = {
+      userId: this._storageService.getUserId(),
+    };
+    this.authService.listCustomers(reqData).subscribe(
+
+      result => {
+        
+        if (result == 0) {
+          $("#spnEmployee").show();
+        }
+        result.forEach(function (value) {
+         
+        //  if (value.roles[0].roleName === 'EMPLOYEE') {
+            $this.CustomerName.push({ id: value.id, text: value.name , });
+        //  }
+         
+        });
+    }
+      
+    );
+  }
 
   getEmployee() {
 
