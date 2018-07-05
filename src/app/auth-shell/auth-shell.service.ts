@@ -225,19 +225,6 @@ export class AuthService {
     );
   }
 
-  saveEvent(customerData: Calender): Observable<Calender> {
-    return this.apiGateWay.post<Calender>(
-      '/events/addEvent',
-      JSON.stringify(customerData)
-    );
-  }
-
-  getEvent(): Observable<any> {
-    return this.apiGateWay.get<Recourse>(
-      'events/eventList' + '?userId=' + this._storageService.getUserId(), null,
-
-    );
-  }
   getCompliances(reqData): Observable<any> {
 
     return this.apiGateWay.get<any>(
