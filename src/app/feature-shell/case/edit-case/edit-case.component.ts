@@ -244,7 +244,7 @@ this.getCustomer();
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
     }
-    debugger
+    // debugger
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
     this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -479,7 +479,7 @@ this.getCustomer();
     
     this.authService.listManager(reqData).subscribe(
       result => {
-        debugger
+        // debugger
         if (result.length === 0) {
           $('#spnCustomer').show();
           $('#spnManager').show();

@@ -12,7 +12,7 @@ const routes: Routes = [
     //     { path: '', loadChildren:'app/feature-shell/feature-shell.module#FeatureShellModule' }
     // ]},
     { path: 'auth', component: AuthShellModule },
-    { path: 'admin', component: FeatureShellModule,canActivate:[LFAuthantication] },
+    { path: 'admin', component: FeatureShellModule, canActivate: [LFAuthantication] },
     { path: '', redirectTo: 'auth', pathMatch: 'full' }
 ];
 
