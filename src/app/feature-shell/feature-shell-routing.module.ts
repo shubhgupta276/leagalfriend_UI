@@ -14,10 +14,11 @@ const featureShellRoutes: Routes = [
         path: 'admin',
         component: FeatureShellComponent, canActivate: [LFAuthantication], children: [
             {
-                path: 'user', loadChildren: 'app/feature-shell/user/user.module#UserModule', canActivate: [NgxPermissionsGuard],
+                path: 'user', loadChildren: 'app/feature-shell/user/user.module#UserModule',
+                canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
-                        only: ['ADMIN']
+                        only: ['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']
                     }
                 }
             },
@@ -25,28 +26,41 @@ const featureShellRoutes: Routes = [
                 path: 'feedback', loadChildren: 'app/feature-shell/feedback/feedback.module#FeedbackModule',
             },
             {
-                path: 'billing', loadChildren: 'app/feature-shell/billing/billing.module#BillingModule', canActivate: [NgxPermissionsGuard],
+                path: 'billing', loadChildren: 'app/feature-shell/billing/billing.module#BillingModule',
+                canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
-                        only: ['ADMIN', 'MANAGER']
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']
                     }
                 }
             },
-            { path: 'case', loadChildren: 'app/feature-shell/case/case.module#CaseModule' },
             {
-                path: 'master',
-                loadChildren: 'app/feature-shell/master/master.module#MasterModule', canActivate: [NgxPermissionsGuard],
+                path: 'case', loadChildren: 'app/feature-shell/case/case.module#CaseModule',
+                canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
-                        only: ['ADMIN']
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+                        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER', 'CLIENT_Individual']
                     }
                 },
             },
             {
-                path: 'institution', loadChildren: 'app/feature-shell/institution/institution.module#InstitutionModule', canActivate: [NgxPermissionsGuard],
+                path: 'master',
+                loadChildren: 'app/feature-shell/master/master.module#MasterModule',
+                canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
-                        only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
+                        only: ['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']
+                    }
+                },
+            },
+            {
+                // tslint:disable-next-line:max-line-length
+                path: 'institution', loadChildren: 'app/feature-shell/institution/institution.module#InstitutionModule',
+                canActivate: [NgxPermissionsGuard],
+                data: {
+                    permissions: {
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM', 'CLIENT_Institutional']
                     }
                 },
             },
@@ -54,31 +68,38 @@ const featureShellRoutes: Routes = [
             { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },
             { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },
             { path: 'wallet', loadChildren: 'app/feature-shell/wallet/wallet.module#WalletModule' },
-            { path: 'dashboard', loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule', canActivate: [NgxPermissionsGuard],
-            data: {
-                permissions: {
-                    only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
-                }
-            }, },
-    {
-        path: 'calendar', component: CalendarComponent, canActivate: [NgxPermissionsGuard],
-        data: {
-            permissions: {
-                only: ['ADMIN', 'MANAGER', 'EMPLOYEE']
-            }
-        },
-    },
-    { path: 'employeeactive', component: EmployeeActiveComponent },
-    { path: '', redirectTo: 'user', pathMatch: 'full' },
-    {
-        path: 'invoices', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule', canActivate: [NgxPermissionsGuard],
-        data: {
-            permissions: {
-                only: ['ADMIN', 'MANAGER']
-            }
-        },
-    },
-]
+            {
+                path: 'dashboard', loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule',
+                canActivate: [NgxPermissionsGuard],
+                data: {
+                    permissions: {
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+                            'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']
+                    }
+                },
+            },
+            {
+                path: 'calendar', component: CalendarComponent,
+                canActivate: [NgxPermissionsGuard],
+                data: {
+                    permissions: {
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+                        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']
+                    }
+                },
+            },
+            { path: 'employeeactive', component: EmployeeActiveComponent },
+            { path: '', redirectTo: 'user', pathMatch: 'full' },
+            {
+                path: 'invoices', loadChildren: 'app/feature-shell/invoices/invoice.module#invoiceModule', 
+                canActivate: [NgxPermissionsGuard],
+                data: {
+                    permissions: {
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']
+                    }
+                },
+            },
+        ]
     },
 
 ];
@@ -90,7 +111,7 @@ const featureShellRoutes: Routes = [
 export class FeatureShellRoutingModule {
 
     constructor(private permissionsService: NgxPermissionsService) {
-        this.permissionsService.loadPermissions([localStorage.getItem('userRole')]);
+        // this.permissionsService.loadPermissions([localStorage.getItem('userRole')]);
         this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
     }
 }

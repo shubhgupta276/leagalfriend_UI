@@ -7,6 +7,7 @@ import { UserService } from './user/user.service';
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import 'rxjs/add/observable/of';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 declare var $;
 declare let Zone: any;
 @Component({
@@ -22,17 +23,18 @@ export class FeatureShellComponent implements OnInit {
   arBranches = [];
   branchConfig: any;
   userDetails = {
-    Name: "",
+    Name: '',
     profile: null
-  }
+  };
   subscriptionEndDate = {
-    subscriptionEndDate: ""
-  }
+    subscriptionEndDate: ''
+  };
 
   constructor(private authService: AuthService, private sharedService: SharedService,
     private _storageService: StorageService,
     private _branchService: BranchService,
     private userService: UserService,
+    private router: Router,
     private permissionsService: NgxPermissionsService,
     private rolesService: NgxRolesService,
     private datePipe: DatePipe) {
@@ -51,40 +53,41 @@ export class FeatureShellComponent implements OnInit {
     this.GetAllBranch();
     this.GetLoggedInUserDetails();
     $(window.document).ready(function () {
-      if ($("skin-black")[0]) {
+      if ($('skin-black')[0]) {
       } else {
-        $("body").addClass("skin-black");
+        $('body').addClass('skin-black');
       }
-      if ($(".sidebar-mini")[0]) {
+      if ($('.sidebar-mini')[0]) {
       } else {
-        $("body").addClass("sidebar-mini");
+        $('body').addClass('sidebar-mini');
       }
-      if ($(".hold-transition")[0]) {
-        $("body").removeClass("hold-transition");
+      if ($('.hold-transition')[0]) {
+        $('body').removeClass('hold-transition');
       }
-      if ($(".login-page")[0]) {
-        $("body").removeClass("login-page");
+      if ($('.login-page')[0]) {
+        $('body').removeClass('login-page');
       }
-      if ($(".register-page")[0]) {
-        $("body").removeClass("register-page");
+      if ($('.register-page')[0]) {
+        $('body').removeClass('register-page');
       }
-      if ($(".wrapper")[0]) {
+      if ($('.wrapper')[0]) {
       } else {
-        $("#wrapper_id").addClass("wrapper");
+        $('#wrapper_id').addClass('wrapper');
       }
-      if ($(".login-box")[0]) {
-        $("#wrapper_id").removeClass("login-box");
+      if ($('.login-box')[0]) {
+        $('#wrapper_id').removeClass('login-box');
       }
-      if ($(".register-box")[0]) {
-        $("#wrapper_id").removeClass("register-box");
+      if ($('.register-box')[0]) {
+        $('#wrapper_id').removeClass('register-box');
       }
-      $("#wrapper_id").css({ "height": "auto", "min-height": "100%" });
-      $("body").css({ "height": "auto", "min-height": "100%" });
+      $('#wrapper_id').css({ 'height': 'auto', 'min-height': '100%' });
+      $('body').css({ 'height': 'auto', 'min-height': '100%' });
     });
   }
 
   signOutButton() {
     this.authService.signOut();
+    this.router.navigateByUrl('login');
   }
   blinker() {
     $('.blink_me').fadeOut(500);
@@ -104,17 +107,17 @@ export class FeatureShellComponent implements OnInit {
             branchData = this.arBranches[0];
           }
           this.branchConfig = {
-            displayKey: "branchName",
+            displayKey: 'branchName',
             showFirstSelected: true,
             showFirstSelectedValue: branchData,
-            showFirstSelectedKey: "id",
+            showFirstSelectedKey: 'id',
             defaultTextAdd: false,
             showIcon: true,
             hideWhenOneItem: true
-          }
-        }
-        else
+          };
+        } else {
           console.log(result);
+        }
       },
       err => {
         console.log(err);
@@ -129,15 +132,15 @@ export class FeatureShellComponent implements OnInit {
   }
 
   showmastermenu() {
-    $("#limastermenu").toggle();
+    $('#limastermenu').toggle();
   }
   showinstitutionalmenu() {
-    $("#liinstitutionalmenu").toggle();
+    $('#liinstitutionalmenu').toggle();
   }
   GetLoggedInUserDetails() {
 
-    var $this = this;
-    var client = '?userId=' + localStorage.getItem('client_id');
+    const $this = this;
+    const client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(
       data => {
 
@@ -146,10 +149,11 @@ export class FeatureShellComponent implements OnInit {
         }else {
           this.showFlash = false;
         }
-        $this.userDetails.Name = data.firstName + " " + data.lastName;
-        $this.permissionsService.loadPermissions([data.roles[0].roleName]);
-        localStorage.setItem("userRole", data.roles[0].roleName);
-        $this.subscriptionEndDate.subscriptionEndDate = this.datePipe.transform(data.subscriptionEndDate, "yyyy-MM-dd");
+        $this.userDetails.Name = data.firstName + ' ' + data.lastName;
+        const permission = localStorage.getItem('permission_level');
+        $this.permissionsService.loadPermissions([permission]);
+        localStorage.setItem('userRole', data.roles[0].roleName);
+        $this.subscriptionEndDate.subscriptionEndDate = this.datePipe.transform(data.subscriptionEndDate, 'yyyy-MM-dd');
       },
       error => console.log(error)
     );

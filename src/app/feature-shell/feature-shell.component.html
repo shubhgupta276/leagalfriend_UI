@@ -236,7 +236,7 @@
               <a routerLink="../admin/feedback">Feedback/Suggestion</a>
             </li>
             <li class="profile-li">
-              <a routerLink="../login" (click)="signOutButton()">Sign out</a>
+              <a (click)="signOutButton()">Sign out</a>
             </li>
             <!-- Menu Footer-->
             <!-- <li class="user-footer">
@@ -279,13 +279,17 @@
 
     <ul class="sidebar-menu" data-widget="tree">
 
-      <li [routerLinkActive]="['active']">
-        <a routerLink="dashboard">
-          <i class="fa fa-dashboard"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-      <ng-template [ngxPermissionsOnly]="['ADMIN']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
+        <li [routerLinkActive]="['active']">
+          <a routerLink="dashboard">
+            <i class="fa fa-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+      </ng-template>
+
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="user">
             <i class="fa fa-users"></i>
@@ -293,13 +297,16 @@
           </a>
         </li>
       </ng-template>
-      <li [routerLinkActive]="['active']">
-        <a routerLink="case">
-          <i class="fa fa-balance-scale"></i>
-          <span>Case Management</span>
-        </a>
-      </li>
-      <ng-template [ngxPermissionsOnly]="['ADMIN']">
+      <ng-template [ngxPermissionsExcept]="['CLIENT_Institutional']">
+        <li [routerLinkActive]="['active']">
+          <a routerLink="case">
+            <i class="fa fa-balance-scale"></i>
+            <span>Case Management</span>
+          </a>
+        </li>
+      </ng-template>
+
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
         <li class="treeview" [routerLinkActive]="['active']">
           <a (click)="showmastermenu()">
             <i class="fa fa-laptop"></i>
@@ -360,7 +367,7 @@
           </ul>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
         <li [routerLinkActive]="['active']">
           <a routerLink="billing">
             <i class="fa fa-dollar"></i>
@@ -368,7 +375,7 @@
           </a>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM', 'CLIENT_Institutional']">
         <li class="treeview" [routerLinkActive]="['active']">
           <a (click)="showinstitutionalmenu()">
             <i class="fa fa-institution"></i>
@@ -389,7 +396,7 @@
           </ul>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['EMPLOYEE','CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
         <li [routerLinkActive]="['active']">
           <a routerLink="invoices">
             <i class="glyphicon glyphicon-file"></i>
@@ -397,7 +404,8 @@
           </a>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsExcept]="['CLIENT']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="calendar">
             <i class="fa fa-calendar"></i>

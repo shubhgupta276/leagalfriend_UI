@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import {
   Http,
   Headers,
@@ -17,29 +17,29 @@ import {
   HttpParams
 } from '@angular/common/http';
 // const featureConfig = require('./auth-shell.config');
-import { login, resetPassword } from "./auth-shell.config";
-import { signup } from "./auth-shell.config";
-import { changepassword } from "./auth-shell.config";
-import { forgot_password } from "./auth-shell.config";
-import { verifyEmail } from "./auth-shell.config";
-import { LoginModel } from "../shared/models/auth/login.model";
-import { UserModel } from "../shared/models/user/user.model";
-import { SignUpModel } from "../shared/models/auth/signup.model";
-import { TokenModel } from "../shared/models/auth/token.model";
-import { ResetPassword } from "../shared/models/auth/resetpassword.model";
-import { ChangePassword } from "../shared/models/auth/changepassword.model";
+import { login, resetPassword, getUser } from './auth-shell.config';
+import { signup } from './auth-shell.config';
+import { changepassword } from './auth-shell.config';
+import { forgot_password } from './auth-shell.config';
+import { verifyEmail } from './auth-shell.config';
+import { LoginModel } from '../shared/models/auth/login.model';
+import { UserModel } from '../shared/models/user/user.model';
+import { SignUpModel } from '../shared/models/auth/signup.model';
+import { TokenModel } from '../shared/models/auth/token.model';
+import { ResetPassword } from '../shared/models/auth/resetpassword.model';
+import { ChangePassword } from '../shared/models/auth/changepassword.model';
 import { Branch } from '../shared/models/auth/case.model';
 import { Recourse } from '../shared/models/auth/recourse.model';
 import { EditCase } from '../shared/models/auth/editcase.model';
 import { Calender } from '../shared/models/auth/calender.model';
-import { StorageService } from "../shared/services/storage.service";
+import { StorageService } from '../shared/services/storage.service';
 
 @Injectable()
 export class AuthService {
   constructor(public apiGateWay: ApiGateway, private _storageService: StorageService) {
     window.addEventListener('storage', function (event) {
       if (event.key == 'access_token') {
-        window.location.href = "/login";
+        window.location.href = '/login';
       }
     });
   }
@@ -147,7 +147,7 @@ export class AuthService {
   getResources(): Observable<any> {
 
     return this.apiGateWay.get<Recourse>(
-      'master/recourses' + "?userId=" + this._storageService.getUserId()
+      'master/recourses' + '?userId=' + this._storageService.getUserId()
     );
   }
   bindStageDDL(recourseId): Observable<any> {
@@ -160,7 +160,7 @@ export class AuthService {
   submitEditCaseUser(customerData: any): Observable<any> {
     return this.apiGateWay.post<any>(
       'case/add', customerData
-      //JSON.stringify(customerData)
+      // JSON.stringify(customerData)
     );
   }
   updateEditCaseUser(customerData: any): Observable<EditCase> {
@@ -177,7 +177,7 @@ export class AuthService {
 
   downloadFile(fileId: any): Observable<File> {
     return this.apiGateWay.getFile(
-      '/case/file/download' + "?fileId=" + fileId
+      '/case/file/download' + '?fileId=' + fileId
     );
   }
   updateCaseHearingDate(customerData: any): Observable<any> {
@@ -253,28 +253,42 @@ export class AuthService {
     );
   }
 
-
-
-
-
-
   signOut(): void {
     this._storageService.setBranchData(null);
     // clear token remove user from local storage to log user out
-    if (localStorage.getItem("access_token")) {
-      localStorage.removeItem("access_token");
-    }
-    if (localStorage.getItem("refresh_token")) {
-      localStorage.removeItem("refresh_token");
+    // if (localStorage.getItem('branchData')) {
+    //   localStorage.removeItem('branchData');
+    // }
+    // if (localStorage.getItem('client_id')) {
+    //   localStorage.removeItem('client_id');
+    // }
+    // if (localStorage.getItem('permission_level')) {
+    //   localStorage.removeItem('permission_level');
+    // }
+    // if (localStorage.getItem('userDetails')) {
+    //   localStorage.removeItem('userDetails');
+    // }
+    // if (localStorage.getItem('user_id')) {
+    //   localStorage.removeItem('user_id');
+    // }
+    // if (localStorage.getItem('userRole')) {
+    //   localStorage.removeItem('userRole');
+    // }
+    if (localStorage.getItem('access_token')) {
+      localStorage.removeItem('access_token');
     }
   }
 
   isLoggedIn(): boolean {
-    if (localStorage.getItem("access_token"))
+    if (localStorage.getItem('access_token')) {
       return true;
-    else
-
+    } else {
       return false;
+    }
   }
+
+  getUser(userId: string): Observable<any> {
+    return this.apiGateWay.get<any>(getUser + userId);
+}
 
 }

@@ -4,6 +4,8 @@ import { Subject } from 'rxjs/Subject';
 import { DatePipe } from '@angular/common';
 import { UserService } from '../../feature-shell/user/user.service';
 import { SSL_OP_SSLREF2_REUSE_CERT_TYPE_BUG } from 'constants';
+// import { getUser } from './shared-service.config';
+import { ApiGateway } from './api-gateway';
 @Injectable()
 export class SharedService {
     arrTodayCalendarEvents: UpcomingEvents[];
@@ -11,9 +13,10 @@ export class SharedService {
     // Observable string sources
     private emitChangeSource = new Subject<any>();
     private branchHeader = new Subject<any>();
+    private permission_level = Observable.of(1);
     // Observable string streams
     changeEmitted$ = this.emitChangeSource.asObservable();
-    constructor(private userService: UserService, private _datePipe: DatePipe) {
+    constructor(private apiGateWay: ApiGateway, private _datePipe: DatePipe) {
         this.arrTodayCalendarEvents = [
             { startdate: this.dateFormat(new Date()), endDate: this.dateFormat(new Date()), cssClass: '#0073b7', totalUpcomingEvents: 0 },
             { startdate: this.dateFormat(new Date()), endDate: this.dateFormat(new Date()), cssClass: '#00c0ef', totalUpcomingEvents: 0 },
@@ -74,28 +77,6 @@ export class SharedService {
 
     convertStrToDate(dateStr: string): Date {
         return new Date(dateStr);
-    }
-
-    setUserRole() {
-    const client = '?userId=' + localStorage.getItem('client_id');
-    this.userService.getUser(client).subscribe(
-      data => {
-          if (data) {
-            const userRole = data.roles[0].roleName;
-            let customerType = '';
-            if (data.customerType) {
-                customerType = data.customerType['name'];
-            }
-            let userType = '';
-            if (data.userType) {
-                userType = data.userType['name'];
-            }
-            const permission = userRole + customerType + userType;
-            localStorage.setItem('permission_level', permission);
-          }
-      },
-      error => console.log(error)
-    );
     }
 }
 export interface UpcomingEvents {
