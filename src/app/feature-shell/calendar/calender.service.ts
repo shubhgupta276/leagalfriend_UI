@@ -15,9 +15,9 @@ export class CalenderService {
     constructor(public apiGateWay: ApiGateway,
         private _storageService: StorageService) { }
 
-    getEvent(): Observable<any> {
+    getEvent(startDate, endDate): Observable<any> {
         return this.apiGateWay.get<Recourse>(
-            'events/eventList' + '?userId=' + this._storageService.getUserId(), null,
+            'events/eventList' + '?startDate=' + startDate + '&endDate=' + endDate + '&userId=' + this._storageService.getUserId(), null,
         );
     }
 

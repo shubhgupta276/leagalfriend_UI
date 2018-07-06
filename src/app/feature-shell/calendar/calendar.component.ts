@@ -19,12 +19,18 @@ export class CalendarComponent implements OnInit {
   arrEvents: any = [];
   arUpcomingEvents: any = [];
   isRemoveAfterDrop: boolean = false;
+  eventStartDate: any;
+  eventEndDate: any;
   constructor(private sharedService: SharedService, private _router: Router,
     private apiGateWay: ApiGateway, private _calenderService: CalenderService,
     private _storageService: StorageService, private datePipe: DatePipe) {
   }
 
   ngOnInit() {
+    const currentDate = new Date();
+    this.eventStartDate = this.datePipe.transform(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1), "yyyy-MM-dd");
+    this.eventEndDate = this.datePipe.transform(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0), "yyyy-MM-dd");
+
     this.getEvent();
     var $this = this;
     var $calenderEvents = [];
@@ -260,7 +266,7 @@ export class CalendarComponent implements OnInit {
 
   getEvent() {
     var $this = this;
-    this._calenderService.getEvent().subscribe(
+    this._calenderService.getEvent(this.eventStartDate, this.eventEndDate).subscribe(
       result => {
         this.arrEvents = [];
         if (result) {
