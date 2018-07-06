@@ -104,332 +104,273 @@
 </style>
 
 <div class="content-wrapper">
-  <div class="page-heading">
-    Invoices
-  </div>
-  <!-- Main content -->
-  <section class="content">
-    <div class="row">
-      <div class="col-xs-12">
-        <!-- /.box -->
-        <div class="box">
-          <div class="box-body">
-            <div>
-              <div class="row table-toolbar">
-                <div class="col-sm-4 heading">Invoice</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                  <label class="custom-label">Show
-                    <select class="input-sm" id="ddlLengthMenu">
-                    </select> rows
-                  </label>
-                </div>
-                <div class="col-sm-2">
-                  <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search...">
-                </div>
-              </div>
-            </div>
-
-            <table id="example1" class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>Invoice No</th>
-                  <th>Date</th>
-                  <th>Bank
-                    <select class="role input-sm" id="ddlBank">
-                      <option value="All">All</option>
-                      <option *ngFor="let item of arListBanks" value="{{item.BankName}}">{{item.BankName}}</option>
-                    </select>
-                  </th>
-                  <th style="display:none">Case Id</th>
-                  <th style="display:none">Recourse</th>
-                  <th style="display:none">Stage</th>
-                  <th style="display:none">Amount</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of invoice" (dblclick)="showModal(item)">
-                  <td>{{item.InvoiceNumber}}</td>
-                  <td>{{item.BillingDate}}</td>
-                  <td>{{item.Bank}}</td>
-                  <td style="display:none">{{item.CaseID}}</td>
-                  <td style="display:none">{{item.Recourse}}</td>
-                  <td style="display:none">{{item.Stage}}</td>
-                  <td style="display:none">{{item.Amount}}</td>
-                  <td>
-                    <a title="Edit">
-                        <button type="button" class="btn btn-danger">Cancel</button>
-                    </a>
-                    <a title="download">
-                      <button id="cmd" class="btn btn-success" (click)="generatepdf()">Download File <i class="fa fa-file"></i></button> 
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-      </div>
-      <!-- /.col -->
+    <div class="page-heading">
+        Invoices
     </div>
-    <!-- /.row -->
-    
-    
-    <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-radius: 5px;">
-          <div class="modal-header">
-
-            <button type="button" id="closebtnFilter" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <span style="background-color:black">axasx</span>&nbsp;
-            <span style="background-color:black">axasx</span>
-            <span style="background-color:black">axasx</span>
-            <b>
-              <h1 class="modal-title" style="text-align:right">INVOICE </h1>
-            </b>
-            <div style="text-align:right">
-              <label style="text-align:right">Date:03/27/2018</label>
-              <br />
-              <label style="text-align:right">Invoice #:</label>
-              <br />
-            </div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <form [formGroup]="editCaseForm1" class="form-horizontal">
-              <div class="form-body">
-                <div class="tab-content">
-                  <div class="tab-pane active">
-<table id="example2" class="table table-bordered table-hover">
-
-    <td>
-        <thead>
-            <tr >
-              <th>Bank</th>
-              <th>CaseId</th>
-              <th>Amount</th>
-              <th>Total</th>
-              
-            </tr>
-          </thead>
-          <tbody>
-              <tr>
-             
-                <td><div  [class.has-error]="editCaseForm1.get('Bank').invalid &&  editCaseForm1.get('Bank').touched">
-                    <input class="form-control" style="border:dotted" placeholder="First Name" formControlName="Bank">
-                  </div></td>
-                <td><div [class.has-error]="editCaseForm1.get('Amount').invalid &&  editCaseForm1.get('Amount').touched">
-                    <input class="form-control"  style="border:dotted" placeholder="First Name" formControlName="CaseID">
-                  </div></td>
-                <td><div  [class.has-error]="editCaseForm1.get('CaseID').invalid &&  editCaseForm1.get('CaseID').touched">
-                    <input class="form-control"  style="border:dotted" placeholder="First Name" formControlName="Amount"> 
-                    
-                   </div></td>
-               
-                   <td><div  [class.has-error]="editCaseForm1.get('CaseID').invalid &&  editCaseForm1.get('CaseID').touched">
-                      <input class="form-control"  style="border:dotted" placeholder="First Name" formControlName="Amount"> 
-                      
-                     </div></td>
-              </tr>
-            </tbody>
-
-                   
-
-                        <!-- <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" onclick="return compliance_single();"> -->
-                      </table>
-                      </div>
-                    
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- /.box -->
+                <div class="box">
+                    <div class="box-body">
+                        <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="onRowDoubleClick($event)">
+                        </app-data-table>
                     </div>
-                  </div>
-                
-             
-
-
-
-            </form>
-
-
-            
-
-          </div>
-          <div style="width:20px;height:10%;background-color:black;"></div>
-          <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
-
-
-
-          </div>
-          <!-- /.modal-content -->
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
         </div>
-        <!-- /.modal-dialog -->
-      </div>
-    </div>
-   
-    <div class="invoice-wrap">
-    <div class="invoice-inner" id="pdfdownload" style="background-color:#ffffff;padding:20px; display:none;">
-      <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
-          <tbody>
-              <tr>
-                  <td align="center" valign="top">
-                      <div>
-                          <div id="logoDiv">
-                              <img height="102" id="logo" src="/assets/dist/img/logo.png" style="width: 122px; height: 102px;" title="" width="122">
-                          </div>
-                      </div>
-                  </td>
-              </tr>
-          </tbody>
-      </table>
-      <div class="invoice-address">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%">
-              <tbody>
-                  <tr>
-                      <td align="left" valign="top" width="50%">
-                          <table border="0" cellpadding="0" cellspacing="0">
-                              <tbody>
-                                  <tr>
-                                      <td valign="top">
-                                          <strong>
-                                              <label>Bill To</label>
-                                          </strong>
-                                      </td>
-                                      <td align="left" valign="top">
-                                          <div>
-                                              <table border="0" cellpadding="0" cellspacing="0">
-                                                  <tbody>
-                                                      <tr>
-                                                          <td align="left" style="padding-left: 25px;">
-                                                              <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
-                                                                  <p>Global Logic
-                                                                      <br /> Tower A, Oxygen Park, Plot No.7, Sector-144
-                                                                      <br /> Noida, 201304</p>
-                                                              </div>
-                                                          </td>
-                                                      </tr>
-                                                  </tbody>
-                                              </table>
-                                          </div>
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </td>
-                      <td align="right" valign="top" width="50%">
-                          <table align="right" border="0" cellpadding="0" cellspacing="0" width="260">
-                              <tbody>
-                                  <tr>
-                                      <td align="right">
-                                          <table border="0" cellpadding="0" cellspacing="0">
-                                              <tbody>
-                                                  <tr>
-                                                      <td align="right">
-                                                          <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
-                                                              <p style="font-size: 14pt;">Global Logic</p>
-                                                              <p>Global Logic
-                                                                  <br /> Noida, 110096
-                                                                  <br /> 408-273-8900
-                                                                  <br /> sales@globallogic.com</p>
-                                                          </div>
-                                                      </td>
-                                                  </tr>
-                                              </tbody>
-                                          </table>
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div style="clear: both;">&nbsp;</div>
-                          &nbsp;&nbsp;
-                          <table border="0" cellpadding="0" cellspacing="0">
-                              <tbody>
-                                  <tr>
-                                      <td align="right">
-                                          <strong>
-                                              <label style="text-align: right; font-weight: bold;">Invoice NO</label>
-                                          </strong>
-                                      </td>
-                                      <td align="left" style="padding-left: 20px;">44444</td>
-                                  </tr>
-                                  <tr>
-                                      <td align="right">
-                                          <strong>
-                                              <label style="text-align: right; font-weight: bold;">Date</label>
-                                          </strong>
-                                      </td>
-                                      <td align="left" style="padding-left: 20px;">4/2/2018</td>
-                                  </tr>
-                                  <!-- /Field10-->
-                              </tbody>
-                          </table>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
-      <div>
-          <table id="tblInvoice" class="table table-condensed table-bordered table-striped items-table" style="height: 68px;">
-              <thead>
-                  <tr style="height: 32px;">
-                      <th style="height: 32px;">Description</th>
-                      <th class="mount-header" style="height: 32px;">Quantity</th>
-                      <th class="mount-header" style="height: 32px;">Unit price</th>
-                      <th class="subtotal-header" style="height: 32px;">Amount</th>
-                      <th width="20" style="height: 32px;">&nbsp;</th>
-                  </tr>
-              </thead>
-              <tbody id="itemsInvoice">
-                  <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow" style="height: 36px;">
-                      <td style="height: 36px;">product name</td>
-                      <td style="height: 36px;">10</td>
-                      <td style="height: 36px;">1000</td>
-                      <td style="height: 36px;">$
-                          <label class="amount">10000</label>
-                      </td>
-                      <td style="height: 36px;"></td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
-      <div class="notes-block">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%">
-              <tbody>
-                  <tr>
-                      <td></td>
-                  </tr>
-                  <tr>
-                      <td></td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br /> &nbsp;
-    </div>
-  </div>
-      
-  </section>
-  <!-- /.content -->
+        <!-- /.row -->
+
+
+        <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">
+            <div class="modal-dialog">
+                <div class="modal-content" style="border-radius: 5px;">
+                    <div class="modal-header">
+
+                        <button type="button" id="closebtnFilter" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span style="background-color:black">axasx</span>&nbsp;
+                        <span style="background-color:black">axasx</span>
+                        <span style="background-color:black">axasx</span>
+                        <b>
+                            <h1 class="modal-title" style="text-align:right">INVOICE </h1>
+                        </b>
+                        <div style="text-align:right">
+                            <label style="text-align:right">Date:03/27/2018</label>
+                            <br />
+                            <label style="text-align:right">Invoice #:</label>
+                            <br />
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <form [formGroup]="editCaseForm1" class="form-horizontal">
+                            <div class="form-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active">
+                                        <table id="example2" class="table table-bordered table-hover">
+
+                                            <td>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Bank</th>
+                                                        <th>CaseId</th>
+                                                        <th>Amount</th>
+                                                        <th>Total</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+
+                                                        <td>
+                                                            <div [class.has-error]="editCaseForm1.get('Bank').invalid &&  editCaseForm1.get('Bank').touched">
+                                                                <input class="form-control" style="border:dotted" placeholder="First Name" formControlName="Bank">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div [class.has-error]="editCaseForm1.get('Amount').invalid &&  editCaseForm1.get('Amount').touched">
+                                                                <input class="form-control" style="border:dotted" placeholder="First Name" formControlName="CaseID">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div [class.has-error]="editCaseForm1.get('CaseID').invalid &&  editCaseForm1.get('CaseID').touched">
+                                                                <input class="form-control" style="border:dotted" placeholder="First Name" formControlName="Amount">
+
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div [class.has-error]="editCaseForm1.get('CaseID').invalid &&  editCaseForm1.get('CaseID').touched">
+                                                                <input class="form-control" style="border:dotted" placeholder="First Name" formControlName="Amount">
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+
+
+                                                <!-- <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" onclick="return compliance_single();"> -->
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </form>
+
+
+
+
+                    </div>
+                    <div style="width:20px;height:10%;background-color:black;"></div>
+                    <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
+
+
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </div>
+
+        <div class="invoice-wrap">
+            <div class="invoice-inner" id="pdfdownload" style="background-color:#ffffff;padding:20px; display:none;">
+                <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
+                    <tbody>
+                        <tr>
+                            <td align="center" valign="top">
+                                <div>
+                                    <div id="logoDiv">
+                                        <img height="102" id="logo" src="/assets/dist/img/logo.png" style="width: 122px; height: 102px;" title="" width="122">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="invoice-address">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td align="left" valign="top" width="50%">
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td valign="top">
+                                                    <strong>
+                                                        <label>Bill To</label>
+                                                    </strong>
+                                                </td>
+                                                <td align="left" valign="top">
+                                                    <div>
+                                                        <table border="0" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="left" style="padding-left: 25px;">
+                                                                        <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
+                                                                            <p>Global Logic
+                                                                                <br /> Tower A, Oxygen Park, Plot No.7, Sector-144
+                                                                                <br /> Noida, 201304</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td align="right" valign="top" width="50%">
+                                    <table align="right" border="0" cellpadding="0" cellspacing="0" width="260">
+                                        <tbody>
+                                            <tr>
+                                                <td align="right">
+                                                    <table border="0" cellpadding="0" cellspacing="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td align="right">
+                                                                    <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
+                                                                        <p style="font-size: 14pt;">Global Logic</p>
+                                                                        <p>Global Logic
+                                                                            <br /> Noida, 110096
+                                                                            <br /> 408-273-8900
+                                                                            <br /> sales@globallogic.com</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div style="clear: both;">&nbsp;</div>
+                                    &nbsp;&nbsp;
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td align="right">
+                                                    <strong>
+                                                        <label style="text-align: right; font-weight: bold;">Invoice NO</label>
+                                                    </strong>
+                                                </td>
+                                                <td align="left" style="padding-left: 20px;">44444</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                    <strong>
+                                                        <label style="text-align: right; font-weight: bold;">Date</label>
+                                                    </strong>
+                                                </td>
+                                                <td align="left" style="padding-left: 20px;">4/2/2018</td>
+                                            </tr>
+                                            <!-- /Field10-->
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table id="tblInvoice" class="table table-condensed table-bordered table-striped items-table" style="height: 68px;">
+                        <thead>
+                            <tr style="height: 32px;">
+                                <th style="height: 32px;">Description</th>
+                                <th class="mount-header" style="height: 32px;">Quantity</th>
+                                <th class="mount-header" style="height: 32px;">Unit price</th>
+                                <th class="subtotal-header" style="height: 32px;">Amount</th>
+                                <th width="20" style="height: 32px;">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsInvoice">
+                            <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow" style="height: 36px;">
+                                <td style="height: 36px;">product name</td>
+                                <td style="height: 36px;">10</td>
+                                <td style="height: 36px;">1000</td>
+                                <td style="height: 36px;">$
+                                    <label class="amount">10000</label>
+                                </td>
+                                <td style="height: 36px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="notes-block">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+                <br />
+                <br />
+                <br /> &nbsp;
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

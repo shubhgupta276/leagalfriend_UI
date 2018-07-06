@@ -19,7 +19,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 140px;
+    max-width: 200px;
     float: left;
 }
 .mat-column-select {

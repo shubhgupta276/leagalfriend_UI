@@ -11,6 +11,7 @@ import { StorageService } from '../../shared/services/storage.service';
 import { InstitutionService } from '../../feature-shell/master/institution/institution.service';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { InvoicesService } from './invoices.service'
+import { DataTableModule } from '../../shared/components/data-table/data-table.module';
 
 
 @NgModule(
@@ -22,7 +23,8 @@ import { InvoicesService } from './invoices.service'
             FormsModule,
             SelectDropDownModule,
             SharedModule,
-            NgxPaginationModule
+            NgxPaginationModule,
+            DataTableModule
         ],
         declarations: [ InvoiceComponent ,InvoiceFormComponent,InvoiceNextFormComponent],
         providers: [InstitutionService,StorageService,InvoicesService]

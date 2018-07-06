@@ -14,6 +14,8 @@
     background-color: #f4f4f4;
     margin-bottom: 4px;
   }
+
+  
 </style>
 <div class="content-wrapper">
   <div class="page-heading">
@@ -36,10 +38,12 @@
             <div class="col-sm-2">
               <!-- <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilter()">Reset</button>
               <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button> -->
-             <a><img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();"></a>
+              <a>
+                <img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();">
+              </a>
             </div>
             <div class="col-sm-2 case-search">
-              <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." [(ngModel)]="searchTextbox"  (keyup)="searchFilter($event.target.value)">
+              <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." [(ngModel)]="searchTextbox" (keyup)="searchFilter($event.target.value)">
             </div>
 
 
@@ -47,7 +51,7 @@
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
               [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" [moduleName]="moduleName">
             </app-data-table>
-           
+
           </div>
 
 
@@ -72,7 +76,7 @@
           </div>
           <div style="width:20px;height:10%;background-color:black;"></div>
           <div style="margin-top: -15px; margin-bottom: -15px;" class="modal-body">
-            <div class="row caseModalRow">             
+            <div class="row caseModalRow">
               <div class="col-md-12 col-sm-12 col-xs-12 append_bottom16">
                 <div class="form-group">
                   <label class="dateRange">Date range:</label>
