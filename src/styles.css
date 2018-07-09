@@ -19,7 +19,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 200px;
+    max-width: 150px;
     float: left;
 }
 .mat-column-select {
@@ -45,7 +45,7 @@
     flex: 0.5 !important;
 } */
 .mat-column-action {
-    flex: 0 0 160px !important;
+    flex: 0 0 110px !important;
 }
 .hearing-date{
     position: absolute;

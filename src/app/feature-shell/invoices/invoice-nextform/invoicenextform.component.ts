@@ -144,7 +144,8 @@ export class InvoiceNextFormComponent implements OnInit {
                     fkInstitutionId:insitituionId,
                     id: 0,
                     status: "active",
-                    termsCondition: self.invoiceTemplateInfo.termEndCond
+                    termsCondition: self.invoiceTemplateInfo.termEndCond,
+                    userId:self._storageService.getUserId()
                 }
             )
 

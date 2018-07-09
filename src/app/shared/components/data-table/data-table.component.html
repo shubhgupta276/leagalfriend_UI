@@ -43,7 +43,7 @@
                 <div class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId] }} &nbsp; &nbsp;</div>
                 <div *ngIf="showCalender && (column.uniqueId=='nextHearingDate' || column.uniqueId=='previousHearingDate')" style=" margin-left: 41px;position: relative;"
                     class="colCalendar">
-                    <div class="divNewHire input-group date" style="margin-top: -22px;position: absolute" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                    <div class="divNewHire input-group date" style="margin-top: -2px;position: absolute" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                         <input *ngIf="column.uniqueId=='nextHearingDate'" style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE"
                             readonly="" placeholder="yyyy-mm-dd" class="form-control newHiringDate" size="10" >
 
