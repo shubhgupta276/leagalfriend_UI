@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy,ViewEncapsulation } from '@angular/core';
 import { KeyValue, ListBranch } from '../../../shared/Utility/util-common';
 import { AddForInstitutionComponent } from './add-for-institution/add-for-institution.component';
 import { EditForInstitutionComponent } from './Edit-for-institution/Edit-for-institution.component';
@@ -24,7 +24,8 @@ declare let $;
     selector: 'app-for-institution',
     templateUrl: './for-institution.component.html',
     styleUrls: ['./for-institution.component.css'],
-    providers: [RecourseService]
+    providers: [RecourseService],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class ForInstitutionComponent implements OnInit {

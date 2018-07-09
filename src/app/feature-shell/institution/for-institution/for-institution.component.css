@@ -13,3 +13,6 @@
     margin-top: -131px;
     z-index: 1000;
 }
+.mat-cell-text{
+    max-width: 150px !important;
+}
