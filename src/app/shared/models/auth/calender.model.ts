@@ -1,6 +1,7 @@
 export class Calender {
-    "startDate": string;
-    "eventName": string;
-    "userId": number;
+    endDate: string;
+    startDate: string;
+    eventName: string;
+    userId: number;
     body?: any;
 }

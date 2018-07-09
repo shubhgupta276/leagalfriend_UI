@@ -34,4 +34,10 @@ export class CalenderService {
             JSON.stringify(data)
         );
     }
+
+    deleteEvent(eventId: any): Observable<any> {
+        return this.apiGateWay.delete<any>(
+            '/events/deleteEvent?eventId=' + eventId
+        );
+    }
 }

@@ -25,7 +25,7 @@
 
               <div class="row">
                 <div class="box-body widget-content">
-                  <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.value)">
+                  <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.getRawValue())">
                     <div style="margin-right: 17px;float: right;">
                       <input type="submit" *ngIf="!isCaseCompletedOpen" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
                       <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
@@ -50,7 +50,7 @@
                               <em class="astrick">*</em>
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('recourse').invalid &&  editForInstitutionForm.get('recourse').touched">
-                              <input class="form-control" disabled placeholder="Recourse" formControlName="recourse">
+                              <input class="form-control" placeholder="Recourse" formControlName="recourse">
                             </div>
 
                             <label class="col-sm-3 col-form-label createUserLabel">Legal Case ID:
