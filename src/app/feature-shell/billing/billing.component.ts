@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,ViewEncapsulation } from '@angular/core';
 import { parse } from 'url';
 import { Jsonp } from '@angular/http/src/http';
 import { BillingService } from './billing.service';
@@ -16,6 +16,8 @@ declare var $;
     templateUrl: './billing.component.html',
     styleUrls: ['./billing.component.css'],
     // providers: [BillingService]
+//styles:[`body{background:green !important}`]
+encapsulation: ViewEncapsulation.None
 })
 export class BillingComponent implements OnInit {
     tableInputData = [];

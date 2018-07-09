@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit,ViewEncapsulation } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -26,13 +26,15 @@ import { StorageService } from '../../shared/services/storage.service';
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { ChangePassword } from '../../shared/models/auth/changepassword.model';
+
 declare var $;
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css'],
-  providers: [UserService]
+  //styleUrls: ['./user.component.css'],
+  providers: [UserService],
+  encapsulation: ViewEncapsulation.None
 })
 export class UserComponent implements OnInit {
   tableInputData = [];
