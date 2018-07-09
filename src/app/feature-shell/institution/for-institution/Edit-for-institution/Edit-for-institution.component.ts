@@ -229,6 +229,7 @@ export class EditForInstitutionComponent implements OnInit {
           this.disableForm(false);
         }
         this.editForInstitutionForm.controls['recourse'].disable();
+        // this.editForInstitutionForm.controls['legalCaseId'].disable();
       }, 10);
     }
   }
@@ -251,7 +252,7 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   submitEditinstitutionUser(data: any) {
-    console.log(this.editForInstitutionForm.valid);
+
     if (this.editForInstitutionForm.valid) {
       data.userId = this._storageService.getUserId();
 

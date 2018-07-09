@@ -46,7 +46,7 @@ export class ForInstitutionComponent implements OnInit {
     rowIndex: number;
     arFilterType: any = [];
     showDateFilter: boolean = false;
-    filterTypeId: any;
+    filterTypeId: any = 0;
     hoveredIndex: number;
     newHiringdata: any;
     lastHiringdata: any;
@@ -238,7 +238,7 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     filterTable() {
-        
+
         this.dataTableComponent.sortTable((this.recourseFilter === undefined || this.recourseFilter === null) ? '' : this.recourseFilter.recourseCode, 'recourse');
         if (this.filterTypeId === 0) {
             this.dataTableComponent.resetDateFilter();
@@ -281,7 +281,7 @@ export class ForInstitutionComponent implements OnInit {
 
     showHideColumns(show) {
         this.columns.forEach(function (data) {
-            if (data.uniqueId === 'previousHearingDate' || data.uniqueId === 'nextHearingDate') {
+            if (data.uniqueId === 'nextHearingDate') {
                 data.display = show;
             }
         });
