@@ -19,12 +19,18 @@ export class CalendarComponent implements OnInit {
   arrEvents: any = [];
   arUpcomingEvents: any = [];
   isRemoveAfterDrop: boolean = false;
+  eventStartDate: any;
+  eventEndDate: any;
   constructor(private sharedService: SharedService, private _router: Router,
     private apiGateWay: ApiGateway, private _calenderService: CalenderService,
     private _storageService: StorageService, private datePipe: DatePipe) {
   }
 
   ngOnInit() {
+    const currentDate = new Date();
+    this.eventStartDate = this.datePipe.transform(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1), "yyyy-MM-dd");
+    this.eventEndDate = this.datePipe.transform(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0), "yyyy-MM-dd");
+
     this.getEvent();
     var $this = this;
     var $calenderEvents = [];
@@ -100,6 +106,12 @@ export class CalendarComponent implements OnInit {
             $this.updateEvent(event);
             BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
           },
+          eventRender: function (event, element) {
+            element.find('.fc-content').append("<span class='closeon' title='Delete Event' style='float:right;'>X</span>");
+            element.find(".closeon").click(function () {
+              $this.deleteEvent(event);
+            });
+          }
         })
 
 
@@ -117,8 +129,9 @@ export class CalendarComponent implements OnInit {
           copiedEventObject.borderColor = $($dragged).css('border-color')
 
           const objEvent = new Calender();
-          objEvent.startDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
+          objEvent.endDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
           objEvent.eventName = copiedEventObject.title;
+          objEvent.startDate = $this.datePipe.transform(copiedEventObject.start, "yyyy-MM-dd 00:00:00");
           objEvent.userId = parseInt($this._storageService.getUserId());
 
           $this._calenderService.saveEvent(objEvent).subscribe(
@@ -206,6 +219,23 @@ export class CalendarComponent implements OnInit {
     })
   }
 
+  deleteEvent(data) {
+    this._calenderService.deleteEvent(data.eventId).subscribe(
+      (result) => {
+        if (result.httpCode == 200) {
+          $('#calendar').fullCalendar('removeEvents', data._id);
+          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+        }
+        else {
+          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
   updateEvent(data) {
     const reqData = {
       startDate: this.datePipe.transform(data.start._d, "yyyy-MM-dd 00:00:00"),
@@ -260,7 +290,7 @@ export class CalendarComponent implements OnInit {
 
   getEvent() {
     var $this = this;
-    this._calenderService.getEvent().subscribe(
+    this._calenderService.getEvent(this.eventStartDate, this.eventEndDate).subscribe(
       result => {
         this.arrEvents = [];
         if (result) {
