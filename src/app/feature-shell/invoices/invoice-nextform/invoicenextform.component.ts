@@ -123,6 +123,7 @@ export class InvoiceNextFormComponent implements OnInit {
         var totalAmount = 0;
         var dd = this.arrLocalInvoiceDetails;
         var d = this.invoiceTemplateInfo;
+        self.arrSaveInvoice=[];
         $('.invoiceRow').each(function () {
             var $row = $(this);
             var amount = $row.find('.amount').val();
@@ -142,7 +143,8 @@ export class InvoiceNextFormComponent implements OnInit {
                     fkInstitutionId:insitituionId,
                     id: 0,
                     status: "active",
-                    termsCondition: self.invoiceTemplateInfo.termEndCond
+                    termsCondition: self.invoiceTemplateInfo.termEndCond,
+                    userId:self._storageService.getUserId()
                 }
             )
 
@@ -150,7 +152,7 @@ export class InvoiceNextFormComponent implements OnInit {
         this.invoiceService.saveInvoice(self.arrSaveInvoice).subscribe(
             result => {
                 if (result.body.httpCode === 200) {
-                    $.toaster({ priority: 'success', title: 'Success', message: 'User updated successfully' });
+                    $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
                 } else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
                 }
@@ -158,7 +160,7 @@ export class InvoiceNextFormComponent implements OnInit {
             err => {
                 console.log(err);
             });
-        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
+        
         //this.router.navigate(['/admin/invoices']);
     }
 }
