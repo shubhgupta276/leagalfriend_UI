@@ -56,6 +56,7 @@ export class AddUserComponent implements OnInit {
   }
 
   submitAddUser(data) {
+    debugger
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;
@@ -92,7 +93,7 @@ export class AddUserComponent implements OnInit {
       id: data.institutions,
     };
     
-    if (this.userTypeRole === undefined || this.userTypeRole == null) {
+    if (data.userTypeRole === undefined || data.userTypeRole == null) {
       userDetails.userType = {
         id: 2,
         name: 'Institutional'
@@ -100,8 +101,8 @@ export class AddUserComponent implements OnInit {
     }
     else {
       userDetails.userType = {
-        id: this.userTypeRole.value,
-        name: this.userTypeRole.text
+        id: data.userTypeRole,
+       // name: data.userTypeRole.text
       };
     }
     userDetails.clientId = Number(localStorage.getItem('client_id'));
