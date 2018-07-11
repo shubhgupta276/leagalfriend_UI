@@ -16,9 +16,8 @@
             <h3 class="box-title">Create Event</h3>
           </div>
           <div class="box-body">
-            <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-              <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
-              <ul class="fc-color-picker" id="color-chooser">
+            <!-- <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+             <ul class="fc-color-picker" id="color-chooser">
                 <li>
                   <a class="text-aqua" href="#">
                     <i class="fa fa-square"></i>
@@ -86,13 +85,13 @@
                 </li>
               </ul>
 
-            </div>
+            </div> -->
             <!-- /btn-group -->
             <div class="input-group">
               <input id="new-event" type="text" class="form-control" placeholder="Event Title">
 
               <div class="input-group-btn">
-                <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Add</button>
+                <button id="add-new-event" type="button" class="btn btn-primary btn-flat" style="background-color:#dd4b39; border-color:#dd4b39;">Add</button>
               </div>
               <!-- /btn-group -->
             </div>
@@ -100,11 +99,11 @@
           </div>
 
           <div id="external-events">
-            <div class="external-event bg-green">Lunch</div>
+            <!-- <div class="external-event bg-green">Lunch</div>
             <div class="external-event bg-yellow">Go home</div>
             <div class="external-event bg-aqua">Do homework</div>
             <div class="external-event bg-light-blue">Work on UI design</div>
-            <div class="external-event bg-red">Sleep tight</div>
+            <div class="external-event bg-red">Sleep tight</div> -->
             <div class="checkbox">
               <label for="drop-remove">
                 <input type="checkbox" (change)="isRemoveAfterDrop=$event.target.checked"> remove after drop
