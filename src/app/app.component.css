@@ -7,9 +7,11 @@
     top: 0;
     bottom: 0;
     z-index: 100000;
+    text-align: center;
+    padding-top: 20%
 }
  
-.loading span {
+/* .loading img {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -18,4 +20,4 @@
     padding: 20px 40px;
     margin-left: -40px;
     background: rgba(255,255,255,0.8);
-}
+} */
