@@ -1,15 +1,17 @@
 .export1 {
-    right: 0;
+    right: 0px;
+    bottom: 150px;
     margin-right: 58px;
-    position: absolute;
+    position: fixed;
     margin-top: -172px;
     z-index: 1000;
 }
 
 .export2 {
-    right: 0;
+    right: 0px;
+    bottom: 102px;
     margin-right: 58px;
-    position: absolute;
-    margin-top: -131px;
+    position: fixed;
+    margin-top: -172px;
     z-index: 1000;
 }
