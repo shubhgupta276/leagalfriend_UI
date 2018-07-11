@@ -18,7 +18,7 @@ export class InvoicesService {
         return this.apiGateWay.get<any>(apiUrl, null);
     }
     saveInvoice(data:any): Observable<any> {
-        return this.apiGateWay.get<any>(Invoice,data);
+        return this.apiGateWay.post<any>(Invoice,data);
     }
 
 }

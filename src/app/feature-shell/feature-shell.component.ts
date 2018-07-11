@@ -36,6 +36,7 @@ export class FeatureShellComponent implements OnInit {
     private permissionsService: NgxPermissionsService,
     private rolesService: NgxRolesService,
     private datePipe: DatePipe) {
+    this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
     sharedService.changeEmitted$.subscribe(Zone.current.wrap(
       text => {
         this.totalUpcomingEvents = text;
@@ -100,7 +101,6 @@ export class FeatureShellComponent implements OnInit {
     this.arBranches = [];
     this._branchService.getBranches().subscribe(
       result => {
-
         if (result != null) {
           this.arBranches = result.branches;
 
@@ -144,14 +144,13 @@ export class FeatureShellComponent implements OnInit {
     var client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(
       data => {
-
         if (data.showSubscriptionFlash) {
           this.showFlash = true;
-        }else {
+        } else {
           this.showFlash = false;
         }
         $this.userDetails.Name = data.firstName + " " + data.lastName;
-        $this.permissionsService.loadPermissions([data.roles[0].roleName]);
+        // $this.permissionsService.loadPermissions([data.roles[0].roleName]);
         localStorage.setItem("userRole", data.roles[0].roleName);
         $this.subscriptionEndDate.subscriptionEndDate = this.datePipe.transform(data.subscriptionEndDate, "yyyy-MM-dd");
       },

@@ -228,6 +228,7 @@ export class EditForInstitutionComponent implements OnInit {
         else {
           this.disableForm(false);
         }
+        this.editForInstitutionForm.controls['recourse'].disable();
       }, 10);
     }
   }
