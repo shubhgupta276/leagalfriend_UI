@@ -121,7 +121,6 @@ export class InvoiceNextFormComponent implements OnInit {
     SaveInvoice() {
         var self = this;
         var totalAmount = 0;
-        debugger
         var dd = this.arrLocalInvoiceDetails;
         var d = this.invoiceTemplateInfo;
         self.arrSaveInvoice=[];
@@ -162,6 +161,6 @@ export class InvoiceNextFormComponent implements OnInit {
                 console.log(err);
             });
         
-        //this.router.navigate(['/admin/invoices']);
+        this.router.navigate(['/admin/invoices']);
     }
 }

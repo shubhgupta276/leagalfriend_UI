@@ -101,7 +101,6 @@ export class FeatureShellComponent implements OnInit {
     this.arBranches = [];
     this._branchService.getBranches().subscribe(
       result => {
-        // debugger
         if (result != null) {
           this.arBranches = result.branches;
 
@@ -145,7 +144,6 @@ export class FeatureShellComponent implements OnInit {
     var client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(
       data => {
-
         if (data.showSubscriptionFlash) {
           this.showFlash = true;
         } else {

@@ -1,15 +1,21 @@
 .mat-column-name {
-    flex: 0 0 170px !important;
+    flex: 0 0 30% !important;
   }
   .mat-column-email {
-    flex: 0 0 220px !important;
+    flex: 0 0 30% !important;
+}
+.mat-column-email .mat-cell-text{
+    max-width: 220px !important;
 }
 .mat-column-mobileNumber{
-    flex:0 0 170px !important;
+    flex:0 0 10% !important;
 }
 .mat-column-roles {
-    flex: 0 0 180px !important;
+    flex: 0 0 10% !important;
 }
 .mat-column-status {
-    flex: 0 0 180px !important;
+    flex: 0 0 10% !important;
+}
+.mat-cell-text{
+    max-width: 220px !important
 }

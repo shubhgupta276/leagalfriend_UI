@@ -41,7 +41,7 @@ const featureShellRoutes: Routes = [
                     permissions: {
                         only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
                             'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER',
-                            'CLIENT_LAWYER_Individual', 'CLIENT_LAWYER_FIRM_Individual']
+                            'CLIENT_LAWYER_Individual', 'CLIENT_LAWYER_Institutional', 'CLIENT_LAWYER_FIRM_Individual']
                     }
                 },
             },
