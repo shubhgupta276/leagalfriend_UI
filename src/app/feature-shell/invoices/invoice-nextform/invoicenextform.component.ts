@@ -161,6 +161,6 @@ export class InvoiceNextFormComponent implements OnInit {
                 console.log(err);
             });
         
-        //this.router.navigate(['/admin/invoices']);
+        this.router.navigate(['/admin/invoices']);
     }
 }

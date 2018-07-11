@@ -16,26 +16,15 @@
   .modal-dialog .close {
     display: none !important;
   }
+
   body {
     width: calc(100vw - 34px);
-}  
+  }
 </style>
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
-      Dashboard
-      <small>Control panel</small>
-    </h1>
-    <ol class="breadcrumb">
-      <li>
-        <a href="#">
-          <i class="fa fa-dashboard"></i> Home</a>
-      </li>
-      <li class="active">Dashboard</li>
-    </ol>
-  </section>
-
+  <div class="page-heading">
+    Dashboard
+  </div>
   <!-- Main content -->
   <section class="content">
     <!-- Small boxes (Stat box) -->
@@ -396,12 +385,12 @@
                         <div class="tab-pane active">
                           <div class="form-group row" style="text-align: center">
                             <!-- <h2>{{branchPopupBody}}</h2> -->
-                            <h4 style="color: green">Thank you for registration. Please fill further details for setup.</h4>                           
+                            <h4 style="color: green">Thank you for registration. Please fill further details for setup.</h4>
                           </div>
                         </div>
                       </div>
                       <div style="text-align: right">
-                          <a type="submit" (click)="ShowBranchPopup()" class="btn btn-modal-addedit">Next</a>
+                        <a type="submit" (click)="ShowBranchPopup()" class="btn btn-modal-addedit">Next</a>
                       </div>
                     </div>
                   </form>
