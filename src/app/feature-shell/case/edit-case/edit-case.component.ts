@@ -315,7 +315,15 @@ this.getCustomer();
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, 'yyyy-MM-dd')]
     });
-    // this.editCaseForm.disable();
+    
+    if(localStorage.userRole='CLIENT')
+    {
+      this.editCaseForm.disable();
+      this._disabledV = '1';
+      this.disabled = true;
+
+    }
+     
   }
 
 
@@ -434,7 +442,13 @@ this.getCustomer();
       // }
       
     });
-    this.editCaseForm.disable();
+      if(localStorage.userRole='CLIENT')
+    {
+      this.editCaseForm.disable();
+      this._disabledV = '1';
+      this.disabled = true;
+      
+    }
   }
 
 
