@@ -106,6 +106,9 @@ export class CaseComponent implements OnInit, OnDestroy {
       }, 10);
 
     });
+
+
+
     // this.getRunningCase();
     this.getRecourse();
     this.setActionConfig();
@@ -146,16 +149,28 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
 
-        result.forEach(ele => {
-          if (ele.branchName == $this.branchData.branchName) {
+        if (localStorage.userRole == 'CLIENT') {
+          result.forEach(ele => {
+           
             if (ele.completionDate) {
               this.completedTableInputData.push(ele);
-            } else {
+            }
+            else{
               this.tableInputData.push(ele);
             }
-          }
-        });
-
+          });
+        }
+        else {
+          result.forEach(ele => {
+            if (ele.branchName == $this.branchData.branchName) {
+              if (ele.completionDate) {
+                this.completedTableInputData.push(ele);
+              } else {
+                this.tableInputData.push(ele);
+              }
+            }
+          });
+        }
         this.runningDataTableComponent.ngOnInit();
         this.completedDataTableComponent.ngOnInit();
       },
@@ -421,16 +436,15 @@ export class CaseComponent implements OnInit, OnDestroy {
       });
   }
   changeRecourse(data: any) {
-    
 
-    if(data==undefined)
-    {
+
+    if (data == undefined) {
       this.runningDataTableComponent.sortTable((data === undefined || data === null) ? '' : data.recourseCode, 'recourseCode');
     }
-    else{
+    else {
       this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
     }
-   
+
   }
   getUploadedDocuments() {
     this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);

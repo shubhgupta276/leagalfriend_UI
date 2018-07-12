@@ -56,7 +56,7 @@ export class AddUserComponent implements OnInit {
   }
 
   submitAddUser(data) {
-    debugger
+    
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;
