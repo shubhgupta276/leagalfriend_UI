@@ -78,8 +78,8 @@ export class CalendarComponent implements OnInit {
         editable: true,
         droppable: true, // this allows things to be dropped onto the calendar !!!
         eventClick: function (event) {
-          if (event.eventType == '') {
-
+          if (event.eventType == 'INDIVIDUAL_CASE') {
+            $this._router.navigate(['/admin/case', { caseId: event.referenceNumber.split('/')[2] }])
           }
           else if (event.eventType == '') {
             $this._router.navigate([]);
@@ -107,7 +107,7 @@ export class CalendarComponent implements OnInit {
             $this.deleteEvent(event);
           });
         },
-        eventAllow: function(dropLocation, draggedEvent) {
+        eventAllow: function (dropLocation, draggedEvent) {
           if (draggedEvent.eventType === $this.convertToEventType(null)) {
             return true;
           }
@@ -125,9 +125,9 @@ export class CalendarComponent implements OnInit {
       });
 
       $this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-      
+
       let currColor = this.getEventBgColor(this.convertToEventType(null));
-      
+
       let colorChooser = $('#color-chooser-btn')
       $('#color-chooser > li > a').click(function (e) {
         e.preventDefault()
@@ -329,9 +329,9 @@ export class CalendarComponent implements OnInit {
             });
           });
           //$this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-          setTimeout(() => {
-            $('#calendar').fullCalendar('refetchEvents');
-          }, 1000);
+          //setTimeout(() => {
+          // $('#calendar').fullCalendar('refetchEvents');
+          //          }, 1000);
           //
           this.bindFullCalendar();
         }
