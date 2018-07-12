@@ -45,7 +45,6 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig.showCancel = true;
   }
   onActionBtnClick(event) {
-    debugger
     if (event.eventType == 'cancel') {
       this.cancelInvoice(event.data.id);
     }
