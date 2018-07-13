@@ -138,9 +138,20 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
   getCasesData() {
+    if(localStorage.branchData==undefined)
+    {
+       b={id:-1}
+       
+    }
+    else{
+      var a = localStorage.getItem("branchData");
+      var b = JSON.parse(a);
+    }
+   
     var $this = this;
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
+       branchId: b.id
     };
     this.branchData = this._storageService.getBranchData();
 

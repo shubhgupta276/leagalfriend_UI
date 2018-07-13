@@ -244,7 +244,7 @@ this.getCustomer();
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
     }
-    // debugger
+    
     if(localStorage.userRole!='CLIENT')
     {
     this.customerSelected = [];
@@ -321,6 +321,8 @@ this.getCustomer();
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
+      $("#Compliance").hide();
+      $("#btnSubmit").hide();
 
     }
      
@@ -505,7 +507,7 @@ this.getCustomer();
     
     this.authService.listManager(reqData).subscribe(
       result => {
-        // debugger
+        
         if (result.length === 0) {
           $('#spnCustomer').show();
           $('#spnManager').show();
@@ -664,10 +666,21 @@ this.getCustomer();
 
 
   getRunningCase() {
-
+ 
+    if(localStorage.branchData==undefined)
+    {
+       b={id:-1}
+       
+    }
+    else{
+      var a = localStorage.getItem("branchData");
+      var b = JSON.parse(a);
+    }
+   
     const $this = this;
     const reqData = {
       userId: this._storageService.getUserId(),
+      branchId: b.id
     };
     this.authService.getCaseRunning(reqData).subscribe(
 
