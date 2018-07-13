@@ -45,11 +45,16 @@ export class InvoiceFormComponent implements OnInit {
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+        debugger
         var totalAmount = 0;
         var totalDescription = "";
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName+'\n');
+            if (element.isInvoiceFirstLoad)
+                totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
+            else
+                totalDescription = element.description;
+            element.description = totalDescription;
         });
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
@@ -59,6 +64,7 @@ export class InvoiceFormComponent implements OnInit {
             id: invoiceDetails.id,
             institutionId: invoiceDetails.institutionId
         };
+        localStorage.setItem('invoiceDetails', JSON.stringify(invoiceDetails));
 
     }
 
@@ -89,6 +95,7 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     SaveInvoice() {
+        debugger
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         var self = this;
         var totalAmount = 0;
@@ -101,7 +108,9 @@ export class InvoiceFormComponent implements OnInit {
                     billFrom: self.invoiceTemplateInfo.CompanyAddress,
                     billTo: self.invoiceTemplateInfo.billToAddress,
                     billingIds: [
-                        item.id
+                        {
+                            id: item.id
+                        }
                     ],
                     description: item.description,
                     fkInstitutionId: item.institutionId,
@@ -112,11 +121,12 @@ export class InvoiceFormComponent implements OnInit {
                 }
             )
         });
-       
+
         this._invoicesService.saveInvoice(self.arrSaveInvoice).subscribe(
             result => {
                 if (result.body.httpCode === 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
+                    this.router.navigate(['/admin/invoices']);
                 } else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
                 }
@@ -125,7 +135,7 @@ export class InvoiceFormComponent implements OnInit {
                 console.log(err);
             });
 
-        this.router.navigate(['/admin/invoices']);
+
     }
 
 }

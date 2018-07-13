@@ -30,6 +30,7 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
     this.setCalendarStartEndDate(new Date());
     this.getEvent();
+    this.bindFullCalendar();
   }
 
   bindFullCalendar() {
@@ -57,7 +58,7 @@ export class CalendarComponent implements OnInit {
 
     init_events($('#external-events div.external-event'))
     setTimeout(() => {
-       $('#calendar').fullCalendar('destroy');
+      $('#calendar').fullCalendar('destroy');
       $('#calendar').fullCalendar({
         header: {
           left: 'prev,next today',
@@ -98,32 +99,35 @@ export class CalendarComponent implements OnInit {
           $this.updateEvent(event);
         },
         eventRender: function (event, element) {
-          element.find('.fc-content').append("<span class='closeon' title='Delete Event' style='float:right;'>X</span>");
+          element.find('.fc-content .fc-title').attr('title', event.title);
+          if (event.eventType == $this.convertToEventType(null)) {
+            element.find('.fc-content').append("<span class='closeon' title='Delete Event' style='float:right;'><i class='fa fa-trash'></i></span>");
+          }
           element.find(".closeon").click(function () {
             $this.deleteEvent(event);
           });
+        },
+        eventAllow: function(dropLocation, draggedEvent) {
+          if (draggedEvent.eventType === $this.convertToEventType(null)) {
+            return true;
+          }
+          else {
+            return false;
+          }
         }
       });
 
       $('#calendar').fullCalendar('gotoDate', $this.eventStartDate);
-
+      $('#calendar').fullCalendar('refresh');
       $('.fc-prev-button, .fc-next-button').click(function () {
         $this.setCalendarStartEndDate(new Date($("#calendar").fullCalendar('getDate').format()));
         $this.getEvent();
       });
 
-      // $('.fc-month-button, .fc-agendaWeek-button').click(function () {
-      //   $this.selectedCalendarType = '';
-      // });
-
-      // $('.fc-agendaDa').click(function () {
-      //   $this.selectedCalendarType = 'DAY';
-      // });
-
       $this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-      /* ADDING EVENTS */
-      let currColor = '#dd4b39' //Red by default
-      //Color chooser button
+      
+      let currColor = this.getEventBgColor(this.convertToEventType(null));
+      
       let colorChooser = $('#color-chooser-btn')
       $('#color-chooser > li > a').click(function (e) {
         e.preventDefault()
@@ -164,7 +168,6 @@ export class CalendarComponent implements OnInit {
   }
 
   BindUpcomingEvents(data) {
-    this.sharedService.arrTodayCalendarEvents = [];
     this.arUpcomingEvents = [];
     const $this = this;
     $.each(data, function (i, d) {
@@ -182,9 +185,8 @@ export class CalendarComponent implements OnInit {
         if (d.end._isUTC)
           d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1));
       }
-      $this.sharedService.arrTodayCalendarEvents.push({ startdate: new Date(d.start._d.setHours(0, 0, 0, 0)), endDate: new Date((d.end == null ? d.start : d.end)._d.setHours(0, 0, 0, 0)), cssClass: d.backgroundColor, totalUpcomingEvents: 0 })
     });
-    this.sharedService.GetEventsGroup();
+    //this.sharedService.GetEventsGroup();
   }
 
   formatDate(dateString): any {
@@ -214,10 +216,13 @@ export class CalendarComponent implements OnInit {
     this._calenderService.saveEvent(objEvent).subscribe(
       result => {
         if (result.body.httpCode == 200) {
-          $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
+          copiedEventObject.eventId = result.body.id;
+          copiedEventObject.eventType = this.convertToEventType(null),
+            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
           if (this.isRemoveAfterDrop) {
             $($dragged).remove()
           }
+
           this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
           $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
         } else {
@@ -230,26 +235,29 @@ export class CalendarComponent implements OnInit {
   }
 
   deleteEvent(data) {
-    this._calenderService.deleteEvent(data.eventId).subscribe(
-      (result) => {
-        if (result.httpCode == 200) {
-          this.arrEvents.splice(this.arrEvents.findIndex(x => x.eventId == data.eventId), 1);
-          this.arUpcomingEvents.splice(this.arUpcomingEvents.findIndex(x => x.eventId == data.eventId), 1);
-          $('#calendar').fullCalendar('removeEvents', data._id);
-          $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+    if (confirm("Are you sure to delete event?")) {
+      this._calenderService.deleteEvent(data.eventId).subscribe(
+        (result) => {
+          if (result.httpCode == 200) {
+            this.arrEvents.splice(this.arrEvents.findIndex(x => x.eventId == data.eventId), 1);
+            this.arUpcomingEvents.splice(this.arUpcomingEvents.findIndex(x => x.eventId == data.eventId), 1);
+            $('#calendar').fullCalendar('removeEvents', data._id);
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+          }
+          else {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+          }
+        },
+        err => {
+          console.log(err);
         }
-        else {
-          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
-        }
-      },
-      err => {
-        console.log(err);
-      }
-    );
+      );
+    }
   }
 
   updateEvent(data) {
-    const endDate = (data.end) ? this.datePipe.transform(data.end._d, "yyyy-MM-dd hh:mm:00") : null;
+    const endDate = (data.end) ? this.datePipe.transform(data.end._d, "yyyy-MM-dd hh:mm:00") :
+      this.datePipe.transform(data.start._d, "yyyy-MM-dd 23:59:59");
     const reqData = {
       startDate: this.datePipe.transform(data.start._d, "yyyy-MM-dd hh:mm:00"),
       endDate: endDate,
@@ -295,13 +303,14 @@ export class CalendarComponent implements OnInit {
       return '#ff851b';
     }
     else if (eventType == 'INDIVIDUAL_EVENT') {
-      return "#dd4b39";
+      return "#ff8254";
     }
     return '';
   }
 
   getEvent() {
     this.arrEvents = [];
+    this.arUpcomingEvents = [];
     let $this = this;
     this._calenderService.getEvent(this.eventStartDate, this.eventEndDate).subscribe(
       result => {
@@ -316,9 +325,14 @@ export class CalendarComponent implements OnInit {
               title: value.eventName,
               start: value.startDate,
               backgroundColor: $this.getEventBgColor($this.convertToEventType(value.referenceNumber)),
-              borderColor: '#f56954'
+              borderColor: $this.getEventBgColor($this.convertToEventType(value.referenceNumber))
             });
           });
+          //$this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
+          setTimeout(() => {
+            $('#calendar').fullCalendar('refetchEvents');
+          }, 1000);
+          //
           this.bindFullCalendar();
         }
       },

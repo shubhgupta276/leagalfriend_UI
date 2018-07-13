@@ -80,16 +80,23 @@ export class InvoiceComponent implements OnInit {
     this.createForm(invoice);
     $("#filterCaseModal").modal("show");
   }
-  cancelInvoice(invoiceId)
-  {
+  cancelInvoice(invoiceId) {
     this.invoiceService.caneclInvoice(invoiceId).subscribe(
       result => {
-        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });        
+        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });
+        this.bindInvoiceAfterCancelled(invoiceId);
       },
       err => {
         console.log(err);
       });
 
+  }
+  bindInvoiceAfterCancelled(invoiceId) {
+    this.tableInputData.filter(item => {
+      if (item.id == invoiceId) {
+        item.status = "CANCELLED";
+      }
+    })
   }
   getInvoice() {
     this.invoiceService.getInvoiceData().subscribe(
