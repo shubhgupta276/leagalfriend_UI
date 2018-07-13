@@ -13,6 +13,7 @@ import { DataTableModule } from '../../shared/components/data-table/data-table.m
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
 import { CaseService } from './case.service';
+import { ActivatedRoute } from '@angular/router';
 @NgModule(
     {
         imports: [
