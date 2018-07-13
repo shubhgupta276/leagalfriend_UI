@@ -43,6 +43,11 @@ export class LoginComponent implements OnInit {
   Customer: any = [];
   errLoginMsg = '';
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
+    const isSignedOut = localStorage.getItem('is_signed_out');
+    if (isSignedOut) {
+      window.location.reload();
+      localStorage.removeItem('is_signed_out');
+    }
     this.loginForm = fb.group({
       email: [null, Validators.required],
       password: [null, Validators.required],
@@ -160,18 +165,15 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem('userDetails', JSON.stringify(userDetails));
                 this.setUserRole(userDetails);
                 const permission = localStorage.getItem('permission_level');
-                console.log(permission);
-                this.router.navigateByUrl('admin/dashboard');
-
-                // if (permission === 'CLIENT_LAWYER' || permission === 'CLIENT_LAWYER_FIRM_Individual') {
-                // if (permission.indexOf('CLIENT') >= 0) {
-                //   this.router.navigate(['admin/case']);
-                // } else if (permission === 'CLIENT_Institutional') {
-                //   this.router.navigate(['admin/institution']);
-                // } else {
-                // this.router.navigate(['admin/calendar']);
-                // this.router.navigate(['admin/dashboard']);
-                // }
+                if (permission.indexOf('CLIENT') >= 0) {
+                  if (permission === 'CLIENT_LAWYER_FIRM_Institutional') {
+                    this.router.navigateByUrl('admin/institution');
+                  } else {
+                    this.router.navigateByUrl('admin/case');
+                  }
+                } else {
+                  this.router.navigateByUrl('admin/dashboard');
+                }
               }
             },
             error => {

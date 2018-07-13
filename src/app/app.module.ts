@@ -18,18 +18,19 @@ import {BusyModule} from 'angular2-busy';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FeatureShellModule,
+    SharedModule,
     AuthShellModule,
     AppRoutingModule,
-    SharedModule,
     Ng2CompleterModule,
     NgxPermissionsModule.forRoot(),
     BusyModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    HttpClientModule
   ],
   declarations: [
     AppComponent
