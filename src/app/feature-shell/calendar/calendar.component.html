@@ -21,7 +21,8 @@
               <input id="new-event" type="text" class="form-control" placeholder="Event Title">
 
               <div class="input-group-btn">
-                <button id="add-new-event" type="button" class="btn btn-primary btn-flat" style="background-color:#ff8254; border-color:#ff8254;">Add</button>
+                <button id="add-new-event" type="button" class="btn btn-primary btn-flat" [style.backgroundColor]="getEventBgColor(convertToEventType(null))"
+                  [style.border-color]="getEventBgColor(convertToEventType(null))">Add</button>
               </div>
               <!-- /btn-group -->
             </div>
@@ -29,7 +30,7 @@
           </div>
 
           <div id="external-events">
-          <div class="checkbox">
+            <div class="checkbox">
               <label for="drop-remove">
                 <input type="checkbox" (change)="isRemoveAfterDrop=$event.target.checked"> remove after drop
               </label>
@@ -43,8 +44,9 @@
             <h3 class="box-title">Upcoming Events</h3>
           </div>
           <div class="box-body">
-            <div class="external-event" *ngFor="let item of arUpcomingEvents" 
-            [style.background-color]="item.backgroundColor" [style.color]="item.color" [style.border-color]="item.borderColor">{{item.title}}</div>
+            <div class="external-event" *ngFor="let item of arUpcomingEvents" [style.background-color]="item.backgroundColor" [style.color]="item.color"
+              [style.border-color]="item.borderColor" title="{{item.title}}">
+             {{item.startDate | date: 'dd-MMM-yyyy'}}, {{item.title}}</div>
           </div>
         </div>
       </div>
