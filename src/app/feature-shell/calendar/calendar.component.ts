@@ -76,16 +76,11 @@ export class CalendarComponent implements OnInit {
         ignoreTimezone: false,
         allDay: false,
         editable: true,
+        dragRevertDuration: 0,
         droppable: true, // this allows things to be dropped onto the calendar !!!
         eventClick: function (event) {
           if (event.eventType == 'INDIVIDUAL_CASE') {
             $this._router.navigate(['/admin/case', { caseId: event.referenceNumber.split('/')[2] }])
-          }
-          else if (event.eventType == '') {
-            $this._router.navigate([]);
-          }
-          else {
-
           }
         },
         drop: function (date, allDay) { // this function is called when something is dropped
@@ -141,7 +136,7 @@ export class CalendarComponent implements OnInit {
         //Get value and make sure it is not null
         let val = $('#new-event').val()
         if (val.length == 0) {
-          return
+          return;
         }
         //Create events
         let event = $('<div />')
@@ -172,10 +167,12 @@ export class CalendarComponent implements OnInit {
     const $this = this;
     $.each(data, function (i, d) {
       // if (d.start._d > new Date()) {
+
       $this.arUpcomingEvents.push({
         eventId: d.eventId,
         eventType: d.eventType,
         title: d.title,
+        startDate: d.start._d,
         backgroundColor: $this.getEventBgColor(d.eventType),
         borderColor: '',
         color: "#fff"
@@ -310,7 +307,6 @@ export class CalendarComponent implements OnInit {
 
   getEvent() {
     this.arrEvents = [];
-    this.arUpcomingEvents = [];
     let $this = this;
     this._calenderService.getEvent(this.eventStartDate, this.eventEndDate).subscribe(
       result => {
@@ -322,18 +318,15 @@ export class CalendarComponent implements OnInit {
               eventStatus: value.eventStatus,
               referenceNumber: value.referenceNumber,
               eventType: $this.convertToEventType(value.referenceNumber),
-              title: value.eventName,
+              title: (!value.referenceNumber) ? value.eventName : value.referenceNumber,
               start: value.startDate,
               backgroundColor: $this.getEventBgColor($this.convertToEventType(value.referenceNumber)),
               borderColor: $this.getEventBgColor($this.convertToEventType(value.referenceNumber))
             });
           });
-          //$this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
-          //setTimeout(() => {
-          // $('#calendar').fullCalendar('refetchEvents');
-          //          }, 1000);
-          //
-          this.bindFullCalendar();
+          $('#calendar').fullCalendar('removeEvents');
+          $('#calendar').fullCalendar('addEventSource', this.arrEvents);
+          this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
         }
       },
       err => {
