@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { SharedService, UpcomingEvents } from '../../shared/services/shared.service'
+import { SharedService } from '../../shared/services/shared.service'
 import { Calender } from '../../shared/models/auth/calender.model';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { StorageService } from "../../shared/services/storage.service";
@@ -96,7 +96,7 @@ export class CalendarComponent implements OnInit {
         eventRender: function (event, element) {
           element.find('.fc-content .fc-title').attr('title', event.title);
           if (event.eventType == $this.convertToEventType(null)) {
-            element.find('.fc-content').append("<span class='closeon' title='Delete Event' style='float:right;'><i class='fa fa-trash'></i></span>");
+            element.find('.fc-content').append("<span class='closeon' title='Delete Event' style='float:right;margin-right: 6px;'><i class='fa fa-trash'></i></span>");
           }
           element.find(".closeon").click(function () {
             $this.deleteEvent(event);
@@ -183,7 +183,6 @@ export class CalendarComponent implements OnInit {
           d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1));
       }
     });
-    //this.sharedService.GetEventsGroup();
   }
 
   formatDate(dateString): any {
@@ -305,6 +304,17 @@ export class CalendarComponent implements OnInit {
     return '';
   }
 
+  getCountUpcomingEvent(): any {
+    const arIndividualCase = this.arrEvents.filter(x => x.eventType == 'INDIVIDUAL_CASE');
+    const arInstitutionalCase = this.arrEvents.filter(x => x.eventType == 'INSTITUTIONAL_CASE');
+    const arIndivisual = this.arrEvents.filter(x => x.eventType == 'INDIVIDUAL_EVENT');
+    let arCount = [];
+    arCount.push(arIndividualCase);
+    arCount.push(arInstitutionalCase);
+    arCount.push(arIndivisual);
+    return arCount;
+  }
+
   getEvent() {
     this.arrEvents = [];
     let $this = this;
@@ -324,10 +334,13 @@ export class CalendarComponent implements OnInit {
               borderColor: $this.getEventBgColor($this.convertToEventType(value.referenceNumber))
             });
           });
+          this.sharedService.upcomingEventChange(this.getCountUpcomingEvent());
           $('#calendar').fullCalendar('removeEvents');
           $('#calendar').fullCalendar('addEventSource', this.arrEvents);
           this.BindUpcomingEvents($('#calendar').fullCalendar('clientEvents'));
+
         }
+
       },
       err => {
         console.log(err);
