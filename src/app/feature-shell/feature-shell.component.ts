@@ -49,7 +49,10 @@ export class FeatureShellComponent implements OnInit {
 
     this.sharedService.getNewAddedBranch().subscribe(data => {
       // call when new branch added
-      this.GetAllBranch();
+     
+        this.GetAllBranch();
+    
+     
     })
 
     this.blinker();
@@ -98,7 +101,9 @@ export class FeatureShellComponent implements OnInit {
   }
 
   GetAllBranch() {
+    
     this.arBranches = [];
+    if(localStorage.userRole!='CLIENT')
     this._branchService.getBranches().subscribe(
       result => {
         if (result != null) {
