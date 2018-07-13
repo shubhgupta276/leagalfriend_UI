@@ -337,25 +337,31 @@
               <a routerLink="master/branch">
                 <i class="fa fa-circle-o"></i> Branch</a>
             </li>
-            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']"><li [routerLinkActive]="['active']">
-              <a routerLink="master/institution">
-                <i class="fa fa-circle-o"></i> Institution</a>
-            </li></ng-template>
-            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']"><li [routerLinkActive]="['active']">
-              <a routerLink="master/billing">
-                <i class="fa fa-circle-o"></i> Billing</a>
-            </li></ng-template>
-            
-            
+            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/institution">
+                  <i class="fa fa-circle-o"></i> Institution</a>
+              </li>
+            </ng-template>
+            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/billing">
+                  <i class="fa fa-circle-o"></i> Billing</a>
+              </li>
+            </ng-template>
+
+
             <li [routerLinkActive]="['active']">
               <a routerLink="master/templates">
                 <i class="fa fa-circle-o"></i> Document Templates</a>
             </li>
-            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']"><li [routerLinkActive]="['active']">
-              <a routerLink="master/invoice">
-                <i class="fa fa-circle-o"></i> Invoice Templates</a>
-            </li></ng-template>
-            
+            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/invoice">
+                  <i class="fa fa-circle-o"></i> Invoice Templates</a>
+              </li>
+            </ng-template>
+
           </ul>
         </li>
       </ng-template>
@@ -391,7 +397,7 @@
       <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
         <li [routerLinkActive]="['active']">
           <a routerLink="invoices">
-            <i class="glyphicon glyphicon-file"></i>
+            <i class="fa fa-file-text"></i>
             <span>Invoices</span>
           </a>
         </li>
@@ -404,14 +410,9 @@
             <span>Calendar</span>
             <span class="pull-right-container">
               <ng-container *ngFor="let item of arrTodayEvents">
-                <small class="label pull-right" [style.backgroundColor]="item.cssClass">{{item.totalEventCount}}</small>
+                <small class="label pull-right" *ngIf="item.length>0" [style.backgroundColor]="item[0].backgroundColor">{{item.length}}</small>
               </ng-container>
-              <!-- <small class="label pull-right bg-blue">1</small>
-            <small class="label pull-right bg-red">1</small>
-            <small class="label pull-right bg-green">1</small>
-            <small class="label pull-right bg-blue">1</small>
-            <small class="label pull-right bg-blue">1</small> -->
-              <!-- <small class="label pull-right bg-blue">1</small> -->
+
             </span>
           </a>
         </li>

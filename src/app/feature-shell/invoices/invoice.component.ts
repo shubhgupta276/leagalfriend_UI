@@ -7,6 +7,8 @@ import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import { DataTableComponent } from "../../shared/components/data-table/data-table.component";
 import { InvoicesService } from "./invoices.service";
+import { invoiceTableConfig } from "./invoices.config";
+import { ActionColumnModel } from "../../shared/models/data-table/action-column.model";
 
 
 declare var $;
@@ -24,19 +26,30 @@ export class InvoiceComponent implements OnInit {
   editCaseForm1: FormGroup;
   invoice: any[] = [];
   arListBanks: any[] = [{ BankName: "HDFC BANK LTD." }];
+  columns = invoiceTableConfig;
+  actionColumnConfig: ActionColumnModel;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   constructor(private fb: FormBuilder, private invoiceService: InvoicesService) {
     this.createForm(null);
     Window["InvoiceFormComponent"] = this;
   }
-  arrFilter = [];
   ngOnInit() {
+    this.setActionConfig();
     this.getInvoice();
 
   }
 
-
-
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showCancel = true;
+  }
+  onActionBtnClick(event) {
+    
+    if (event.eventType == 'cancel') {
+      this.cancelInvoice(event.data.id);
+    }
+  }
   anyForm: any;
   generatepdf() {
     var hiddenDiv = document.getElementById('pdfdownload')
@@ -68,21 +81,30 @@ export class InvoiceComponent implements OnInit {
     this.createForm(invoice);
     $("#filterCaseModal").modal("show");
   }
-  getInvoice() {
-    this.invoiceService.getInvoiceData().subscribe(
+  cancelInvoice(invoiceId)
+  {
+    this.invoiceService.caneclInvoice(invoiceId).subscribe(
       result => {
-        debugger
-        if (result.length > 0) {
-          result.forEach(element => {
-            this.tableInputData.push(element);
-          });
-        }
-        this.dataTableComponent.ngOnInit();
+        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });        
       },
       err => {
         console.log(err);
       });
-    this.dataTableComponent.ngOnInit();
+
+  }
+  getInvoice() {
+    this.invoiceService.getInvoiceData().subscribe(
+      result => {
+        this.tableInputData = result;
+        setTimeout(() => {
+          this.dataTableComponent.ngOnInit();
+        });
+
+      },
+      err => {
+        console.log(err);
+      });
+
   }
 
 

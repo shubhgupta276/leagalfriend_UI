@@ -7,6 +7,9 @@ import { UserService } from './user/user.service';
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import 'rxjs/add/observable/of';
 import { DatePipe } from '@angular/common';
+import { CalendarComponent } from './calendar/calendar.component';
+import { CalenderService } from './calendar/calender.service';
+import { ApiGateway } from '../shared/services/api-gateway';
 import { Router } from '@angular/router';
 declare var $;
 declare let Zone: any;
@@ -14,10 +17,9 @@ declare let Zone: any;
   selector: 'app-feature-shell',
   templateUrl: './feature-shell.component.html',
   styleUrls: ['./feature-shell.component.css'],
-  providers: [SharedService, BranchService, UserService, DatePipe]
+  providers: [SharedService, BranchService, UserService, DatePipe, CalenderService, ApiGateway]
 })
 export class FeatureShellComponent implements OnInit {
-  totalUpcomingEvents = 4;
   showFlash = false;
   arrTodayEvents = [];
   arBranches = [];
@@ -36,22 +38,25 @@ export class FeatureShellComponent implements OnInit {
     private userService: UserService,
     private permissionsService: NgxPermissionsService,
     private rolesService: NgxRolesService,
-    private router: Router,
+    private _apiGateway: ApiGateway,
+    private _router: Router,
+    private _calendarService: CalenderService,
     private datePipe: DatePipe) {
     this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
-    sharedService.changeEmitted$.subscribe(Zone.current.wrap(
+    sharedService.changeUpcomingEmitted.subscribe(Zone.current.wrap(
       text => {
-        this.totalUpcomingEvents = text;
         this.arrTodayEvents = text;
       }));
-    sharedService.GetEventsGroup();
   }
 
   ngOnInit() {
-
+    new CalendarComponent(this.sharedService, this._router, this._apiGateway, this._calendarService, this._storageService, this.datePipe).getEvent();
     this.sharedService.getNewAddedBranch().subscribe(data => {
       // call when new branch added
+
       this.GetAllBranch();
+
+
     })
 
     this.blinker();
@@ -93,7 +98,7 @@ export class FeatureShellComponent implements OnInit {
 
   signOutButton() {
     this.authService.signOut();
-    this.router.navigateByUrl('/login');
+    this._router.navigateByUrl('/login');
   }
   blinker() {
     $('.blink_me').fadeOut(500);
@@ -101,34 +106,35 @@ export class FeatureShellComponent implements OnInit {
   }
 
   GetAllBranch() {
-    this.arBranches = [];
-    this._branchService.getBranches().subscribe(
-      result => {
-        // debugger
-        if (result != null) {
-          this.arBranches = result.branches;
 
-          let branchData = this._storageService.getBranchData();
-          if (!branchData && this.arBranches.length > 0) {
-            branchData = this.arBranches[0];
+    this.arBranches = [];
+    if (localStorage.userRole != 'CLIENT')
+      this._branchService.getBranches().subscribe(
+        result => {
+          if (result != null) {
+            this.arBranches = result.branches;
+
+            let branchData = this._storageService.getBranchData();
+            if (!branchData && this.arBranches.length > 0) {
+              branchData = this.arBranches[0];
+            }
+            this.branchConfig = {
+              displayKey: "branchName",
+              showFirstSelected: true,
+              showFirstSelectedValue: branchData,
+              showFirstSelectedKey: "id",
+              defaultTextAdd: false,
+              showIcon: true,
+              hideWhenOneItem: true
+            }
           }
-          this.branchConfig = {
-            displayKey: "branchName",
-            showFirstSelected: true,
-            showFirstSelectedValue: branchData,
-            showFirstSelectedKey: "id",
-            defaultTextAdd: false,
-            showIcon: true,
-            hideWhenOneItem: true
-          }
-        }
-        else
-          console.log(result);
-      },
-      err => {
-        console.log(err);
-        this.arBranches = [];
-      });
+          else
+            console.log(result);
+        },
+        err => {
+          console.log(err);
+          this.arBranches = [];
+        });
 
   }
 
@@ -148,7 +154,6 @@ export class FeatureShellComponent implements OnInit {
     var client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(
       data => {
-
         if (data.showSubscriptionFlash) {
           this.showFlash = true;
         } else {

@@ -33,6 +33,7 @@ import { MasterTemplatesComponent } from '../master/masterTemplates/masterTempla
 import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
 import { setTimeout } from 'timers';
 import { CaseHistoryComponent } from './case-history/case-history-component';
+import { ActivatedRoute } from '@angular/router';
 
 const now = new Date();
 
@@ -84,7 +85,9 @@ export class CaseComponent implements OnInit, OnDestroy {
   isLoad = true;
   arRecourse: any[] = [];
   recourseConfig: any;
-  constructor(private masterTemplateService: MasterTemplateService, private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
+  constructor(private masterTemplateService: MasterTemplateService,
+    private fb: FormBuilder, private authService: AuthService, private _activatedRoute: ActivatedRoute,
+    private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
   ngOnDestroy() {
@@ -92,6 +95,12 @@ export class CaseComponent implements OnInit, OnDestroy {
     //this.isLoad=true;
   }
   ngOnInit() {
+    this._activatedRoute.params.subscribe((param) => {
+      if (param.caseId) {
+        const objData = { id: param.caseId, compliance: false };
+        this.showEditPop(objData);
+      }
+    })
 
     this.getCasesData();
     this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
@@ -106,6 +115,9 @@ export class CaseComponent implements OnInit, OnDestroy {
       }, 10);
 
     });
+
+
+
     // this.getRunningCase();
     this.getRecourse();
     this.setActionConfig();
@@ -135,9 +147,19 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
   getCasesData() {
+    if (localStorage.branchData == undefined) {
+      b = { id: -1 }
+
+    }
+    else {
+      var a = localStorage.getItem("branchData");
+      var b = JSON.parse(a);
+    }
+
     var $this = this;
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
+      branchId: b.id
     };
     this.branchData = this._storageService.getBranchData();
 
@@ -146,16 +168,28 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.authService.getCaseRunning(runningCaseModel).subscribe(
       result => {
 
-        result.forEach(ele => {
-          if (ele.branchName == $this.branchData.branchName) {
+        if (localStorage.userRole == 'CLIENT') {
+          result.forEach(ele => {
+
             if (ele.completionDate) {
               this.completedTableInputData.push(ele);
-            } else {
+            }
+            else {
               this.tableInputData.push(ele);
             }
-          }
-        });
-
+          });
+        }
+        else {
+          result.forEach(ele => {
+            if (ele.branchName == $this.branchData.branchName) {
+              if (ele.completionDate) {
+                this.completedTableInputData.push(ele);
+              } else {
+                this.tableInputData.push(ele);
+              }
+            }
+          });
+        }
         this.runningDataTableComponent.ngOnInit();
         this.completedDataTableComponent.ngOnInit();
       },
@@ -421,16 +455,15 @@ export class CaseComponent implements OnInit, OnDestroy {
       });
   }
   changeRecourse(data: any) {
-    
 
-    if(data==undefined)
-    {
+
+    if (data == undefined) {
       this.runningDataTableComponent.sortTable((data === undefined || data === null) ? '' : data.recourseCode, 'recourseCode');
     }
-    else{
+    else {
       this.runningDataTableComponent.sortTable(data.recourseCode, 'recourseCode');
     }
-   
+
   }
   getUploadedDocuments() {
     this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);

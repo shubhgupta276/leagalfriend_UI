@@ -359,13 +359,24 @@ export class AddCaseComponent implements OnInit {
 
   getRunningCase() {
 
-
+debugger
+    if(localStorage.branchData==undefined)
+    {
+       b={id:-1}
+       
+    }
+    else{
+      var a = localStorage.getItem("branchData");
+      var b = JSON.parse(a);
+    }
     const $this = this;
     const reqData = {
       userId: this._storageService.getUserId(),
+      branchId: b.id
     };
     this.authService.getCaseRunning(reqData).subscribe(
       result => {
+        debugger
         result.forEach(function (value) {
         $this.ParentCases.push({ id: value.id, text: value.caseId });
           $this.ChildCases.push({ id: value.id, text: value.caseId });
