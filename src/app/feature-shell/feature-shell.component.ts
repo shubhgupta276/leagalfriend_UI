@@ -16,7 +16,6 @@ declare let Zone: any;
   providers: [SharedService, BranchService, UserService, DatePipe]
 })
 export class FeatureShellComponent implements OnInit {
-  totalUpcomingEvents = 4;
   showFlash = false;
   arrTodayEvents = [];
   arBranches = [];
@@ -37,22 +36,20 @@ export class FeatureShellComponent implements OnInit {
     private rolesService: NgxRolesService,
     private datePipe: DatePipe) {
     this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
-    sharedService.changeEmitted$.subscribe(Zone.current.wrap(
+    sharedService.changeUpcomingEmitted.subscribe(Zone.current.wrap(
       text => {
-        this.totalUpcomingEvents = text;
         this.arrTodayEvents = text;
       }));
-    sharedService.GetEventsGroup();
   }
 
   ngOnInit() {
 
     this.sharedService.getNewAddedBranch().subscribe(data => {
       // call when new branch added
-     
-        this.GetAllBranch();
-    
-     
+
+      this.GetAllBranch();
+
+
     })
 
     this.blinker();
@@ -101,35 +98,35 @@ export class FeatureShellComponent implements OnInit {
   }
 
   GetAllBranch() {
-    
-    this.arBranches = [];
-    if(localStorage.userRole!='CLIENT')
-    this._branchService.getBranches().subscribe(
-      result => {
-        if (result != null) {
-          this.arBranches = result.branches;
 
-          let branchData = this._storageService.getBranchData();
-          if (!branchData && this.arBranches.length > 0) {
-            branchData = this.arBranches[0];
+    this.arBranches = [];
+    if (localStorage.userRole != 'CLIENT')
+      this._branchService.getBranches().subscribe(
+        result => {
+          if (result != null) {
+            this.arBranches = result.branches;
+
+            let branchData = this._storageService.getBranchData();
+            if (!branchData && this.arBranches.length > 0) {
+              branchData = this.arBranches[0];
+            }
+            this.branchConfig = {
+              displayKey: "branchName",
+              showFirstSelected: true,
+              showFirstSelectedValue: branchData,
+              showFirstSelectedKey: "id",
+              defaultTextAdd: false,
+              showIcon: true,
+              hideWhenOneItem: true
+            }
           }
-          this.branchConfig = {
-            displayKey: "branchName",
-            showFirstSelected: true,
-            showFirstSelectedValue: branchData,
-            showFirstSelectedKey: "id",
-            defaultTextAdd: false,
-            showIcon: true,
-            hideWhenOneItem: true
-          }
-        }
-        else
-          console.log(result);
-      },
-      err => {
-        console.log(err);
-        this.arBranches = [];
-      });
+          else
+            console.log(result);
+        },
+        err => {
+          console.log(err);
+          this.arBranches = [];
+        });
 
   }
 

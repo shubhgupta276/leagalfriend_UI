@@ -393,8 +393,8 @@
       </ng-template>
       <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
         <li [routerLinkActive]="['active']">
-          <a routerLink="invoices">            
-              <i class="fa fa-file-text"></i>
+          <a routerLink="invoices">
+            <i class="fa fa-file-text"></i>
             <span>Invoices</span>
           </a>
         </li>
@@ -407,14 +407,9 @@
             <span>Calendar</span>
             <span class="pull-right-container">
               <ng-container *ngFor="let item of arrTodayEvents">
-                <small class="label pull-right" [style.backgroundColor]="item.cssClass">{{item.totalEventCount}}</small>
+                <small class="label pull-right" *ngIf="item.length>0" [style.backgroundColor]="item[0].backgroundColor">{{item.length}}</small>
               </ng-container>
-              <!-- <small class="label pull-right bg-blue">1</small>
-            <small class="label pull-right bg-red">1</small>
-            <small class="label pull-right bg-green">1</small>
-            <small class="label pull-right bg-blue">1</small>
-            <small class="label pull-right bg-blue">1</small> -->
-              <!-- <small class="label pull-right bg-blue">1</small> -->
+
             </span>
           </a>
         </li>
