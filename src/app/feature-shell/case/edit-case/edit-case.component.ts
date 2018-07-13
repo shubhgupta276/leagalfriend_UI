@@ -245,8 +245,7 @@ this.getCustomer();
       this.selectedStage = this.stageSelected[0];
     }
     
-    if(localStorage.userRole!='CLIENT')
-    {
+    
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
     this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -260,7 +259,7 @@ this.getCustomer();
     const objemployeeSelected = this.Employee.filter(x => x.id === c.employeeId);
     this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
     this.selectedEmployee = this.employeeSelected[0];
-    }
+    
 
     this.courtPlaceSelected = [];
     const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c.id);
@@ -625,6 +624,7 @@ this.getCustomer();
         if (result == 0) {
           $("#spnEmployee").show();
         }
+        debugger
         result.forEach(function (value) {
          
         //  if (value.roles[0].roleName === 'EMPLOYEE') {
