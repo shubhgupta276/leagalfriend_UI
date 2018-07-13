@@ -10,42 +10,41 @@ import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
 import { SignUpModel } from '../shared/models/auth/signup.model';
-import {TokenModel} from '../shared/models/auth/token.model';
+import { TokenModel } from '../shared/models/auth/token.model';
 import { changepasswordComponent } from './changepassword/changepassword.component';
 import { HomeComponent } from './home/home.component';
 
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+import { AuthService } from './auth-shell.service';
 
 
 
 @NgModule({
-    imports: [
-      HttpClientModule,
-      CommonModule,
-      FormsModule,
-      ReactiveFormsModule,
-      AuthShellRoutingModule,
-      SharedModule,
-   
-      LoadingModule.forRoot({
-        animationType: ANIMATION_TYPES.wanderingCubes,
-        backdropBackgroundColour: 'rgba(0,0,0,0.5)', 
-        backdropBorderRadius: '4px',
-        primaryColour: '#blue', 
-        secondaryColour: '#ffffff', 
-        tertiaryColour: '#ffffff'
+  imports: [
+    HttpClientModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AuthShellRoutingModule,
+    SharedModule,
+    LoadingModule.forRoot({
+      animationType: ANIMATION_TYPES.wanderingCubes,
+      backdropBackgroundColour: 'rgba(0,0,0,0.5)',
+      backdropBorderRadius: '4px',
+      primaryColour: '#blue',
+      secondaryColour: '#ffffff',
+      tertiaryColour: '#ffffff'
     })
-     ],
-
-   declarations: [
-       AuthShellComponent,
-       LoginComponent,
-       ForgotPasswordComponent,
-       ResetPasswordComponent,
-       SignupComponent,
-       changepasswordComponent,
-       HomeComponent
-      
-    ]
-  })
-  export class AuthShellModule {}
+  ],
+  providers: [AuthService],
+  declarations: [
+    AuthShellComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    SignupComponent,
+    changepasswordComponent,
+    HomeComponent
+  ]
+})
+export class AuthShellModule {}

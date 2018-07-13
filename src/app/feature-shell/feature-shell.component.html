@@ -236,7 +236,7 @@
               <a routerLink="../admin/feedback">Feedback/Suggestion</a>
             </li>
             <li class="profile-li">
-              <a routerLink="../login" (click)="signOutButton()">Sign out</a>
+              <a (click)="signOutButton()">Sign out</a>
             </li>
             <!-- Menu Footer-->
             <!-- <li class="user-footer">
@@ -278,13 +278,16 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
 
     <ul class="sidebar-menu" data-widget="tree">
-
-      <li [routerLinkActive]="['active']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
+        <li [routerLinkActive]="['active']">
         <a routerLink="dashboard">
           <i class="fa fa-dashboard"></i>
           <span>Dashboard</span>
         </a>
       </li>
+      </ng-template>
+      
       <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="user">

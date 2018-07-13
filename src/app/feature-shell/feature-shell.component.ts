@@ -7,6 +7,7 @@ import { UserService } from './user/user.service';
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import 'rxjs/add/observable/of';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 declare var $;
 declare let Zone: any;
 @Component({
@@ -35,6 +36,7 @@ export class FeatureShellComponent implements OnInit {
     private userService: UserService,
     private permissionsService: NgxPermissionsService,
     private rolesService: NgxRolesService,
+    private router: Router,
     private datePipe: DatePipe) {
     this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
     sharedService.changeEmitted$.subscribe(Zone.current.wrap(
@@ -91,6 +93,7 @@ export class FeatureShellComponent implements OnInit {
 
   signOutButton() {
     this.authService.signOut();
+    this.router.navigateByUrl('/login');
   }
   blinker() {
     $('.blink_me').fadeOut(500);

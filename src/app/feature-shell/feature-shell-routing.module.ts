@@ -11,7 +11,7 @@ import 'rxjs/add/observable/throw';
 
 const featureShellRoutes: Routes = [
     {
-        path: 'admin',
+        path: '',
         component: FeatureShellComponent, canActivate: [LFAuthantication], children: [
             {
                 path: 'user', loadChildren: 'app/feature-shell/user/user.module#UserModule',
@@ -69,7 +69,17 @@ const featureShellRoutes: Routes = [
             { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },
             { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },
             { path: 'wallet', loadChildren: 'app/feature-shell/wallet/wallet.module#WalletModule' },
-            { path: 'dashboard', loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule' },
+            {
+                path: 'dashboard',
+                loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule',
+                canActivate: [NgxPermissionsGuard],
+                data: {
+                    permissions: {
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+                            'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']
+                    }
+                }
+            },
             {
                 path: 'calendar', component: CalendarComponent,
                 canActivate: [NgxPermissionsGuard],
