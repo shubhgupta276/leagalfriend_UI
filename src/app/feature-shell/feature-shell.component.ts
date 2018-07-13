@@ -7,13 +7,17 @@ import { UserService } from './user/user.service';
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import 'rxjs/add/observable/of';
 import { DatePipe } from '@angular/common';
+import { CalendarComponent } from './calendar/calendar.component';
+import { CalenderService } from './calendar/calender.service';
+import { ApiGateway } from '../shared/services/api-gateway';
+import { Router } from '@angular/router';
 declare var $;
 declare let Zone: any;
 @Component({
   selector: 'app-feature-shell',
   templateUrl: './feature-shell.component.html',
   styleUrls: ['./feature-shell.component.css'],
-  providers: [SharedService, BranchService, UserService, DatePipe]
+  providers: [SharedService, BranchService, UserService, DatePipe, CalenderService, ApiGateway]
 })
 export class FeatureShellComponent implements OnInit {
   showFlash = false;
@@ -34,6 +38,9 @@ export class FeatureShellComponent implements OnInit {
     private userService: UserService,
     private permissionsService: NgxPermissionsService,
     private rolesService: NgxRolesService,
+    private _apiGateway: ApiGateway,
+    private _router: Router,
+    private _calendarService: CalenderService,
     private datePipe: DatePipe) {
     this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
     sharedService.changeUpcomingEmitted.subscribe(Zone.current.wrap(
@@ -43,7 +50,7 @@ export class FeatureShellComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    new CalendarComponent(this.sharedService, this._router, this._apiGateway, this._calendarService, this._storageService, this.datePipe).getEvent();
     this.sharedService.getNewAddedBranch().subscribe(data => {
       // call when new branch added
 

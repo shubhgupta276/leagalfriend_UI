@@ -316,6 +316,9 @@ export class CalendarComponent implements OnInit {
   }
 
   getEvent() {
+    if (!this.eventStartDate) {
+      this.setCalendarStartEndDate(new Date());;
+    }
     this.arrEvents = [];
     let $this = this;
     this._calenderService.getEvent(this.eventStartDate, this.eventEndDate).subscribe(
