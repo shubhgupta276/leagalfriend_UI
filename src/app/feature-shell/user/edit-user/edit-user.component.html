@@ -15,7 +15,7 @@
           <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
           <div>
             <div class="box-body widget-content">
-              <form [formGroup]="editForm" class="form-horizontal" (ngSubmit)="submitEditUser(editForm.value)">
+              <form [formGroup]="editForm" class="form-horizontal" (ngSubmit)="submitEditUser(editForm.getRawValue())">
                 <input type="hidden" formControlName="id">
                 <div class="form-body">
                   <div class="tab-content">

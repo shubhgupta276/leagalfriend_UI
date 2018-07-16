@@ -45,7 +45,7 @@ export class InvoiceFormComponent implements OnInit {
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
-        debugger
+        
         var totalAmount = 0;
         var totalDescription = "";
         invoiceDetails.forEach(element => {
@@ -95,7 +95,7 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     SaveInvoice() {
-        debugger
+        
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         var self = this;
         var totalAmount = 0;
