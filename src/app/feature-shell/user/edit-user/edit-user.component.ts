@@ -228,9 +228,9 @@ export class EditUserComponent implements OnInit {
     
     this.userTypeRole = user == null ? 1 : user.userType.id;
     this.roleValue = user == null ? 1 : user.roleId;
-    // this.editForm.controls['role'].disable();
-    // this.editForm.controls['userTypeRole'].disable();
-    // this.editForm.controls['institutionId'].disable();
+    this.editForm.controls['role'].disable();
+    this.editForm.controls['userTypeRole'].disable();
+    this.editForm.controls['institutionId'].disable();
   }
   subscriberFields() {
     this.editForm.get('email').valueChanges.subscribe(

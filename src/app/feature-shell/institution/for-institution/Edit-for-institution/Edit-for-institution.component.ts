@@ -1,20 +1,22 @@
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { InstitutionService } from '../../institution.service';
 import { Institution } from '../../institution';
-import { ActivatedRoute, Router } from "@angular/router";
-import { DatePipe } from "@angular/common";
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { saveAs } from 'file-saver';
-import { StageService } from "../../../master/stage/stage.service";
+import { StageService } from '../../../master/stage/stage.service';
+import { SharedService } from '../../../../shared/services/shared.service';
 declare let $;
 
 @Component({
-  selector: "edit-for-institution-modal",
-  templateUrl: "./Edit-for-institution.component.html",
-  styleUrls: ["./Edit-for-institution.component.css"]
+  // tslint:disable-next-line:component-selector
+  selector: 'edit-for-institution-modal',
+  templateUrl: './Edit-for-institution.component.html',
+  styleUrls: ['./Edit-for-institution.component.css']
 })
 
 export class EditForInstitutionComponent implements OnInit {
@@ -32,12 +34,14 @@ export class EditForInstitutionComponent implements OnInit {
   arCompliances: any[];
   @ViewChild('inputFileUpload') myFileUpload: any;
   isPageLoad: boolean = true;
+  isViewOnlyForUser: boolean = false;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _datePipe: DatePipe,
+    private _sharedService: SharedService,
     private _stageService: StageService,
     private _storageService: StorageService) {
 
@@ -46,10 +50,11 @@ export class EditForInstitutionComponent implements OnInit {
       this.institutionId = params.institutionId;
       this.recourseId = params.recourseId;
       this.getInstitutionDetail();
-    })
+    });
   }
 
   ngOnInit() {
+    this.isViewOnlyForUser = this._sharedService.isViewOnly();
     this.createForm(null);
     const self = this;
     $(document).ready(function () {
@@ -105,9 +110,9 @@ export class EditForInstitutionComponent implements OnInit {
       chqNo1: obj == null ? null : obj.chqNo1,
       chqNo2: obj == null ? null : obj.chqNo2,
       chqNo3: obj == null ? null : obj.chqNo3,
-      closureDate: obj == null ? null : this._datePipe.transform(obj.closureDate, "yyyy-MM-dd"),
-      closureReportingDate: obj == null ? null : this._datePipe.transform(obj.closureReportingDate, "yyyy-MM-dd"),
-      completionDate: obj == null ? null : this._datePipe.transform(obj.completionDate, "yyyy-MM-dd"),
+      closureDate: obj == null ? null : this._datePipe.transform(obj.closureDate, 'yyyy-MM-dd'),
+      closureReportingDate: obj == null ? null : this._datePipe.transform(obj.closureReportingDate, 'yyyy-MM-dd'),
+      completionDate: obj == null ? null : this._datePipe.transform(obj.completionDate, 'yyyy-MM-dd'),
       compliance: (obj == null) ? false : obj.compliance,
       coolingPeriodNoticeDate: obj == null ? null : obj.coolingPeriodNoticeDate,
       courtCaseId: obj == null ? null : obj.courtCaseId,
@@ -127,7 +132,7 @@ export class EditForInstitutionComponent implements OnInit {
       executionFiled: obj == null ? null : obj.executionFiled,
       executionFilingDate: obj == null ? null : obj.executionFilingDate,
       fileName: obj == null ? null : obj.fileName,
-      filingDate: obj == null ? null : this._datePipe.transform(obj.filingDate, "yyyy-MM-dd"),
+      filingDate: obj == null ? null : this._datePipe.transform(obj.filingDate, 'yyyy-MM-dd'),
       generatedBy: obj == null ? null : obj.generatedBy,
       groundForClosingFile: obj == null ? null : obj.groundForClosingFile,
       guarantorsName: obj == null ? null : obj.guarantorsName,
@@ -142,7 +147,7 @@ export class EditForInstitutionComponent implements OnInit {
       ndohNullReason: obj == null ? null : obj.ndohNullReason,
       nextActionDate: obj == null ? null : obj.nextActionDate,
       nextActionPlan: obj == null ? null : obj.nextActionPlan,
-      nextHearingDate: obj == null ? null : this._datePipe.transform(obj.nextHearingDate, "yyyy-MM-dd"),
+      nextHearingDate: obj == null ? null : this._datePipe.transform(obj.nextHearingDate, 'yyyy-MM-dd'),
       noticeAmount: obj == null ? null : obj.noticeAmount,
       noticeDate: obj == null ? null : obj.noticeDate,
       noticeDateAppointmentArbitrator: obj == null ? null : obj.noticeDateAppointmentArbitrator,
@@ -154,7 +159,7 @@ export class EditForInstitutionComponent implements OnInit {
       npaStageOnEpFilingDate: obj == null ? null : obj.npaStageOnEpFilingDate,
       npaStageOnFilingDate: obj == null ? null : obj.npaStageOnFilingDate,
       npaStageOnNoticeDate: obj == null ? null : obj.npaStageOnNoticeDate,
-      orderReceivedDate: obj == null ? null : this._datePipe.transform(obj.orderReceivedDate, "yyyy-MM-dd"),
+      orderReceivedDate: obj == null ? null : this._datePipe.transform(obj.orderReceivedDate, 'yyyy-MM-dd'),
       overdueAmtOnNoticeDate: obj == null ? null : obj.overdueAmtOnNoticeDate,
       parentId: obj == null ? null : obj.parentId,
       peacefulPossessionNoticeDate: obj == null ? null : obj.peacefulPossessionNoticeDate,
@@ -164,13 +169,13 @@ export class EditForInstitutionComponent implements OnInit {
       posOnEpFilingDate: obj == null ? null : obj.posOnEpFilingDate,
       posOnFilingDate: obj == null ? null : obj.posOnFilingDate,
       posOnNoticeDate: obj == null ? null : obj.posOnNoticeDate,
-      previousHearingDate: obj == null ? null : this._datePipe.transform(obj.previousHearingDate, "yyyy-MM-dd"),
+      previousHearingDate: obj == null ? null : this._datePipe.transform(obj.previousHearingDate, 'yyyy-MM-dd'),
       product: obj == null ? null : obj.product,
       productGroup: obj == null ? null : obj.productGroup,
       publicationDatePhysicalPossessionNotice: obj == null ? null : obj.publicationDatePhysicalPossessionNotice,
       receiveOrderStatus: obj == null ? null : obj.receiveOrderStatus,
       receiverName: obj == null ? null : obj.receiverName,
-      receiverOrderAppliedDate: obj == null ? null : this._datePipe.transform(obj.receiverOrderAppliedDate, "yyyy-MM-dd"),
+      receiverOrderAppliedDate: obj == null ? null : this._datePipe.transform(obj.receiverOrderAppliedDate, 'yyyy-MM-dd'),
       receiverOrderReceivedDate: obj == null ? null : obj.receiverOrderReceivedDate,
       recieveOrderApplied: obj == null ? null : obj.recieveOrderApplied,
       recourse: [obj == null ? null : obj.recourse, Validators.required],
@@ -214,18 +219,16 @@ export class EditForInstitutionComponent implements OnInit {
       if (this.isPageLoad) {
         if (this.isCompliance) {
           this.openComplianceTab();
-        }
-        else {
+        } else {
           this.openCaseDetailTab();
         }
         this.isPageLoad = false;
       }
       setTimeout(() => {
         this.isCaseComplete = (obj.completionDate) ? true : false;
-        if (this.isCompliance || this.isCaseComplete) {
+        if (this.isViewOnlyForUser || this.isCompliance || this.isCaseComplete) {
           this.disableForm(true);
-        }
-        else {
+        } else {
           this.disableForm(false);
         }
         this.editForInstitutionForm.controls['recourse'].disable();
@@ -235,7 +238,7 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   getInstitutionDetail() {
-    let branchData = this._storageService.getBranchData();
+    const branchData = this._storageService.getBranchData();
     if (branchData) {
       this._institutionService.getForInstitution(this.institutionId, branchData.id, this.institutionalCaseId).
         subscribe((result) => {
@@ -256,8 +259,8 @@ export class EditForInstitutionComponent implements OnInit {
     if (this.editForInstitutionForm.valid) {
       data.userId = this._storageService.getUserId();
 
-      let document = (data.uploadFile) ? data.uploadFile[0] : null
-      let formdata: FormData = new FormData();
+      const document = (data.uploadFile) ? data.uploadFile[0] : null;
+      const formdata: FormData = new FormData();
       formdata.append('file', document);
       delete data.uploadFile;
       formdata.append('forInstitutionalCase', JSON.stringify(data));
@@ -267,7 +270,7 @@ export class EditForInstitutionComponent implements OnInit {
         result => {
           this.isFileUploading = false;
           result = result.body;
-          if (result.httpCode == 200) {
+          if (result.httpCode === 200) {
             $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
             this.getInstitutionDetail();
           }
@@ -275,8 +278,7 @@ export class EditForInstitutionComponent implements OnInit {
         err => {
           console.log(err);
         });
-    }
-    else {
+    } else {
       this.validateForm();
     }
   }
@@ -297,8 +299,7 @@ export class EditForInstitutionComponent implements OnInit {
       this.editData.uploadFile = file;
       this.submitEditinstitutionUser(this.editData);
       this.myFileUpload.nativeElement.value = '';
-    }
-    else {
+    } else {
       this.isFileUploading = false;
     }
   }
@@ -306,8 +307,7 @@ export class EditForInstitutionComponent implements OnInit {
   disableForm(isDisable) { // disable form if compliance is true
     if (isDisable) {
       this.editForInstitutionForm.disable();
-    }
-    else {
+    } else {
       this.editForInstitutionForm.enable();
     }
     this.myFileUpload.nativeElement.disabled = isDisable;
@@ -316,17 +316,16 @@ export class EditForInstitutionComponent implements OnInit {
   changeCompliance(isChecked) {
     this.isCompliance = isChecked;
     if (isChecked) {
-      if (confirm("Do you want to put this case into compliance?")) {
+      if (confirm('Do you want to put this case into compliance?')) {
         this.updateCaseToCompliance();
       }
-    }
-    else {
+    } else {
       this.disableForm(isChecked);
     }
   }
 
   updateCaseToCompliance() {
-    const stageData = this.arStage.find(x => x.stageCode == this.editData.caseStage);
+    const stageData = this.arStage.find(x => x.stageCode === this.editData.caseStage);
     const stageId = (stageData) ? stageData.id : 0;
     const reqData = {
       compliance: {
@@ -341,7 +340,7 @@ export class EditForInstitutionComponent implements OnInit {
       legalCase: {
         id: this.editData.id
       }
-    }
+    };
     this._institutionService.updateToCompliance(reqData).subscribe(
       (result) => {
         result = result.body;
@@ -350,14 +349,13 @@ export class EditForInstitutionComponent implements OnInit {
           // this.submitEditinstitutionUser(this.editData);
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
           this.disableForm(true);
-        }
-        else if (result.httpCode === 500) {
+        } else if (result.httpCode === 500) {
           $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
         }
       },
       err => {
         console.log(err);
-      })
+      });
   }
 
   getCompliances() {
@@ -371,7 +369,7 @@ export class EditForInstitutionComponent implements OnInit {
       err => {
         console.log(err);
       }
-    )
+    );
   }
 
   closeCompliance(data) {
@@ -379,24 +377,23 @@ export class EditForInstitutionComponent implements OnInit {
     this._institutionService.closeCompliances(data.id).subscribe(
       (result) => {
         result = result.body;
-        if (result.httpCode == 200) {
+        if (result.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
 
-          const index = this.arCompliances.findIndex(x => x.id == data.id);
+          const index = this.arCompliances.findIndex(x => x.id === data.id);
           this.arCompliances.splice(index, 1);
-          if (this.arCompliances.length == 0) {
+          if (this.arCompliances.length === 0) {
             this.isCaseCompletedOpen = false;
             this.getInstitutionDetail();
           }
-        }
-        else {
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
         }
       },
       err => {
         console.log(err);
       }
-    )
+    );
   }
 
   changeCompletionDate(val) {
@@ -423,18 +420,18 @@ export class EditForInstitutionComponent implements OnInit {
       },
       err => {
         console.log(err);
-      })
+      });
   }
 
   downloadFile(data) {
     this._institutionService.downloadFile(data.id).subscribe(
       (result) => {
-        let blob = new Blob([result]);
+        const blob = new Blob([result]);
         saveAs(blob, data.fileName);
       },
       err => {
         console.log(err);
-      })
+      });
   }
 
   back() {

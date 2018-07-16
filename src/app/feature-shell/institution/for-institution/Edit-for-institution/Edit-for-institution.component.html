@@ -28,7 +28,7 @@
                   <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.getRawValue())">
                     <div style="margin-right: 17px;float: right;">
                       <input type="submit" *ngIf="!isCaseCompletedOpen" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
-                      <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
+                      <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
                         value="Update">
                     </div>
                     <div class="form-body">
@@ -781,7 +781,7 @@
                           </table>
                           <div class="modal-footer">
                             <input type="submit" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
-                            <input type="submit" *ngIf="editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit" value="Update">
+                            <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit" value="Update">
                           </div>
                         </div>
                       </div>
@@ -806,7 +806,7 @@
                     <td>{{item.compliance.complianceName}}</td>
                     <td>
                       <a *ngIf="item.status!=='OPEN'">{{item.status}}</a>
-                      <a *ngIf="item.status==='OPEN'" style="color:cornflowerblue" (click)="closeCompliance(item);">Verified & Completed</a>
+                      <a *ngIf="!isViewOnlyForUser && item.status==='OPEN'" style="color:cornflowerblue" (click)="closeCompliance(item);">Verified & Completed</a>
                     </td>
                   </tr>
                 </tbody>
