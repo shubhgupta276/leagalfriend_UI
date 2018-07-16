@@ -82,7 +82,7 @@ export class ForInstitutionComponent implements OnInit {
         this.showHideColumns(true);
         this.getRecourse();
         this.setActionConfig();
-        this.getInstitutionList();
+        this.bindInstitutionBranchAccordingUser();
         this.bindFilterType();
         this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
             if (this.branchData) {
@@ -94,7 +94,9 @@ export class ForInstitutionComponent implements OnInit {
         $($.document).ready(function () {
             if (!selfnew.isViewOnlyForUser) {
                 document.ondragover = document.ondragenter = function (evt) {
-                    $('#addForInstitutionModal').modal('show');
+                    if (evt.dataTransfer.types[0].indexOf('text/') < 0) {
+                        $('#addForInstitutionModal').modal('show');
+                    }
                     evt.preventDefault();
                 };
 
@@ -134,6 +136,21 @@ export class ForInstitutionComponent implements OnInit {
         });
     }
 
+    bindInstitutionBranchAccordingUser() {
+        if (!this.isViewOnlyForUser) {
+            this.getInstitutionList();
+        } else {
+            const userDetail = this._storageService.getUserDetails();
+            if (userDetail.institution) {
+                this.InstitutionValue = userDetail.institution;
+            }
+            if (userDetail.branch) {
+                this.branchData = userDetail.branch;
+            }
+            this.GetAllForIntitution();
+        }
+    }
+
     filterTypeChange(id: number) {
 
         this.filterTypeId = Number(id);
@@ -170,7 +187,7 @@ export class ForInstitutionComponent implements OnInit {
                     defaultTextAdd: false,
                     showIcon: false,
                     hideWhenOneItem: false
-                }
+                };
             } else {
                 console.log(result);
             }
@@ -319,7 +336,9 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     GetAllForIntitution() {
-        this.branchData = this._storageService.getBranchData();
+        if (!this.isViewOnlyForUser) {
+            this.branchData = this._storageService.getBranchData();
+        }
         this.tableInputData = [];
         if (this.branchData) {
             this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(

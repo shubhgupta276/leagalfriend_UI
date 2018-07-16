@@ -23,8 +23,9 @@
                 </div>
               </div>
               <div class="col-sm-2">
-                  <i class="fa fa-institution" style="position: fixed;margin-top: 8px;margin-left: 3px;"></i>
+                <i class="fa fa-institution" style="position: fixed;margin-top: 8px;margin-left: 3px;"></i>
                 <app-custom-single-select *ngIf="institutionConfig" [data]="arInstitution" [config]="institutionConfig" (valueChanged)="changeInstitution($event)"></app-custom-single-select>
+                <div *ngIf="isViewOnlyForUser && InstitutionValue" style=" margin-left: 23px;margin-top: 6px;">{{InstitutionValue.institutionName}}</div>
               </div>
 
               <div class="col-sm-2">
