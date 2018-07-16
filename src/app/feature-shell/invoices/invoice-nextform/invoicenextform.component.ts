@@ -110,9 +110,7 @@ export class InvoiceNextFormComponent implements OnInit {
 
             this.arrLocalInvoiceDetails.filter(
                 invoiceDetails => {
-                    debugger
                     if (invoiceDetails.id == $(currentRow).find('.hfBillingId').val()) {
-                        debugger
                         invoiceDetails.amount = $(currentRow).find('.amount').val();
                         invoiceDetails.description = $(currentRow).find('.description').val();
                     }

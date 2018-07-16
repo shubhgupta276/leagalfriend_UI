@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Router } from '@angular/router';
 import { filter } from "rxjs/operator/filter";
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -16,7 +16,8 @@ declare let canvas;
 @Component({
   selector: "app-invoice",
   templateUrl: "./invoice.component.html",
-
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./invoice.component.css'],
 
 })
 export class InvoiceComponent implements OnInit {
@@ -101,7 +102,16 @@ export class InvoiceComponent implements OnInit {
   getInvoice() {
     this.invoiceService.getInvoiceData().subscribe(
       result => {
-        this.tableInputData = result;
+        result.forEach(item => {
+          this.tableInputData.push({
+            id: item.id,
+            institutionName: item.billingIds[0].institution.institutionName,
+            description: item.description,
+            billingDate: item.billingIds[0].billingDate,
+            amount: item.amount,
+            status: item.status
+          });
+        });
         setTimeout(() => {
           this.dataTableComponent.ngOnInit();
         });

@@ -1,0 +1,10 @@
+#stageTable .mat-column-recourse  {
+    flex: 0 0 15% !important;
+  }
+  #stageTable .mat-column-stageCode   {
+    flex: 0 0 30% !important;
+  }
+
+#stageTable .mat-cell-text{
+    max-width: 500px !important
+}

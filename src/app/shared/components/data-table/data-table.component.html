@@ -35,12 +35,17 @@
                                 {{ value }}
                             </mat-option>
                         </mat-select>
+
                     </mat-form-field>
+                    <div *ngIf="column.dropDownFilter && dropdownData[column.uniqueId].selected" style="margin-top: -22px;">
+                        <span *ngIf="dropdownData[column.uniqueId].selected" style="display: inline-block;color:#6194f0">{{dropdownData[column.uniqueId].selected}}</span>
+                    </div>
                     <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate') "></button>
                 </mat-header-cell>
             </div>
             <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
-                <div class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId] }} &nbsp; &nbsp;</div>
+                <div *ngIf="column.uniqueId == 'amount'" class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId] |currency:'INR':true}} &nbsp; &nbsp;</div>
+                <div *ngIf="column.uniqueId != 'amount'" class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId]}} &nbsp; &nbsp;</div>
                 <div *ngIf="showCalender && (column.uniqueId=='nextHearingDate' || column.uniqueId=='previousHearingDate')" style=" margin-left: 41px;position: relative;"
                     class="colCalendar">
                     <div class="divNewHire input-group date" style="margin-top: -2px;position: absolute" data-provide="datepicker" data-date-format="yyyy-mm-dd">
@@ -71,15 +76,18 @@
                 <a *ngIf="actionColumnConfig.showEdit" (click)="onActionBtnClick($event, row, 'edit')">
                     <i class="fa fa-edit"></i>
                 </a>&nbsp;
-                <a  (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'"><i class="fa fa-lock"></i></a>
-            
+                <a (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'">
+                    <i class="fa fa-lock"></i>
+                </a>
+
                 <span *ngIf="actionColumnConfig.showEdit && actionColumnConfig.showHistory">&nbsp;</span>
                 <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
                     <i class="fa fa-history"></i>
                 </a>
-                <a *ngIf="actionColumnConfig.showCancel" title="Cancel" style="color:red" (click)="onActionBtnClick($event, row, 'cancel')">
-                    <i class="fa fa-times"></i>
-                </a>
+
+                <button *ngIf="actionColumnConfig.showCancel" class="btn btn-danger" (click)="onActionBtnClick($event, row, 'cancel')">
+                    Cancel
+                </button>
 
             </mat-cell>
         </ng-container>

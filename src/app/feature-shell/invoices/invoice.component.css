@@ -1,0 +1,18 @@
+#invoiceTable .mat-column-institutionName {
+    flex: 0 0 10% !important;
+  }
+#invoiceTable .mat-column-description {
+    flex: 0 0 50% !important;
+  }
+  #invoiceTable .mat-column-amount {
+    flex: 0 0 10% !important;
+  }
+  #invoiceTable .mat-column-status {
+    flex: 0 0 10% !important;
+  }
+  #invoiceTable .mat-column-billingDate {
+    flex: 0 0 10% !important;
+  }
+#invoiceTable .mat-cell-text{
+    max-width: 600px !important
+}

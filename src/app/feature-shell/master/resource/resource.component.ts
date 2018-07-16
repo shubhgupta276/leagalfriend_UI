@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild, ViewEncapsulation } from '@angular/core';
 import { EditResourceMasterComponent } from './edit-resource/edit-resource.component';
 import { AddResourceMasterComponent } from './add-resource/add-resource.component';
 import { CommonModule } from '@angular/common';
@@ -17,7 +17,8 @@ declare let $;
 @Component({
   selector: 'app-resource',
   templateUrl: './resource.component.html',
-  styleUrls: ['./resource.component.css']
+  styleUrls: ['./resource.component.css'],
+  encapsulation:ViewEncapsulation.None
 })
 export class ResourceComponent implements OnInit {
   @ViewChild(EditResourceMasterComponent) editChild: EditResourceMasterComponent;

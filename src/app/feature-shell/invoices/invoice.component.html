@@ -1,4 +1,4 @@
-<style type="text/css">
+<!-- <style type="text/css">
     body {
         background: #fafafa;
         font: 12px/20px Arial, Helvetica, sans-serif
@@ -101,7 +101,7 @@
         width: 3000px !important;
         height: 3000px !important;
     }
-</style>
+</style> -->
 
 <div class="content-wrapper">
     <div class="page-heading">
@@ -113,8 +113,8 @@
             <div class="col-xs-12">
                 <!-- /.box -->
                 <div class="box">
-                    <div class="box-body">
-                        <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+                    <div class="box-body" id="invoiceTable">
+                        <app-data-table #invoiceTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
                             (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow"
                             [actionColumnConfig]="actionColumnConfig" (actionBtnClick)="onActionBtnClick($event)">
                         </app-data-table>

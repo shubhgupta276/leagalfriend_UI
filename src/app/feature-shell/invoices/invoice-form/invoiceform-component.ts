@@ -45,16 +45,20 @@ export class InvoiceFormComponent implements OnInit {
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
-        debugger
         var totalAmount = 0;
-        var totalDescription = "";
+        var totalDescription = '';
+        var description = '';
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            if (element.isInvoiceFirstLoad)
-                totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
-            else
-                totalDescription = element.description;
-            element.description = totalDescription;
+            if (element.isInvoiceFirstLoad) {
+                description = ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
+                totalDescription = totalDescription + description;
+            }
+            else {
+                totalDescription = totalDescription + element.description;
+                description = element.description;
+            }
+            element.description = description;
         });
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
@@ -95,7 +99,6 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     SaveInvoice() {
-        debugger
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         var self = this;
         var totalAmount = 0;
