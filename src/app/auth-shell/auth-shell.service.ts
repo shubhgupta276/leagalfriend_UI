@@ -201,7 +201,7 @@ export class AuthService {
   }
   getCaseRunning(reqData): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'case/caseList' + '?userId=' + reqData.userId, null,
+      'case/caseList' + '?userId=' + reqData.userId + '&branchId=' + reqData.branchId, null,
 
     );
   }
@@ -240,6 +240,7 @@ export class AuthService {
     );
   }
   listManager(reqData): Observable<any> {
+    
     return this.apiGateWay.get<Recourse>(
       'usermanagement/managers' + '?userId=' + reqData.userId, null,
 
@@ -269,6 +270,7 @@ export class AuthService {
     //   localStorage.removeItem("refresh_token");
     // }
     localStorage.clear();
+    localStorage.setItem('is_signed_out', 'yes');
   }
 
   isLoggedIn(): boolean {

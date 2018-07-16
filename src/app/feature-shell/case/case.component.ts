@@ -33,6 +33,7 @@ import { MasterTemplatesComponent } from '../master/masterTemplates/masterTempla
 import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
 import { setTimeout } from 'timers';
 import { CaseHistoryComponent } from './case-history/case-history-component';
+import { ActivatedRoute } from '@angular/router';
 
 const now = new Date();
 
@@ -83,8 +84,11 @@ export class CaseComponent implements OnInit, OnDestroy {
   branchData: any;
   isLoad = true;
   arRecourse: any[] = [];
+  isViewOnly = this._sharedService.isViewOnly();
   recourseConfig: any;
-  constructor(private masterTemplateService: MasterTemplateService, private fb: FormBuilder, private authService: AuthService, private _storageService: StorageService, private _sharedService: SharedService) {
+  constructor(private masterTemplateService: MasterTemplateService,
+    private fb: FormBuilder, private authService: AuthService, private _activatedRoute: ActivatedRoute,
+    private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
   ngOnDestroy() {
@@ -92,6 +96,13 @@ export class CaseComponent implements OnInit, OnDestroy {
     //this.isLoad=true;
   }
   ngOnInit() {
+    this.rowSelect = !this.isViewOnly;
+    this._activatedRoute.params.subscribe((param) => {
+      if (param.caseId) {
+        const objData = { id: param.caseId, compliance: false };
+        this.showEditPop(objData);
+      }
+    })
 
     this.getCasesData();
     this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
@@ -107,9 +118,6 @@ export class CaseComponent implements OnInit, OnDestroy {
 
     });
 
-
-
-    // this.getRunningCase();
     this.getRecourse();
     this.setActionConfig();
     this.getBranchDDL();
@@ -138,9 +146,19 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
   getCasesData() {
+    if (localStorage.branchData == undefined) {
+      b = { id: -1 }
+
+    }
+    else {
+      var a = localStorage.getItem("branchData");
+      var b = JSON.parse(a);
+    }
+
     var $this = this;
     const runningCaseModel = {
       userId: this._storageService.getUserId(),
+      branchId: b.id
     };
     this.branchData = this._storageService.getBranchData();
 
@@ -151,11 +169,11 @@ export class CaseComponent implements OnInit, OnDestroy {
 
         if (localStorage.userRole == 'CLIENT') {
           result.forEach(ele => {
-           
+
             if (ele.completionDate) {
               this.completedTableInputData.push(ele);
             }
-            else{
+            else {
               this.tableInputData.push(ele);
             }
           });

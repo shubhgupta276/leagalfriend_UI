@@ -15,6 +15,8 @@ import { InstitutionService } from '../institution/institution.service';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 import { billingTableConfig } from './billing.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
+import { SharedModule } from '../../../shared/shared.module';
 
 declare let $;
 
@@ -42,11 +44,13 @@ export class BillingComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService,
     private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
   }
 
   ngOnInit() {
+    this.setActionConfig();
     this.getAllRecourses();
     this.getAllInstitutions();
     this.getBillingData();
@@ -73,7 +77,11 @@ export class BillingComponent implements OnInit {
     }
 
   }
-
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = true;
+  }
   getBillingData() {
 
     this._billingservice.getBilling().subscribe(
@@ -151,7 +159,7 @@ export class BillingComponent implements OnInit {
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule,SharedModule],
     declarations: [
       BillingComponent,
       AddBillingComponent,

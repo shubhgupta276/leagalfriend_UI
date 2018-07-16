@@ -62,18 +62,19 @@ export class InvoiceNextFormComponent implements OnInit {
         this.totalAmount = 0;
         var totalDescription = "";
         this.arrLocalInvoiceDetails.forEach((element, index) => {
+            element.isInvoiceFirstLoad = false;
             totalDescription = "";
             totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName);
             this.arrInvoiceDetails.push(
                 {
                     id: element.id, description: totalDescription,
-                    amount: element.amount, quantity: 1, billingDate: element.billingDate,institutionId:element.institutionId
+                    amount: element.amount, quantity: 1, billingDate: element.billingDate, institutionId: element.institutionId
 
                 })
             if (index < 5)
                 this.totalAmount += parseFloat(element.amount);
         });
-
+        localStorage.setItem('invoiceDetails', JSON.stringify(this.arrLocalInvoiceDetails));
     }
 
     AddMoreInvoice() {
@@ -109,8 +110,11 @@ export class InvoiceNextFormComponent implements OnInit {
 
             this.arrLocalInvoiceDetails.filter(
                 invoiceDetails => {
-                    if (invoiceDetails.id == $(currentRow).find('#hfBillingId').val()) {
+                    debugger
+                    if (invoiceDetails.id == $(currentRow).find('.hfBillingId').val()) {
+                        debugger
                         invoiceDetails.amount = $(currentRow).find('.amount').val();
+                        invoiceDetails.description = $(currentRow).find('.description').val();
                     }
                 });
             localStorage.setItem("invoiceDetails", JSON.stringify(this.arrLocalInvoiceDetails));
@@ -123,7 +127,7 @@ export class InvoiceNextFormComponent implements OnInit {
         var totalAmount = 0;
         var dd = this.arrLocalInvoiceDetails;
         var d = this.invoiceTemplateInfo;
-        self.arrSaveInvoice=[];
+        self.arrSaveInvoice = [];
         $('.invoiceRow').each(function () {
             var $row = $(this);
             var amount = $row.find('.amount').val();
@@ -137,14 +141,14 @@ export class InvoiceNextFormComponent implements OnInit {
                     billFrom: self.invoiceTemplateInfo.CompanyAddress,
                     billTo: self.invoiceTemplateInfo.billToAddress,
                     billingIds: [
-                        billingId
+                        { id: billingId }
                     ],
                     description: description,
-                    fkInstitutionId:insitituionId,
+                    fkInstitutionId: insitituionId,
                     id: 0,
                     status: "active",
                     termsCondition: self.invoiceTemplateInfo.termEndCond,
-                    userId:self._storageService.getUserId()
+                    userId: self._storageService.getUserId()
                 }
             )
 
@@ -153,14 +157,16 @@ export class InvoiceNextFormComponent implements OnInit {
             result => {
                 if (result.body.httpCode === 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
+                    this.router.navigate(['/admin/invoices']);
                 } else {
+                    console.log(result.body.failureReason);
                     $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
                 }
             },
             err => {
                 console.log(err);
             });
-        
-        this.router.navigate(['/admin/invoices']);
+
+
     }
 }
