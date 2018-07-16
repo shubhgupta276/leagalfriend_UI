@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, OnDestroy,ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { KeyValue, ListBranch } from '../../../shared/Utility/util-common';
 import { AddForInstitutionComponent } from './add-for-institution/add-for-institution.component';
 import { EditForInstitutionComponent } from './Edit-for-institution/Edit-for-institution.component';
@@ -61,6 +61,7 @@ export class ForInstitutionComponent implements OnInit {
     isRunningCaseTabOpen: boolean = true;
     queryInstitutionId: any;
     queryRecourseId: any;
+    isViewOnlyForUser: boolean = false;
     @ViewChild(HistoryForInstitutionComponent) historyChild: HistoryForInstitutionComponent;
     constructor(private fb: FormBuilder,
         private _router: Router,
@@ -73,10 +74,11 @@ export class ForInstitutionComponent implements OnInit {
         this._activatedRoute.params.subscribe((params) => {
             this.queryInstitutionId = params.institutionId;
             this.queryRecourseId = params.recourseId;
-        })
+        });
     }
 
     ngOnInit() {
+        this.isViewOnlyForUser = this._sharedService.isViewOnly();
         this.showHideColumns(true);
         this.getRecourse();
         this.setActionConfig();
@@ -90,23 +92,23 @@ export class ForInstitutionComponent implements OnInit {
 
         const selfnew = this;
         $($.document).ready(function () {
+            if (!selfnew.isViewOnlyForUser) {
+                document.ondragover = document.ondragenter = function (evt) {
+                    $('#addForInstitutionModal').modal('show');
+                    evt.preventDefault();
+                };
 
-            document.ondragover = document.ondragenter = function (evt) {
-                $('#addForInstitutionModal').modal('show');
-                evt.preventDefault();
-            };
-
-            document.getElementById('addForInstitutionModal').ondrop = function (evt) {
-                $('#ERROR_casefile').hide();
-                if (!validateFile(evt.dataTransfer.files[0].name)) {
-                    $('#ERROR_casefile').show();
-                } else {
-                    $('#casefile')[0].files = evt.dataTransfer.files;
+                document.getElementById('addForInstitutionModal').ondrop = function (evt) {
                     $('#ERROR_casefile').hide();
-                }
-                evt.preventDefault();
-            };
-
+                    if (!validateFile(evt.dataTransfer.files[0].name)) {
+                        $('#ERROR_casefile').show();
+                    } else {
+                        $('#casefile')[0].files = evt.dataTransfer.files;
+                        $('#ERROR_casefile').hide();
+                    }
+                    evt.preventDefault();
+                };
+            }
             function validateFile(name: string) {
                 const ext = name.substring(name.lastIndexOf('.'));
                 if (ext.toLowerCase() === '.csv') {
@@ -152,8 +154,7 @@ export class ForInstitutionComponent implements OnInit {
 
                 if (this.queryInstitutionId) {
                     this.InstitutionValue = this.arInstitution.find(x => x.id == this.queryInstitutionId);
-                }
-                else {
+                } else {
                     this.InstitutionValue = this.arInstitution.find(x => x.defaultInstitution);
                     if (!this.InstitutionValue) {
                         this.InstitutionValue = this.arInstitution[0];
@@ -165,7 +166,7 @@ export class ForInstitutionComponent implements OnInit {
                     displayKey: 'institutionName',
                     showFirstSelected: true,
                     showFirstSelectedValue: this.InstitutionValue,
-                    showFirstSelectedKey: "id",
+                    showFirstSelectedKey: 'id',
                     defaultTextAdd: false,
                     showIcon: false,
                     hideWhenOneItem: false
@@ -206,10 +207,9 @@ export class ForInstitutionComponent implements OnInit {
                             hideWhenOneItem: false,
                             showFirstSelected: true,
                             showFirstSelectedValue: this.recourseFilter,
-                            showFirstSelectedKey: "id",
-                        }
-                    }
-                    else {
+                            showFirstSelectedKey: 'id',
+                        };
+                    } else {
                         this.recourseConfig = {
                             displayKey: 'recourseName',
                             defaultText: 'All Recourses',
@@ -240,7 +240,8 @@ export class ForInstitutionComponent implements OnInit {
 
     filterTable() {
 
-        this.dataTableComponent.sortTable((this.recourseFilter === undefined || this.recourseFilter === null) ? '' : this.recourseFilter.recourseCode, 'recourse');
+        this.dataTableComponent.sortTable((this.recourseFilter === undefined || this.recourseFilter === null)
+            ? '' : this.recourseFilter.recourseCode, 'recourse');
         if (this.filterTypeId === 0) {
             this.dataTableComponent.resetDateFilter();
         } else {
@@ -292,7 +293,7 @@ export class ForInstitutionComponent implements OnInit {
         $('#txtFromToDate').val('');
         this.showDateFilter = false;
         this.filterTypeId = 0;
-        //this.recourseFilter = null;
+        // this.recourseFilter = null;
     }
 
     clearFilters() {
@@ -483,7 +484,8 @@ export class ForInstitutionComponent implements OnInit {
 
     onRowDoubleClick(event) {
         const recourseId = (this.recourseFilter) ? this.recourseFilter.id : '';
-        this._router.navigate(['/admin/institution/editforinstitution/' + event.institutionId + '/' + event.id, { recourseId: recourseId }]);
+        this._router.navigate(['/admin/institution/editforinstitution/' + event.institutionId
+            + '/' + event.id, { recourseId: recourseId }]);
     }
 
     onRowSelect(event) {
@@ -493,8 +495,7 @@ export class ForInstitutionComponent implements OnInit {
     onActionBtnClick(event) {
         if (event.eventType === 'edit') {
             this.onRowDoubleClick(event.data);
-        }
-        else if (event.eventType === "history") {
+        } else if (event.eventType === 'history') {
             $('#modal-default1').modal('show');
             this.historyChild.showHistory(event.data);
         }
@@ -531,18 +532,16 @@ export class ForInstitutionComponent implements OnInit {
                     $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 2000);
                     if (!isNaN(obj.nextHearingDate.getTime())) {
                         obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
-                    }
-                    else {
-                        obj.nextHearingDate = "";
+                    } else {
+                        obj.nextHearingDate = '';
                     }
 
                     if (!isNaN(obj.previousHearingDate.getTime())) {
                         obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                    } else {
+                        obj.previousHearingDate = '';
                     }
-                    else {
-                        obj.previousHearingDate = "";
-                    }
-                    $.toaster({ priority: 'success', title: 'Success', message: "Date Update Successfully." });
+                    $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
                 }
             },
             err => {
@@ -567,13 +566,13 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     ExportCase() {
-        var arrInsitituionId = [];
+        const arrInsitituionId = [];
         if (this.selectedRowsCheckbox.length > 0) {
             this.selectedRowsCheckbox.forEach(item => {
                 arrInsitituionId.push(item.id);
             });
         }
-        var data = {
+        const data = {
             branchId: this.branchData.id,
             institutionId: this.InstitutionValue.id,
             institutionalCaseIds: arrInsitituionId
@@ -581,14 +580,12 @@ export class ForInstitutionComponent implements OnInit {
         };
         this._institutionService.exportCase(data).subscribe(
             (result) => {
-                let blob = new Blob([result]);
-                saveAs(blob, "file.csv");
+                const blob = new Blob([result]);
+                saveAs(blob, 'file.csv');
             },
             err => {
                 console.log(err);
-            })
-
-
+            });
     }
 }
 

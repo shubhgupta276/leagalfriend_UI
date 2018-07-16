@@ -90,7 +90,7 @@ export class InstitutionService {
     exportCase(data: any): Observable<any> {
         return this.apiGateWay.postFile(
             exportForInstitutionsUrl,
-            data
+            JSON.stringify(data)
         );
     }
 
