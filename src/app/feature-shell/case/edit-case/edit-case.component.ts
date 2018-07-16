@@ -10,6 +10,7 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { AuthService } from '../../../auth-shell/auth-shell.service';
 import { EditCase } from '../../../shared/models/auth/editcase.model';
 import { DatePipe } from '@angular/common';
+import { SharedService } from '../../../shared/services/shared.service';
 import { parse } from 'querystring';
 import { CompleterService, CompleterData } from 'ng2-completer';
 import { saveAs } from 'file-saver';
@@ -45,10 +46,11 @@ export class EditCaseComponent implements OnInit {
   public searchStr1: string;
   dataService: CompleterData;
   dataService1: CompleterData;
+  isViewOnly = this._sharedService.isViewOnly();
 
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
     private authService: AuthService, private completerService: CompleterService,
-    private _storageService: StorageService, private datePipe: DatePipe) {
+    private _storageService: StorageService, private _sharedService:SharedService, private datePipe: DatePipe) {
     this.createForm(null);
   }
 
@@ -204,19 +206,6 @@ this.getCustomer();
     this.caseId = c.caseId;
     this.id = c.id;
     
-    // if (c.parentCaseId != null) {
-    //   const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
-    //   this.parentcaseSelectedauto.push({ id: c.parentCaseId, text: objparentCase[0].text });
-    //   this.childCaseText = this.parentcaseSelectedauto[0].text;
-    // }
-
-
-    // if (c.childCase != null) {
-    //   this.childcaseSelectedauto = [];
-    //   const objchild = this.ChildCases.filter(x => x.id === parseInt(c.childCase));
-    //   this.childcaseSelectedauto.push({ id: parseInt(c.childCase), text: objchild[0].text });
-    //   this.childParentText = this.childcaseSelectedauto[0].text;
-    // }
 
     this.recourseSelected = [];
     const objFilter = this.Resource.filter(x => x.id === c.recourseId);
@@ -320,7 +309,7 @@ this.getCustomer();
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
-      $("#Compliance").hide();
+      // $("#Compliance").hide();
       $("#btnSubmit").hide();
 
     }
@@ -370,18 +359,19 @@ this.getCustomer();
         this.stageSelected.push({ id: c[0].legalCase.stageId, text: objStage[0].text });
         this.selectedStage = this.stageSelected[0];
       }
+       
       this.customerSelected = [];
       const objcustomerSelected = this.CustomerName.filter(x => x.id === c[0].legalCase.customerId);
-      this.customerSelected.push({ id: c[0].legalCase.customerId, text: objcustomerSelected[0].text });
+      this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
       this.selectedCustomerName = this.customerSelected[0];
+  
       this.managerSelected = [];
       const objmanagerSelected = this.Manager.filter(x => x.id === c[0].legalCase.managerId);
-      this.managerSelected.push({ id: c[0].legalCase.managerId, text: objmanagerSelected[0].text });
+      this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
       this.selectedManager = this.managerSelected[0];
-
       this.employeeSelected = [];
       const objemployeeSelected = this.Employee.filter(x => x.id === c[0].legalCase.employeeId);
-      this.employeeSelected.push({ id: c[0].legalCase.employeeId, text: objemployeeSelected[0].text });
+      this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
       this.selectedEmployee = this.employeeSelected[0];
       this.courtPlaceSelected = [];
       const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c[0].legalCase.id);
@@ -392,7 +382,8 @@ this.getCustomer();
   createFormforcompliance(c) {
     
     var self = this;
-    this.bindStageDDL(c.recourseId, c);
+    
+    this.bindStageDDL(c[0].legalCase.recourseId, c);
 
 
     if (c != null) {
@@ -443,12 +434,14 @@ this.getCustomer();
       // }
       
     });
-      if(localStorage.userRole=='CLIENT')
+    if(localStorage.userRole=='CLIENT')
     {
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
-      
+      // $("#Compliance").hide();
+      $("#btnSubmit").hide();
+
     }
   }
 
@@ -572,14 +565,14 @@ this.getCustomer();
   bindStageDDL(a, c) {
 
     const $this = this;
-    //const reqData = {
-     // email: this._storageService.getUserEmail(),
+  
      var  recourseId;
      recourseId= a;
-    //};
+  
     this.authService.bindStageDDL(recourseId).subscribe(
 
       result => {
+        
         if (result.httpCode === 200 && result.stageRecourses.length>0) {
           result.stageRecourses.forEach(function (value) {
   
