@@ -23,8 +23,9 @@
                 </div>
               </div>
               <div class="col-sm-2">
-                  <i class="fa fa-institution" style="position: fixed;margin-top: 8px;margin-left: 3px;"></i>
+                <i class="fa fa-institution" style="position: fixed;margin-top: 8px;margin-left: 3px;"></i>
                 <app-custom-single-select *ngIf="institutionConfig" [data]="arInstitution" [config]="institutionConfig" (valueChanged)="changeInstitution($event)"></app-custom-single-select>
+                <div *ngIf="isViewOnlyForUser && InstitutionValue" style=" margin-left: 23px;margin-top: 6px;">{{InstitutionValue.institutionName}}</div>
               </div>
 
               <div class="col-sm-2">
@@ -75,7 +76,7 @@
 
 
 
-<div class="favicon" (click)="openPopup()">
+<div class="favicon" (click)="openPopup()" *ngIf="!isViewOnlyForUser">
   <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
     <span class="tooltip-text">Import Cases</span>
   </div>
@@ -83,7 +84,7 @@
     <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addForInstitutionModal"></i>
   </a>
 </div>
-<add-for-institution-modal (saveSuccess)="caseSaved()" [Institution]="InstitutionValue"></add-for-institution-modal>
+<add-for-institution-modal *ngIf="!isViewOnlyForUser" (saveSuccess)="caseSaved()" [Institution]="InstitutionValue"></add-for-institution-modal>
 <history-for-institution-modal></history-for-institution-modal>
 
 <!-- Filter Case Starts -->
