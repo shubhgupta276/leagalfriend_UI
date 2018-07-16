@@ -153,6 +153,7 @@ export class FeatureShellComponent implements OnInit {
     var client = '?userId=' + localStorage.getItem('client_id');
     this.userService.getUser(client).subscribe(
       data => {
+        
         if (data.showSubscriptionFlash) {
           this.showFlash = true;
         } else {

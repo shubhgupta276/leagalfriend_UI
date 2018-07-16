@@ -63,4 +63,16 @@ export class SharedService {
         }
         return arReverse;
     }
+
+    isViewOnly()
+    {
+        
+        if(localStorage.userRole=='CLIENT')
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
