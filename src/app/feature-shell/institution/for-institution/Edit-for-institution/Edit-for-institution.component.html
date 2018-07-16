@@ -806,7 +806,7 @@
                     <td>{{item.compliance.complianceName}}</td>
                     <td>
                       <a *ngIf="item.status!=='OPEN'">{{item.status}}</a>
-                      <a *ngIf="item.status==='OPEN'" style="color:cornflowerblue" (click)="closeCompliance(item);">Verified & Completed</a>
+                      <a *ngIf="!isViewOnlyForUser && item.status==='OPEN'" style="color:cornflowerblue" (click)="closeCompliance(item);">Verified & Completed</a>
                     </td>
                   </tr>
                 </tbody>

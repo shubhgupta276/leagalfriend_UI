@@ -45,7 +45,7 @@ export class CalendarComponent implements OnInit {
         };
 
         // store the Event Object in the DOM element so we can get to it later
-        $(this).data('eventObject', eventObject)
+        $(this).data('eventObject', eventObject);
 
         // make the event draggable using jQuery UI
         $(this).draggable({
@@ -56,7 +56,7 @@ export class CalendarComponent implements OnInit {
       });
     }
 
-    init_events($('#external-events div.external-event'))
+    init_events($('#external-events div.external-event'));
     setTimeout(() => {
       $('#calendar').fullCalendar('destroy');
       $('#calendar').fullCalendar({
