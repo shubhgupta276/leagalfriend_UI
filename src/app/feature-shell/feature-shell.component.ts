@@ -98,6 +98,7 @@ export class FeatureShellComponent implements OnInit {
 
   signOutButton() {
     this.authService.signOut();
+    this._router.navigateByUrl('/login');
   }
   blinker() {
     $('.blink_me').fadeOut(500);

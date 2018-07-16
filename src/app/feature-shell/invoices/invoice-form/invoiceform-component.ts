@@ -9,6 +9,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InvoicesService } from '../invoices.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 declare let $;
 declare let canvas;
 @Component({
@@ -25,12 +26,12 @@ export class InvoiceFormComponent implements OnInit {
         Date: null,
         photoUrl: null,
         invoiceNo: '333333',
-        isLoadFirstTime:true,
-        url:null
+        isLoadFirstTime: true,
+        url: null
     }
     todayDate: number = Date.now();
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
-        private _invoicesService: InvoicesService, public sanitizer: DomSanitizer) {
+        private _invoicesService: InvoicesService, public sanitizer: DomSanitizer, private router: Router, ) {
     }
 
     ngOnInit() {
@@ -44,11 +45,16 @@ export class InvoiceFormComponent implements OnInit {
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
+        debugger
         var totalAmount = 0;
         var totalDescription = "";
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            totalDescription = totalDescription + ("CaseId : " + element.caseId + "\n");
+            if (element.isInvoiceFirstLoad)
+                totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
+            else
+                totalDescription = element.description;
+            element.description = totalDescription;
         });
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
@@ -58,6 +64,7 @@ export class InvoiceFormComponent implements OnInit {
             id: invoiceDetails.id,
             institutionId: invoiceDetails.institutionId
         };
+        localStorage.setItem('invoiceDetails', JSON.stringify(invoiceDetails));
 
     }
 
@@ -88,22 +95,47 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     SaveInvoice() {
+        debugger
+        var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         var self = this;
         var totalAmount = 0;
-        $('.invoiceRow').each(function () {
-            var $row = $(this);
-            var amount = 0;
-            var description = $row.find('.description').val();
-            var quantity = $row.find('.quantity').val();
-            var unitPrice = $row.find('.unitPrice').val();
-            if (quantity > 0 && unitPrice > 0) {
-                amount = quantity * unitPrice;
-            }
-            var remarks = $('#remarksInvoice').val();
-            self.arrSaveInvoice.push({ InvoiceNo: self.invoiceTemplateInfo.invoiceNo, description: description, quantity: quantity, unitPrice: unitPrice, remarks: remarks })
+        self.arrSaveInvoice = [];
+        invoiceDetails.forEach(item => {
+            self.arrSaveInvoice.push(
+                {
+                    amount: item.amount,
+                    amountRecieved: true,
+                    billFrom: self.invoiceTemplateInfo.CompanyAddress,
+                    billTo: self.invoiceTemplateInfo.billToAddress,
+                    billingIds: [
+                        {
+                            id: item.id
+                        }
+                    ],
+                    description: item.description,
+                    fkInstitutionId: item.institutionId,
+                    id: 0,
+                    status: "active",
+                    termsCondition: self.invoiceTemplateInfo.termEndCond,
+                    userId: self._storageService.getUserId()
+                }
+            )
+        });
 
-        })
-        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice submit successfully' });
+        this._invoicesService.saveInvoice(self.arrSaveInvoice).subscribe(
+            result => {
+                if (result.body.httpCode === 200) {
+                    $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
+                    this.router.navigate(['/admin/invoices']);
+                } else {
+                    $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+                }
+            },
+            err => {
+                console.log(err);
+            });
+
+
     }
 
 }

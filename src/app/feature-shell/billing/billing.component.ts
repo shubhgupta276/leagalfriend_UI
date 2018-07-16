@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { parse } from 'url';
 import { Jsonp } from '@angular/http/src/http';
 import { BillingService } from './billing.service';
@@ -16,8 +16,8 @@ declare var $;
     templateUrl: './billing.component.html',
     styleUrls: ['./billing.component.css'],
     // providers: [BillingService]
-//styles:[`body{background:green !important}`]
-encapsulation: ViewEncapsulation.None
+    //styles:[`body{background:green !important}`]
+    encapsulation: ViewEncapsulation.None
 })
 export class BillingComponent implements OnInit {
     tableInputData = [];
@@ -51,7 +51,6 @@ export class BillingComponent implements OnInit {
     }
     ngOnInit() {
         const self = this;
-        this.setActionConfig();
         this.getBillingData();
         this.setDropdownUniqueValues();
         this.getAllInstitutions();
@@ -101,6 +100,10 @@ export class BillingComponent implements OnInit {
     }
 
     CreateInvoice() {
+        this.selectedRowsCheckbox.forEach(item => {
+            item.isInvoiceFirstLoad = true;    
+        });
+        
         localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
     }
     setDropdownUniqueValues() {
@@ -168,12 +171,7 @@ export class BillingComponent implements OnInit {
             });
 
     }
-    setActionConfig() {
-        this.actionColumnConfig = new ActionColumnModel();
-        this.actionColumnConfig.displayName = 'Action';
-        this.actionColumnConfig.showEdit = true;
-        this.actionColumnConfig.showHistory = true;
-    }
+
     getAllRecourses() {
         this._recourseService.getResources().subscribe(
             result => {
@@ -237,5 +235,5 @@ export class BillingComponent implements OnInit {
     searchFilter(value) {
         this.dataTableComponent.applyFilter(value);
     }
-   
+
 }
