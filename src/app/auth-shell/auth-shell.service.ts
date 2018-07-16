@@ -270,6 +270,7 @@ export class AuthService {
     //   localStorage.removeItem("refresh_token");
     // }
     localStorage.clear();
+    localStorage.setItem('is_signed_out', 'yes');
   }
 
   isLoggedIn(): boolean {
