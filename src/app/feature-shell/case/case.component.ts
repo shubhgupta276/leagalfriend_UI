@@ -84,6 +84,7 @@ export class CaseComponent implements OnInit, OnDestroy {
   branchData: any;
   isLoad = true;
   arRecourse: any[] = [];
+  isViewOnly = this._sharedService.isViewOnly();
   recourseConfig: any;
   constructor(private masterTemplateService: MasterTemplateService,
     private fb: FormBuilder, private authService: AuthService, private _activatedRoute: ActivatedRoute,
@@ -95,6 +96,7 @@ export class CaseComponent implements OnInit, OnDestroy {
     //this.isLoad=true;
   }
   ngOnInit() {
+    this.rowSelect = !this.isViewOnly;
     this._activatedRoute.params.subscribe((param) => {
       if (param.caseId) {
         const objData = { id: param.caseId, compliance: false };
@@ -116,9 +118,6 @@ export class CaseComponent implements OnInit, OnDestroy {
 
     });
 
-
-
-    // this.getRunningCase();
     this.getRecourse();
     this.setActionConfig();
     this.getBranchDDL();

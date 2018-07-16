@@ -216,8 +216,8 @@
 
 
   </div>
-  <div class="favicon" data-toggle="modal" data-target="#addCaseModal">
-    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+  <div class="favicon" *ngIf="!isViewOnly" data-toggle="modal" data-target="#addCaseModal">
+    <div  class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
       <span class="tooltip-text">Add Case</span>
     </div>
     <a>

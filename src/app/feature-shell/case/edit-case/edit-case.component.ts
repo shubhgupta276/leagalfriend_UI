@@ -315,7 +315,7 @@ this.getCustomer();
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, 'yyyy-MM-dd')]
     });
     
-    if(localStorage.userRole='CLIENT')
+    if(localStorage.userRole=='CLIENT')
     {
       this.editCaseForm.disable();
       this._disabledV = '1';
@@ -443,7 +443,7 @@ this.getCustomer();
       // }
       
     });
-      if(localStorage.userRole='CLIENT')
+      if(localStorage.userRole=='CLIENT')
     {
       this.editCaseForm.disable();
       this._disabledV = '1';
@@ -624,7 +624,7 @@ this.getCustomer();
         if (result == 0) {
           $("#spnEmployee").show();
         }
-        debugger
+        
         result.forEach(function (value) {
          
         //  if (value.roles[0].roleName === 'EMPLOYEE') {
