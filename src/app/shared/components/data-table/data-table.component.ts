@@ -3,6 +3,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FilterModel } from '../../models/data-table/filter.model';
 import { ActionColumnModel } from '../../models/data-table/action-column.model';
+import { SharedService } from '../../services/shared.service';
 declare var $;
 
 @Component({
@@ -47,7 +48,7 @@ export class DataTableComponent implements OnInit {
   selection = new SelectionModel<Element>(true, []);
   showCalender = true;
   hoveredIndex: number;
-  constructor() { }
+  constructor(private _sharedService: SharedService) { }
 
   ngOnInit() {
     this.tableData = this.cleanIncomingData(this.tableData);
