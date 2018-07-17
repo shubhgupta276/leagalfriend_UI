@@ -165,7 +165,7 @@
                           <div class="col-sm-4" *ngIf="roleValue==3" style="padding-left:0px;">
                             <select (change)="userTypeRoleChange($event)" formControlName="userTypeRole" class="form-control">
                                   <option value="1">Individual</option>
-                                  <option value="2">Institutional</option>
+                                  <option *ngIf="adminLawer=='ADMIN_LAWYER'" value="2">Institutional</option>
                             </select>
                           </div>
                          
