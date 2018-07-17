@@ -78,10 +78,8 @@
                 <a *ngIf="actionColumnConfig.showEdit" (click)="onActionBtnClick($event, row, 'edit')">
                     <i class="fa fa-edit"></i>
                 </a>&nbsp;
-                <a (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'">
-                    <i class="fa fa-lock"></i>
-                </a>
-
+                <a  (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'"><img width="40px" src="/assets/dist/img/pwd.png" /></a>
+            
                 <span *ngIf="actionColumnConfig.showEdit && actionColumnConfig.showHistory">&nbsp;</span>
                 <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
                     <i class="fa fa-history"></i>
