@@ -16,3 +16,6 @@
 #invoiceTable .mat-cell-text{
     max-width: 600px !important
 }
+#invoiceTable .mat-column-action{
+  flex: 0 0 150px !important;
+}

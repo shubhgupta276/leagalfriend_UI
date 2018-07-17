@@ -9,5 +9,6 @@ export const invoiceTableConfig = [
     { uniqueId: 'billingDate', displayName: 'Billing Date', sortable: false, dropDownFilter: false, display: true },
     { uniqueId: 'amount', displayName: 'Amount', sortable: false, dropDownFilter: false, display: true },    
     { uniqueId: 'status', displayName: 'Status', sortable: false, dropDownFilter: false, display: true },
+    { uniqueId: 'billingIds', displayName: 'billingIds', sortable: true, dropDownFilter: false, display: false },
   ];
   

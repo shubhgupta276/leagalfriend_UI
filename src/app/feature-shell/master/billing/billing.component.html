@@ -16,8 +16,8 @@
             </div> -->
           <!-- /.box-header -->
           <div class="box-body" id="billingTable">
-            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
-              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (actionBtnClick)="onActionBtnClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [actionColumnConfig]="actionColumnConfig" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
             </app-data-table>
 
           </div>

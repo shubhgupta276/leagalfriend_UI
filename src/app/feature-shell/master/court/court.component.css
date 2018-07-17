@@ -1,5 +1,5 @@
 #courtTable .mat-cell-text{
-    max-width: 500px;;
+    max-width: 500px !important;;
 }
 #courtTable .mat-column-courtName{
     flex: 0 0 30% !important;

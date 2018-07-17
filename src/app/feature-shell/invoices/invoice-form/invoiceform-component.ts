@@ -26,7 +26,7 @@ export class InvoiceFormComponent implements OnInit {
         Date: null,
         photoUrl: null,
         invoiceNo: '333333',
-        isLoadFirstTime: true,
+        isFromInvoice: false,
         url: null
     }
     todayDate: number = Date.now();
@@ -60,6 +60,7 @@ export class InvoiceFormComponent implements OnInit {
             }
             element.description = description;
         });
+        this.invoiceTemplateInfo.isFromInvoice = invoiceDetails[0].isFromInvoice;
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
             totalDescription: totalDescription,

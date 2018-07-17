@@ -117,7 +117,8 @@ export class InvoiceNextFormComponent implements OnInit {
                 });
             localStorage.setItem("invoiceDetails", JSON.stringify(this.arrLocalInvoiceDetails));
         }
-        $('#totalAmount').html(totalAmount);
+        this.totalAmount = totalAmount;
+        // $('#totalAmount').html(totalAmount);
     }
 
     SaveInvoice() {
