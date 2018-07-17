@@ -30,6 +30,7 @@ export class AddUserComponent implements OnInit {
   selectedRole = [];
   roleValue: number;
   userTypeRole: any;
+  adminLawer = localStorage.permission_level;
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.AddUser();
   }
