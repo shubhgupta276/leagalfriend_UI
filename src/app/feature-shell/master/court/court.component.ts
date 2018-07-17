@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AddCourtMasterComponent } from './add-court/add-court.component';
 import { EditCourtMasterComponent } from './edit-court/edit-court.component';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,8 @@ declare let $;
 @Component({
   selector: 'app-court',
   templateUrl: './court.component.html',
-  styleUrls: ['./court.component.css']
+  styleUrls: ['./court.component.css'],
+  encapsulation:ViewEncapsulation.None
 })
 export class CourtComponent implements OnInit {
   @ViewChild(EditCourtMasterComponent) editChild: EditCourtMasterComponent;

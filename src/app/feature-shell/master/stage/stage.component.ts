@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AddStageMasterComponent } from "./add-stage/add-stage.component";
 import { EditStageMasterComponent } from "./edit-stage/edit-stage.component";
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,8 @@ declare let $;
 @Component({
   selector: 'app-stage',
   templateUrl: './stage.component.html',
-  styleUrls: ['./stage.component.css']
+  styleUrls: ['./stage.component.css'],
+  encapsulation:ViewEncapsulation.None
 })
 export class StageComponent implements OnInit {
   //arr: Stage[] = [];

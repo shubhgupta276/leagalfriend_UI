@@ -101,9 +101,10 @@ export class BillingComponent implements OnInit {
 
     CreateInvoice() {
         this.selectedRowsCheckbox.forEach(item => {
-            item.isInvoiceFirstLoad = true;    
+            item.isInvoiceFirstLoad = true;
+            item.isFromInvoice = false;
         });
-        
+
         localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
     }
     setDropdownUniqueValues() {

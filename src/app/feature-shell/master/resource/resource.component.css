@@ -1,0 +1,12 @@
+#recourseTable .mat-cell-text{
+    max-width: 500px;;
+}
+#recourseTable .mat-column-recourseDesc{
+    flex: 0 0 40% !important;
+  }
+#recourseTable .mat-column-recourseCode{
+    flex: 0 0 20% !important;
+  }
+  #recourseTable .mat-column-recourseName{
+    flex: 0 0 30% !important;
+  }

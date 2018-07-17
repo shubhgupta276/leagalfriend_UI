@@ -1,0 +1,13 @@
+#billingTable .mat-column-institutionName   {
+    flex: 0 0 20% !important;
+  }
+  #billingTable .mat-column-recourseName    {
+    flex: 0 0 20% !important;
+  }
+  #billingTable .mat-column-stageName     {
+    flex: 0 0 40% !important;
+  }
+
+#billingTable .mat-cell-text{
+    max-width: 400px !important
+}

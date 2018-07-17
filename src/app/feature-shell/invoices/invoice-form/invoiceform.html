@@ -117,7 +117,9 @@
     <section class="content">
         <div id="templateArea">
             <div class="col-md-12">
-                <div class="col-md-2"></div>
+                <div class="col-md-2" style="text-align:right;" >
+                     <a *ngIf="invoiceTemplateInfo.isFromInvoice" [routerLink]="['/admin/invoices']" class="btn btn-primary">Back</a>
+                </div>
                 <div class="col-md-8">
                     <div class="invoice-wrap">
 
@@ -144,13 +146,13 @@
                                         <label>Bill To</label>
                                     </div>
                                     <div class="col-md-5" style="text-align:left">
-                                        <textarea id="txtBillToAddress" value={{invoiceTemplateInfo.billToAddress}} rows="2" class="form-control"></textarea>
+                                        <textarea [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" id="txtBillToAddress" value={{invoiceTemplateInfo.billToAddress}} rows="2" class="form-control"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding:0px;">
                                             <label>Bill From</label>
                                         </div>
                                     <div class="col-md-5" style="text-align:right">
-                                        <textarea id="txtcompanyAddress" value={{invoiceTemplateInfo.CompanyAddress}} rows="2" class="form-control"></textarea>
+                                        <textarea id="txtcompanyAddress" [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" value={{invoiceTemplateInfo.CompanyAddress}} rows="2" class="form-control"></textarea>
                                     </div>
 
                                 </div>
@@ -215,8 +217,7 @@
                                             </td>
                                             <td colspan="2">
                                                 <div *ngIf="arrInvoiceDetails.totalAmount">
-                                                    Rs
-                                                    <label id="totalAmount">{{arrInvoiceDetails.totalAmount}}</label>
+                                                    <label id="totalAmount">{{arrInvoiceDetails.totalAmount |currency:'INR':true}}</label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -225,15 +226,15 @@
                                 </table>
                             </div>
 
-                            <div class="notes-block">
+                            <div class="notes-block" >
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tbody>
                                         <tr>
                                             <td style="padding-left: 0px !important">
-                                                <textarea rows="4" id="remarksInvoice" class="form-control" placeholder="Type your notes here">{{invoiceTemplateInfo.termEndCond}}</textarea>
+                                                <textarea [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" rows="4" id="remarksInvoice" class="form-control" placeholder="Type your notes here">{{invoiceTemplateInfo.termEndCond}}</textarea>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr *ngIf="!invoiceTemplateInfo.isFromInvoice">
                                             <td>
                                                 <button class="btn btn bg-navy margin pull-right" (click)="SaveInvoice()" style="margin-right:0px" type="submit">Submit</button>
                                             </td>
@@ -248,7 +249,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" *ngIf="!invoiceTemplateInfo.isFromInvoice">
                     <a (click)="StoreInvoiceTemplateInfo()" [routerLink]="['/admin/invoices/invoicenextform']" class="btn btn-default">Next</a>
                 </div>
             </div>

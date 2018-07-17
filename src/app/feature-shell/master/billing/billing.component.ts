@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AddBillingComponent } from './add-bill/add-bill.component';
 import { EditBillingComponent } from './edit-bill/edit-bill.component';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,8 @@ declare let $;
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
-  styleUrls: ['./billing.component.css']
+  styleUrls: ['./billing.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class BillingComponent implements OnInit {
@@ -144,7 +145,10 @@ export class BillingComponent implements OnInit {
         }
       });
   }
-
+  onActionBtnClick(event) {
+    this.editChild.createForm(event.data);
+    $('#editBillModal').modal('show');
+  }
   onRowClick(event) {
     console.log(event);
   }
@@ -159,7 +163,7 @@ export class BillingComponent implements OnInit {
 
 @NgModule(
   {
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule,SharedModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule, SharedModule],
     declarations: [
       BillingComponent,
       AddBillingComponent,
