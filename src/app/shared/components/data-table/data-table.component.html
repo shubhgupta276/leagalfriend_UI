@@ -28,21 +28,28 @@
             <div *ngIf="!column.sortable">
                 <mat-header-cell *matHeaderCellDef>
                     {{column.displayName}}
-                    <mat-form-field class="table-dropdown-sort" *ngIf="column.dropDownFilter">
+                    <mat-form-field class="table-dropdown-sort" *ngIf="column.dropDownFilter" style="margin-top: 5px;">
                         <mat-select [(value)]="dropdownData[column.uniqueId].selected" (change)="sortTable($event.value,column.uniqueId)">
                             <mat-option value="">Select</mat-option>
                             <mat-option *ngFor="let value of dropdownData[column.uniqueId].values" [value]="value">
                                 {{ value }}
                             </mat-option>
                         </mat-select>
+
                     </mat-form-field>
+                    <div *ngIf="column.dropDownFilter && dropdownData[column.uniqueId].selected" style="margin-top: -25px;position: fixed;">
+                        <span *ngIf="dropdownData[column.uniqueId].selected" style="display: inline-block;color:#ff8254">{{dropdownData[column.uniqueId].selected}}</span>
+                    </div>
                     <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate') "></button>
                 </mat-header-cell>
             </div>
             <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
-                <div class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId] }} &nbsp; &nbsp;</div>
-                <div *ngIf="showCalender && !_sharedService.isViewOnly() && (column.uniqueId=='nextHearingDate' || column.uniqueId=='previousHearingDate')" style=" margin-left: 41px;position: relative;"
-                    class="colCalendar">
+                <div *ngIf="column.uniqueId == 'amount'" class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId] |currency:'INR':true}} &nbsp; &nbsp;</div>
+                <div *ngIf="column.uniqueId != 'amount'" class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId]}} &nbsp; &nbsp;</div>
+                <div *ngIf="showCalender && (column.uniqueId=='nextHearingDate' || column.uniqueId=='previousHearingDate')" style=" margin-left: 41px;position: relative;"
+                    <div class="mat-cell-text" title="{{ row[column.uniqueId] }}">{{ row[column.uniqueId] }} &nbsp; &nbsp;</div>
+                <div *ngIf="showCalender && !_sharedService.isViewOnly() && (column.uniqueId=='nextHearingDate' || column.uniqueId=='previousHearingDate')"
+                    style=" margin-left: 41px;position: relative;" class="colCalendar">
                     <div class="divNewHire input-group date" style="margin-top: -2px;position: absolute" data-provide="datepicker" data-date-format="yyyy-mm-dd">
                         <input *ngIf="column.uniqueId=='nextHearingDate'" style="display:none" type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE"
                             readonly="" placeholder="yyyy-mm-dd" class="form-control newHiringDate" size="10">
@@ -77,9 +84,13 @@
                 <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
                     <i class="fa fa-history"></i>
                 </a>
-                <a *ngIf="actionColumnConfig.showCancel" title="Cancel" style="color:red" (click)="onActionBtnClick($event, row, 'cancel')">
-                    <i class="fa fa-times"></i>
-                </a>
+
+                <button *ngIf="actionColumnConfig.showCancel" class="btn btn-danger" (click)="onActionBtnClick($event, row, 'cancel')">
+                    Cancel
+                </button>
+                <button *ngIf="actionColumnConfig.moduleName==='Invoice'" class="btn btn-info" (click)="onActionBtnClick($event, row, 'history')">
+                    View
+                </button>
 
             </mat-cell>
         </ng-container>

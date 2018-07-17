@@ -234,8 +234,7 @@
                                                 </strong>
                                             </td>
                                             <td colspan="2">
-                                                Rs
-                                                <label id="totalAmount">{{totalAmount}}</label>
+                                                <label [(ngModel)]="totalAmount" id="totalAmount">{{totalAmount |currency:'INR':true}}</label>
                                             </td>
                                         </tr>
 

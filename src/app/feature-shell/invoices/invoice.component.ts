@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Router } from '@angular/router';
 import { filter } from "rxjs/operator/filter";
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -16,7 +16,8 @@ declare let canvas;
 @Component({
   selector: "app-invoice",
   templateUrl: "./invoice.component.html",
-
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./invoice.component.css'],
 
 })
 export class InvoiceComponent implements OnInit {
@@ -29,7 +30,7 @@ export class InvoiceComponent implements OnInit {
   columns = invoiceTableConfig;
   actionColumnConfig: ActionColumnModel;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService) {
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService,private router: Router) {
     this.createForm(null);
     Window["InvoiceFormComponent"] = this;
   }
@@ -43,10 +44,32 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';
     this.actionColumnConfig.showCancel = true;
+    this.actionColumnConfig.moduleName='Invoice';
   }
   onActionBtnClick(event) {
     if (event.eventType == 'cancel') {
       this.cancelInvoice(event.data.id);
+    }
+    else if (event.eventType == 'history') {
+      var data = event.data;
+      var invoicedetails = [{
+        amount: data.amount,
+        billingDate: data.billingDate,
+        caseId: data.billingIds[0].caseId,
+        description: data.description,
+        id: data.id,
+        institutionId: data.billingIds[0].institution.id,
+        institutionName: data.billingIds[0].institution.institutionName,
+        isInvoiceFirstLoad: true,
+        recourseId: data.billingIds[0].recourse.id,
+        recourseName: data.billingIds[0].recourse.recourseName,
+        stageId:  data.billingIds[0].stage.id,
+        stageName: data.billingIds[0].stage.stageName,
+        userId: 0,
+        isFromInvoice:true
+      }];
+      localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
+      this.router.navigateByUrl('/admin/invoices/invoiceform');
     }
   }
   anyForm: any;
@@ -101,7 +124,17 @@ export class InvoiceComponent implements OnInit {
   getInvoice() {
     this.invoiceService.getInvoiceData().subscribe(
       result => {
-        this.tableInputData = result;
+        result.forEach(item => {
+          this.tableInputData.push({
+            id: item.id,
+            institutionName: item.billingIds[0].institution.institutionName,
+            description: item.description,
+            billingDate: item.billingIds[0].billingDate,
+            amount: item.amount,
+            status: item.status,
+            billingIds: item.billingIds
+          });
+        });
         setTimeout(() => {
           this.dataTableComponent.ngOnInit();
         });

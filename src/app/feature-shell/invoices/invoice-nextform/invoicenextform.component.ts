@@ -110,16 +110,15 @@ export class InvoiceNextFormComponent implements OnInit {
 
             this.arrLocalInvoiceDetails.filter(
                 invoiceDetails => {
-                    
                     if (invoiceDetails.id == $(currentRow).find('.hfBillingId').val()) {
-                        
                         invoiceDetails.amount = $(currentRow).find('.amount').val();
                         invoiceDetails.description = $(currentRow).find('.description').val();
                     }
                 });
             localStorage.setItem("invoiceDetails", JSON.stringify(this.arrLocalInvoiceDetails));
         }
-        $('#totalAmount').html(totalAmount);
+        this.totalAmount = totalAmount;
+        // $('#totalAmount').html(totalAmount);
     }
 
     SaveInvoice() {

@@ -26,7 +26,7 @@ export class InvoiceFormComponent implements OnInit {
         Date: null,
         photoUrl: null,
         invoiceNo: '333333',
-        isLoadFirstTime: true,
+        isFromInvoice: false,
         url: null
     }
     todayDate: number = Date.now();
@@ -45,17 +45,22 @@ export class InvoiceFormComponent implements OnInit {
     }
     BindInvoice() {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
-        
         var totalAmount = 0;
-        var totalDescription = "";
+        var totalDescription = '';
+        var description = '';
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            if (element.isInvoiceFirstLoad)
-                totalDescription = totalDescription + ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
-            else
-                totalDescription = element.description;
-            element.description = totalDescription;
+            if (element.isInvoiceFirstLoad) {
+                description = ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
+                totalDescription = totalDescription + description;
+            }
+            else {
+                totalDescription = totalDescription + element.description;
+                description = element.description;
+            }
+            element.description = description;
         });
+        this.invoiceTemplateInfo.isFromInvoice = invoiceDetails[0].isFromInvoice;
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
             totalDescription: totalDescription,
@@ -95,7 +100,6 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     SaveInvoice() {
-        
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         var self = this;
         var totalAmount = 0;
