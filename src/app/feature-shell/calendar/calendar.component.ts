@@ -169,21 +169,22 @@ export class CalendarComponent implements OnInit {
     const $this = this;
     $.each(data, function (i, d) {
       // if (d.start._d > new Date()) {
-
-      $this.arUpcomingEvents.push({
-        eventId: d.eventId,
-        eventType: d.eventType,
-        title: d.title,
-        startDate: d.start._d,
-        backgroundColor: $this.getEventBgColor(d.eventType),
-        borderColor: '',
-        color: '#fff'
-      });
-      if (d.end != null) {
-        if (d.end._isUTC) {
-          d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1));
-        }
+      if (d.eventId) {
+        $this.arUpcomingEvents.push({
+          eventId: d.eventId,
+          eventType: d.eventType,
+          title: d.title,
+          startDate: d.start._d,
+          backgroundColor: $this.getEventBgColor(d.eventType),
+          borderColor: '',
+          color: '#fff'
+        });
       }
+      // if (d.end != null) {
+      //   if (d.end._isUTC) {
+      //     d.end._d = new Date(d.end._d.setDate(d.end._d.getDate() - 1));
+      //   }
+      // }
     });
   }
 
@@ -193,6 +194,10 @@ export class CalendarComponent implements OnInit {
   }
 
   saveEvent(date, allDay, $dragged) {
+    const view = $('#calendar').fullCalendar('getView');
+    if (view.name === 'month') {
+      date._d.setHours(8, 0, 0, 0);
+    }
     // retrieve the dropped element's stored Event Object
     const originalEventObject = $($dragged).data('eventObject');
     // we need to copy it, so that multiple events don't have a reference to the same object
