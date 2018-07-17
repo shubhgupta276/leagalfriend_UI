@@ -586,7 +586,7 @@ export class ForInstitutionComponent implements OnInit {
 
     ExportCase() {
         const arrInsitituionId = [];
-        if (this.selectedRowsCheckbox.length > 0) {
+        if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {
             this.selectedRowsCheckbox.forEach(item => {
                 arrInsitituionId.push(item.id);
             });
