@@ -313,7 +313,7 @@ export class CalendarComponent implements OnInit {
     if (eventType === 'INDIVIDUAL_CASE') {
       return '#0073b7';
     } else if (eventType === 'INSTITUTIONAL_CASE') {
-      return '#ff851b';
+      return '#318a3bf5';
     } else if (eventType === 'INDIVIDUAL_EVENT') {
       return '#ff8254';
     }
