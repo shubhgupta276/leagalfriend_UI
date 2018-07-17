@@ -30,7 +30,7 @@ export class InvoiceComponent implements OnInit {
   columns = invoiceTableConfig;
   actionColumnConfig: ActionColumnModel;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService,private router: Router) {
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private router: Router) {
     this.createForm(null);
     Window["InvoiceFormComponent"] = this;
   }
@@ -44,7 +44,7 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';
     this.actionColumnConfig.showCancel = true;
-    this.actionColumnConfig.moduleName='Invoice';
+    this.actionColumnConfig.moduleName = 'Invoice';
   }
   onActionBtnClick(event) {
     if (event.eventType == 'cancel') {
@@ -63,10 +63,10 @@ export class InvoiceComponent implements OnInit {
         isInvoiceFirstLoad: true,
         recourseId: data.billingIds[0].recourse.id,
         recourseName: data.billingIds[0].recourse.recourseName,
-        stageId:  data.billingIds[0].stage.id,
+        stageId: data.billingIds[0].stage.id,
         stageName: data.billingIds[0].stage.stageName,
         userId: 0,
-        isFromInvoice:true
+        isFromInvoice: true
       }];
       localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
       this.router.navigateByUrl('/admin/invoices/invoiceform');
@@ -112,12 +112,13 @@ export class InvoiceComponent implements OnInit {
       err => {
         console.log(err);
       });
-
   }
   bindInvoiceAfterCancelled(invoiceId) {
-    this.tableInputData.filter(item => {
+    this.tableInputData.filter((item: any, index: number) => {
       if (item.id == invoiceId) {
-        item.status = "CANCELLED";
+        this.tableInputData.splice(index, 1);
+        this.dataTableComponent.ngOnInit();
+
       }
     })
   }
