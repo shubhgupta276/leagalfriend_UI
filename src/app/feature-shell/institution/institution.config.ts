@@ -13,9 +13,8 @@ export let updateForHearingDate = 'institution/for/hearing';
 export let updateAgainstHearingDate = 'institution/against/hearing';
 export let exportForInstitutionsUrl = 'institution/for/export';
 export let exportAgainstInstitutionsUrl = 'institution/against/export';
-
-export let updateToCompliance = 'institution/update/for/compliance';
-export let compliances = 'institution/for/compliance';
-
-
+export let getForInstitutionCompliances = 'institution/for/compliance';
+export let getAgainstInstitutionCompliances = 'institution/against/compliance';
+export let updateForToCompliance = 'institution/update/for/compliance';
+export let updateAgainstToCompliance = 'institution/update/against/compliance';
 export let institutionHistoryAddRemarks = '';
