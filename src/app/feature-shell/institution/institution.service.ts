@@ -4,11 +4,11 @@ import { Institution } from './institution'
 import { Observable } from 'rxjs/Observable';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import {
-    updateForHearingDate, updateAgainstHearingDate, updateToCompliance, compliances,
+    updateForHearingDate, updateAgainstHearingDate, updateForToCompliance, getForInstitutionCompliances,
     forInstitutionHistory, againstInstitutionHistory, getAllAgainstInstitutionsUrl,
     addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, getAgainstInstitutionUrl,
-    updateAgainstInstitutionUrl, exportAgainstInstitutionsUrl,
-    updateForInstitutionUrl, deleteFile, downloadFile, exportForInstitutionsUrl,
+    updateAgainstInstitutionUrl, exportAgainstInstitutionsUrl, getAgainstInstitutionCompliances,
+    updateForInstitutionUrl, deleteFile, downloadFile, exportForInstitutionsUrl, updateAgainstToCompliance,
     institutionHistoryAddRemarks
 } from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
@@ -86,20 +86,32 @@ export class InstitutionService {
     }
 
     updateToCompliance(data: any): Observable<any> {
+        let url = updateForToCompliance;
+        if (this.isAgainstInstitution) {
+            url = updateAgainstToCompliance;
+        }
         return this.apiGateWay.post<any>(
-            updateToCompliance, JSON.stringify(data)
+            url, JSON.stringify(data)
         );
     }
 
     GetCompliances(caseId: any): Observable<any> {
+        let url = getForInstitutionCompliances;
+        if (this.isAgainstInstitution) {
+            url = getAgainstInstitutionCompliances;
+        }
         return this.apiGateWay.get<any>(
-            compliances + '?caseId=' + caseId
+            url + '?caseId=' + caseId
         );
     }
 
     closeCompliances(caseId: any): Observable<any> {
+        let url = getForInstitutionCompliances;
+        if (this.isAgainstInstitution) {
+            url = getAgainstInstitutionCompliances;
+        }
         return this.apiGateWay.put<any>(
-            compliances + '?caseComplianceId=' + caseId, null
+            url + '?caseComplianceId=' + caseId, null
         );
     }
 
