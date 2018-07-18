@@ -32,6 +32,7 @@ export class EditForInstitutionComponent implements OnInit {
   isCaseCompletedOpen;
   isFileUploading: boolean = false;
   arCompliances: any[];
+  returnUrl: any = '';
   @ViewChild('inputFileUpload') myFileUpload: any;
   isPageLoad: boolean = true;
   isViewOnlyForUser: boolean = false;
@@ -49,6 +50,12 @@ export class EditForInstitutionComponent implements OnInit {
       this.institutionalCaseId = params.id;
       this.institutionId = params.institutionId;
       this.recourseId = params.recourseId;
+      this.returnUrl = params.returnUrl;
+      if (this.returnUrl && this.returnUrl.includes('/againstinstitution')) {
+        _institutionService.isAgainstInstitution = true;
+      } else {
+        _institutionService.isAgainstInstitution = false;
+      }
       this.getInstitutionDetail();
     });
   }
@@ -435,6 +442,6 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   back() {
-    this._router.navigate(['/admin/institution/forinstitution', { institutionId: this.institutionId, recourseId: this.recourseId }]);
+    this._router.navigate([this.returnUrl, { institutionId: this.institutionId, recourseId: this.recourseId }]);
   }
 }

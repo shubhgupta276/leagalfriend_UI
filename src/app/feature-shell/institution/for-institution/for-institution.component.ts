@@ -75,6 +75,11 @@ export class ForInstitutionComponent implements OnInit {
             this.queryInstitutionId = params.institutionId;
             this.queryRecourseId = params.recourseId;
         });
+        if (_router.url.includes('/againstinstitution')) {
+            _institutionService.isAgainstInstitution = true;
+        } else {
+            _institutionService.isAgainstInstitution = false;
+        }
     }
 
     ngOnInit() {
@@ -503,8 +508,10 @@ export class ForInstitutionComponent implements OnInit {
 
     onRowDoubleClick(event) {
         const recourseId = (this.recourseFilter) ? this.recourseFilter.id : '';
+        const returnUrl = (this._institutionService.isAgainstInstitution)
+            ? '/admin/institution/againstinstitution' : '/admin/institution/forinstitution';
         this._router.navigate(['/admin/institution/editforinstitution/' + event.institutionId
-            + '/' + event.id, { recourseId: recourseId }]);
+            + '/' + event.id, { recourseId: recourseId, returnUrl: returnUrl }]);
     }
 
     onRowSelect(event) {

@@ -1,59 +1,87 @@
 import { Injectable } from '@angular/core'
 import { retry } from 'rxjs/operator/retry';
 import { Institution } from './institution'
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import {
-    updateHearingDate, updateToCompliance, compliances, institutionHistory, institutionHistoryAddRemarks,
-    addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, updateForInstitutionUrl, deleteFile, downloadFile, exportForInstitutionsUrl
+    updateForHearingDate, updateAgainstHearingDate, updateToCompliance, compliances,
+    forInstitutionHistory, againstInstitutionHistory, getAllAgainstInstitutionsUrl,
+    addForInstitutionUrl, getAllForInstitutionsUrl, getForInstitutionUrl, getAgainstInstitutionUrl,
+    updateAgainstInstitutionUrl, exportAgainstInstitutionsUrl,
+    updateForInstitutionUrl, deleteFile, downloadFile, exportForInstitutionsUrl,
+    institutionHistoryAddRemarks
 } from '../institution/institution.config';
 import { StorageService } from '../../shared/services/storage.service';
 import { getInstitutionsUrl } from '../master/master.config';
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 @Injectable()
 export class InstitutionService {
 
-    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService, private _httpClient: HttpClient) {
-
+    public isAgainstInstitution: boolean = false;
+    constructor(private apiGateWay: ApiGateway, private _storageService: StorageService,
+        private _httpClient: HttpClient) {
     }
 
     getInstitutionList(): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getInstitutionsUrl + "?userId=" + this._storageService.getUserId()
+            getInstitutionsUrl + '?userId=' + this._storageService.getUserId()
         );
     }
 
     getAllForInstitutions(institutionId, branchId): Observable<any> {
+        let url = getAllForInstitutionsUrl;
+        if (this.isAgainstInstitution) {
+            url = getAllAgainstInstitutionsUrl;
+        }
         return this.apiGateWay.get<Institution>(
-            getAllForInstitutionsUrl + "?institutionId=" + institutionId + "&branchId=" + branchId + "&userId=" + this._storageService.getUserId()
+            url + '?institutionId=' + institutionId
+            + '&branchId=' + branchId + '&userId=' + this._storageService.getUserId()
         );
     }
 
     getForInstitution(institutionId, branchId, institutionalCaseId): Observable<any> {
+        let url = getForInstitutionUrl;
+        if (this.isAgainstInstitution) {
+            url = getAgainstInstitutionUrl;
+        }
         return this.apiGateWay.get<Institution>(
-            getForInstitutionUrl + "?institutionId=" + institutionId + "&branchId=" + branchId + "&institutionalCaseId=" + institutionalCaseId
+            url + '?institutionId=' + institutionId
+            + '&branchId=' + branchId + '&institutionalCaseId=' + institutionalCaseId
         );
     }
 
-    addForInstitution(formData: any): Observable<any> {
-
+    addForInstitution(formData: FormData): Observable<any> {
+        if (this.isAgainstInstitution) {
+            formData.set('isForInstitution', 'N');
+        }
         return this.apiGateWay.post<Institution>(
             addForInstitutionUrl, formData
         );
     }
 
-    updateForInstitution(FormData: any): Observable<any> {
+    updateForInstitution(formData: FormData): Observable<any> {
+        let url = updateForInstitutionUrl;
+        if (this.isAgainstInstitution) {
+            url = updateAgainstInstitutionUrl;
+            const tempData = formData.get('forInstitutionalCase');
+            formData.set('againstInstitutionalCase ', tempData);
+            formData.delete('forInstitutionalCase');
+        }
         return this.apiGateWay.post<Institution>(
-            updateForInstitutionUrl,
-            FormData
+            url, formData
         );
     }
 
     updateHearingDate(data: any): Observable<any> {
+        let url = updateForHearingDate;
+        if (this.isAgainstInstitution) {
+            url = updateAgainstHearingDate;
+        }
         return this.apiGateWay.put<any>(
-            updateHearingDate, data
+            url, data
         );
     }
 
@@ -77,19 +105,24 @@ export class InstitutionService {
 
     deleteFile(fileId: any): Observable<any> {
         return this.apiGateWay.delete<any>(
-            deleteFile + "?fileId=" + fileId
+            deleteFile + '?fileId=' + fileId
         );
     }
 
     downloadFile(fileId: any): Observable<File> {
         return this.apiGateWay.getFile(
-            downloadFile + "?fileId=" + fileId
+            downloadFile + '?fileId=' + fileId
         );
     }
 
     exportCase(data: any): Observable<any> {
+        let url = exportForInstitutionsUrl;
+        if (this.isAgainstInstitution) {
+            url = exportAgainstInstitutionsUrl;
+        }
+
         return this.apiGateWay.postFile(
-            exportForInstitutionsUrl,
+            url,
             JSON.stringify(data)
         );
     }
@@ -101,8 +134,12 @@ export class InstitutionService {
     }
 
     getInsittutionCaseHistory(caseId: any): Observable<any> {
+        let url = forInstitutionHistory;
+        if (this.isAgainstInstitution) {
+            url = againstInstitutionHistory;
+        }
         return this.apiGateWay.get<any>(
-            institutionHistory + '?caseId=' + caseId
+            url + '?caseId=' + caseId
         );
     }
 }
