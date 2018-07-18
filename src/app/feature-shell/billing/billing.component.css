@@ -1,3 +1,21 @@
-.mat-column-institutionName {
-    flex: 0 0 160px !important;
-  }
+#billingTable .mat-column-institutionName {
+  flex: 0 0 10% !important;
+}
+#billingTable .mat-column-recourseName {
+  flex: 0 0 20% !important;
+}
+#billingTable .mat-column-amount {
+  flex: 0 0 10% !important;
+}
+#billingTable .mat-column-stageName {
+  flex: 0 0 30% !important;
+}
+#billingTable .mat-column-billingDate {
+  flex: 0 0 20% !important;
+}
+#billingTable .mat-cell-text{
+  max-width: 600px !important
+}
+#billingTable .mat-column-action{
+flex: 0 0 300px !important;
+}
