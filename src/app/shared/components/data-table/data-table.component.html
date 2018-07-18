@@ -76,9 +76,10 @@
                 <!-- <span class="table-default-inst-btn btn btn btn-primary" style="background: green;cursor: default;" *ngIf="actionColumnConfig.moduleName==='user'">actionColumnConfig.btnText[0] </span> -->
 
                 <a *ngIf="actionColumnConfig.showEdit" (click)="onActionBtnClick($event, row, 'edit')">
-                    <i class="fa fa-edit"></i>
+                    <!-- <i class="fa fa-edit"></i> -->
+                    <img width="24px" src="/assets/dist/img/editsvg.png" />
                 </a>&nbsp;
-                <a  (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'"><img width="40px" src="/assets/dist/img/pwd.png" /></a>
+                <a  (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'"><img width="20px" src="/assets/dist/img/pro.png" /></a>
             
                 <span *ngIf="actionColumnConfig.showEdit && actionColumnConfig.showHistory">&nbsp;</span>
                 <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
