@@ -9,6 +9,7 @@ import { DataTableComponent } from "../../shared/components/data-table/data-tabl
 import { InvoicesService } from "./invoices.service";
 import { invoiceTableConfig } from "./invoices.config";
 import { ActionColumnModel } from "../../shared/models/data-table/action-column.model";
+import { SharedService } from "../../shared/services/shared.service";
 
 
 declare var $;
@@ -30,7 +31,7 @@ export class InvoiceComponent implements OnInit {
   columns = invoiceTableConfig;
   actionColumnConfig: ActionColumnModel;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private router: Router) {
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private router: Router,private _sharedService:SharedService) {
     this.createForm(null);
     Window["InvoiceFormComponent"] = this;
   }
@@ -130,7 +131,7 @@ export class InvoiceComponent implements OnInit {
             id: item.id,
             institutionName: item.billingIds[0].institution.institutionName,
             description: item.description,
-            billingDate: item.billingIds[0].billingDate,
+            billingDate: this._sharedService.convertDateToStr(item.billingIds[0].billingDate),
             amount: item.amount,
             status: item.status,
             billingIds: item.billingIds
