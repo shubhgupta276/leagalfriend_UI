@@ -264,7 +264,7 @@ export class UserComponent implements OnInit {
     this.authService.getInstitution().subscribe(
 
       result => {
-debugger
+
         result.institutions.forEach(function (value) {
           $this.institutions.push(value);
         });

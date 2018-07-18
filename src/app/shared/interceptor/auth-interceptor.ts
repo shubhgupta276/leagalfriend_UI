@@ -155,7 +155,9 @@ export class AuthInterceptor implements HttpInterceptor {
                 }
             });
         } else if (req.url.replace(endpoint_url, '').indexOf('institution/upload') >= 0
-            || req.url.replace(endpoint_url, '').indexOf('institution/for/case') >= 0) {
+            || req.url.replace(endpoint_url, '').indexOf('institution/for/case') >= 0
+            || req.url.replace(endpoint_url, '').indexOf('institution/against/case') >= 0
+        ) {
 
             if (req.url.replace(endpoint_url, '').indexOf('institution/for/case') >= 0) {
                 // hide loading in page because file loading is showing there in edit for institution
