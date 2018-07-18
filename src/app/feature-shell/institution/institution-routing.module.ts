@@ -6,7 +6,7 @@ import { EditForInstitutionComponent } from './for-institution/Edit-for-institut
 
 const institutionRoutes: Routes = [
     { path: 'forinstitution', component: ForInstitutionComponent},
-    { path: 'againstinstitution', component: AgainstInstitutionComponent},
+    { path: 'againstinstitution', component: ForInstitutionComponent},
     { path: 'editforinstitution/:institutionId/:id', component: EditForInstitutionComponent},
     { path: '', redirectTo:'forinstitution', pathMatch: 'full' }
     ];
