@@ -27,7 +27,7 @@
       <div class="col-xs-12">
         <!-- /.box -->
         <div class="box">
-          <div class="box-body">
+          <div class="box-body" id="billingTable">
             <div class="col-sm-8" style="padding-left: 0px;">
               <div *ngIf="isGenerateInvoice">
                 <button (click)="CreateInvoice()" class="btn btn-default" [routerLink]="['/admin/invoices/invoiceform']">

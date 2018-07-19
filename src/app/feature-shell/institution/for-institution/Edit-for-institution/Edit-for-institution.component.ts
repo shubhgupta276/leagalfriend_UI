@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { saveAs } from 'file-saver';
 import { StageService } from '../../../master/stage/stage.service';
 import { SharedService } from '../../../../shared/services/shared.service';
+import { parse } from 'querystring';
 declare let $;
 
 @Component({
@@ -32,6 +33,7 @@ export class EditForInstitutionComponent implements OnInit {
   isCaseCompletedOpen;
   isFileUploading: boolean = false;
   arCompliances: any[];
+  returnUrl: any = '';
   @ViewChild('inputFileUpload') myFileUpload: any;
   isPageLoad: boolean = true;
   isViewOnlyForUser: boolean = false;
@@ -49,6 +51,13 @@ export class EditForInstitutionComponent implements OnInit {
       this.institutionalCaseId = params.id;
       this.institutionId = params.institutionId;
       this.recourseId = params.recourseId;
+      this.returnUrl = params.returnUrl;
+      if ((params.isAgainst && JSON.parse(params.isAgainst))
+        || (this.returnUrl && this.returnUrl.includes('/againstinstitution'))) {
+        _institutionService.isAgainstInstitution = true;
+      } else {
+        _institutionService.isAgainstInstitution = false;
+      }
       this.getInstitutionDetail();
     });
   }
@@ -250,7 +259,7 @@ export class EditForInstitutionComponent implements OnInit {
         },
           err => {
             console.log(err);
-          })
+          });
     }
   }
 
@@ -435,6 +444,6 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   back() {
-    this._router.navigate(['/admin/institution/forinstitution', { institutionId: this.institutionId, recourseId: this.recourseId }]);
+    this._router.navigate([this.returnUrl, { institutionId: this.institutionId, recourseId: this.recourseId }]);
   }
 }

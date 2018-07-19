@@ -15,8 +15,6 @@ declare var $;
     selector: 'app-billing',
     templateUrl: './billing.component.html',
     styleUrls: ['./billing.component.css'],
-    // providers: [BillingService]
-    //styles:[`body{background:green !important}`]
     encapsulation: ViewEncapsulation.None
 })
 export class BillingComponent implements OnInit {
@@ -59,10 +57,10 @@ export class BillingComponent implements OnInit {
             $('#reservation').daterangepicker({
                 autoUpdateInput: false,
                 locale: {
-                    format: 'DD-MM-YYYY'
+                    format: 'DD MMM YYYY'
                 }
             }, function (start_date, end_date) {
-                $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
+                $('#reservation').val(start_date.format('DD MMM YYYY') + ' To ' + end_date.format('DD MMM YYYY'));
             });
 
         });
@@ -76,15 +74,10 @@ export class BillingComponent implements OnInit {
         return (yy + '-' + mm + '-' + dd);
     }
     filterBillingData() {
-        var arDates;
-        let fromToDate = $("#reservation").val();
+        const fromToDate = $('#reservation').val().split(' To ');
         if (fromToDate && fromToDate.length > 0) {
-            arDates = fromToDate.split(" To ");
-            arDates[0] = this.formatDate(arDates[0]);
-            arDates[1] = this.formatDate(arDates[1]);
-        }
-        if (fromToDate.length > 0) {
-            this.dataTableComponent.dateRangeFilter(arDates[0], arDates[1], 'nextHearingDate');
+            this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
+            this._sharedService.convertStrToDate(fromToDate[1]), 'billingDate');
         }
         else {
             this.dataTableComponent.resetDateFilter();
@@ -96,7 +89,6 @@ export class BillingComponent implements OnInit {
     clearFilters() {
         this.searchTextbox = '';
         this.dataTableComponent.resetFilters();
-        //this.dataTableComponent.resetDateFilter();
     }
 
     CreateInvoice() {

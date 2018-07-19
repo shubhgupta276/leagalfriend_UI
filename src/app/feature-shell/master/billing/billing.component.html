@@ -15,7 +15,7 @@
               <h3 class="box-title">Data Table With Full Features</h3>
             </div> -->
           <!-- /.box-header -->
-          <div class="box-body" id="billingTable">
+          <div class="box-body" id="masterBillingTable">
             <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (actionBtnClick)="onActionBtnClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
               (selectedRows)="onRowSelect($event)" [actionColumnConfig]="actionColumnConfig" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow">
             </app-data-table>
