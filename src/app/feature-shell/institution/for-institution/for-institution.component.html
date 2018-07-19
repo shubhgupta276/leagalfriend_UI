@@ -2,7 +2,9 @@
   <!-- Content Header (Page header) -->
   <!-- Main content -->
   <div class="page-heading">
-    Institutional Clients
+    <span *ngIf="!_institutionService.isAgainstInstitution">Institutional Clients</span>
+    <span *ngIf="_institutionService.isAgainstInstitution">For Against</span>
+    
   </div>
   <section class="content">
     <div class="row">
