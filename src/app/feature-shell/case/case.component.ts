@@ -86,6 +86,7 @@ export class CaseComponent implements OnInit, OnDestroy {
   arRecourse: any[] = [];
   isViewOnly = this._sharedService.isViewOnly();
   recourseConfig: any;
+  arCourts: any = [];
   constructor(private masterTemplateService: MasterTemplateService,
     private fb: FormBuilder, private authService: AuthService, private _activatedRoute: ActivatedRoute,
     private _storageService: StorageService, private _sharedService: SharedService) {
@@ -96,11 +97,12 @@ export class CaseComponent implements OnInit, OnDestroy {
     //this.isLoad=true;
   }
   ngOnInit() {
+    this.GetAllCourt();
     this.rowSelect = !this.isViewOnly;
     this._activatedRoute.params.subscribe((param) => {
       if (param.caseId) {
         const objData = { id: param.caseId, compliance: false };
-        this.showEditPop(objData);
+        this.showEditPop(objData, true);
       }
     })
 
@@ -140,6 +142,25 @@ export class CaseComponent implements OnInit, OnDestroy {
         .animate({ backgroundColor: '' }, 2000);
     });
 
+  }
+
+  GetAllCourt() {
+
+    const $this = this;
+    const reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.authService.getCourtDDL(reqData).subscribe(
+
+      result => {
+        result.courts.forEach(function (value) {
+
+          $this.arCourts.push({ id: value.id, text: value.courtName });
+        });
+      },
+      err => {
+        console.log(err);
+      });
   }
 
   selectToday() {
@@ -207,7 +228,7 @@ export class CaseComponent implements OnInit, OnDestroy {
   onRowClick(event) {
     console.log(event);
   }
-  showEditPop(c) {
+  showEditPop(c, isFromOtherPage = false) {
     $('#editCaseModal').modal('show');
     var $this = this
     var reqData = {
@@ -219,7 +240,12 @@ export class CaseComponent implements OnInit, OnDestroy {
 
         result => {
 
-          $this.editChild.createForm(result);
+          if (isFromOtherPage) {
+            $this.editChild.showCaseFromOtherPages(result);
+          }
+          else {
+            $this.editChild.createForm(result);
+          }
           $('#caseLi a').click();
 
           $('#complianceDiv').show();
