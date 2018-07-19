@@ -79,8 +79,11 @@ export class CalendarComponent implements OnInit {
         dragRevertDuration: 0,
         droppable: true, // this allows things to be dropped onto the calendar !!!
         eventClick: function (event) {
-          if (event.eventType == 'INDIVIDUAL_CASE') {
-            $this._router.navigate(['/admin/case', { caseId: event.referenceNumber.split('/')[2] }])
+          if (event.eventType === 'INDIVIDUAL_CASE') {
+            $this._router.navigate(['/admin/case', { caseId: event.referenceNumber.split('/')[2] }]);
+          } else if (event.eventType === 'INSTITUTIONAL_AGAINST_CASE' || event.eventType === 'INSTITUTIONAL_FOR_CASE') {
+            $this._router.navigate(['/admin/institution/editforinstitution/' +
+              + 31 + '/' + event.referenceNumber.split('/')[2], { returnUrl: '/admin/calendar' }]);
           }
         },
         drop: function (date, allDay) { // this function is called when something is dropped
@@ -107,8 +110,7 @@ export class CalendarComponent implements OnInit {
         eventAllow: function (dropLocation, draggedEvent) {
           if (draggedEvent.eventType === $this.convertToEventType(null)) {
             return true;
-          }
-          else {
+          } else {
             return false;
           }
         }
@@ -298,22 +300,28 @@ export class CalendarComponent implements OnInit {
   }
 
   convertToEventType(referenceNumber): string {
-    if (referenceNumber && referenceNumber.substr(0, 1).toUpperCase() == 'I') {
+    let subStr = '';
+    if (referenceNumber) {
+      subStr = referenceNumber.substr(0, 1).toUpperCase();
+    }
+    if (referenceNumber && subStr === 'I') {
       return 'INDIVIDUAL_CASE';
-    }
-    else if (referenceNumber && referenceNumber.substr(0, 1).toUpperCase() == 'O') {
-      return 'INSTITUTIONAL_CASE'
-    }
-    else {
+    } else if (referenceNumber && subStr === 'A') {
+      return 'INSTITUTIONAL_AGAINST_CASE';
+    } else if (referenceNumber && subStr === 'F') {
+      return 'INSTITUTIONAL_FOR_CASE';
+    } else {
       return 'INDIVIDUAL_EVENT';
     }
   }
 
-  getEventBgColor(eventType): string {
+  getEventBgColor(eventType: string, referenceNumber?: string): string {
     if (eventType === 'INDIVIDUAL_CASE') {
       return '#0073b7';
-    } else if (eventType === 'INSTITUTIONAL_CASE') {
+    } else if (eventType === 'INSTITUTIONAL_AGAINST_CASE') {
       return '#318a3bf5';
+    } else if (eventType === 'INSTITUTIONAL_FOR_CASE') {
+      return '#2eaf90';
     } else if (eventType === 'INDIVIDUAL_EVENT') {
       return '#ff8254';
     }
@@ -322,18 +330,20 @@ export class CalendarComponent implements OnInit {
 
   getCountUpcomingEvent(): any {
     const arIndividualCase = this.arrEvents.filter(x => x.eventType === 'INDIVIDUAL_CASE');
-    const arInstitutionalCase = this.arrEvents.filter(x => x.eventType === 'INSTITUTIONAL_CASE');
+    const arInstitutionalAgainstCase = this.arrEvents.filter(x => x.eventType === 'INSTITUTIONAL_AGAINST_CASE');
+    const arInstitutionalForCase = this.arrEvents.filter(x => x.eventType === 'INSTITUTIONAL_FOR_CASE');
     const arIndivisual = this.arrEvents.filter(x => x.eventType === 'INDIVIDUAL_EVENT');
     const arCount = [];
     arCount.push(arIndividualCase);
-    arCount.push(arInstitutionalCase);
+    arCount.push(arInstitutionalAgainstCase);
+    arCount.push(arInstitutionalForCase);
     arCount.push(arIndivisual);
     return arCount;
   }
 
   getEvent() {
     if (!this.eventStartDate) {
-      this.setCalendarStartEndDate(new Date());;
+      this.setCalendarStartEndDate(new Date());
     }
     this.arrEvents = [];
     const $this = this;

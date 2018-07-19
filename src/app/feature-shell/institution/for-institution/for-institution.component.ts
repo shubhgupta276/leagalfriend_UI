@@ -540,38 +540,40 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     updateNewHearingDate(ref, isNewHearingDate) {
-        const date = $(ref).val();
+        if (this.newHiringdata) {
+            const date = $(ref).val();
 
-        const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
-        if (isNewHearingDate) {
-            obj.nextHearingDate = this._sharedService.convertStrToDate(date);
-            obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
-        } else {
-            obj.previousHearingDate = this._sharedService.convertStrToDate(date);
-            obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
+            const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
+            if (isNewHearingDate) {
+                obj.nextHearingDate = this._sharedService.convertStrToDate(date);
+                obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
+            } else {
+                obj.previousHearingDate = this._sharedService.convertStrToDate(date);
+                obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
+            }
+
+            this._institutionService.updateHearingDate(obj).subscribe(
+                (result) => {
+
+                    if (result.status === 200) {
+                        $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 2000);
+                        if (!isNaN(obj.nextHearingDate.getTime())) {
+                            obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
+                        } else {
+                            obj.nextHearingDate = '';
+                        }
+
+                        if (!isNaN(obj.previousHearingDate.getTime())) {
+                            obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                        } else {
+                            obj.previousHearingDate = '';
+                        }
+                        $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
+                    }
+                },
+                err => {
+                });
         }
-
-        this._institutionService.updateHearingDate(obj).subscribe(
-            (result) => {
-
-                if (result.status === 200) {
-                    $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 2000);
-                    if (!isNaN(obj.nextHearingDate.getTime())) {
-                        obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
-                    } else {
-                        obj.nextHearingDate = '';
-                    }
-
-                    if (!isNaN(obj.previousHearingDate.getTime())) {
-                        obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
-                    } else {
-                        obj.previousHearingDate = '';
-                    }
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
-                }
-            },
-            err => {
-            });
     }
 
     OnMouseHover(i) {
