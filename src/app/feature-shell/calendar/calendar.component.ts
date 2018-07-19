@@ -83,7 +83,8 @@ export class CalendarComponent implements OnInit {
             $this._router.navigate(['/admin/case', { caseId: event.referenceNumber.split('/')[2] }]);
           } else if (event.eventType === 'INSTITUTIONAL_AGAINST_CASE' || event.eventType === 'INSTITUTIONAL_FOR_CASE') {
             $this._router.navigate(['/admin/institution/editforinstitution/' +
-              + 31 + '/' + event.referenceNumber.split('/')[2], { returnUrl: '/admin/calendar' }]);
+              + event.institutionId + '/' + event.referenceNumber.split('/')[2],
+            { returnUrl: '/admin/calendar', isAgainst: (event.eventType === 'INSTITUTIONAL_AGAINST_CASE') }]);
           }
         },
         drop: function (date, allDay) { // this function is called when something is dropped
@@ -319,9 +320,9 @@ export class CalendarComponent implements OnInit {
     if (eventType === 'INDIVIDUAL_CASE') {
       return '#0073b7';
     } else if (eventType === 'INSTITUTIONAL_AGAINST_CASE') {
-      return '#318a3bf5';
+      return 'rgba(51, 156, 185, 0.96)';
     } else if (eventType === 'INSTITUTIONAL_FOR_CASE') {
-      return '#2eaf90';
+      return 'rgb(210, 94, 94)';
     } else if (eventType === 'INDIVIDUAL_EVENT') {
       return '#ff8254';
     }
@@ -356,6 +357,7 @@ export class CalendarComponent implements OnInit {
               eventDescription: value.eventDescription,
               eventStatus: value.eventStatus,
               referenceNumber: value.referenceNumber,
+              institutionId: value.institutionId,
               eventType: $this.convertToEventType(value.referenceNumber),
               title: (!value.referenceNumber) ? value.eventName : value.referenceNumber,
               start: value.startDate,
