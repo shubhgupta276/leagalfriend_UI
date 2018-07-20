@@ -17,9 +17,7 @@ import { billingTableConfig } from './billing.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 import { SharedModule } from '../../../shared/shared.module';
-
 declare let $;
-
 
 @Component({
   selector: 'app-billing',
@@ -40,12 +38,14 @@ export class BillingComponent implements OnInit {
   arAllInstitution: any = [];
   defaultInstitutionId: number;
   @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
+  @ViewChild(AddBillingComponent) addBilling: AddBillingComponent;
   tableInputData = [];
   columns = billingTableConfig;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   rowSelect = false;
   hoverTableRow = true;
   actionColumnConfig: ActionColumnModel;
+  isInstitutionalTab: boolean = true;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService,
     private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
   }
@@ -78,13 +78,15 @@ export class BillingComponent implements OnInit {
     }
 
   }
+  
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';
     this.actionColumnConfig.showEdit = true;
   }
+ 
   getBillingData() {
-
+    this.tableInputData = [];
     this._billingservice.getBilling().subscribe(
       result => {
         if (result.httpCode === 200) {
@@ -145,19 +147,47 @@ export class BillingComponent implements OnInit {
         }
       });
   }
+ 
   onActionBtnClick(event) {
     this.editChild.createForm(event.data);
     $('#editBillModal').modal('show');
   }
+  
   onRowClick(event) {
     console.log(event);
   }
+ 
   onRowDoubleClick(event) {
     this.editChild.createForm(event);
     $('#editBillModal').modal('show');
   }
+ 
   onRowSelect(event) {
     console.log(event);
+  }
+
+  clickAddBilling() {
+    this.addBilling.addBillForm();
+  }
+
+  clickInstitutional() {
+    this.showTableColumns(true);
+    this.isInstitutionalTab = true;
+    this.getBillingData();
+  }
+
+  clickIndividual() {
+    this.showTableColumns(false);
+    this.isInstitutionalTab = false;
+    this.getBillingData();
+  }
+
+  showTableColumns(show) {
+    this.columns.forEach(function (data) {
+      if (data.uniqueId === 'institutionName') {
+        data.display = show;
+      }
+    });
   }
 }
 

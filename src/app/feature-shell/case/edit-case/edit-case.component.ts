@@ -24,6 +24,7 @@ declare var $;
 export class EditCaseComponent implements OnInit {
   myDocument: File;
   @Input() tableInputData = [];
+  @Input() Court: any = [];
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
@@ -48,13 +49,43 @@ export class EditCaseComponent implements OnInit {
   dataService1: CompleterData;
   isViewOnly = this._sharedService.isViewOnly();
 
+  editCaseForm: FormGroup;
+
+  ChildCases: any = [];
+  Resource: Array<any> = [];
+  Manager: any = [];
+  State: any = [];
+  ParentCases: any = [];
+  CustomerName: any = [];
+  Branch: any = [];
+  Stage: any = [];
+  Employee: any = [];
+  CourtPlace: any = [];
+  recourseSelected: Array<any> = [];
+  managerSelected: Array<any> = [];
+  employeeSelected: Array<any> = [];
+  courtSelected: Array<any> = [];
+  stateSelected: Array<any> = [];
+  branchSelected: Array<any> = [];
+  stageSelected: Array<any> = [];
+  parentcaseSelected: Array<any> = [];
+  customerSelected: Array<any> = [];
+  courtPlaceSelected: Array<any> = [];
+  recourseId: any;
+  parentcaseSelectedauto: Array<any> = [];
+  childcaseSelectedauto: Array<any> = [];
+  stageId: any;
+
+  childCaseText: string;
+  childParentText: string;
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
     private authService: AuthService, private completerService: CompleterService,
-    private _storageService: StorageService, private _sharedService:SharedService, private datePipe: DatePipe) {
+    private _storageService: StorageService, private _sharedService: SharedService, private datePipe: DatePipe) {
     this.createForm(null);
   }
 
   ngOnInit() {
+    this.CourtPlace = this.Court;
     const self = this;
     $(document).ready(function () {
 
@@ -65,7 +96,10 @@ export class EditCaseComponent implements OnInit {
         self.editCaseForm.controls[attrName].setValue(attrValue);
       });
     });
-    this.GetAllCourt();
+    this.bindAllDropdowns();
+  }
+
+  bindAllDropdowns() {
     this.bindStateDDL();
     this.getBranchDDL();
     this.bindRecourseDDL();
@@ -74,8 +108,9 @@ export class EditCaseComponent implements OnInit {
     //this.bindStageDDL();
     this.getRunningCase();
     this.BindCompliance();
-this.getCustomer();
+    this.getCustomer();
   }
+
   private get disabledV(): string {
     return this._disabledV;
   }
@@ -160,38 +195,6 @@ this.getCustomer();
   public refreshValue(value: any): void {
     this.value = value;
   }
-  editCaseForm: FormGroup;
-
-  ChildCases: any = [];
-  Resource: Array<any> = [];
-  Manager: any = [];
-  Court: any = [];
-  State: any = [];
-  ParentCases: any = [];
-  CustomerName: any = [];
-  Branch: any = [];
-  Stage: any = [];
-  Employee: any = [];
-  CourtPlace: any = [];
-  recourseSelected: Array<any> = [];
-  managerSelected: Array<any> = [];
-  employeeSelected: Array<any> = [];
-  courtSelected: Array<any> = [];
-  stateSelected: Array<any> = [];
-  branchSelected: Array<any> = [];
-  stageSelected: Array<any> = [];
-  parentcaseSelected: Array<any> = [];
-  customerSelected: Array<any> = [];
-  courtPlaceSelected: Array<any> = [];
-  recourseId: any;
-  parentcaseSelectedauto: Array<any> = [];
-  childcaseSelectedauto: Array<any> = [];
-  stageId: any;
-
-  childCaseText: string;
-  childParentText: string;
-
-  // emailValidationMessage: string = "Email address is required.";
 
   BindCompliance() {
 
@@ -205,7 +208,6 @@ this.getCustomer();
     this.parentcaseSelectedauto = [];
     this.caseId = c.caseId;
     this.id = c.id;
-    
 
     this.recourseSelected = [];
     const objFilter = this.Resource.filter(x => x.id === c.recourseId);
@@ -214,6 +216,7 @@ this.getCustomer();
 
 
     this.courtSelected = [];
+    
     const objCourt = this.Court.filter(x => x.id === c.courtId);
     this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
     this.selectedCourt = this.courtSelected[0];
@@ -233,8 +236,8 @@ this.getCustomer();
       this.stageSelected.push({ id: c.stageId, text: objStage[0].text });
       this.selectedStage = this.stageSelected[0];
     }
-    
-    
+
+
     this.customerSelected = [];
     const objcustomerSelected = this.CustomerName.filter(x => x.id === c.customerId);
     this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
@@ -248,7 +251,7 @@ this.getCustomer();
     const objemployeeSelected = this.Employee.filter(x => x.id === c.employeeId);
     this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
     this.selectedEmployee = this.employeeSelected[0];
-    
+
 
     this.courtPlaceSelected = [];
     const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c.id);
@@ -256,11 +259,22 @@ this.getCustomer();
     this.selectedCourtPlace = this.courtPlaceSelected[0];
     $('#editCaseModal').modal('show');
   }
-  createForm(c) {
+
+  showCaseFromOtherPages(data) {
+    this.bindAllDropdowns();
+    setTimeout(() => {
+      this.bindStageDDL(data.recourseId, data);
+      this.createForm(data, true);
+    }, 2000);
+  }
+
+  createForm(c, isFromOtherPage = false) {
     if (c != null) {
       // this.recourseId = c.recourseId;
       // this.stageId = c.stageId;
-      this.bindStageDDL(c.recourseId, c);
+      if (!isFromOtherPage) {
+        this.bindStageDDL(c.recourseId, c);
+      }
     }
     if (c != null) {
       if (c.parentCaseId != null) {
@@ -303,9 +317,8 @@ this.getCustomer();
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, 'yyyy-MM-dd')]
     });
-    
-    if(localStorage.userRole=='CLIENT')
-    {
+
+    if (localStorage.userRole == 'CLIENT') {
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
@@ -313,13 +326,13 @@ this.getCustomer();
       $("#btnSubmit").hide();
 
     }
-     
+
   }
 
 
   //............................................for compliance........................
   bindDataOnEditForCompliance(c) {
-    
+
     this._disabledV = '1';
     this.disabled = true;
     var self = this;
@@ -352,19 +365,19 @@ this.getCustomer();
       const objBranch = this.Branch.filter(x => x.id === c[0].legalCase.branchId);
       this.branchSelected.push({ id: c[0].legalCase.branchId, text: objBranch[0].text });
       this.selectedBranch = this.branchSelected[0];
-      
+
       if (c[0].legalCase.stageId != null) {
         this.stageSelected = [];
         const objStage = this.Stage.filter(x => x.id === c[0].legalCase.stageId);
         this.stageSelected.push({ id: c[0].legalCase.stageId, text: objStage[0].text });
         this.selectedStage = this.stageSelected[0];
       }
-       
+
       this.customerSelected = [];
       const objcustomerSelected = this.CustomerName.filter(x => x.id === c[0].legalCase.customerId);
       this.customerSelected.push({ id: c.customerId, text: objcustomerSelected[0].text });
       this.selectedCustomerName = this.customerSelected[0];
-  
+
       this.managerSelected = [];
       const objmanagerSelected = this.Manager.filter(x => x.id === c[0].legalCase.managerId);
       this.managerSelected.push({ id: c.managerId, text: objmanagerSelected[0].text });
@@ -380,9 +393,9 @@ this.getCustomer();
     }
   }
   createFormforcompliance(c) {
-    
+
     var self = this;
-    
+
     this.bindStageDDL(c[0].legalCase.recourseId, c);
 
 
@@ -432,10 +445,9 @@ this.getCustomer();
       // {
 
       // }
-      
+
     });
-    if(localStorage.userRole=='CLIENT')
-    {
+    if (localStorage.userRole == 'CLIENT') {
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
@@ -446,29 +458,6 @@ this.getCustomer();
   }
 
 
-  GetAllCourt() {
-
-    const $this = this;
-    const reqData = {
-      email: this._storageService.getUserEmail(),
-    };
-    this.authService.getCourtDDL(reqData).subscribe(
-
-      result => {
-
-        result.courts.forEach(function (value) {
-
-
-          $this.Court.push({ id: value.id, text: value.courtName });
-
-          $this.CourtPlace.push({ id: value.id, text: value.courtName });
-        });
-
-      },
-      err => {
-        console.log(err);
-      });
-  }
   bindStateDDL() {
     const $this = this;
     const reqData = {
@@ -496,25 +485,25 @@ this.getCustomer();
     var reqData = {
       userId: this._storageService.getUserId(),
     };
-    
+
     this.authService.listManager(reqData).subscribe(
       result => {
-        
+
         if (result.length === 0) {
           $('#spnCustomer').show();
           $('#spnManager').show();
 
         }
-       
+
         result.forEach(function (value) {
-            $this.Manager.push(
-              {
-                id: value.id, text: value.name
-              }
-            );
-         
-        }); 
-    },
+          $this.Manager.push(
+            {
+              id: value.id, text: value.name
+            }
+          );
+
+        });
+      },
       err => {
         console.log(err);
       });
@@ -565,26 +554,26 @@ this.getCustomer();
   bindStageDDL(a, c) {
 
     const $this = this;
-  
-     var  recourseId;
-     recourseId= a;
-  
+
+    var recourseId;
+    recourseId = a;
+
     this.authService.bindStageDDL(recourseId).subscribe(
 
       result => {
-        
-        if (result.httpCode === 200 && result.stageRecourses.length>0) {
+
+        if (result.httpCode === 200 && result.stageRecourses.length > 0) {
           result.stageRecourses.forEach(function (value) {
-  
+
             $this.Stage.push({ id: value.id, text: value.stageName });
           });
-          
-  
+
+
         }
         if (c != null) {
 
           setTimeout(() => {
-            
+
             if (c[0] != undefined) {
 
               this.bindDataOnEditForCompliance(c);
@@ -613,20 +602,20 @@ this.getCustomer();
     this.authService.listCustomers(reqData).subscribe(
 
       result => {
-        
+
         if (result == 0) {
           $("#spnEmployee").show();
         }
-        
+
         result.forEach(function (value) {
-         
-        //  if (value.roles[0].roleName === 'EMPLOYEE') {
-            $this.CustomerName.push({ id: value.id, text: value.name , });
-        //  }
-         
+
+          //  if (value.roles[0].roleName === 'EMPLOYEE') {
+          $this.CustomerName.push({ id: value.id, text: value.name, });
+          //  }
+
         });
-    }
-      
+      }
+
     );
   }
 
@@ -639,19 +628,19 @@ this.getCustomer();
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-        
+
         if (result == 0) {
           $("#spnEmployee").show();
         }
         result.forEach(function (value) {
-         
-        //  if (value.roles[0].roleName === 'EMPLOYEE') {
-            $this.Employee.push({ id: value.id, text: value.name , });
-        //  }
-         
+
+          //  if (value.roles[0].roleName === 'EMPLOYEE') {
+          $this.Employee.push({ id: value.id, text: value.name, });
+          //  }
+
         });
-    }
-      
+      }
+
     );
   }
 
@@ -659,17 +648,15 @@ this.getCustomer();
 
 
   getRunningCase() {
- 
-    if(localStorage.branchData==undefined)
-    {
-       b={id:-1}
-       
+
+    if (!this._storageService.getBranchData()) {
+      b = { id: -1 }
+
     }
-    else{
-      var a = localStorage.getItem("branchData");
-      var b = JSON.parse(a);
+    else {
+      var b = this._storageService.getBranchData()
     }
-   
+
     const $this = this;
     const reqData = {
       userId: this._storageService.getUserId(),

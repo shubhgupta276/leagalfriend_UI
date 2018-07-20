@@ -135,7 +135,7 @@ export class InstitutionService {
 
         return this.apiGateWay.postFile(
             url,
-            JSON.stringify(data)
+            data
         );
     }
 

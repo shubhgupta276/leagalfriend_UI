@@ -19,7 +19,7 @@ declare let $;
 export class EditBillingComponent implements OnInit {
 
   @Input() editDetails: Billing;
-  // @Input() updateDetails: Billing;
+  @Input() isInstitutionalTab: boolean;
   @Input() tableInputData: Billing[];
   @Input() arAllRecourses: any[] = [];
   @Input() arAllInstitution: any = [];
