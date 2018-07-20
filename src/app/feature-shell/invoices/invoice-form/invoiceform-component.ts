@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import * as html2canvas from 'html2canvas';
-import * as jsPDF from 'jspdf';
 import { InstitutionService } from '../../../feature-shell/master/institution/institution.service';
-import { Institution } from '../../../feature-shell/master/institution/institution';
 import { StorageService } from '../../../shared/services/storage.service';
-import { forEach } from '@angular/router/src/utils/collection';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { InvoicesService } from '../invoices.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 declare let $;
-declare let canvas;
 @Component({
     selector: 'app-invoiceform',
     templateUrl: './invoiceform.html',
@@ -50,14 +43,8 @@ export class InvoiceFormComponent implements OnInit {
         var description = '';
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            if (element.isInvoiceFirstLoad) {
-                description = ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
-                totalDescription = totalDescription + description;
-            }
-            else {
-                totalDescription = totalDescription + element.description;
-                description = element.description;
-            }
+            description = ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
+            totalDescription = totalDescription + description;
             element.description = description;
         });
         this.invoiceTemplateInfo.isFromInvoice = invoiceDetails[0].isFromInvoice;
@@ -103,30 +90,35 @@ export class InvoiceFormComponent implements OnInit {
         var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
         var self = this;
         var totalAmount = 0;
-        self.arrSaveInvoice = [];
+        var arrSaveInvoice = {};
+        var billingArray = [];
         invoiceDetails.forEach(item => {
-            self.arrSaveInvoice.push(
+            totalAmount += parseFloat(item.amount);
+            billingArray.push(
                 {
                     amount: item.amount,
-                    amountRecieved: true,
-                    billFrom: self.invoiceTemplateInfo.CompanyAddress,
-                    billTo: self.invoiceTemplateInfo.billToAddress,
-                    billingIds: [
-                        {
-                            id: item.id
-                        }
-                    ],
+                    id: item.id,
                     description: item.description,
                     fkInstitutionId: item.institutionId,
-                    id: 0,
-                    status: "active",
-                    termsCondition: self.invoiceTemplateInfo.termEndCond,
                     userId: self._storageService.getUserId()
                 }
-            )
+            );
         });
-
-        this._invoicesService.saveInvoice(self.arrSaveInvoice).subscribe(
+        arrSaveInvoice = {
+            amount: totalAmount,
+            amountRecieved: true,
+            billFrom: self.invoiceTemplateInfo.CompanyAddress,
+            billTo: self.invoiceTemplateInfo.billToAddress,
+            billingIds: billingArray,
+            description: $('.description').val(),
+            quantity: $('.quantity').val(),
+            fkInstitutionId: 0,
+            id: 0,
+            status: "active",
+            termsCondition: self.invoiceTemplateInfo.termEndCond,
+            userId: self._storageService.getUserId()
+        };
+        this._invoicesService.saveInvoice(arrSaveInvoice).subscribe(
             result => {
                 if (result.body.httpCode === 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
