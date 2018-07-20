@@ -46,7 +46,7 @@ export class AddBillingComponent implements OnInit {
 
   addBillForm() {
     this.addForm = this.fb.group({
-      institutionId: [(this.isInstitutionalTab) ? this.defaultInstitutionId : null, Validators.required],
+      institutionId: [(this.isInstitutionalTab) ? null : Validators.required],
       recourseId: ['', Validators.required],
       stageId: ['', Validators.required],
       amount: [null, Validators.required]
@@ -63,13 +63,6 @@ export class AddBillingComponent implements OnInit {
   }
 
   changeCombinations() {
-    console.log(this.addForm);
-    if (this.addForm.get('bank').value === 'DCB BANK LTD.'
-      && this.addForm.get('recourse').value === 'RODA' && this.addForm.get('stage').value === 'ARGUMENTS') {
-      this.isCombinationAlreadyExits = true;
-    } else {
-      this.isCombinationAlreadyExits = false;
-    }
   }
 
   changeRecourse(recourseId) {
@@ -88,7 +81,9 @@ export class AddBillingComponent implements OnInit {
     const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
     const objStage = this.arListStage.find(x => x.id == data.stageId);
     const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
-
+    if (!this.isInstitutionalTab) {
+      data.institutionId = -1;
+    }
     const reqData = {
       amount: data.amount,
       institution: {
