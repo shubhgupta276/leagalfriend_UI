@@ -37,6 +37,7 @@ export class EditForInstitutionComponent implements OnInit {
   @ViewChild('inputFileUpload') myFileUpload: any;
   isPageLoad: boolean = true;
   isViewOnlyForUser: boolean = false;
+  branchId: any;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -52,6 +53,7 @@ export class EditForInstitutionComponent implements OnInit {
       this.institutionId = params.institutionId;
       this.recourseId = params.recourseId;
       this.returnUrl = params.returnUrl;
+      this.branchId = params.branchId;
       if ((params.isAgainst && JSON.parse(params.isAgainst))
         || (this.returnUrl && this.returnUrl.includes('/againstinstitution'))) {
         _institutionService.isAgainstInstitution = true;
@@ -248,8 +250,9 @@ export class EditForInstitutionComponent implements OnInit {
 
   getInstitutionDetail() {
     const branchData = this._storageService.getBranchData();
-    if (branchData) {
-      this._institutionService.getForInstitution(this.institutionId, branchData.id, this.institutionalCaseId).
+    if (branchData || this.branchId) {
+      const branchId = (this.branchId) ? this.branchId : branchData.id;
+      this._institutionService.getForInstitution(this.institutionId, branchId, this.institutionalCaseId).
         subscribe((result) => {
 
           if (result) {
