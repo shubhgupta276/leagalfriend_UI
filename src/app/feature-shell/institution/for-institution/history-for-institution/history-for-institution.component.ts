@@ -11,6 +11,7 @@ import { InstitutionService } from '../../institution.service';
 declare var $;
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'history-for-institution-modal',
     templateUrl: './history-for-institution.component.html',
     styleUrls: ['./history-for-institution.component.css'],
@@ -39,30 +40,28 @@ export class HistoryForInstitutionComponent implements OnInit {
         this.setShowFieldArray();
         $(document).ready(function () {
 
-            $("#dvHistory").click(function () {
-                $("#dvHistoryRemark").toggle("Slow");
-                if ($("#dvHistory").find("span").hasClass("glyphicon-plus")) {
-                    $("#dvHistory").find("span.clssign").addClass("glyphicon-minus");
-                    $("#dvHistory").find("span.clssign").removeClass("glyphicon-plus");
-                }
-                else {
-                    $("#dvHistory").find("span.clssign").addClass("glyphicon-plus");
-                    $("#dvHistory").find("span.clssign").removeClass("glyphicon-minus");
+            $('#dvHistory').click(function () {
+                $('#dvHistoryRemark').toggle('Slow');
+                if ($('#dvHistory').find('span').hasClass('glyphicon-plus')) {
+                    $('#dvHistory').find('span.clssign').addClass('glyphicon-minus');
+                    $('#dvHistory').find('span.clssign').removeClass('glyphicon-plus');
+                } else {
+                    $('#dvHistory').find('span.clssign').addClass('glyphicon-plus');
+                    $('#dvHistory').find('span.clssign').removeClass('glyphicon-minus');
                 }
             });
-            $("#closebtn").click(function () {
+            $('#closebtn').click(function () {
 
-                $("#dvHistoryRemark").hide();
+                $('#dvHistoryRemark').hide();
             });
 
-            $(".time-label").click(function () {
-                if ($(".clsListDetails").hasClass("in")) {
-                    $(this).find("span.clssign").addClass("glyphicon-plus");
-                    $(this).find("span.clssign").removeClass("glyphicon-minus");
-                }
-                else {
-                    $(this).find("span.clssign").addClass("glyphicon-minus");
-                    $(this).find("span.clssign").removeClass("glyphicon-plus");
+            $('.time-label').click(function () {
+                if ($('.clsListDetails').hasClass('in')) {
+                    $(this).find('span.clssign').addClass('glyphicon-plus');
+                    $(this).find('span.clssign').removeClass('glyphicon-minus');
+                } else {
+                    $(this).find('span.clssign').addClass('glyphicon-minus');
+                    $(this).find('span.clssign').removeClass('glyphicon-plus');
                 }
             });
         });
@@ -74,12 +73,11 @@ export class HistoryForInstitutionComponent implements OnInit {
             $child = $child.find('.clssign');
         }
         if ($child.hasClass('glyphicon-plus')) {
-            $child.removeClass("glyphicon-plus");
-            $child.addClass("glyphicon-minus");
-        }
-        else {
-            $child.removeClass("glyphicon-minus");
-            $child.addClass("glyphicon-plus");
+            $child.removeClass('glyphicon-plus');
+            $child.addClass('glyphicon-minus');
+        } else {
+            $child.removeClass('glyphicon-minus');
+            $child.addClass('glyphicon-plus');
         }
     }
 
@@ -87,22 +85,21 @@ export class HistoryForInstitutionComponent implements OnInit {
         const reader = new FileReader();
         if (event.target.files && event.target.files.length) {
             this.myDocument = event.target.files[0];
-        };
+        }
     }
 
     SubmitRemarks(data) {
-        let objEditCase: FormData = new FormData();
+        const objEditCase: FormData = new FormData();
         objEditCase.append('caseId', this.caseData.id);
         objEditCase.append('remark', data.remarks);
         objEditCase.append('file', this.myDocument);
         this._institutionService.addRemarkHistory(objEditCase).subscribe(
             result => {
                 result = result.body;
-                if (result.httpCode == 200) {
+                if (result.httpCode === 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
                     this.showHistory(this.caseData);
-                }
-                else {
+                } else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
                 }
             },
@@ -124,16 +121,16 @@ export class HistoryForInstitutionComponent implements OnInit {
         this.myFileUpload.nativeElement.value = '';
     }
 
-    showHistory(data) {
+    showHistory(caseData) {
         this.clearForm();
         this.creatForm();
         this.arHistoryData = [];
-        this.caseData = data;
+        this.caseData = caseData;
         const $this = this;
-        this._institutionService.getInsittutionCaseHistory(data.id).subscribe(
+        this._institutionService.getInsittutionCaseHistory(caseData.id).subscribe(
             (result) => {
-                let arDates = [];
-                let arDateWiseData = []
+                const arDates = [];
+                const arDateWiseData = [];
                 if (result && result.length > 0) {
                     result = $this._sharedService.reverseArray(result);
                     result.forEach(function (data, index) { // get all distinct dates & fill date wise data
@@ -152,7 +149,7 @@ export class HistoryForInstitutionComponent implements OnInit {
 
                             $this.arHistoryFields.forEach(function (fieldData) {
                                 const newValue = data[fieldData.id];
-                                let previousValue = "";
+                                let previousValue = '';
                                 if (arDateHistory[index + 1]) {
                                     previousValue = arDateHistory[index + 1][fieldData.id];
                                 }

@@ -22,14 +22,14 @@ export class AddBillingComponent implements OnInit {
   @Input() tableInputData: any[];
   @Input() arAllRecourses: any[] = [];
   @Input() arAllInstitution: any = [];
+  @Input() isInstitutionalTab: boolean;
+  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   isbilingAlreadyExists: Boolean = false;
   addForm: FormGroup;
   arListStage: any[] = [];
   arListBranch: KeyValue[] = ListBranch;
   isCombinationAlreadyExits: boolean = false;
   defaultInstitutionId: number;
-  @Input() @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-
   AddbillingMaster() {
   }
   constructor(private fb: FormBuilder, private _stageService: StageService,
@@ -46,14 +46,14 @@ export class AddBillingComponent implements OnInit {
 
   addBillForm() {
     this.addForm = this.fb.group({
-      // branch: ["", Validators.required],
-      institutionId: [this.defaultInstitutionId, Validators.required],
+      institutionId: [(this.isInstitutionalTab) ? null : Validators.required],
       recourseId: ['', Validators.required],
       stageId: ['', Validators.required],
       amount: [null, Validators.required]
     });
 
   }
+
   SetDefaultInstitution() {
     this.arAllInstitution.forEach(element => {
       if (element.defaultInstitution) {
@@ -61,14 +61,8 @@ export class AddBillingComponent implements OnInit {
       }
     });
   }
+
   changeCombinations() {
-    console.log(this.addForm);
-    if (this.addForm.get('bank').value === 'DCB BANK LTD.'
-      && this.addForm.get('recourse').value === 'RODA' && this.addForm.get('stage').value === 'ARGUMENTS') {
-      this.isCombinationAlreadyExits = true;
-    } else {
-      this.isCombinationAlreadyExits = false;
-    }
   }
 
   changeRecourse(recourseId) {
@@ -87,7 +81,9 @@ export class AddBillingComponent implements OnInit {
     const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
     const objStage = this.arListStage.find(x => x.id == data.stageId);
     const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
-
+    if (!this.isInstitutionalTab) {
+      data.institutionId = -1;
+    }
     const reqData = {
       amount: data.amount,
       institution: {
