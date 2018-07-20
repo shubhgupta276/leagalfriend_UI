@@ -22,22 +22,33 @@ declare let canvas;
 
 })
 export class InvoiceComponent implements OnInit {
+  showSearchFilter = false;
   rowSelect = false;
   hoverTableRow = true;
   tableInputData = [];
   editCaseForm1: FormGroup;
   invoice: any[] = [];
   arListBanks: any[] = [{ BankName: "HDFC BANK LTD." }];
+  searchTextbox = '';
   columns = invoiceTableConfig;
   actionColumnConfig: ActionColumnModel;
+  moduleName = 'Invoice';
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private router: Router,private _sharedService:SharedService) {
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private router: Router, private _sharedService: SharedService) {
     this.createForm(null);
     Window["InvoiceFormComponent"] = this;
   }
   ngOnInit() {
     this.setActionConfig();
     this.getInvoice();
+    $('#txtDateFilter').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+        format: 'DD MMM YYYY'
+      }
+    }, function (start_date, end_date) {
+      $('#txtDateFilter').val(start_date.format('DD MMM YYYY') + ' To ' + end_date.format('DD MMM YYYY'));
+    });
 
   }
 
@@ -45,7 +56,21 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';
     this.actionColumnConfig.showCancel = true;
+    this.actionColumnConfig.showEdit = true;
     this.actionColumnConfig.moduleName = 'Invoice';
+  }
+  filterTableData() {
+    const fromToDate = $('#txtDateFilter').val().split(' To ');
+    if (fromToDate && fromToDate.length > 0) {
+      this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
+        this._sharedService.convertStrToDate(fromToDate[1]), 'invoiceDate');
+    }
+    else {
+      this.dataTableComponent.resetDateFilter();
+    }
+
+    $('#filterCaseModal').modal('hide');
+
   }
   onActionBtnClick(event) {
     if (event.eventType == 'cancel') {
@@ -72,6 +97,13 @@ export class InvoiceComponent implements OnInit {
       localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
       this.router.navigateByUrl('/admin/invoices/invoiceform');
     }
+  }
+  searchFilter(value) {
+    this.dataTableComponent.applyFilter(value);
+  }
+  clearFilters() {
+    this.searchTextbox = '';
+    this.dataTableComponent.resetFilters();
   }
   anyForm: any;
   generatepdf() {
@@ -129,12 +161,12 @@ export class InvoiceComponent implements OnInit {
         result.forEach(item => {
           this.tableInputData.push({
             id: item.id,
-            institutionName: item.billingIds[0].institution.institutionName,
+            institutionName: "SBI",// item.billingIds[0].institution.institutionName,
             description: item.description,
-            billingDate: this._sharedService.convertDateToStr(item.billingIds[0].billingDate),
+            invoiceDate: this._sharedService.convertDateToStr(new Date()),
             amount: item.amount,
             status: item.status,
-            billingIds: item.billingIds
+            // billingIds: item.billingIds
           });
         });
         setTimeout(() => {
