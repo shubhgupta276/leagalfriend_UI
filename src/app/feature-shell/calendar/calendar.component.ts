@@ -34,6 +34,7 @@ export class CalendarComponent implements OnInit {
   }
 
   bindFullCalendar() {
+    
     const $this = this;
     function init_events(ele) {
       ele.each(function () {
@@ -97,7 +98,7 @@ export class CalendarComponent implements OnInit {
         eventResize: function (event, delta, revertFunc) {
           $this.updateEvent(event);
         },
-        eventRender: function (event, element) {
+        eventRender: function (event, element) { 
           element.find('.fc-content .fc-title').attr('title', event.title);
           if (event.eventType === $this.convertToEventType(null)) {
             element.find('.fc-content').
@@ -159,6 +160,8 @@ export class CalendarComponent implements OnInit {
         // Remove event from text input
         $('#new-event').val('');
       });
+      $('.fc-other-month').html('');
+
     }, 500);
   }
 
