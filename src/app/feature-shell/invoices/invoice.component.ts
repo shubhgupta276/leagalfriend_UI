@@ -161,7 +161,7 @@ export class InvoiceComponent implements OnInit {
         result.forEach(item => {
           this.tableInputData.push({
             id: item.id,
-            institutionName: "SBI",// item.billingIds[0].institution.institutionName,
+            institutionName: item.institution.institutionName,
             description: item.description,
             invoiceDate: this._sharedService.convertDateToStr(new Date()),
             amount: item.amount,
