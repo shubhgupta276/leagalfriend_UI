@@ -558,4 +558,8 @@ export class CaseComponent implements OnInit, OnDestroy {
 
   }
 
+resetGrid()
+{
+  this.getCasesData();
+}
 }
