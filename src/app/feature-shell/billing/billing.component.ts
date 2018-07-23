@@ -77,7 +77,7 @@ export class BillingComponent implements OnInit {
         const fromToDate = $('#reservation').val().split(' To ');
         if (fromToDate && fromToDate.length > 0) {
             this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
-            this._sharedService.convertStrToDate(fromToDate[1]), 'billingDate');
+                this._sharedService.convertStrToDate(fromToDate[1]), 'billingDate');
         }
         else {
             this.dataTableComponent.resetDateFilter();
@@ -134,8 +134,8 @@ export class BillingComponent implements OnInit {
                         const obj = result[i];
                         this.tableInputData.push({
                             id: obj.id,
-                            institutionId: obj.institution.id,
-                            institutionName: obj.institution.institutionName,
+                            institutionId: obj.institution == null ? null : obj.institution.id,
+                            institutionName: obj.institution == null ? null : obj.institution.institutionName,
                             amount: obj.amount,
                             recourseName: obj.recourse.recourseName,
                             recourseId: obj.recourse.id,

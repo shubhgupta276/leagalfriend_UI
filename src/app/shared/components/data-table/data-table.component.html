@@ -40,7 +40,9 @@
                     <div *ngIf="column.dropDownFilter && dropdownData[column.uniqueId].selected" style="margin-top: -25px;position: fixed;">
                         <span *ngIf="dropdownData[column.uniqueId].selected" style="display: inline-block;color:#ff8254">{{dropdownData[column.uniqueId].selected}}</span>
                     </div>
-                    <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate') "></button>
+                    <!-- <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate') "></button> -->
+                    <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate')
+                    || (moduleName == 'Invoice' && column.uniqueId =='invoiceDate')"></button>
                 </mat-header-cell>
             </div>
             <mat-cell *matCellDef="let row;let i = index;" (mouseenter)="onMouseHover($event, i)">
@@ -85,13 +87,9 @@
                 <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
                     <i class="fa fa-history"></i>
                 </a>
-
-                <button *ngIf="actionColumnConfig.showCancel" class="btn btn-danger" (click)="onActionBtnClick($event, row, 'cancel')">
-                    Cancel
-                </button>
-                <button *ngIf="actionColumnConfig.moduleName==='Invoice'" class="btn btn-info" (click)="onActionBtnClick($event, row, 'history')">
-                    View
-                </button>
+                <a *ngIf="actionColumnConfig.showCancel" title="Cancel" (click)="onActionBtnClick($event, row, 'cancel')">
+                    <img width="20px" src="/assets/dist/img/close.png" />
+                </a>
 
             </mat-cell>
         </ng-container>

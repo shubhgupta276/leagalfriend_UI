@@ -84,8 +84,8 @@ export class CalendarComponent implements OnInit {
             $this._router.navigate(['/admin/case', { caseId: event.referenceNumber.split('/')[2] }]);
           } else if (event.eventType === 'INSTITUTIONAL_AGAINST_CASE' || event.eventType === 'INSTITUTIONAL_FOR_CASE') {
             $this._router.navigate(['/admin/institution/editforinstitution/' +
-              + event.institutionId + '/' + event.referenceNumber.split('/')[2],
-            { returnUrl: '/admin/calendar', isAgainst: (event.eventType === 'INSTITUTIONAL_AGAINST_CASE') }]);
+              + event.institutionId + '/' + event.referenceNumber.split('/')[2] + '/',
+            { branchId: event.branchId, returnUrl: '/admin/calendar', isAgainst: (event.eventType === 'INSTITUTIONAL_AGAINST_CASE') }]);
           }
         },
         drop: function (date, allDay) { // this function is called when something is dropped
@@ -226,8 +226,8 @@ export class CalendarComponent implements OnInit {
       result => {
         if (result.body.httpCode === 200) {
           copiedEventObject.eventId = result.body.id;
-          copiedEventObject.eventType = this.convertToEventType(null),
-            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
+          copiedEventObject.eventType = this.convertToEventType(null);
+          $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
           if (this.isRemoveAfterDrop) {
             $($dragged).remove();
           }
@@ -260,8 +260,8 @@ export class CalendarComponent implements OnInit {
       this._calenderService.deleteEvent(data.eventId).subscribe(
         (result) => {
           if (result.httpCode === 200) {
-            this.arrEvents.splice(this.arrEvents.findIndex(x => x.eventId == data.eventId), 1);
-            this.arUpcomingEvents.splice(this.arUpcomingEvents.findIndex(x => x.eventId == data.eventId), 1);
+            this.arrEvents.splice(this.arrEvents.findIndex(x => x.eventId === data.eventId), 1);
+            this.arUpcomingEvents.splice(this.arUpcomingEvents.findIndex(x => x.eventId === data.eventId), 1);
             this.sharedService.upcomingEventChange(this.getCountUpcomingEvent());
             $('#calendar').fullCalendar('removeEvents', data._id);
             $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
@@ -361,6 +361,7 @@ export class CalendarComponent implements OnInit {
               eventStatus: value.eventStatus,
               referenceNumber: value.referenceNumber,
               institutionId: value.institutionId,
+              branchId: value.branchId,
               eventType: $this.convertToEventType(value.referenceNumber),
               title: (!value.referenceNumber) ? value.eventName : value.referenceNumber,
               start: value.startDate,

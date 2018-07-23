@@ -190,7 +190,7 @@
                                     <tbody id="itemsInvoice">
                                         <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td *ngIf="arrInvoiceDetails.totalDescription" style="width: 500px">
-                                                <textarea rows="4" disabled class="form-control description" type="text" placeholder="Description">{{arrInvoiceDetails.totalDescription}}</textarea>
+                                                <textarea rows="4" [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" class="form-control description" type="text" placeholder="Description">{{arrInvoiceDetails.totalDescription}}</textarea>
                                             </td>
                                             <td *ngIf="arrInvoiceDetails.totalQuantity">
                                                 <input class="form-control quantity" disabled value="{{arrInvoiceDetails.totalQuantity}}" style="width:100px" placeholder="Quantity">
@@ -249,7 +249,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2" *ngIf="!invoiceTemplateInfo.isFromInvoice">
+                <div class="col-md-2">
                     <a (click)="StoreInvoiceTemplateInfo()" [routerLink]="['/admin/invoices/invoicenextform']" class="btn btn-default">Next</a>
                 </div>
             </div>
