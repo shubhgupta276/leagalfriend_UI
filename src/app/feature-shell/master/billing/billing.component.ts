@@ -13,7 +13,7 @@ import { Billing } from '../billing/billing';
 import { RecourseService } from '../resource/recourse.service';
 import { InstitutionService } from '../institution/institution.service';
 import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
-import { billingTableConfig, billingIndividualTableConfig } from './billing.config';
+import { billingTableConfig } from './billing.config';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
 import { SharedModule } from '../../../shared/shared.module';
