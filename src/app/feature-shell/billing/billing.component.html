@@ -1,22 +1,3 @@
-<style>
-  .billingLabel {
-    font-weight: 400;
-    padding-left: 10px;
-    padding-top: 7px;
-    width: 125px;
-  }
-
-  .billingDropdown {
-    border-radius: 5px;
-    width: 100px;
-    height: 30px;
-    padding: 5px 10px;
-    background-color: #f4f4f4;
-    margin-bottom: 4px;
-  }
-
-  
-</style>
 <div class="content-wrapper">
   <div class="page-heading">
     Billing Management
@@ -35,21 +16,33 @@
                 </button>
               </div>
             </div>
-            <div class="col-sm-2">
-              <!-- <button class="btn btn-default" data-dismiss="modal" id="btnResetFilter" type="button" (click)="resetTableFilter()">Reset</button>
-              <button id="btnFilter" style="margin-left: -1px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#filterCaseModal">Filter</button> -->
-              <a>
-                <img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();">
-              </a>
-            </div>
-            <div class="col-sm-2 case-search">
-              <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." [(ngModel)]="searchTextbox" (keyup)="searchFilter($event.target.value)">
-            </div>
+            <!-- <div class="col-sm-2"> -->
+            <!-- <a>
+              <img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();">
+              </a> -->
+            <!-- </div> -->
 
+            <div class="col-sm-9" style="margin-top: 21px;">
+              <div class="row case-table-toolbar">
+                <ul class="nav nav-tabs">
+                  <li [ngClass]="{'active':isInstitutionalTab==true}">
+                    <a href="#tab_Institutional" (click)="clickInstitutional()" data-toggle="tab">Institutional</a>
+                  </li>
+                  <li [ngClass]="{'active':isInstitutionalTab==false}">
+                    <a href="#tab_Individual" (click)="clickIndividual()" data-toggle="tab">Individual</a>
+                  </li>
+                </ul>
+                <div style="position: absolute;right: 0px;margin-top: -34px;">
+                  <a>
+                    <img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();">
+                  </a>
+                </div>
+              </div>
 
+            </div>
             <app-data-table [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
-              [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" [moduleName]="moduleName">
+              (actionBtnClick)="onActionBtnClick($event)" [moduleName]="moduleName">
             </app-data-table>
 
           </div>

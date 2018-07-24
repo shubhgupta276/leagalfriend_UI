@@ -35,7 +35,6 @@ export class ForInstitutionComponent implements OnInit {
     completeCaseColumns: any;
     rowSelect = true;
     hoverTableRow = true;
-    showSearchFilter = false;
     arInstitution = [];
     arRecourse: any[] = [];
     InstitutionValue: any;
@@ -416,7 +415,8 @@ export class ForInstitutionComponent implements OnInit {
                                 ndohNullReason: obj.ndohNullReason,
                                 nextActionDate: obj.nextActionDate,
                                 nextActionPlan: obj.nextActionPlan,
-                                nextHearingDate: this._sharedService.convertDateToStr(obj.nextHearingDate),
+                                nextHearingDate: this._sharedService.convertDateToStr(
+                                    this._sharedService.convertStrToDate(obj.nextHearingDate)),
                                 noticeAmount: obj.noticeAmount,
                                 noticeDate: obj.noticeDate,
                                 noticeDateAppointmentArbitrator: obj.noticeDateAppointmentArbitrator,
@@ -438,7 +438,8 @@ export class ForInstitutionComponent implements OnInit {
                                 posOnEpFilingDate: obj.posOnEpFilingDate,
                                 posOnFilingDate: obj.posOnFilingDate,
                                 posOnNoticeDate: obj.posOnNoticeDate,
-                                previousHearingDate: this._sharedService.convertDateToStr(obj.previousHearingDate),
+                                previousHearingDate: this._sharedService.convertDateToStr(
+                                    this._sharedService.convertStrToDate(obj.previousHearingDate)),
                                 product: obj.product,
                                 productGroup: obj.productGroup,
                                 publicationDatePhysicalPossessionNotice: obj.publicationDatePhysicalPossessionNotice,

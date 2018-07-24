@@ -34,7 +34,7 @@ export class CalendarComponent implements OnInit {
   }
 
   bindFullCalendar() {
-    
+
     const $this = this;
     function init_events(ele) {
       ele.each(function () {
@@ -98,7 +98,7 @@ export class CalendarComponent implements OnInit {
         eventResize: function (event, delta, revertFunc) {
           $this.updateEvent(event);
         },
-        eventRender: function (event, element) { 
+        eventRender: function (event, element) {
           element.find('.fc-content .fc-title').attr('title', event.title);
           if (event.eventType === $this.convertToEventType(null)) {
             element.find('.fc-content').
@@ -150,7 +150,7 @@ export class CalendarComponent implements OnInit {
           'background-color': currColor,
           'border-color': currColor,
           'color': '#fff'
-        }).addClass('external-event')
+        }).addClass('external-event');
         event.html(val);
         $('#external-events').prepend(event);
 
@@ -160,8 +160,6 @@ export class CalendarComponent implements OnInit {
         // Remove event from text input
         $('#new-event').val('');
       });
-      $('.fc-other-month').html('');
-
     }, 500);
   }
 

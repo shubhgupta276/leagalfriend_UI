@@ -3,7 +3,7 @@ import { retry } from 'rxjs/operator/retry';
 import { Billing } from './billing'
 import { Observable } from "rxjs/Observable";
 import { ApiGateway } from '../../shared/services/api-gateway';
-import { addBillingUrl, updateBillingUrl, getBillingUrl,deleteBillingUrl } from './billing.config'
+import { addBillingUrl, updateBillingUrl, getBillingUrl, deleteBillingUrl } from './billing.config'
 
 import { ResourceLoader } from '@angular/compiler';
 import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
@@ -16,9 +16,13 @@ export class BillingService {
 
     }
 
-    getBilling(): Observable<any> {
+    getBilling(isInstitutional): Observable<any> {
+        let url = getBillingUrl;
+        if (isInstitutional) {
+            url = 'billing/inst';
+        }
         return this.apiGateWay.get<Billing>(
-            getBillingUrl + "?userId=" + this._storageService.getUserId()
+            url + '?userId=' + this._storageService.getUserId()
         );
     }
 

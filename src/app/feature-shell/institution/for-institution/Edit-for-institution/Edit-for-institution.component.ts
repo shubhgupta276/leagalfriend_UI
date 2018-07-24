@@ -121,9 +121,9 @@ export class EditForInstitutionComponent implements OnInit {
       chqNo1: obj == null ? null : obj.chqNo1,
       chqNo2: obj == null ? null : obj.chqNo2,
       chqNo3: obj == null ? null : obj.chqNo3,
-      closureDate: obj == null ? null : this._datePipe.transform(obj.closureDate, 'yyyy-MM-dd'),
-      closureReportingDate: obj == null ? null : this._datePipe.transform(obj.closureReportingDate, 'yyyy-MM-dd'),
-      completionDate: obj == null ? null : this._datePipe.transform(obj.completionDate, 'yyyy-MM-dd'),
+      closureDate: obj == null ? null : this._datePipe.transform(obj.closureDate, 'MM/dd/yyyy'),
+      closureReportingDate: obj == null ? null : this._datePipe.transform(obj.closureReportingDate, 'MM/dd/yyyy'),
+      completionDate: obj == null ? null : this._datePipe.transform(obj.completionDate, 'MM/dd/yyyy'),
       compliance: (obj == null) ? false : obj.compliance,
       coolingPeriodNoticeDate: obj == null ? null : obj.coolingPeriodNoticeDate,
       courtCaseId: obj == null ? null : obj.courtCaseId,
@@ -143,7 +143,7 @@ export class EditForInstitutionComponent implements OnInit {
       executionFiled: obj == null ? null : obj.executionFiled,
       executionFilingDate: obj == null ? null : obj.executionFilingDate,
       fileName: obj == null ? null : obj.fileName,
-      filingDate: obj == null ? null : this._datePipe.transform(obj.filingDate, 'yyyy-MM-dd'),
+      filingDate: obj == null ? null : this._datePipe.transform(obj.filingDate, 'MM/dd/yyyy'),
       generatedBy: obj == null ? null : obj.generatedBy,
       groundForClosingFile: obj == null ? null : obj.groundForClosingFile,
       guarantorsName: obj == null ? null : obj.guarantorsName,
@@ -158,7 +158,7 @@ export class EditForInstitutionComponent implements OnInit {
       ndohNullReason: obj == null ? null : obj.ndohNullReason,
       nextActionDate: obj == null ? null : obj.nextActionDate,
       nextActionPlan: obj == null ? null : obj.nextActionPlan,
-      nextHearingDate: obj == null ? null : this._datePipe.transform(obj.nextHearingDate, 'yyyy-MM-dd'),
+      nextHearingDate: obj == null ? null : this._datePipe.transform(obj.nextHearingDate, 'MM/dd/yyyy'),
       noticeAmount: obj == null ? null : obj.noticeAmount,
       noticeDate: obj == null ? null : obj.noticeDate,
       noticeDateAppointmentArbitrator: obj == null ? null : obj.noticeDateAppointmentArbitrator,
@@ -170,7 +170,7 @@ export class EditForInstitutionComponent implements OnInit {
       npaStageOnEpFilingDate: obj == null ? null : obj.npaStageOnEpFilingDate,
       npaStageOnFilingDate: obj == null ? null : obj.npaStageOnFilingDate,
       npaStageOnNoticeDate: obj == null ? null : obj.npaStageOnNoticeDate,
-      orderReceivedDate: obj == null ? null : this._datePipe.transform(obj.orderReceivedDate, 'yyyy-MM-dd'),
+      orderReceivedDate: obj == null ? null : this._datePipe.transform(obj.orderReceivedDate, 'MM/dd/yyyy'),
       overdueAmtOnNoticeDate: obj == null ? null : obj.overdueAmtOnNoticeDate,
       parentId: obj == null ? null : obj.parentId,
       peacefulPossessionNoticeDate: obj == null ? null : obj.peacefulPossessionNoticeDate,
@@ -180,13 +180,13 @@ export class EditForInstitutionComponent implements OnInit {
       posOnEpFilingDate: obj == null ? null : obj.posOnEpFilingDate,
       posOnFilingDate: obj == null ? null : obj.posOnFilingDate,
       posOnNoticeDate: obj == null ? null : obj.posOnNoticeDate,
-      previousHearingDate: obj == null ? null : this._datePipe.transform(obj.previousHearingDate, 'yyyy-MM-dd'),
+      previousHearingDate: obj == null ? null : this._datePipe.transform(obj.previousHearingDate, 'MM/dd/yyyy'),
       product: obj == null ? null : obj.product,
       productGroup: obj == null ? null : obj.productGroup,
       publicationDatePhysicalPossessionNotice: obj == null ? null : obj.publicationDatePhysicalPossessionNotice,
       receiveOrderStatus: obj == null ? null : obj.receiveOrderStatus,
       receiverName: obj == null ? null : obj.receiverName,
-      receiverOrderAppliedDate: obj == null ? null : this._datePipe.transform(obj.receiverOrderAppliedDate, 'yyyy-MM-dd'),
+      receiverOrderAppliedDate: obj == null ? null : this._datePipe.transform(obj.receiverOrderAppliedDate, 'MM/dd/yyyy'),
       receiverOrderReceivedDate: obj == null ? null : obj.receiverOrderReceivedDate,
       recieveOrderApplied: obj == null ? null : obj.recieveOrderApplied,
       recourse: [obj == null ? null : obj.recourse, Validators.required],
@@ -254,7 +254,6 @@ export class EditForInstitutionComponent implements OnInit {
       const branchId = (this.branchId) ? this.branchId : branchData.id;
       this._institutionService.getForInstitution(this.institutionId, branchId, this.institutionalCaseId).
         subscribe((result) => {
-
           if (result) {
             this.caseFiles = result.caseFiles;
             this.createForm(result);
@@ -285,6 +284,8 @@ export class EditForInstitutionComponent implements OnInit {
           if (result.httpCode === 200) {
             $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
             this.getInstitutionDetail();
+          } else {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
           }
         },
         err => {

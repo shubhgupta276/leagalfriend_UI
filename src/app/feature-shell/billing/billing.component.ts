@@ -36,6 +36,7 @@ export class BillingComponent implements OnInit {
     JSON: any;
     $table: any;
     isGenerateInvoice = false;
+    isInstitutionalTab: boolean = true;
     selectedRowsCheckbox: any;
     @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
     @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
@@ -50,7 +51,6 @@ export class BillingComponent implements OnInit {
     ngOnInit() {
         const self = this;
         this.getBillingData();
-        this.setDropdownUniqueValues();
         this.getAllInstitutions();
         this.getAllRecourses();
         $($.document).ready(function () {
@@ -67,10 +67,10 @@ export class BillingComponent implements OnInit {
     }
     formatDate(date) {
 
-        var arDate = date.split('-');
-        var dd = arDate[0];
-        var mm = arDate[1];
-        var yy = arDate[2];
+        const arDate = date.split('-');
+        const dd = arDate[0];
+        const mm = arDate[1];
+        const yy = arDate[2];
         return (yy + '-' + mm + '-' + dd);
     }
     filterBillingData() {
@@ -78,8 +78,7 @@ export class BillingComponent implements OnInit {
         if (fromToDate && fromToDate.length > 0) {
             this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
                 this._sharedService.convertStrToDate(fromToDate[1]), 'billingDate');
-        }
-        else {
+        } else {
             this.dataTableComponent.resetDateFilter();
         }
 
@@ -99,38 +98,12 @@ export class BillingComponent implements OnInit {
 
         localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
     }
-    setDropdownUniqueValues() {
-        for (var i = 0; i < this.arBillingData.length; i++) {
-            var obj = this.arBillingData[i];
-
-            if ($.inArray(obj.Bank, this.arListBanks) < 0)
-                this.arListBanks.push(obj.Bank);
-
-            if ($.inArray(obj.Recourse, this.arListRecourse) < 0)
-                this.arListRecourse.push(obj.Recourse);
-
-            if ($.inArray(obj.Stage, this.arListStage) < 0)
-                this.arListStage.push(obj.Stage);
-
-            if ($.inArray(obj.Amount, this.arListAmount) < 0)
-                this.arListAmount.push(obj.Amount);
-
-            if ($.inArray(obj.CaseID, this.arListCaseID) < 0)
-                this.arListCaseID.push(obj.CaseID);
-
-            if ($.inArray(obj.Branch, this.arListBranch) < 0)
-                this.arListBranch.push(obj.Branch);
-
-        }
-
-    }
-
     getBillingData() {
-
-        this._billingservice.getBilling().subscribe(
+        this.tableInputData = [];
+        this._billingservice.getBilling(this.isInstitutionalTab).subscribe(
             result => {
                 if (result.length > 0) {
-                    for (var i = 0; i < result.length; i++) {
+                    for (let i = 0; i < result.length; i++) {
                         const obj = result[i];
                         this.tableInputData.push({
                             id: obj.id,
@@ -144,16 +117,11 @@ export class BillingComponent implements OnInit {
                             userId: obj.userId,
                             caseId: obj.caseId,
                             billingDate: this._sharedService.convertDateToStr(obj.billingDate)
-                        })
+                        });
                     }
                     this.dataTableComponent.ngOnInit();
-                    this.setDropdownUniqueValues();
-                    setTimeout(() => {
-                        //this.bindBillingGridPaging();
-                        //  this.bindDatatable();
-                    }, 1);
-                }
-                else {
+                } else {
+                    this.dataTableComponent.ngOnInit();
                     console.log(result);
                 }
             },
@@ -168,35 +136,35 @@ export class BillingComponent implements OnInit {
     getAllRecourses() {
         this._recourseService.getResources().subscribe(
             result => {
-                if (result.httpCode == 200) {
+                if (result.httpCode === 200) {
                     result.recourses.forEach(element => {
                         this.arAllRecourses.push(element);
                     });
                 }
-            })
+            });
     }
     getAllInstitutions() {
 
         this._institutionService.getInstitutions().subscribe(
             result => {
-                if (result.httpCode == 200) {
+                if (result.httpCode === 200) {
                     result.institutions.forEach(element => {
                         this.arAllInstitution.push(element);
                     });
 
                 }
-            })
+            });
     }
     RemoveBilling(item) {
-        if (!confirm("Are you sure you want to delete this record?")) {
+        if (!confirm('Are you sure you want to delete this record?')) {
             return false;
         }
-        var billingId = '?billingId =' + item.id;
+        const billingId = '?billingId =' + item.id;
         this._billingservice.deleteBilling(billingId)
             .map(res => res)
             .subscribe(
                 data => {
-                    $.toaster({ priority: 'success', title: 'Success', message: "Record deleted successfully." });
+                    $.toaster({ priority: 'success', title: 'Success', message: 'Record deleted successfully.' });
                 },
                 error => console.log(error)
             );
@@ -217,16 +185,36 @@ export class BillingComponent implements OnInit {
         this.selectedRowsCheckbox = event;
         if (this.selectedRowsCheckbox.length > 0) {
             this.isGenerateInvoice = true;
-        }
-        else {
+        } else {
             this.isGenerateInvoice = false;
         }
     }
+
     onActionBtnClick(event) {
 
     }
+
     searchFilter(value) {
         this.dataTableComponent.applyFilter(value);
     }
 
+    clickInstitutional() {
+        this.showTableColumns(true);
+        this.isInstitutionalTab = true;
+        this.getBillingData();
+    }
+
+    clickIndividual() {
+        this.showTableColumns(false);
+        this.isInstitutionalTab = false;
+        this.getBillingData();
+    }
+
+    showTableColumns(show) {
+        this.columns.forEach(function (data) {
+            if (data.uniqueId === 'institutionName') {
+                data.display = show;
+            }
+        });
+    }
 }
