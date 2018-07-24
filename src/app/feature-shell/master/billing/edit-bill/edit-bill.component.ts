@@ -9,6 +9,7 @@ import { StorageService } from '../../../../shared/services/storage.service';
 import { Billing } from '../billing';
 import { Branch } from '../../branch/branch';
 import { StageService } from '../../stage/stage.service';
+import { request } from 'https';
 declare let $;
 @Component({
   selector: 'app-edit-bill-modal',
@@ -65,6 +66,9 @@ export class EditBillingComponent implements OnInit {
     const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
     const objStage = this.arListStage.find(x => x.id == data.stage);
     const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
+    if (!this.isInstitutionalTab) {
+      delete data.institutionId;
+    }
     const reqData = {
       id: data.id,
       institution: {
@@ -73,9 +77,10 @@ export class EditBillingComponent implements OnInit {
         contactName: data.contactName,
         fkCity: data.fkCity,
         phone: data.phone,
-        id: objInstitution.id,
-        institutionName: objInstitution.institutionName
+         id: objInstitution.id,
+         institutionName: objInstitution.institutionName
       },
+    
       recourse: {
         id: objRecourse.id,
         recourseCode: objRecourse.recourseCode,
@@ -94,8 +99,11 @@ export class EditBillingComponent implements OnInit {
       amount: data.amount,
       userId: this._storageservice.getUserId()
     };
-
-    this._billingservice.updateBilling(reqData).subscribe(
+    
+    if (!this.isInstitutionalTab) {
+      delete reqData.institution;
+    }
+    this._billingservice.updateBilling(reqData,this.isInstitutionalTab).subscribe(
 
       result => {
         const _result = result.body;
@@ -127,6 +135,7 @@ export class EditBillingComponent implements OnInit {
   }
 
   createForm(data) {
+    
     if (data != null) {
       this.isBilingAlreadyExists = false;
       this.editDetails = data;
@@ -134,7 +143,7 @@ export class EditBillingComponent implements OnInit {
     }
     this.editForm = this.fb.group({
       id: [data == null ? null : data.id, null],
-      institutionId: [data == null ? null : data.institutionId, Validators.required],
+      institutionId: [data == null ? null : data.institutionId],
       recourse: [data == null ? null : data.recourseId, Validators.required],
       stage: [data == null ? null : data.stageId, Validators.required],
       amount: [data == null ? null : data.amount, Validators.required],

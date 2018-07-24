@@ -160,7 +160,7 @@ export class CalendarComponent implements OnInit {
         // Remove event from text input
         $('#new-event').val('');
       });
-      $('.fc-other-month').html('');
+    
 
     }, 500);
   }
