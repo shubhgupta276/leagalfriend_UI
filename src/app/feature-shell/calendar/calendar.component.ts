@@ -156,7 +156,6 @@ export class CalendarComponent implements OnInit {
 
         // Add draggable funtionality
         init_events(event);
-
         // Remove event from text input
         $('#new-event').val('');
       });
