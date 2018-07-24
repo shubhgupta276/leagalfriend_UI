@@ -21,15 +21,28 @@ export class BillingService {
             getBillingUrl + '?userId=' + this._storageService.getUserId()
         );
     }
+    getBillingIndividual(): Observable<any> {
+        return this.apiGateWay.get<Billing>(
+            'master/billings/individual' + '?userId=' + this._storageService.getUserId()
+        );
+    }
 
-    addBilling(reqData: any): Observable<any> {
+    addBilling(reqData: any, isInstitutional): Observable<any> {
+        let url = addBillingUrl;
+        if (!isInstitutional) {
+            url = 'master/add/billing/individual';
+        }
         return this.apiGateWay.post<Billing>(
-            addBillingUrl,
+            url,
             JSON.stringify(reqData)
         );
     }
 
-    updateBilling(reqData: any): Observable<any> {
+    updateBilling(reqData: any,isInstitutional): Observable<any> {
+        let url = updateBillingUrl;
+        if (!isInstitutional) {
+            url = 'master/update/billing/individual';
+        }
         return this.apiGateWay.post<Billing>(
             updateBillingUrl,
             JSON.stringify(reqData)

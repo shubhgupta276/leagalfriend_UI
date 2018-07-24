@@ -78,11 +78,12 @@ export class AddBillingComponent implements OnInit {
   }
 
   submitAddBill(data: any) {
+
     const objRecourse = this.arAllRecourses.find(x => x.id == data.recourseId);
     const objStage = this.arListStage.find(x => x.id == data.stageId);
     const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
     if (!this.isInstitutionalTab) {
-      data.institutionId = -1;
+      delete data.institutionId;
     }
     const reqData = {
       amount: data.amount,
@@ -106,7 +107,7 @@ export class AddBillingComponent implements OnInit {
       },
       userId: parseInt(this._storageservice.getUserId())
     };
-    this._billingservice.addBilling(reqData).subscribe(
+    this._billingservice.addBilling(reqData, this.isInstitutionalTab).subscribe(
       result => {
         const _result = result.body;
         if (_result.httpCode === 200) { // success
@@ -124,8 +125,8 @@ export class AddBillingComponent implements OnInit {
             contactName: "",
             fkCity: 0,
             phone: "",
-            institutionId: parseInt(objInstitution.id),
-            institutionName: objInstitution.institutionName
+            institutionId: (this.isInstitutionalTab) ? parseInt(objInstitution.id) : 0,
+            institutionName: (this.isInstitutionalTab) ? objInstitution.institutionName : '';
           });
           this.dataTableComponent.ngOnInit();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
@@ -140,7 +141,6 @@ export class AddBillingComponent implements OnInit {
         console.log(err);
       });
   }
-
   subscriberFields() {
     this.addForm.get('recourseId').valueChanges.subscribe(
       (e) => {
