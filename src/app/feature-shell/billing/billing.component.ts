@@ -21,7 +21,7 @@ export class BillingComponent implements OnInit {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = billingTableConfig;
-    rowSelect = true;
+    rowSelect = false;
     hoverTableRow = true;
     showSearchFilter = false;
     arBillingData: any[] = [];
@@ -165,18 +165,20 @@ export class BillingComponent implements OnInit {
         $('#editBillModal').modal('show');
     }
     onRowClick(event) {
-        if (confirm('Are you sure you want to delete this record?')) {
-            this._billingservice.deleteBilling(event.id, this.isInstitutionalTab).subscribe(
-                (result) => {
-                    const deleteIndex = this.tableInputData.findIndex(x => x.id === event.id);
-                    this.tableInputData.splice(deleteIndex, 1);
-                    this.dataTableComponent.ngOnInit();
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Deleted successfully.' });
-                },
-                err => {
-                    console.log(err);
-                }
-            );
+        if (event) {
+            if (confirm('Are you sure you want to delete this record?')) {
+                this._billingservice.deleteBilling(event.id, this.isInstitutionalTab).subscribe(
+                    (result) => {
+                        const deleteIndex = this.tableInputData.findIndex(x => x.id === event.id);
+                        this.tableInputData.splice(deleteIndex, 1);
+                        this.dataTableComponent.ngOnInit();
+                        $.toaster({ priority: 'success', title: 'Success', message: 'Deleted successfully.' });
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
+            }
         }
     }
     onRowDoubleClick(event) {
