@@ -34,21 +34,7 @@ export class EditBillingComponent implements OnInit {
     this.createForm(null);
   }
   ngOnInit() {
-    //  this.refreshData();
-    //   let timer = Observable.timer(2000, 5000);
-    //   timer.subscribe(() => this.getRecentDetections());
   }
-
-
-  // changeCombinations() {
-  //
-  //     console.log(this.editForm);
-  //     if (this.editForm.get("branch").value == "Delhi" && this.editForm.get("bank").value == "DCB BANK LTD."
-  //         && this.editForm.get("recourse").value == "RODA" && this.editForm.get("stage").value == "ARGUMENTS")
-  //         this.isCombinationAlreadyExits = true;
-  //     else
-  //         this.isCombinationAlreadyExits = false;
-  // }
 
   changeRecourse(recourseId) {
     this.arListStage = [];
@@ -66,9 +52,6 @@ export class EditBillingComponent implements OnInit {
     const objRecourse = this.arAllRecourses.find(x => x.id == data.recourse);
     const objStage = this.arListStage.find(x => x.id == data.stage);
     const objInstitution = this.arAllInstitution.find(x => x.id == data.institutionId);
-    if (!this.isInstitutionalTab) {
-      delete data.institutionId;
-    }
     const reqData = {
       id: data.id,
       institution: {
@@ -77,10 +60,9 @@ export class EditBillingComponent implements OnInit {
         contactName: data.contactName,
         fkCity: data.fkCity,
         phone: data.phone,
-         id: objInstitution.id,
-         institutionName: objInstitution.institutionName
+        id: (objInstitution) ? objInstitution.id : null,
+        institutionName: (objInstitution) ? objInstitution.institutionName : null,
       },
-    
       recourse: {
         id: objRecourse.id,
         recourseCode: objRecourse.recourseCode,
@@ -99,25 +81,24 @@ export class EditBillingComponent implements OnInit {
       amount: data.amount,
       userId: this._storageservice.getUserId()
     };
-    
     if (!this.isInstitutionalTab) {
       delete reqData.institution;
     }
-    this._billingservice.updateBilling(reqData,this.isInstitutionalTab).subscribe(
+    this._billingservice.updateBilling(reqData, this.isInstitutionalTab).subscribe(
 
       result => {
         const _result = result.body;
         if (_result.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
-          this.closeModal();
           const objFind = this.tableInputData.find(x => x.id === this.editDetails.id);
           objFind.recourseName = objRecourse.recourseName;
           objFind.stageName = objStage.stageName;
-          objFind.institutionName = objInstitution.institutionName;
-          objFind.institutionId = objInstitution.id;
+          objFind.institutionName = (objInstitution) ? objInstitution.institutionName : '';
+          objFind.institutionId = (objInstitution) ? objInstitution.id : 0;
           objFind.recourseId = data.recourse;
           objFind.stageId = data.stage;
           objFind.amount = data.amount;
+          this.closeModal();
         } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
         }
@@ -125,9 +106,6 @@ export class EditBillingComponent implements OnInit {
       err => {
         console.log(err);
       });
-    // $.toaster({ priority: 'success', title: 'Success', message: 'Bill update successfully' });
-    // console.log(data);
-    // $(".closebtn").click();
   }
 
   closeModal() {
@@ -135,7 +113,7 @@ export class EditBillingComponent implements OnInit {
   }
 
   createForm(data) {
-    
+
     if (data != null) {
       this.isBilingAlreadyExists = false;
       this.editDetails = data;

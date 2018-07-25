@@ -49,6 +49,7 @@ export class BillingComponent implements OnInit {
         this.JSON = JSON;
     }
     ngOnInit() {
+        this.setActionConfig();
         const self = this;
         this.getBillingData();
         this.getAllInstitutions();
@@ -64,6 +65,11 @@ export class BillingComponent implements OnInit {
             });
 
         });
+    }
+    setActionConfig() {
+        this.actionColumnConfig = new ActionColumnModel();
+        this.actionColumnConfig.displayName = 'Action';
+        this.actionColumnConfig.showCancel = true;
     }
     formatDate(date) {
 
@@ -89,7 +95,6 @@ export class BillingComponent implements OnInit {
         this.searchTextbox = '';
         this.dataTableComponent.resetFilters();
     }
-
     CreateInvoice() {
         this.selectedRowsCheckbox.forEach(item => {
             item.isInvoiceFirstLoad = true;
@@ -132,7 +137,6 @@ export class BillingComponent implements OnInit {
             });
 
     }
-
     getAllRecourses() {
         this._recourseService.getResources().subscribe(
             result => {
@@ -155,28 +159,25 @@ export class BillingComponent implements OnInit {
                 }
             });
     }
-    RemoveBilling(item) {
-        if (!confirm('Are you sure you want to delete this record?')) {
-            return false;
-        }
-        const billingId = '?billingId =' + item.id;
-        this._billingservice.deleteBilling(billingId)
-            .map(res => res)
-            .subscribe(
-                data => {
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Record deleted successfully.' });
-                },
-                error => console.log(error)
-            );
-
-    }
     showEditModal(data) {
         this.editChild.createForm(data);
         // this.editDetails = data;
         $('#editBillModal').modal('show');
     }
     onRowClick(event) {
-
+        if (confirm('Are you sure you want to delete this record?')) {
+            this._billingservice.deleteBilling(event.id, this.isInstitutionalTab).subscribe(
+                (result) => {
+                    const deleteIndex = this.tableInputData.findIndex(x => x.id === event.id);
+                    this.tableInputData.splice(deleteIndex, 1);
+                    this.dataTableComponent.ngOnInit();
+                    $.toaster({ priority: 'success', title: 'Success', message: 'Deleted successfully.' });
+                },
+                err => {
+                    console.log(err);
+                }
+            );
+        }
     }
     onRowDoubleClick(event) {
 
@@ -189,27 +190,22 @@ export class BillingComponent implements OnInit {
             this.isGenerateInvoice = false;
         }
     }
-
     onActionBtnClick(event) {
 
     }
-
     searchFilter(value) {
         this.dataTableComponent.applyFilter(value);
     }
-
     clickInstitutional() {
         this.showTableColumns(true);
         this.isInstitutionalTab = true;
         this.getBillingData();
     }
-
     clickIndividual() {
         this.showTableColumns(false);
         this.isInstitutionalTab = false;
         this.getBillingData();
     }
-
     showTableColumns(show) {
         this.columns.forEach(function (data) {
             if (data.uniqueId === 'institutionName') {
