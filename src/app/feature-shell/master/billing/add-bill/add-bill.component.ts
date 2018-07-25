@@ -126,7 +126,7 @@ export class AddBillingComponent implements OnInit {
             fkCity: 0,
             phone: "",
             institutionId: (this.isInstitutionalTab) ? parseInt(objInstitution.id) : 0,
-            institutionName: (this.isInstitutionalTab) ? objInstitution.institutionName : '';
+            institutionName: (this.isInstitutionalTab) ? objInstitution.institutionName : ''
           });
           this.dataTableComponent.ngOnInit();
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
