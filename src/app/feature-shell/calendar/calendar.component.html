@@ -43,7 +43,7 @@
           <div class="box-header with-border">
             <h3 class="box-title">Upcoming Events</h3>
           </div>
-          <div class="box-body">
+          <div class="box-body" [ngClass]="{'scroll-upcoming':arUpcomingEvents && arUpcomingEvents.length>15}">
             <div class="external-event" *ngFor="let item of arUpcomingEvents" [style.background-color]="item.backgroundColor" [style.color]="item.color"
               [style.border-color]="item.borderColor" title="{{item.title}}">
              {{item.startDate | date: 'dd-MMM-yyyy'}}, {{item.title}}</div>

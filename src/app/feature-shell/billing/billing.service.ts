@@ -39,10 +39,14 @@ export class BillingService {
             JSON.stringify(reqData)
         );
     }
-    deleteBilling(reqData: any): Observable<any> {
+    deleteBilling(billingId: any, isInstitutional): Observable<any> {
+        let url = deleteBillingUrl;
+        if (!isInstitutional) {
+            url = 'billing/individual';
+        }
         return this.apiGateWay.delete<Billing>(
-            deleteBillingUrl,
-            JSON.stringify(reqData)
+            url + '?billingId=' + billingId,
+            null
         );
     }
 }

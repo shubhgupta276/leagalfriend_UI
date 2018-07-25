@@ -38,13 +38,13 @@ export class BillingService {
         );
     }
 
-    updateBilling(reqData: any,isInstitutional): Observable<any> {
+    updateBilling(reqData: any, isInstitutional): Observable<any> {
         let url = updateBillingUrl;
         if (!isInstitutional) {
             url = 'master/update/billing/individual';
         }
         return this.apiGateWay.post<Billing>(
-            updateBillingUrl,
+            url,
             JSON.stringify(reqData)
         );
     }
