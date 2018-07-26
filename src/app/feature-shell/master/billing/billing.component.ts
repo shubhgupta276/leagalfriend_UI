@@ -46,8 +46,14 @@ export class BillingComponent implements OnInit {
   hoverTableRow = true;
   actionColumnConfig: ActionColumnModel;
   isInstitutionalTab: boolean = true;
+  hideInstitutional: boolean = false;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService,
-    private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
+    private _recourseService: RecourseService, private _billingservice: BillingService,
+    private _storageService: StorageService) {
+    if (_storageService.getPermissionLevel() === 'ADMIN_LAWYER') {
+      this.clickIndividual();
+      this.hideInstitutional = true;
+    }
   }
 
   ngOnInit() {

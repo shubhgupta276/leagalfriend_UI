@@ -23,4 +23,8 @@ export class StorageService {
     getUserDetails() {
         return JSON.parse(this.getValue('userDetails'));
     }
+
+    getPermissionLevel() {
+        return localStorage.getItem('permission_level');
+    }
 }

@@ -9,6 +9,7 @@ import { billingTableConfig } from './billing.config';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
 import { SharedService } from '../../shared/services/shared.service';
+import { StorageService } from '../../shared/services/storage.service';
 declare var $;
 
 @Component({
@@ -37,6 +38,7 @@ export class BillingComponent implements OnInit {
     $table: any;
     isGenerateInvoice = false;
     isInstitutionalTab: boolean = true;
+    hideInstitutional: boolean = false;
     selectedRowsCheckbox: any;
     @ViewChild(EditBillingComponent) editChild: EditBillingComponent;
     @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
@@ -45,10 +47,16 @@ export class BillingComponent implements OnInit {
     constructor(private _billingservice: BillingService,
         private _institutionService: InstitutionService,
         private _recourseService: RecourseService,
+        private _storageService: StorageService,
         private _sharedService: SharedService) {
         this.JSON = JSON;
+        if (_storageService.getPermissionLevel() === 'ADMIN_LAWYER') {
+            this.clickIndividual();
+            this.hideInstitutional = true;
+        }
     }
     ngOnInit() {
+
         this.setActionConfig();
         const self = this;
         this.getBillingData();
