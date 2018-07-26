@@ -115,10 +115,16 @@ export class CalendarComponent implements OnInit {
           } else {
             return false;
           }
-        }
+        },
       });
 
       $('#calendar').fullCalendar('gotoDate', $this.eventStartDate);
+      $('.fc-agendaDay-button,.fc-agendaWeek-button').click(function () {
+        const calendarDate = new Date($('#calendar').fullCalendar('getDate'));
+        if (calendarDate.getMonth() === new Date().getMonth()) {
+          $('#calendar').fullCalendar('gotoDate', new Date());
+        }
+      });
       $('#calendar').fullCalendar('refresh');
       $('.fc-prev-button, .fc-next-button').click(function () {
         $this.setCalendarStartEndDate(new Date($('#calendar').fullCalendar('getDate').format()));
