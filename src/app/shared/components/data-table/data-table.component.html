@@ -30,15 +30,17 @@
                     {{column.displayName}}
                     <mat-form-field class="table-dropdown-sort" *ngIf="column.dropDownFilter" style="margin-top: 5px;">
                         <mat-select [(value)]="dropdownData[column.uniqueId].selected" (change)="sortTable($event.value,column.uniqueId)">
-                            <mat-option value="">Select</mat-option>
+                            <mat-option value="" *ngIf="!this.dropdownData[column.uniqueId].data['hideSelectFitlerText']">Select</mat-option>
                             <mat-option *ngFor="let value of dropdownData[column.uniqueId].values" [value]="value">
                                 {{ value }}
                             </mat-option>
                         </mat-select>
 
                     </mat-form-field>
-                    <div *ngIf="column.dropDownFilter && dropdownData[column.uniqueId].selected" style="margin-top: -25px;position: fixed;">
-                        <span *ngIf="dropdownData[column.uniqueId].selected" style="display: inline-block;color:#ff8254">{{dropdownData[column.uniqueId].selected}}</span>
+                    <div *ngIf="column.dropDownFilter 
+                    && (dropdownData[column.uniqueId].selected || this.dropdownData[column.uniqueId].data['showFirstFilterSelected'])"
+                        style="margin-top: -25px;position: fixed;">
+                        <span *ngIf="dropdownData[column.uniqueId].selected || dropdownData[column.uniqueId].data['showFirstFilterSelected']" style="display: inline-block;color:#ff8254">{{dropdownData[column.uniqueId].selected}}</span>
                     </div>
                     <!-- <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate') "></button> -->
                     <button (click)="onCaseFilterClick($event, row)" class="fa fa-calendar" *ngIf="(moduleName==='Case' && column.uniqueId=='nextHearingDate') || (moduleName==='Billing' && column.uniqueId=='billingDate')
@@ -81,8 +83,10 @@
                     <!-- <i class="fa fa-edit"></i> -->
                     <img width="24px" src="/assets/dist/img/editsvg.png" />
                 </a>&nbsp;
-                <a title="Change Password" (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'"><img width="20px" src="/assets/dist/img/pro.png" /></a>
-            
+                <a title="Change Password" (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'">
+                    <img width="20px" src="/assets/dist/img/pro.png" />
+                </a>
+
                 <span *ngIf="actionColumnConfig.showEdit && actionColumnConfig.showHistory">&nbsp;</span>
                 <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
                     <i class="fa fa-history"></i>

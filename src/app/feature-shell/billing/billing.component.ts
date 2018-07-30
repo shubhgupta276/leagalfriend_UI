@@ -22,7 +22,7 @@ export class BillingComponent implements OnInit {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = billingTableConfig;
-    rowSelect = false;
+    rowSelect = true;
     hoverTableRow = true;
     showSearchFilter = false;
     arBillingData: any[] = [];
@@ -56,10 +56,8 @@ export class BillingComponent implements OnInit {
         }
     }
     ngOnInit() {
-
         this.setActionConfig();
         const self = this;
-        this.getBillingData();
         this.getAllInstitutions();
         this.getAllRecourses();
         $($.document).ready(function () {
@@ -128,11 +126,22 @@ export class BillingComponent implements OnInit {
                             stageId: obj.stage.id,
                             stageName: obj.stage.stageName,
                             userId: obj.userId,
-                            caseId: obj.caseId,
+                            caeId: obj.caseId,
                             billingDate: this._sharedService.convertDateToStr(obj.billingDate)
                         });
                     }
                     this.dataTableComponent.ngOnInit();
+                    if (this.arAllInstitution.length > 0) {
+                        const defaultInst = this.arAllInstitution.find(x => x.defaultInstitution);
+                        const objFindInst = this.tableInputData.find(x => x.institutionName === defaultInst.institutionName);
+                        let showInstitution = '';
+                        if (objFindInst) {
+                            showInstitution = objFindInst.institutionName;
+                        } else {
+                            showInstitution = this.tableInputData[0].institutionName;
+                        }
+                        this.dataTableComponent.sortTable(showInstitution, 'institutionName');
+                    }
                 } else {
                     this.dataTableComponent.ngOnInit();
                     console.log(result);
@@ -156,14 +165,13 @@ export class BillingComponent implements OnInit {
             });
     }
     getAllInstitutions() {
-
         this._institutionService.getInstitutions().subscribe(
             result => {
                 if (result.httpCode === 200) {
                     result.institutions.forEach(element => {
                         this.arAllInstitution.push(element);
                     });
-
+                    this.getBillingData();
                 }
             });
     }

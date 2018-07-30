@@ -113,26 +113,27 @@ export class CaseHistoryComponent implements OnInit {
   setShowFieldArray() {
     this.arHistoryFields.push(
       { id: 'stage', name: 'Stage', },
+      { id: 'remark', name: 'Remark', },
       { id: 'lastHearingDate', name: 'Last Hearing Date' },
       { id: 'nextHearingDate', name: 'Next Hearing Date' },
       { id: 'groundForClosingFile', name: 'Ground For Closing File' },
     );
   }
 
-  clearForm(){
+  clearForm() {
     this.myFileUpload.nativeElement.value = '';
   }
 
-  showHistory(data) {
+  showHistory(historyData) {
     this.clearForm();
     this.creatForm();
     this.arHistoryData = [];
-    this.caseData = data;
+    this.caseData = historyData;
     const $this = this;
-    this._caseService.getHistory(data.id).subscribe(
+    this._caseService.getHistory(historyData.id).subscribe(
       (result) => {
-        let arDates = [];
-        let arDateWiseData = []
+        const arDates = [];
+        const arDateWiseData = [];
         if (result && result.length > 0) {
           result = $this._sharedService.reverseArray(result);
           result.forEach(function (data, index) { // get all distinct dates & fill date wise data
@@ -151,17 +152,17 @@ export class CaseHistoryComponent implements OnInit {
 
               $this.arHistoryFields.forEach(function (fieldData) {
                 const newValue = data[fieldData.id];
-                let previousValue = "";
+                let previousValue = '';
                 if (arDateHistory[index + 1]) {
                   previousValue = arDateHistory[index + 1][fieldData.id];
                 }
 
-                if (newValue != previousValue && index != arDateHistory.length - 1) {
+                if (newValue !== previousValue && index !== arDateHistory.length - 1) {
                   $this.arHistoryData.push({
                     fieldName: fieldData.name,
                     date: date,
                     dateTime: data.revTimeStamp,
-                    user: '',
+                    user: data.firstName + ' ' + data.lastName,
                     newValue: newValue,
                     preValue: previousValue, remark: data.remark
                   });

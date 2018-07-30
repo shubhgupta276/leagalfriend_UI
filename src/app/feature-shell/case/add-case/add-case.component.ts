@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { matchValidator } from '../../../shared/Utility/util-custom.validation';
@@ -21,6 +21,7 @@ declare var $;
 })
 export class AddCaseComponent implements OnInit {
   @Input() caseRunning = [];
+  @Output() addCaseSuccess: EventEmitter<any> = new EventEmitter();
   ChildCases: any= [];
   finalData: any = {};
   fileData: File;
@@ -428,8 +429,8 @@ if (event.target.files && event.target.files.length) {
         
         if (result.body.httpCode == 200) { //success
           // this.BindCaseGridOnEdit(data)
+          this.addCaseSuccess.emit();
           $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
-          $(window.location.href = '/admin/case');
           $('#addCaseModal').modal('hide');
           this.closeModal();
         }

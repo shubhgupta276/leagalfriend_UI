@@ -36,7 +36,7 @@ export class DataTableComponent implements OnInit {
   @Input() tableColumns: Array<any>;
   @Input() showRowSelect = false;
   @Input() hoverTableRow = false;
-  @Input() actionColumnConfig: ActionColumnModel; 
+  @Input() actionColumnConfig: ActionColumnModel;
   @Input() showSearchFilter = true;
   @Input() moduleName = '';
   @Output() rowClick = new EventEmitter<any>();
@@ -131,11 +131,10 @@ export class DataTableComponent implements OnInit {
       this.hoveredIndex = null;
 
   }
-  onActionBtnClickForChangePasswordPopup(event, row)
-  {
+  onActionBtnClickForChangePasswordPopup(event, row) {
     const data = { eventType: event, data: row };
     this.actionBtnChangePassword.emit(data);
-    
+
   }
   addColumnHeader() {
     this.tableColumns.forEach(
@@ -145,7 +144,7 @@ export class DataTableComponent implements OnInit {
         this.columnFilter.push(column.dropDownFilter);
       });
   }
- 
+
 
 
   createDropdowns() {
@@ -159,7 +158,8 @@ export class DataTableComponent implements OnInit {
             });
             this.dropdownData[column.uniqueId] = {
               values: this.uniqueValues(singlePropertyArray),
-              selected: ''
+              selected: '',
+              data: column
             };
           }
         }
