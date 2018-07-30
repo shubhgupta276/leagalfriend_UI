@@ -67,6 +67,7 @@ export class ForInstitutionComponent implements OnInit {
         private _institutionService: InstitutionService,
         private _recourseService: RecourseService,
         private _sharedService: SharedService,
+        private _datePipe: DatePipe,
         private _activatedRoute: ActivatedRoute,
         private _storageService: StorageService) {
 
@@ -546,7 +547,7 @@ export class ForInstitutionComponent implements OnInit {
 
             const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
             if (isNewHearingDate) {
-                obj.nextHearingDate = this._sharedService.convertStrToDate(date);
+                obj.nextHearingDate = this._datePipe.transform(this._sharedService.convertStrToDate(date), 'MM/dd/yyyy');
                 obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
             } else {
                 obj.previousHearingDate = this._sharedService.convertStrToDate(date);
