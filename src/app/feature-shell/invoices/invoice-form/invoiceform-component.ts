@@ -118,10 +118,12 @@ export class InvoiceFormComponent implements OnInit {
             termsCondition: self.invoiceTemplateInfo.termEndCond,
             userId: self._storageService.getUserId()
         };
+        
         this._invoicesService.saveInvoice(arrSaveInvoice).subscribe(
             result => {
+                
                 if (result.body.httpCode === 200) {
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
+                    $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
                     this.router.navigate(['/admin/invoices']);
                 } else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });

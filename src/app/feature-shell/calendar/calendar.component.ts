@@ -18,7 +18,6 @@ declare let $;
 export class CalendarComponent implements OnInit {
   arrEvents: any[] = [];
   arUpcomingEvents: any = [];
-  isRemoveAfterDrop: boolean = false;
   eventStartDate: any;
   eventEndDate: any;
   selectedCalendarType: any = '';
@@ -231,9 +230,7 @@ export class CalendarComponent implements OnInit {
           copiedEventObject.eventId = result.body.id;
           copiedEventObject.eventType = this.convertToEventType(null);
           $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-          if (this.isRemoveAfterDrop) {
-            $($dragged).remove();
-          }
+          $($dragged).remove();
 
           this.arrEvents.push({
             eventId: result.body.id,

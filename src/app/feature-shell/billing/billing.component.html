@@ -9,13 +9,6 @@
         <!-- /.box -->
         <div class="box">
           <div class="box-body" id="billingTable">
-            <div class="col-sm-8" style="padding-left: 0px;">
-              <div *ngIf="isGenerateInvoice">
-                <button (click)="CreateInvoice()" class="btn btn-default" [routerLink]="['/admin/invoices/invoiceform']">
-                  Create Invoice
-                </button>
-              </div>
-            </div>
             <!-- <div class="col-sm-2"> -->
             <!-- <a>
               <img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();">
@@ -32,7 +25,14 @@
                     <a href="#tab_Individual" (click)="clickIndividual()" data-toggle="tab">Individual</a>
                   </li>
                 </ul>
-                <div style="position: absolute;right: 0px;margin-top: -34px;">
+
+                <div *ngIf="isGenerateInvoice" style="position: absolute;right: 139px;margin-top: -36px;">
+                  <button (click)="CreateInvoice()" class="btn btn-default" [routerLink]="['/admin/invoices/invoiceform']">
+                    Create Invoice
+                  </button>
+                </div>
+
+                <div style="position: absolute;right: 0px;margin-top: -27px;">
                   <a>
                     <img src="assets/dist/img/reset_filter.png" title="Clear Filter" (click)="clearFilters();">
                   </a>
