@@ -348,6 +348,7 @@ export class ForInstitutionComponent implements OnInit {
         if (this.branchData) {
             this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
                 result => {
+                    this.tableInputData = [];
                     this.isPageLoad = false;
                     for (let i = 0; i < result.length; i++) {
                         const obj = result[i];
@@ -490,7 +491,7 @@ export class ForInstitutionComponent implements OnInit {
                     this.dataTableComponent.ngOnInit();
                     setTimeout(() => {
                         this.filterTable();
-                    }, 100);
+                    }, 400);
 
                 },
                 err => {
@@ -548,7 +549,7 @@ export class ForInstitutionComponent implements OnInit {
             const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
             if (isNewHearingDate) {
                 obj.nextHearingDate = this._datePipe.transform(this._sharedService.convertStrToDate(date), 'MM/dd/yyyy');
-                obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
+                // obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
             } else {
                 obj.previousHearingDate = this._sharedService.convertStrToDate(date);
                 obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
@@ -558,18 +559,20 @@ export class ForInstitutionComponent implements OnInit {
                 (result) => {
 
                     if (result.status === 200) {
-                        $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 2000);
-                        if (!isNaN(obj.nextHearingDate.getTime())) {
-                            obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
-                        } else {
-                            obj.nextHearingDate = '';
-                        }
+                        // obj.nextHearingDate = '';
+                        $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
+                        obj.nextHearingDate = this._sharedService.convertDateToStr(new Date(obj.nextHearingDate));
+                        // if (!isNaN(obj.nextHearingDate.getTime())) {
+                        // obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
+                        // } else {
 
-                        if (!isNaN(obj.previousHearingDate.getTime())) {
-                            obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
-                        } else {
-                            obj.previousHearingDate = '';
-                        }
+                        // }
+
+                        // if (!isNaN(obj.previousHearingDate.getTime())) {
+                        //     obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                        // } else {
+                        //     obj.previousHearingDate = '';
+                        // }
                         $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
                     }
                 },

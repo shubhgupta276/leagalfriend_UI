@@ -13,15 +13,15 @@ export class InvoiceFormComponent implements OnInit {
     arrSaveInvoice = [];
     arrInvoiceDetails: any;
     invoiceTemplateInfo = {
-        billToAddress: "",
-        CompanyAddress: "",
-        termEndCond: "",
+        billToAddress: '',
+        CompanyAddress: '',
+        termEndCond: '',
         Date: null,
         photoUrl: null,
         invoiceNo: '333333',
         isFromInvoice: false,
         url: null
-    }
+    };
     todayDate: number = Date.now();
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
         private _invoicesService: InvoicesService, public sanitizer: DomSanitizer, private router: Router, ) {
@@ -31,19 +31,19 @@ export class InvoiceFormComponent implements OnInit {
         this.GetAllInstitute();
         this.GetBillFrom();
         this.BindInvoice();
-        // this.arrInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
     }
     StoreInvoiceTemplateInfo() {
-        localStorage.setItem("invoiceTemplateInfo", JSON.stringify(this.invoiceTemplateInfo));
+        localStorage.setItem('invoiceTemplateInfo', JSON.stringify(this.invoiceTemplateInfo));
     }
     BindInvoice() {
-        var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
-        var totalAmount = 0;
-        var totalDescription = '';
-        var description = '';
+        const invoiceDetails = JSON.parse(localStorage.getItem('invoiceDetails'));
+        let totalAmount = 0;
+        let totalDescription = '';
+        let description = '';
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            description = ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
+            description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
+                + ', Stage : ' + element.stageName + '\n');
             totalDescription = totalDescription + description;
             element.description = description;
         });
@@ -64,36 +64,40 @@ export class InvoiceFormComponent implements OnInit {
 
         this._invoicesService.getInvoiceTemplate().subscribe(
             result => {
-                var address = result.invoiceFooter.address;
-                this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,' + address.city + ' ,' + address.state + ' ,' + address.zipCode;
-                this.invoiceTemplateInfo.photoUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + result.invoiceHeader.logo);
+                const address = result.invoiceFooter.address;
+                this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,'
+                    + address.city + ' ,' + address.state + ' ,' + address.zipCode;
+                this.invoiceTemplateInfo.photoUrl =
+                    this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + result.invoiceHeader.logo);
                 this.invoiceTemplateInfo.termEndCond = result.invoiceFooter.termsCondition;
                 this.invoiceTemplateInfo.url = result.invoiceHeader.logo;
-            })
+            });
     }
     GetAllInstitute() {
 
         this._institutionService.getInstitutions().subscribe(
             result => {
-                if (result.httpCode == 200) {
-                    for (var i = 0; i < result.institutions.length; i++) {
+                if (result.httpCode === 200) {
+                    for (let i = 0; i < result.institutions.length; i++) {
                         const obj = result.institutions[i];
                         if (this.arrInvoiceDetails.institutionId == obj.institutionId) {
                             this.invoiceTemplateInfo.CompanyAddress = obj.address;
                         }
                     }
                 }
-            })
+            });
     }
 
     SaveInvoice() {
-        var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
-        var self = this;
-        var totalAmount = 0;
-        var arrSaveInvoice = {};
-        var billingArray = [];
+        const invoiceDetails = JSON.parse(localStorage.getItem('invoiceDetails'));
+        const self = this;
+        let totalAmount = 0;
+        let arrSaveInvoice = {};
+        const billingArray = [];
+        let isInstitutional;
         invoiceDetails.forEach(item => {
             totalAmount += parseFloat(item.amount);
+            isInstitutional = item.isInstitutional;
             billingArray.push(
                 {
                     amount: item.amount,
@@ -109,19 +113,25 @@ export class InvoiceFormComponent implements OnInit {
             amountRecieved: true,
             billFrom: self.invoiceTemplateInfo.CompanyAddress,
             billTo: self.invoiceTemplateInfo.billToAddress,
-            billingIds: billingArray,
+            createdBy: self._storageService.getUserId(),
             description: $('.description').val(),
-            quantity: $('.quantity').val(),
-            fkInstitutionId: 0,
             id: 0,
-            status: "active",
+            institution: { id: billingArray[0].fkInstitutionId },
+            status: 'active',
             termsCondition: self.invoiceTemplateInfo.termEndCond,
             userId: self._storageService.getUserId()
         };
-        
-        this._invoicesService.saveInvoice(arrSaveInvoice).subscribe(
+
+        if (isInstitutional) {
+            arrSaveInvoice['institutionalBillings'] = billingArray;
+        } else {
+            delete arrSaveInvoice['institution'];
+            arrSaveInvoice['individualBillings'] = billingArray;
+        }
+        debugger
+        this._invoicesService.saveInvoice(arrSaveInvoice, isInstitutional).subscribe(
             result => {
-                
+
                 if (result.body.httpCode === 200) {
                     $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
                     this.router.navigate(['/admin/invoices']);
