@@ -189,9 +189,9 @@ export class AuthInterceptor implements HttpInterceptor {
             });
 
             return next.handle(authReq).do(event => {
-                if (event instanceof HttpResponse) {
+                // if (event instanceof HttpResponse) {
                     loadingContainer.style.display = 'none';
-                }
+                // }
             });
         }
     }

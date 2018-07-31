@@ -25,6 +25,7 @@ export class EditCaseComponent implements OnInit {
   myDocument: File;
   @Input() tableInputData = [];
   @Input() Court: any = [];
+  @Input() isRunningCase: boolean;
   @Output() addCaseSuccess: EventEmitter<any> = new EventEmitter();
   private value: any = {};
   private _disabledV: string = '0';
@@ -40,6 +41,7 @@ export class EditCaseComponent implements OnInit {
   selectedEmployee: any;
   selectedCourtPlace: any;
   // arrCompliance = [];
+  
   arr: any = [];
   id: any = [];
   caseId: any = [];
@@ -318,16 +320,21 @@ export class EditCaseComponent implements OnInit {
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, 'yyyy-MM-dd')]
     });
+    setTimeout(() => {
+      if (!this.isRunningCase) {
+        this.editCaseForm.disable();
+      } else {
+        this.editCaseForm.enable();
+      }
+      if (localStorage.userRole == 'CLIENT') {
+        this.editCaseForm.disable();
+        this._disabledV = '1';
+        this.disabled = true;
+        // $("#Compliance").hide();
+        $("#btnSubmit").hide();
 
-    if (localStorage.userRole == 'CLIENT') {
-      this.editCaseForm.disable();
-      this._disabledV = '1';
-      this.disabled = true;
-      // $("#Compliance").hide();
-      $("#btnSubmit").hide();
-
-    }
-
+      }
+    }, 200);
   }
 
 

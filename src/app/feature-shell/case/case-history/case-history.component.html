@@ -73,20 +73,29 @@
                   
                   <li [attr.id]="'collapse'+i" class="panel-collapse collapse clsListDetails">
                       <div class="casehistoryDetails">
-                        <table>
-                          <tr *ngIf="item.fieldName!=='Remark'">
+                        <table style="width:600px;">
+                          <ng-container *ngIf="item.fieldName!=='Remark'">
+                          <tr >
                             <td style="width: 100px;" > <b>New Value: </b></td>
                             <td>{{item.newValue}}</td>
                           </tr>
-                          <tr *ngIf="item.fieldName!=='Remark'">
+                          <tr>
                               <td style="width: 100px;"><b>Prev Value:  </b></td>
                               <td>{{item.preValue}}</td>
                           </tr>
+                        </ng-container>
                             <tr>
                                 <td style="width: 100px;"> <b>User:</b> </td>
                                 <td>{{item.user}}</td>
+                                <td style="width: 100px;text-align: right;">
+                                  <ng-container *ngIf="item.file">
+                                   <a title="download" (click)="downloadFile(item);">
+                                    <i class="fa fa-download"></i>
+                                  </a>
+                                </ng-container>
+                                </td>
                             </tr>
-                              <tr>
+                              <tr *ngIf="item.fieldName=='Remark'">
                                   <td style="width: 100px;"><b>Remark:</b></td>
                                   <td>{{item.remark}}</td>
                               </tr>

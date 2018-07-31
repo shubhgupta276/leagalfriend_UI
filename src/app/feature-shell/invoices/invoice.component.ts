@@ -28,17 +28,19 @@ export class InvoiceComponent implements OnInit {
   tableInputData = [];
   editCaseForm1: FormGroup;
   invoice: any[] = [];
-  arListBanks: any[] = [{ BankName: "HDFC BANK LTD." }];
+  isInstitutionalTab: boolean = true;
   searchTextbox = '';
   columns = invoiceTableConfig;
   actionColumnConfig: ActionColumnModel;
   moduleName = 'Invoice';
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private router: Router, private _sharedService: SharedService) {
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService,
+    private router: Router, private _sharedService: SharedService) {
     this.createForm(null);
-    Window["InvoiceFormComponent"] = this;
+    Window['InvoiceFormComponent'] = this;
   }
   ngOnInit() {
+    this.clickInstitutional();
     this.setActionConfig();
     this.getInvoice();
     $('#txtDateFilter').daterangepicker({
@@ -130,12 +132,11 @@ export class InvoiceComponent implements OnInit {
     });
   }
 
-
-
   showModal(invoice) {
     this.createForm(invoice);
     $("#filterCaseModal").modal("show");
   }
+
   cancelInvoice(invoiceId) {
     this.invoiceService.caneclInvoice(invoiceId).subscribe(
       result => {
@@ -146,6 +147,7 @@ export class InvoiceComponent implements OnInit {
         console.log(err);
       });
   }
+
   bindInvoiceAfterCancelled(invoiceId) {
     this.tableInputData.filter((item: any, index: number) => {
       if (item.id == invoiceId) {
@@ -155,13 +157,16 @@ export class InvoiceComponent implements OnInit {
       }
     })
   }
+
   getInvoice() {
-    this.invoiceService.getInvoiceData().subscribe(
+    this.tableInputData = [];
+    this.invoiceService.getInvoiceData(this.isInstitutionalTab).subscribe(
       result => {
+      //  debugger
         result.forEach(item => {
           this.tableInputData.push({
             id: item.id,
-            institutionName: item.institution.institutionName,
+            institutionName: (item.institution) ? item.institution.institutionName : '',
             description: item.description,
             invoiceDate: this._sharedService.convertDateToStr(new Date()),
             amount: item.amount,
@@ -175,11 +180,28 @@ export class InvoiceComponent implements OnInit {
 
       },
       err => {
+        this.dataTableComponent.ngOnInit();
         console.log(err);
       });
 
   }
 
-
+  clickInstitutional() {
+    this.showTableColumns(true);
+    this.isInstitutionalTab = true;
+    this.getInvoice();
+  }
+  clickIndividual() {
+    this.showTableColumns(false);
+    this.isInstitutionalTab = false;
+    this.getInvoice();
+  }
+  showTableColumns(show) {
+    this.columns.forEach(function (data) {
+      if (data.uniqueId === 'institutionName') {
+        data.display = show;
+      }
+    });
+  }
 }
 

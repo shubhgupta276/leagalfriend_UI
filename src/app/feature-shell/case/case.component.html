@@ -156,7 +156,7 @@
 
     </div>
   </section>
-  <app-edit-case (addCaseSuccess)="caseSaved()" [tableInputData]="tableInputData" [Court]="arCourts"></app-edit-case>
+  <app-edit-case (addCaseSuccess)="caseSaved()" [tableInputData]="tableInputData" [isRunningCase]="runningCaseTabActive" [Court]="arCourts"></app-edit-case>
   <app-add-case (addCaseSuccess)="caseSaved()"></app-add-case>
   <app-history-case></app-history-case>
   <div class="modal fade" style="z-index: 2001;" id="filterCaseModal">

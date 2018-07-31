@@ -7,6 +7,7 @@ import { debounce } from 'rxjs/operators/debounce';
 import { Input } from '@angular/core/src/metadata/directives';
 import { CaseService } from '../case.service';
 import { SharedService } from '../../../shared/services/shared.service';
+import { saveAs } from 'file-saver';
 declare var $;
 
 @Component({
@@ -23,7 +24,8 @@ export class CaseHistoryComponent implements OnInit {
   caseData: any;
   public caseHistoryForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _caseService: CaseService, private _sharedService: SharedService) {
+  constructor(private fb: FormBuilder, private _authService: AuthService,
+    private _caseService: CaseService, private _sharedService: SharedService) {
     this.creatForm();
   }
 
@@ -124,6 +126,18 @@ export class CaseHistoryComponent implements OnInit {
     this.myFileUpload.nativeElement.value = '';
   }
 
+  downloadFile(data) {
+    const file = data.file.split('~');
+    this._authService.downloadFile(file[1]).subscribe(
+      (result) => {
+        const blob = new Blob([result]);
+        saveAs(blob, file[0]);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
   showHistory(historyData) {
     this.clearForm();
     this.creatForm();
@@ -164,7 +178,9 @@ export class CaseHistoryComponent implements OnInit {
                     dateTime: data.revTimeStamp,
                     user: data.firstName + ' ' + data.lastName,
                     newValue: newValue,
-                    preValue: previousValue, remark: data.remark
+                    preValue: previousValue,
+                    remark: data.remark,
+                    file: data.remarkFile
                   });
                 }
               });

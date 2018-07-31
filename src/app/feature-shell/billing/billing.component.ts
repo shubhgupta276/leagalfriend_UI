@@ -56,6 +56,7 @@ export class BillingComponent implements OnInit {
         }
     }
     ngOnInit() {
+        this.clickInstitutional();
         this.setActionConfig();
         const self = this;
         this.getAllInstitutions();
@@ -105,8 +106,8 @@ export class BillingComponent implements OnInit {
         this.selectedRowsCheckbox.forEach(item => {
             item.isInvoiceFirstLoad = true;
             item.isFromInvoice = false;
+            item.isInstitutional = this.isInstitutionalTab;
         });
-
         localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
     }
     getBillingData() {
@@ -181,21 +182,6 @@ export class BillingComponent implements OnInit {
         $('#editBillModal').modal('show');
     }
     onRowClick(event) {
-        if (event) {
-            if (confirm('Are you sure you want to delete this record?')) {
-                this._billingservice.deleteBilling(event.id, this.isInstitutionalTab).subscribe(
-                    (result) => {
-                        const deleteIndex = this.tableInputData.findIndex(x => x.id === event.id);
-                        this.tableInputData.splice(deleteIndex, 1);
-                        this.dataTableComponent.ngOnInit();
-                        $.toaster({ priority: 'success', title: 'Success', message: 'Deleted successfully.' });
-                    },
-                    err => {
-                        console.log(err);
-                    }
-                );
-            }
-        }
     }
     onRowDoubleClick(event) {
 
@@ -209,7 +195,23 @@ export class BillingComponent implements OnInit {
         }
     }
     onActionBtnClick(event) {
-
+        if (event) {
+            event = event.data;
+            if (confirm('Are you sure you want to delete this record?')) {
+                this._billingservice.deleteBilling(event.id, this.isInstitutionalTab).subscribe(
+                    (result) => {
+                        this.getBillingData();
+                        // const deleteIndex = this.tableInputData.findIndex(x => x.id === event.id);
+                        // this.tableInputData.splice(deleteIndex, 1);
+                        // this.dataTableComponent.ngOnInit();
+                        $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
+            }
+        }
     }
     searchFilter(value) {
         this.dataTableComponent.applyFilter(value);
