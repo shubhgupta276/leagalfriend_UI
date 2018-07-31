@@ -152,19 +152,19 @@ export class InvoiceNextFormComponent implements OnInit {
             )
 
         });
-        this.invoiceService.saveInvoice(self.arrSaveInvoice).subscribe(
-            result => {
-                if (result.body.httpCode === 200) {
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
-                    this.router.navigate(['/admin/invoices']);
-                } else {
-                    console.log(result.body.failureReason);
-                    $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-                }
-            },
-            err => {
-                console.log(err);
-            });
+        // this.invoiceService.saveInvoice(self.arrSaveInvoice).subscribe(
+        //     result => {
+        //         if (result.body.httpCode === 200) {
+        //             $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
+        //             this.router.navigate(['/admin/invoices']);
+        //         } else {
+        //             console.log(result.body.failureReason);
+        //             $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+        //         }
+        //     },
+        //     err => {
+        //         console.log(err);
+        //     });
 
 
     }
