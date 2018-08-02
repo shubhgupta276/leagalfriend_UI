@@ -127,7 +127,7 @@ export class BillingComponent implements OnInit {
                             stageId: obj.stage.id,
                             stageName: obj.stage.stageName,
                             userId: obj.userId,
-                            caeId: obj.caseId,
+                            caseId: obj.caseId,
                             billingDate: this._sharedService.convertDateToStr(obj.billingDate)
                         });
                     }

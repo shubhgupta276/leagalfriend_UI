@@ -42,7 +42,6 @@ export class InvoiceComponent implements OnInit {
   ngOnInit() {
     this.clickInstitutional();
     this.setActionConfig();
-    this.getInvoice();
     $('#txtDateFilter').daterangepicker({
       autoUpdateInput: false,
       locale: {
@@ -162,7 +161,6 @@ export class InvoiceComponent implements OnInit {
     this.tableInputData = [];
     this.invoiceService.getInvoiceData(this.isInstitutionalTab).subscribe(
       result => {
-      //  debugger
         result.forEach(item => {
           this.tableInputData.push({
             id: item.id,
