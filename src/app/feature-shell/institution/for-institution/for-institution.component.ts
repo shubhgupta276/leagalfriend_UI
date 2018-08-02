@@ -134,7 +134,8 @@ export class ForInstitutionComponent implements OnInit {
                 $('#txtFromToDate').val(start_date.format('DD MMM YYYY') + ' To ' + end_date.format('DD MMM YYYY'));
             });
 
-            $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
+            $('body').on('change', '.newHiringDate', function (evt) {
+                evt.preventDefault();
                 const isNewHearingDate = $(evt.target).hasClass('newHiringDate');
                 selfnew.updateNewHearingDate($(this), isNewHearingDate);
             });
@@ -344,6 +345,7 @@ export class ForInstitutionComponent implements OnInit {
         if (!this.isViewOnlyForUser) {
             this.branchData = this._storageService.getBranchData();
         }
+        this.selectedRowsCheckbox = [];
         this.tableInputData = [];
         if (this.branchData) {
             this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
@@ -547,37 +549,40 @@ export class ForInstitutionComponent implements OnInit {
             const date = $(ref).val();
 
             const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
-            if (isNewHearingDate) {
-                obj.nextHearingDate = this._datePipe.transform(this._sharedService.convertStrToDate(date), 'MM/dd/yyyy');
-                // obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
-            } else {
-                obj.previousHearingDate = this._sharedService.convertStrToDate(date);
-                obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
+            if (obj) {
+                if (isNewHearingDate) {
+                    obj.nextHearingDate = this._datePipe.transform(this._sharedService.convertStrToDate(date), 'MM/dd/yyyy');
+                    // obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
+                } else {
+                    obj.previousHearingDate = this._sharedService.convertStrToDate(date);
+                    obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
+                }
+
+                this._institutionService.updateHearingDate(obj).subscribe(
+                    (result) => {
+
+                        if (result.status === 200) {
+                            // obj.nextHearingDate = '';
+                            $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
+                            obj.nextHearingDate = this._sharedService.convertDateToStr(new Date(obj.nextHearingDate));
+                            // if (!isNaN(obj.nextHearingDate.getTime())) {
+                            // obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
+                            // } else {
+
+                            // }
+
+                            // if (!isNaN(obj.previousHearingDate.getTime())) {
+                            //     obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
+                            // } else {
+                            //     obj.previousHearingDate = '';
+                            // }
+                            $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    });
             }
-
-            this._institutionService.updateHearingDate(obj).subscribe(
-                (result) => {
-
-                    if (result.status === 200) {
-                        // obj.nextHearingDate = '';
-                        $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
-                        obj.nextHearingDate = this._sharedService.convertDateToStr(new Date(obj.nextHearingDate));
-                        // if (!isNaN(obj.nextHearingDate.getTime())) {
-                        // obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
-                        // } else {
-
-                        // }
-
-                        // if (!isNaN(obj.previousHearingDate.getTime())) {
-                        //     obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
-                        // } else {
-                        //     obj.previousHearingDate = '';
-                        // }
-                        $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
-                    }
-                },
-                err => {
-                });
         }
     }
 
@@ -599,26 +604,28 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     ExportCase() {
-        const arrInsitituionId = [];
-        if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {
-            this.selectedRowsCheckbox.forEach(item => {
-                arrInsitituionId.push(item.id);
-            });
-        }
-        const data = {
-            branchId: this.branchData.id,
-            institutionId: this.InstitutionValue.id,
-            institutionalCaseIds: arrInsitituionId
+        if (this.selectedRowsCheckbox.length > 0) {
+            const arrInsitituionId = [];
+            if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {
+                this.selectedRowsCheckbox.forEach(item => {
+                    arrInsitituionId.push(item.id);
+                });
+            }
+            const data = {
+                branchId: this.branchData.id,
+                institutionId: this.InstitutionValue.id,
+                institutionalCaseIds: arrInsitituionId
 
-        };
-        this._institutionService.exportCase(data).subscribe(
-            (result) => {
-                const blob = new Blob([result]);
-                saveAs(blob, 'file.csv');
-            },
-            err => {
-                console.log(err);
-            });
+            };
+            this._institutionService.exportCase(data).subscribe(
+                (result) => {
+                    const blob = new Blob([result]);
+                    saveAs(blob, 'file.csv');
+                },
+                err => {
+                    console.log(err);
+                });
+        }
     }
 }
 

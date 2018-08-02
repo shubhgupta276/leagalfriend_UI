@@ -34,6 +34,7 @@ import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.
 import { setTimeout } from 'timers';
 import { CaseHistoryComponent } from './case-history/case-history-component';
 import { ActivatedRoute } from '@angular/router';
+import { AddCaseComponent } from './Add-case/Add-case.component';
 
 const now = new Date();
 
@@ -49,6 +50,7 @@ const now = new Date();
 })
 export class CaseComponent implements OnInit, OnDestroy {
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
+  @ViewChild(AddCaseComponent) addChild: AddCaseComponent;
   tableInputData = [];
   columns = caseRunningTableConfig;
   @ViewChild('caseRunningTable') runningDataTableComponent: DataTableComponent;
@@ -564,5 +566,10 @@ export class CaseComponent implements OnInit, OnDestroy {
 
   resetGrid() {
     this.getCasesData();
+  }
+
+  addCase() {
+    this.addChild.AddCaseUser();
+    $('#addCaseModal').modal('show');
   }
 }

@@ -51,6 +51,7 @@ export class DataTableComponent implements OnInit {
   constructor(private _sharedService: SharedService) { }
 
   ngOnInit() {
+    this.selection.clear();
     this.tableData = this.cleanIncomingData(this.tableData);
     this.renderDataTable(this.tableData, false);
     this.createDropdowns();

@@ -22,7 +22,7 @@ declare var $;
 export class AddCaseComponent implements OnInit {
   @Input() caseRunning = [];
   @Output() addCaseSuccess: EventEmitter<any> = new EventEmitter();
-  ChildCases: any= [];
+  ChildCases: any = [];
   finalData: any = {};
   fileData: File;
   myDocument: File;
@@ -42,6 +42,7 @@ export class AddCaseComponent implements OnInit {
   config: any;
   configData: any;
   arDdl: any = [];
+  isSubmitClick: boolean;
   public searchStr: string;
   public searchStr1: string;
   public match: any;
@@ -58,7 +59,7 @@ export class AddCaseComponent implements OnInit {
     { color: 'yellow', value: '#ff0' },
     { color: 'black', value: '#000' }
   ];
-  public captains = ['James T. Kirk', 'Benjamin Sisko', 'Christopher Pike', 'Rachel Garrett' ];
+  public captains = ['James T. Kirk', 'Benjamin Sisko', 'Christopher Pike', 'Rachel Garrett'];
   public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
     'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
     'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
@@ -82,7 +83,7 @@ export class AddCaseComponent implements OnInit {
     this.disabled = this._disabledV === '1';
   }
 
-  public selected(value: any): void { 
+  public selected(value: any): void {
     console.log('Selected value is: ', value);
   }
   public selectedRecourse1(value: any): void {
@@ -104,31 +105,31 @@ export class AddCaseComponent implements OnInit {
   }
 
   AddCaseUser() {
+    this.isSubmitClick = false;
     this.addCaseForm = this.fb.group({
-
+      branch: [null, Validators.required],
       courtCaseId: [],
+      customerName: [null, Validators.required],
+      courtplace: [null],
+      childCase: [],
       recourse: [null, Validators.required],
+      remark: [null, Validators.required],
+      court: [null],
       manager: [null, Validators.required],
-      court: [null, Validators.required],
       state: [null, Validators.required],
       parentCase: [null],
       nextHearingDate: [null],
-      customerName: [null, Validators.required],
-      remark: [null, Validators.required],
-      branch: [null, Validators.required],
       filingdate: [],
       stage: [null],
       employee: [null, Validators.required],
-      courtplace: [null, Validators.required],
       oppLawyer: [],
-      childCase: [],
       lastHearingDate: [null],
       uploadDocument: [],
     });
   }
- constructor(private completerService: CompleterService,private fb: FormBuilder, private apiGateWay: ApiGateway,
-   private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
-   
+  constructor(private completerService: CompleterService, private fb: FormBuilder, private apiGateWay: ApiGateway,
+    private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
+
     this.AddCaseUser();
     this.GetAllCourt();
     this.bindStateDDL();
@@ -141,10 +142,10 @@ export class AddCaseComponent implements OnInit {
     //this.getEmployee();
     this.GetAllCity();
     this.getCustomer();
- 
+
   }
-  GetAllCourt(){ 
-     const $this = this;
+  GetAllCourt() {
+    const $this = this;
     var reqData = {
       email: this._storageService.getUserEmail(),
     };
@@ -174,7 +175,7 @@ export class AddCaseComponent implements OnInit {
     this.authService.GetAllCity(reqData).subscribe(
       result => {
         result.cities.forEach(function (value) {
-         $this.CourtPlace.push({ id: value.id, text: value.cityName });
+          $this.CourtPlace.push({ id: value.id, text: value.cityName });
         });
       },
       err => {
@@ -194,7 +195,7 @@ export class AddCaseComponent implements OnInit {
           $('#spnBranch').show();
         }
         result.branches.forEach(function (value) {
-        $this.Branch.push({ id: value.id, text: value.branchName });
+          $this.Branch.push({ id: value.id, text: value.branchName });
         });
 
       },
@@ -255,7 +256,7 @@ export class AddCaseComponent implements OnInit {
     var reqData = {
       userId: this._storageService.getUserId(),
     };
-    
+
     this.authService.listManager(reqData).subscribe(
       result => {
         if (result.length === 0) {
@@ -263,16 +264,16 @@ export class AddCaseComponent implements OnInit {
           $('#spnManager').show();
 
         }
-       
+
         result.forEach(function (value) {
-            $this.Manager.push(
-              {
-                id: value.id, text: value.name
-              }
-            );
-         
-        }); 
-    },
+          $this.Manager.push(
+            {
+              id: value.id, text: value.name
+            }
+          );
+
+        });
+      },
       err => {
         console.log(err);
       });
@@ -288,19 +289,19 @@ export class AddCaseComponent implements OnInit {
     this.authService.listUsers(reqData).subscribe(
 
       result => {
-        
+
         if (result == 0) {
           $("#spnEmployee").show();
         }
         result.forEach(function (value) {
-         
-        //  if (value.roles[0].roleName === 'EMPLOYEE') {
-            $this.Employee.push({ id: value.id, text: value.name , });
-        //  }
-         
+
+          //  if (value.roles[0].roleName === 'EMPLOYEE') {
+          $this.Employee.push({ id: value.id, text: value.name, });
+          //  }
+
         });
-    }
-      
+      }
+
     );
   }
   getCustomer() {
@@ -312,47 +313,47 @@ export class AddCaseComponent implements OnInit {
     this.authService.listCustomers(reqData).subscribe(
 
       result => {
-        
+
         if (result == 0) {
           $("#spnEmployee").show();
         }
         result.forEach(function (value) {
-         
-        //  if (value.roles[0].roleName === 'EMPLOYEE') {
-            $this.CustomerName.push({ id: value.id, text: value.name , });
-        //  }
-         
+
+          //  if (value.roles[0].roleName === 'EMPLOYEE') {
+          $this.CustomerName.push({ id: value.id, text: value.name, });
+          //  }
+
         });
-    }
-      
+      }
+
     );
   }
 
   bindStageDDL(a) {
     var $this = this
     //var reqData = {
-      // email: this._storageService.getUserEmail(),
-     var  recourseId;
-     recourseId=a;
-  //  };
-    
+    // email: this._storageService.getUserEmail(),
+    var recourseId;
+    recourseId = a;
+    //  };
+
     this.authService.bindStageDDL(recourseId).subscribe(
 
       result => {
-        
-        $this.Stage=[];
-        if (result.httpCode === 200 && result.stageRecourses.length>0) {
-        result.stageRecourses.forEach(function (value) {
 
-          $this.Stage.push({ id: value.id, text: value.stageName });
-        });
-        
+        $this.Stage = [];
+        if (result.httpCode === 200 && result.stageRecourses.length > 0) {
+          result.stageRecourses.forEach(function (value) {
 
-      }
-      else{
-        $this.Stage=[];
-      }
-    },
+            $this.Stage.push({ id: value.id, text: value.stageName });
+          });
+
+
+        }
+        else {
+          $this.Stage = [];
+        }
+      },
       err => {
         console.log(err);
       });
@@ -361,12 +362,11 @@ export class AddCaseComponent implements OnInit {
   getRunningCase() {
 
 
-    if(localStorage.branchData==undefined)
-    {
-       b={id:-1}
-       
+    if (localStorage.branchData == undefined) {
+      b = { id: -1 }
+
     }
-    else{
+    else {
       var a = localStorage.getItem("branchData");
       var b = JSON.parse(a);
     }
@@ -377,12 +377,12 @@ export class AddCaseComponent implements OnInit {
     };
     this.authService.getCaseRunning(reqData).subscribe(
       result => {
-        
+
         result.forEach(function (value) {
-        $this.ParentCases.push({ id: value.id, text: value.caseId });
+          $this.ParentCases.push({ id: value.id, text: value.caseId });
           $this.ChildCases.push({ id: value.id, text: value.caseId });
         });
-        
+
         $this.dataService = $this.completerService.local($this.ParentCases, 'text', 'text');
         $this.dataService1 = $this.completerService.local($this.ChildCases, 'text', 'text');
       },
@@ -391,55 +391,58 @@ export class AddCaseComponent implements OnInit {
       });
   }
   onFileChange(event) {
-  const reader = new FileReader();
-if (event.target.files && event.target.files.length) {
+    const reader = new FileReader();
+    if (event.target.files && event.target.files.length) {
       this.myDocument = event.target.files[0];
-      
+
     };
   }
 
   submitAddCaseUser(data) {
-   const objEditCase: FormData = new FormData();
-    const x = {
-      'branchId': data.branch[0].id,
-  
-      'childCase': (data.childCase === undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
-      'courtCaseId': data.courtCaseId,
-      'courtId': data.court[0].id,
-      'customerId': data.customerName[0].id,
-      'employeeId': data.employee[0].id,
-      'filingDate': this.datePipe.transform(data.filingdate, 'yyyy-MM-dd'),
-      'lastHearingDate': this.datePipe.transform(data.lastHearingDate, 'yyyy-MM-dd'),
-      'managerId': data.manager[0].id,
-      'nextHearingDate': this.datePipe.transform(data.nextHearingDate, 'yyyy-MM-dd'),
-      'oppLawyer': data.oppLawyer,
-      'parentCaseId': (data.parentCase === undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
-      'recourseId': data.recourse[0].id,
-      'remark': data.remark,
-      'stageId': data.stage[0].id,
-      'stateId': data.state[0].id,
-      'userId': parseInt(localStorage.getItem('client_id'))
-    };
-    
-    objEditCase.append('legalCase', JSON.stringify(x));
-    objEditCase.append('file', this.myDocument);
-    
-    this.authService.submitEditCaseUser(objEditCase).subscribe(
-      result => {
-        
-        if (result.body.httpCode == 200) { //success
-          // this.BindCaseGridOnEdit(data)
-          this.addCaseSuccess.emit();
-          $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
-          $('#addCaseModal').modal('hide');
-          this.closeModal();
-        }
-  
-      },
-      err => {
-        console.log(err);
-      });
-  
+    try {
+      this.isSubmitClick = true;
+      const objEditCase: FormData = new FormData();
+      const x = {
+        'branchId': data.branch[0].id,
+        'childCase': (data.childCase === undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
+        'courtCaseId': data.courtCaseId,
+        'courtId': (data.court) ? data.court[0].id : null,
+        'customerId': data.customerName[0].id,
+        'employeeId': data.employee[0].id,
+        'filingDate': this.datePipe.transform(data.filingdate, 'yyyy-MM-dd'),
+        'lastHearingDate': this.datePipe.transform(data.lastHearingDate, 'yyyy-MM-dd'),
+        'managerId': data.manager[0].id,
+        'nextHearingDate': this.datePipe.transform(data.nextHearingDate, 'yyyy-MM-dd'),
+        'oppLawyer': data.oppLawyer,
+        'parentCaseId': (data.parentCase === undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
+        'recourseId': data.recourse[0].id,
+        'remark': data.remark,
+        'stageId': data.stage[0].id,
+        'stateId': data.state[0].id,
+        'userId': this._storageService.getUserId()
+      };
+
+      objEditCase.append('legalCase', JSON.stringify(x));
+      objEditCase.append('file', this.myDocument);
+
+      this.authService.submitEditCaseUser(objEditCase).subscribe(
+        result => {
+
+          if (result.body.httpCode == 200) { //success
+            // this.BindCaseGridOnEdit(data)
+            this.addCaseSuccess.emit();
+            $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
+            $('#addCaseModal').modal('hide');
+            this.closeModal();
+          }
+
+        },
+        err => {
+          console.log(err);
+        });
+    } catch (err) {
+
+    }
   }
   BindCaseGridOnEdit(data) {
 
@@ -449,18 +452,19 @@ if (event.target.files && event.target.files.length) {
   }
 
   ngOnInit() {
+    this.isSubmitClick = false;
     const self = this;
     $(document).ready(function () {
       $('.input-group.date').datepicker().on('changeDate', function (ev) {
         const attrName = $(this).find('input').attr('formControlName');
         const attrValue = $(this).find('input').val();
-      
+
         self.addCaseForm.controls[attrName].setValue(attrValue);
       });
     });
 
-    }
   }
+}
 
 
 

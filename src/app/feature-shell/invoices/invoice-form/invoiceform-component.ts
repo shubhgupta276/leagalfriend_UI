@@ -128,7 +128,6 @@ export class InvoiceFormComponent implements OnInit {
             delete arrSaveInvoice['institution'];
             arrSaveInvoice['individualBillings'] = billingArray;
         }
-      //  debugger
         this._invoicesService.saveInvoice(arrSaveInvoice, isInstitutional).subscribe(
             result => {
 
