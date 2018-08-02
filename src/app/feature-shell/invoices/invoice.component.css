@@ -10,7 +10,7 @@
   #invoiceTable .mat-column-status {
     flex: 0 0 10% !important;
   }
-  #invoiceTable .mat-column-billingDate {
+  #invoiceTable .mat-column-invoiceDate {
     flex: 0 0 10% !important;
   }
 #invoiceTable .mat-cell-text{

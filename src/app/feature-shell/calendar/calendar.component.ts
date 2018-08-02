@@ -18,7 +18,6 @@ declare let $;
 export class CalendarComponent implements OnInit {
   arrEvents: any[] = [];
   arUpcomingEvents: any = [];
-  isRemoveAfterDrop: boolean = false;
   eventStartDate: any;
   eventEndDate: any;
   selectedCalendarType: any = '';
@@ -34,6 +33,7 @@ export class CalendarComponent implements OnInit {
   }
 
   bindFullCalendar() {
+
     const $this = this;
     function init_events(ele) {
       ele.each(function () {
@@ -114,10 +114,16 @@ export class CalendarComponent implements OnInit {
           } else {
             return false;
           }
-        }
+        },
       });
 
       $('#calendar').fullCalendar('gotoDate', $this.eventStartDate);
+      $('.fc-agendaDay-button,.fc-agendaWeek-button').click(function () {
+        const calendarDate = new Date($('#calendar').fullCalendar('getDate'));
+        if (calendarDate.getMonth() === new Date().getMonth()) {
+          $('#calendar').fullCalendar('gotoDate', new Date());
+        }
+      });
       $('#calendar').fullCalendar('refresh');
       $('.fc-prev-button, .fc-next-button').click(function () {
         $this.setCalendarStartEndDate(new Date($('#calendar').fullCalendar('getDate').format()));
@@ -149,13 +155,12 @@ export class CalendarComponent implements OnInit {
           'background-color': currColor,
           'border-color': currColor,
           'color': '#fff'
-        }).addClass('external-event')
+        }).addClass('external-event');
         event.html(val);
         $('#external-events').prepend(event);
 
         // Add draggable funtionality
         init_events(event);
-
         // Remove event from text input
         $('#new-event').val('');
       });
@@ -225,9 +230,7 @@ export class CalendarComponent implements OnInit {
           copiedEventObject.eventId = result.body.id;
           copiedEventObject.eventType = this.convertToEventType(null);
           $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-          if (this.isRemoveAfterDrop) {
-            $($dragged).remove();
-          }
+          $($dragged).remove();
 
           this.arrEvents.push({
             eventId: result.body.id,

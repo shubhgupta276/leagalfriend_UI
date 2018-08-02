@@ -33,7 +33,7 @@ const featureShellRoutes: Routes = [
                 canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
-                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']
+                        only: ['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'ADMIN_LAWYER']
                     }
                 }
             },

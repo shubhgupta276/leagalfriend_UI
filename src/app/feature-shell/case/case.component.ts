@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, DebugElement } from '@angular/core';
 import { debuglog } from 'util';
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
@@ -315,7 +315,7 @@ export class CaseComponent implements OnInit, OnDestroy {
   }
 
   onRowDoubleClickCompleted(event) {
-    console.log(event);
+    this.showEditPop(event);
   }
 
   onRowSelectCompleted(event) {
@@ -558,4 +558,11 @@ export class CaseComponent implements OnInit, OnDestroy {
 
   }
 
+  caseSaved() {
+    this.getCasesData();
+  }
+
+  resetGrid() {
+    this.getCasesData();
+  }
 }

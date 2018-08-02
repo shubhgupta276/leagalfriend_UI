@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import * as html2canvas from 'html2canvas';
-import * as jsPDF from 'jspdf';
 import { InstitutionService } from '../../../feature-shell/master/institution/institution.service';
-import { Institution } from '../../../feature-shell/master/institution/institution';
 import { StorageService } from '../../../shared/services/storage.service';
-import { forEach } from '@angular/router/src/utils/collection';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { InvoicesService } from '../invoices.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 declare let $;
-declare let canvas;
 @Component({
     selector: 'app-invoiceform',
     templateUrl: './invoiceform.html',
@@ -20,15 +13,15 @@ export class InvoiceFormComponent implements OnInit {
     arrSaveInvoice = [];
     arrInvoiceDetails: any;
     invoiceTemplateInfo = {
-        billToAddress: "",
-        CompanyAddress: "",
-        termEndCond: "",
+        billToAddress: '',
+        CompanyAddress: '',
+        termEndCond: '',
         Date: null,
         photoUrl: null,
         invoiceNo: '333333',
         isFromInvoice: false,
         url: null
-    }
+    };
     todayDate: number = Date.now();
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
         private _invoicesService: InvoicesService, public sanitizer: DomSanitizer, private router: Router, ) {
@@ -38,26 +31,20 @@ export class InvoiceFormComponent implements OnInit {
         this.GetAllInstitute();
         this.GetBillFrom();
         this.BindInvoice();
-        // this.arrInvoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
     }
     StoreInvoiceTemplateInfo() {
-        localStorage.setItem("invoiceTemplateInfo", JSON.stringify(this.invoiceTemplateInfo));
+        localStorage.setItem('invoiceTemplateInfo', JSON.stringify(this.invoiceTemplateInfo));
     }
     BindInvoice() {
-        var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
-        var totalAmount = 0;
-        var totalDescription = '';
-        var description = '';
+        const invoiceDetails = JSON.parse(localStorage.getItem('invoiceDetails'));
+        let totalAmount = 0;
+        let totalDescription = '';
+        let description = '';
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            if (element.isInvoiceFirstLoad) {
-                description = ("CaseId : " + element.caseId + ",  Recourse : " + element.recourseName + ", Stage : " + element.stageName + '\n');
-                totalDescription = totalDescription + description;
-            }
-            else {
-                totalDescription = totalDescription + element.description;
-                description = element.description;
-            }
+            description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
+                + ', Stage : ' + element.stageName + '\n');
+            totalDescription = totalDescription + description;
             element.description = description;
         });
         this.invoiceTemplateInfo.isFromInvoice = invoiceDetails[0].isFromInvoice;
@@ -77,59 +64,76 @@ export class InvoiceFormComponent implements OnInit {
 
         this._invoicesService.getInvoiceTemplate().subscribe(
             result => {
-                var address = result.invoiceFooter.address;
-                this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,' + address.city + ' ,' + address.state + ' ,' + address.zipCode;
-                this.invoiceTemplateInfo.photoUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + result.invoiceHeader.logo);
+                const address = result.invoiceFooter.address;
+                this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,'
+                    + address.city + ' ,' + address.state + ' ,' + address.zipCode;
+                this.invoiceTemplateInfo.photoUrl =
+                    this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + result.invoiceHeader.logo);
                 this.invoiceTemplateInfo.termEndCond = result.invoiceFooter.termsCondition;
                 this.invoiceTemplateInfo.url = result.invoiceHeader.logo;
-            })
+            });
     }
     GetAllInstitute() {
 
         this._institutionService.getInstitutions().subscribe(
             result => {
-                if (result.httpCode == 200) {
-                    for (var i = 0; i < result.institutions.length; i++) {
+                if (result.httpCode === 200) {
+                    for (let i = 0; i < result.institutions.length; i++) {
                         const obj = result.institutions[i];
                         if (this.arrInvoiceDetails.institutionId == obj.institutionId) {
                             this.invoiceTemplateInfo.CompanyAddress = obj.address;
                         }
                     }
                 }
-            })
+            });
     }
 
     SaveInvoice() {
-        var invoiceDetails = JSON.parse(localStorage.getItem("invoiceDetails"));
-        var self = this;
-        var totalAmount = 0;
-        self.arrSaveInvoice = [];
+        const invoiceDetails = JSON.parse(localStorage.getItem('invoiceDetails'));
+        const self = this;
+        let totalAmount = 0;
+        let arrSaveInvoice = {};
+        const billingArray = [];
+        let isInstitutional;
         invoiceDetails.forEach(item => {
-            self.arrSaveInvoice.push(
+            totalAmount += parseFloat(item.amount);
+            isInstitutional = item.isInstitutional;
+            billingArray.push(
                 {
                     amount: item.amount,
-                    amountRecieved: true,
-                    billFrom: self.invoiceTemplateInfo.CompanyAddress,
-                    billTo: self.invoiceTemplateInfo.billToAddress,
-                    billingIds: [
-                        {
-                            id: item.id
-                        }
-                    ],
+                    id: item.id,
                     description: item.description,
                     fkInstitutionId: item.institutionId,
-                    id: 0,
-                    status: "active",
-                    termsCondition: self.invoiceTemplateInfo.termEndCond,
                     userId: self._storageService.getUserId()
                 }
-            )
+            );
         });
+        arrSaveInvoice = {
+            amount: totalAmount,
+            amountRecieved: true,
+            billFrom: self.invoiceTemplateInfo.CompanyAddress,
+            billTo: self.invoiceTemplateInfo.billToAddress,
+            createdBy: self._storageService.getUserId(),
+            description: $('.description').val(),
+            id: 0,
+            institution: { id: billingArray[0].fkInstitutionId },
+            status: 'active',
+            termsCondition: self.invoiceTemplateInfo.termEndCond,
+            userId: self._storageService.getUserId()
+        };
 
-        this._invoicesService.saveInvoice(self.arrSaveInvoice).subscribe(
+        if (isInstitutional) {
+            arrSaveInvoice['institutionalBillings'] = billingArray;
+        } else {
+            delete arrSaveInvoice['institution'];
+            arrSaveInvoice['individualBillings'] = billingArray;
+        }
+      //  debugger
+        this._invoicesService.saveInvoice(arrSaveInvoice, isInstitutional).subscribe(
             result => {
+
                 if (result.body.httpCode === 200) {
-                    $.toaster({ priority: 'success', title: 'Success', message: 'Invoice updated successfully' });
+                    $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
                     this.router.navigate(['/admin/invoices']);
                 } else {
                     $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });

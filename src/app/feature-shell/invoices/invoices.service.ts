@@ -5,7 +5,10 @@ import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
 import { ApiGateway } from '../../shared/services/api-gateway';
 import { StorageService } from '../../shared/services/storage.service';
 import { Observable } from 'rxjs/Observable';
-import { InvoiceTemplate,Invoice, getInvoice, invoiceCancel } from './invoices.config';
+import {
+    InvoiceTemplate, addInstitutionalInvoice, addIndividualInvoice,
+    getIndividualInvoice, getInstitutionalInvoice, invoiceCancel
+} from './invoices.config';
 @Injectable()
 export class InvoicesService {
 
@@ -14,18 +17,26 @@ export class InvoicesService {
     }
 
     getInvoiceTemplate(): Observable<any> {
-        const apiUrl = InvoiceTemplate + "?userId=" + this._storageService.getUserId();
+        const apiUrl = InvoiceTemplate + '?userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
-    saveInvoice(data:any): Observable<any> {
-        return this.apiGateWay.post<any>(Invoice,data);
+    saveInvoice(data: any, isInstitutional): Observable<any> {
+        let url = addInstitutionalInvoice;
+        if (!isInstitutional) {
+            url = addIndividualInvoice;
+        }
+        return this.apiGateWay.post<any>(url, data);
     }
-    getInvoiceData(): Observable<any> {
-        const apiUrl = getInvoice + "?userId=" + this._storageService.getUserId();
+    getInvoiceData(isInstitutional): Observable<any> {
+        let url = getInstitutionalInvoice;
+        if (!isInstitutional) {
+            url = getIndividualInvoice;
+        }
+        const apiUrl = url + '?userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
-    caneclInvoice(invoiceId:any): Observable<any> {
-        const apiUrl = invoiceCancel + "?invoiceId=" +invoiceId;
+    caneclInvoice(invoiceId: any): Observable<any> {
+        const apiUrl = invoiceCancel + '?invoiceId=' + invoiceId;
         return this.apiGateWay.put<any>(apiUrl, null);
     }
 

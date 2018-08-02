@@ -140,7 +140,11 @@ export class AuthInterceptor implements HttpInterceptor {
                     .set('Authorization', authHeader.access_token.toString())
                     .set('customer-id', authHeader.client_id.toString())
             });
-            return next.handle(changepwdReq);
+            return next.handle(changepwdReq).do(event => {
+                if (event instanceof HttpResponse) {
+                    loadingContainer.style.display = 'none';
+                }
+            });
         } else if (req.url.indexOf('case/update') >= 0 || (req.url.indexOf('case/file/upload') >= 0)) {
 
             const authHeader = this.auth.getAuthorizationHeader();
@@ -185,9 +189,9 @@ export class AuthInterceptor implements HttpInterceptor {
             });
 
             return next.handle(authReq).do(event => {
-                if (event instanceof HttpResponse) {
+                // if (event instanceof HttpResponse) {
                     loadingContainer.style.display = 'none';
-                }
+                // }
             });
         }
     }

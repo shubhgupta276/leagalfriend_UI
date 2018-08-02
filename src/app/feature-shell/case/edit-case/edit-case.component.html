@@ -43,7 +43,7 @@
                             </div>
                             <div class="tab-pane active" id="activity">
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label createUserLabel">Case Id:
+                                <label class="col-sm-3 col-form-label createUserLabel">Case ID:
                                   <em class="astrick">*</em>
                                 </label>
 
@@ -54,7 +54,7 @@
                               </div>
                             </div>
                             <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
+                              <label class="col-sm-3 col-form-label createUserLabel">Court Case ID:
                                 <!-- <em class="astrick">*</em> -->
                               </label>
                               <div class="col-md-9">
@@ -327,7 +327,7 @@
                             
                             
                             
-                           <td><a href="#">{{items.fileName}}</a> </td>
+                           <td style="max-width: 253px;word-wrap: break-word;"><a href="#">{{items.fileName}}</a> </td>
                             <td>{{items.fromDate}}</td>
                             
                       
@@ -344,7 +344,7 @@
                       </table>
                       <div class="modal-footer modal-footer-addedit">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="submit" id='btnSubmit' [disabled]="editCaseForm.invalid" class="btn btn-modal-addedit">Submit</button>
+                        <button type="submit" *ngIf="isRunningCase" id='btnSubmit' [disabled]="editCaseForm.invalid" class="btn btn-modal-addedit">Submit</button>
                       </div>
                     </form>
                   </div>
