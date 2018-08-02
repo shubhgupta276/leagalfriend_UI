@@ -41,7 +41,7 @@ export class EditCaseComponent implements OnInit {
   selectedEmployee: any;
   selectedCourtPlace: any;
   // arrCompliance = [];
-
+  previousStageId: any;
   arr: any = [];
   id: any = [];
   caseId: any = [];
@@ -322,6 +322,7 @@ export class EditCaseComponent implements OnInit {
         this.childParentText = this.childcaseSelectedauto[0].text;
       }
     }
+    this.previousStageId = (c == null) ? null : c.stageId;
     this.editCaseForm = this.fb.group({
 
       caseId: [c == null ? null : c.caseId, Validators.required],
@@ -823,6 +824,7 @@ export class EditCaseComponent implements OnInit {
         'remark': data.remark,
         'parentCaseId': (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
         'completionDate': this.datePipe.transform(data.completionDate, 'yyyy-MM-dd'),
+        stageUpdated: !(this.selectedStage.id === this.previousStageId)
       };
       objEditCase.append('legalCase', JSON.stringify(x));
       objEditCase.append('file', this.myDocument);
