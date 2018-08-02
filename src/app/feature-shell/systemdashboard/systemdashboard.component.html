@@ -1,0 +1,202 @@
+<!-- Content Wrapper. Contains page content -->
+<style>
+  .hide {
+    display: none
+  }
+
+  .show {
+    display: block
+  }
+
+  .pagination>li>a {
+    padding: 7px;
+    font-weight: 600;
+  }
+
+  .modal-dialog .close {
+    display: none !important;
+  }
+
+  body {
+    width: calc(100vw - 34px);
+  }
+</style>
+<div class="content-wrapper">
+  <div class="page-heading">
+   System Dashboard
+  </div>
+  <!-- Main content -->
+  <section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>{{result.totalCases}}
+              <!-- <sup style="font-size: 20px">%</sup> -->
+            </h3>
+
+            <p>Total Cases</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a  (click)="showOrgDetail('/admin/orgdetails', 'case')" class="small-box-footer">More info
+            <i class="fa fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+       <!-- ./col -->
+       <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-orange">
+            <div class="inner">
+              <h3>{{result.institutionalCases}}
+                <!-- <sup style="font-size: 20px">%</sup> -->
+              </h3>
+  
+              <p>Total Institutional Cases</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a  (click)="showOrgDetail('/admin/orgdetails', 'for')" class="small-box-footer">More info
+              <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+      <!-- ./col -->
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+              <div class="inner">
+                <h3>{{result.againstInstitutionalCases}}</h3>
+    
+                <p>Total Against Institutional Cases</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a (click)="showOrgDetail('/admin/orgdetails', 'against')" class="small-box-footer">More info
+                <i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+          <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red">
+          <div class="inner">
+            <h3>{{result.totalUsers}}</h3>
+
+            <p>Total Users</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a  (click)="showOrgDetail('/admin/orgdetails', 'user')" class="small-box-footer">More info
+            <i class="fa fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+        <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-blue">
+          <div class="inner">
+            <h3>{{result.trialUsers}}</h3>
+
+            <p>Total Trial Users</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a (click)="showUserDetail('/admin/userdetails', 'trial')" class="small-box-footer">More info
+            <i class="fa fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+        <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-orange">
+          <div class="inner">
+            <h3>{{result.totalOrganization}}</h3>
+
+            <p>Total Organization</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a  class="small-box-footer">More info
+            <i class="fa fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+        <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-light-blue">
+          <div class="inner">
+            <h3>{{result.oneMonthInActiveUsers}}</h3>
+
+            <p>Users Not Logged In Since Last Month</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a (click)="showUserDetail('/admin/userdetails', 'inactiveusers')" class="small-box-footer">More info
+            <i class="fa fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- ./col -->
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                <h4 class="text-center">Total Cases : {{result.totalCases}}</h4>
+                <hr>
+                <p class="col-xs-6 small-padding">Total For Institutional Cases : {{result.institutionalCases}}</p>
+                <p class="col-xs-6 small-padding">Total Against Institutional Cases : {{result.againstInstitutionalCases}}</p>
+                <p  class="small-box-footer-demo">
+                <a  (click)="showCases('/case')"><font color="white">More info
+                  <i class="fa fa-arrow-circle-right"></i></font>
+                </a>
+                </p>
+              </div>
+            
+            </div>
+          </div>
+          <!-- ./col -->
+        <div class="col-lg-3">
+            <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                <h4 class="text-center">Total Cases : {{result.totalCases}}</h4>
+                <hr>
+                <p class="col-xs-6">Total For Institutional Cases : {{result.institutionalCases}}</p>
+                <p class="col-xs-6">Total Against Institutional Cases : {{result.againstInstitutionalCases}}</p>
+                
+              </div>
+           
+            </div>
+          </div>
+    </div>
+    <!-- /.row -->
+    <!-- Main row -->
+   
+    <!-- /.row (main row) -->
+    <!-- Popup Start -->
+  
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
