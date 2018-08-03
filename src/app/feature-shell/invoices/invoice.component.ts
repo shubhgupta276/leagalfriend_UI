@@ -33,6 +33,7 @@ export class InvoiceComponent implements OnInit {
   columns = invoiceTableConfig;
   actionColumnConfig: ActionColumnModel;
   moduleName = 'Invoice';
+  anyForm: any;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   constructor(private fb: FormBuilder, private invoiceService: InvoicesService,
     private router: Router, private _sharedService: SharedService) {
@@ -60,6 +61,7 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig.showEdit = true;
     this.actionColumnConfig.moduleName = 'Invoice';
   }
+
   filterTableData() {
     const fromToDate = $('#txtDateFilter').val().split(' To ');
     if (fromToDate && fromToDate.length > 0) {
@@ -73,6 +75,7 @@ export class InvoiceComponent implements OnInit {
     $('#filterCaseModal').modal('hide');
 
   }
+
   onActionBtnClick(event) {
     if (event.eventType == 'cancel') {
       this.cancelInvoice(event.data.id);
@@ -99,14 +102,16 @@ export class InvoiceComponent implements OnInit {
       this.router.navigateByUrl('/admin/invoices/invoiceform');
     }
   }
+
   searchFilter(value) {
     this.dataTableComponent.applyFilter(value);
   }
+
   clearFilters() {
     this.searchTextbox = '';
     this.dataTableComponent.resetFilters();
   }
-  anyForm: any;
+
   generatepdf() {
     var hiddenDiv = document.getElementById('pdfdownload')
     hiddenDiv.style.display = 'block';
@@ -122,12 +127,9 @@ export class InvoiceComponent implements OnInit {
 
   createForm(c) {
     this.editCaseForm1 = this.fb.group({
-
       Bank: [c == null ? null : c.Bank],
       Amount: [c == null ? null : c.Amount],
-      CaseID: [c == null ? null : c.CaseID],
-
-
+      CaseID: [c == null ? null : c.CaseID]
     });
   }
 
@@ -137,14 +139,17 @@ export class InvoiceComponent implements OnInit {
   }
 
   cancelInvoice(invoiceId) {
-    this.invoiceService.caneclInvoice(invoiceId).subscribe(
-      result => {
-        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });
-        this.bindInvoiceAfterCancelled(invoiceId);
-      },
-      err => {
-        console.log(err);
-      });
+    if (confirm('Are you sure you want to cancel this invoice?')) {
+      this.invoiceService.caneclInvoice(invoiceId).subscribe(
+        result => {
+          // debugger
+          $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });
+          this.bindInvoiceAfterCancelled(invoiceId);
+        },
+        err => {
+          console.log(err);
+        });
+    }
   }
 
   bindInvoiceAfterCancelled(invoiceId) {
@@ -189,17 +194,27 @@ export class InvoiceComponent implements OnInit {
     this.isInstitutionalTab = true;
     this.getInvoice();
   }
+
   clickIndividual() {
     this.showTableColumns(false);
     this.isInstitutionalTab = false;
     this.getInvoice();
   }
+
   showTableColumns(show) {
     this.columns.forEach(function (data) {
       if (data.uniqueId === 'institutionName') {
         data.display = show;
       }
     });
+  }
+
+  onRowClick() {
+
+  }
+
+  onRowDoubleClick() {
+
   }
 }
 

@@ -28,7 +28,7 @@ declare let $;
     encapsulation: ViewEncapsulation.None
 })
 
-export class ForInstitutionComponent implements OnInit {
+export class ForInstitutionComponent implements OnInit, OnDestroy {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
@@ -134,12 +134,18 @@ export class ForInstitutionComponent implements OnInit {
                 $('#txtFromToDate').val(start_date.format('DD MMM YYYY') + ' To ' + end_date.format('DD MMM YYYY'));
             });
 
-            $('body').on('change', '.newHiringDate', function (evt) {
-                evt.preventDefault();
+            $('body').unbind().on('change', '.newHiringDate', function (evt) {
                 const isNewHearingDate = $(evt.target).hasClass('newHiringDate');
                 selfnew.updateNewHearingDate($(this), isNewHearingDate);
             });
         });
+    }
+
+    ngOnDestroy() {
+        // const lstClass = document.getElementsByClassName('newHiringDate');
+        // [].forEach.call(lstClass, function (el) {
+        //     el.classList.remove('newHiringDate');
+        // });
     }
 
     bindInstitutionBranchAccordingUser() {
@@ -562,20 +568,8 @@ export class ForInstitutionComponent implements OnInit {
                     (result) => {
 
                         if (result.status === 200) {
-                            // obj.nextHearingDate = '';
                             $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
                             obj.nextHearingDate = this._sharedService.convertDateToStr(new Date(obj.nextHearingDate));
-                            // if (!isNaN(obj.nextHearingDate.getTime())) {
-                            // obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
-                            // } else {
-
-                            // }
-
-                            // if (!isNaN(obj.previousHearingDate.getTime())) {
-                            //     obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
-                            // } else {
-                            //     obj.previousHearingDate = '';
-                            // }
                             $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
                         }
                     },

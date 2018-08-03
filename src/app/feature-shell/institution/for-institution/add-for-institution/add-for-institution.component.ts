@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { debuglog } from 'util';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FileValueAccessorDirective } from '../../../../shared/Directives/fileValueAccessor';
@@ -10,9 +10,10 @@ import { Institution } from '../../institution';
 
 declare let $;
 @Component({
-  selector: "add-for-institution-modal",
-  templateUrl: "./add-for-institution.component.html",
-  styleUrls: ["./add-for-institution.component.css"]
+  // tslint:disable-next-line:component-selector
+  selector: 'add-for-institution-modal',
+  templateUrl: './add-for-institution.component.html',
+  styleUrls: ['./add-for-institution.component.css']
 })
 export class AddForInstitutionComponent implements OnInit {
   @Input() arInstitution: Institution[] = [];
@@ -21,7 +22,7 @@ export class AddForInstitutionComponent implements OnInit {
   @Output() saveSuccess: EventEmitter<any> = new EventEmitter();
 
   branchData: any;
-  ForInstitution: string = "For Institution";
+  ForInstitution: string = 'For Institution';
   addForm1: FormGroup;
   isInstitutionAlreadyExists: boolean = false;
   arCityData: any[] = [];
@@ -46,8 +47,8 @@ export class AddForInstitutionComponent implements OnInit {
 
   submitAddForInstitution(data: any) {
 
-    let fileInfo = data.uploadCases;
-    let formdata: FormData = new FormData();
+    const fileInfo = data.uploadCases;
+    const formdata: FormData = new FormData();
     formdata.append('institutionId', this.Institution.id);
     formdata.append('userId', this._storageService.getUserId());
     formdata.append('isForInstitution', 'Y');
@@ -58,16 +59,16 @@ export class AddForInstitutionComponent implements OnInit {
     this._institutionService.addForInstitution(formdata).subscribe(
       result => {
 
-        var _result = result.body;
+        const _result = result.body;
 
-        if (_result.httpCode == 200) { //success
+        if (_result.httpCode === 200) {
           $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.saveSuccess.emit();
           this.AddForInstitution();
           this.closeModal();
-        }
-        else
+        } else {
           $.toaster({ priority: 'error', title: 'Error', message: _result.failureReason });
+        }
       },
       err => {
         console.log(err);
@@ -85,38 +86,39 @@ export class AddForInstitutionComponent implements OnInit {
   }
 
   ngOnInit() {
-    $("#ERROR_casefile").hide();
-  }
-
-  subscriberFields(){
-    //
+    if (this._institutionService.isAgainstInstitution) {
+      this.ForInstitution = 'Against Institution';
+    }
+    $('#ERROR_casefile').hide();
   }
 
   upload(event: any) {
 
-    let files = event.target.files;
+    const files = event.target.files;
     if (files.length > 0) {
-      if (event.target.id == "casefile")
+      if (event.target.id === 'casefile') {
         this.showCsvError = !this.validateFile(files[0].name, false);
-      else
+      } else {
         this.showZipError = !this.validateFile(files[0].name, true);
-    }
-    else {
-      if (event.target.id == "casefile")
+      }
+    } else {
+      if (event.target.id === 'casefile') {
         this.showCsvError = false;
-      else
+      } else {
         this.showZipError = false;
+      }
     }
   }
 
   validateFile(name: string, isZipFile: boolean = false): boolean {
 
-    var ext = name.substring(name.lastIndexOf('.'));
-    if (isZipFile && ext.toLowerCase() == '.zip')
+    const ext = name.substring(name.lastIndexOf('.'));
+    if (isZipFile && ext.toLowerCase() === '.zip') {
       return true;
-    else if (!isZipFile && ext.toLowerCase() == '.csv')
+    } else if (!isZipFile && ext.toLowerCase() === '.csv') {
       return true;
-    else
+    } else {
       return false;
+    }
   }
 }
