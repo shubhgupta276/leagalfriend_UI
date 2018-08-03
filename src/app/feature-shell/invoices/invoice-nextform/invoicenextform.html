@@ -196,7 +196,8 @@
                                         <tr *ngFor="let item of arrInvoiceDetails |  paginate: { itemsPerPage: 5, currentPage: p2 }" description="Description" qty="1"
                                             unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td style="width: 500px">
-                                                <textarea onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" rows="2" class="form-control description" type="text" placeholder="Description">{{item.description}}</textarea>
+                                                <textarea onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" rows="2" class="form-control description" type="text"
+                                                    placeholder="Description">{{item.description}}</textarea>
                                             </td>
                                             <td>
                                                 <input class="form-control date" disabled value="{{item.billingDate}}" style="width:100px" placeholder="Date">
@@ -207,12 +208,12 @@
 
 
                                             <td>
-                                                <input class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
+                                                <input class="form-control" value="{{item.amount}}" OnlyNumber onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
                                                     style="width:100px" placeholder="Amount">
 
                                             </td>
                                             <td>
-                                                <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
+                                                <a (click)="RemoveInvoice(item)" class="btn btn-danger btn-sm remove-item">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </a>
                                                 <input type="hidden" class="hfBillingId" value="{{item.id}}">
@@ -223,10 +224,6 @@
                                     <tfoot id="TotalsSection">
 
                                         <tr class="totals-row" id="TotalRow">
-                                            <!-- <td class="wide-cell" colspan="1">
-                                        <button type="button" (click)="AddMoreInvoice()" id="AddProduct" class="btn btn-small btn-primary">
-                                            <i class="fa fa-plus"></i> Add Line</button>
-                                    </td> -->
                                             <td colspan="3">
                                                 <strong>
                                                     <!-- <input type="text" id="label_total" value="Total" class="invoice-input" style="font-weight: bold;"> -->
@@ -241,8 +238,7 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <!-- <button class="btn btn bg-navy margin pull-right" (click)="SaveInvoice()" style="margin-right:0px" type="submit">Submit</button> -->
-                           
+
                         </div>
                     </div>
                 </div>
