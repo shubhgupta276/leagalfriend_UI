@@ -404,7 +404,7 @@ export class AddCaseComponent implements OnInit {
       const objEditCase: FormData = new FormData();
       const x = {
         'branchId': data.branch[0].id,
-        'childCase': (data.childCase === undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
+        'childCase': (!data.childCase ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
         'courtCaseId': data.courtCaseId,
         'courtId': (data.court) ? data.court[0].id : null,
         'customerId': data.customerName[0].id,
@@ -414,7 +414,7 @@ export class AddCaseComponent implements OnInit {
         'managerId': data.manager[0].id,
         'nextHearingDate': this.datePipe.transform(data.nextHearingDate, 'yyyy-MM-dd'),
         'oppLawyer': data.oppLawyer,
-        'parentCaseId': (data.parentCase === undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
+        'parentCaseId': (!data.parentCase ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
         'recourseId': data.recourse[0].id,
         'remark': data.remark,
         'stageId': data.stage[0].id,
@@ -427,9 +427,8 @@ export class AddCaseComponent implements OnInit {
 
       this.authService.submitEditCaseUser(objEditCase).subscribe(
         result => {
-
-          if (result.body.httpCode == 200) { //success
-            // this.BindCaseGridOnEdit(data)
+          result = result.body;
+          if (result.httpCode == 200) { //success
             this.addCaseSuccess.emit();
             $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
             $('#addCaseModal').modal('hide');
@@ -441,7 +440,7 @@ export class AddCaseComponent implements OnInit {
           console.log(err);
         });
     } catch (err) {
-
+      console.log(err);
     }
   }
   BindCaseGridOnEdit(data) {
