@@ -94,11 +94,13 @@ export class CaseComponent implements OnInit, OnDestroy {
     private _storageService: StorageService, private _sharedService: SharedService) {
     this.caseCompleted = CasesCompleted;
   }
+
   ngOnDestroy() {
     this.branchSubscription.unsubscribe();
-    //this.isLoad=true;
   }
+
   ngOnInit() {
+
     this.GetAllCourt();
     this.rowSelect = !this.isViewOnly;
     this._activatedRoute.params.subscribe((param) => {
@@ -136,14 +138,10 @@ export class CaseComponent implements OnInit, OnDestroy {
     }, function (start_date, end_date) {
       $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
     });
-    var self = this;
-    $('body').on('change', '.newHiringDate', function () {
-      self.updateNewHiringDate($(this).val())
-      $(this).closest('mat-cell')
-        .animate({ backgroundColor: '#88d288' }, 1000)
-        .animate({ backgroundColor: '' }, 2000);
+    const self = this;
+    $('body').unbind().on('change', '.newHiringDate', function (event) {
+      self.updateNewHiringDate($(this));
     });
-
   }
 
   GetAllCourt() {
@@ -531,20 +529,27 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.newHiringCasedata = items;
 
   }
-  updateNewHiringDate(newHiring) {
-    this.newHiringCasedata.nextHearingDate = newHiring;
-    this.caseRunning.forEach(element => {
-      if (element.id == this.newHiringCasedata.id) {
-        element.nextHearingDate = newHiring;
-        return false;
-      }
-    })
-    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
-      result => {
-      },
-      err => {
-        console.log(err);
+  updateNewHiringDate(ref) {
+    try {
+      const newHiring = $(ref).val();
+      this.newHiringCasedata.nextHearingDate = newHiring;
+      this.caseRunning.forEach(data => {
+        if (data.id === this.newHiringCasedata.id) {
+          data.nextHearingDate = newHiring;
+          return false;
+        }
       });
+      this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
+        result => {
+          $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
+          $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
+        },
+        err => {
+          console.log(err);
+        });
+    } catch (err) {
+
+    }
 
   }
   onMouseHover(i) {

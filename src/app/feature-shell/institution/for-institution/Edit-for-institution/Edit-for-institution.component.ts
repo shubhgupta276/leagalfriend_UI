@@ -269,7 +269,6 @@ export class EditForInstitutionComponent implements OnInit {
 
     if (this.editForInstitutionForm.valid) {
       data.userId = this._storageService.getUserId();
-      data.stageUpdated = data.caseStage != this.editData.caseStage;
       const document = (data.uploadFile) ? data.uploadFile[0] : null;
       const formdata: FormData = new FormData();
       formdata.append('file', document);
