@@ -56,10 +56,12 @@ export class BillingComponent implements OnInit {
         }
     }
     ngOnInit() {
-        this.clickInstitutional();
         this.setActionConfig();
         const self = this;
         this.getAllInstitutions();
+        setTimeout(() => {
+            this.clickInstitutional();
+        }, 600);
         this.getAllRecourses();
         $($.document).ready(function () {
             $('#reservation').daterangepicker({
@@ -172,7 +174,6 @@ export class BillingComponent implements OnInit {
                     result.institutions.forEach(element => {
                         this.arAllInstitution.push(element);
                     });
-                    this.getBillingData();
                 }
             });
     }
