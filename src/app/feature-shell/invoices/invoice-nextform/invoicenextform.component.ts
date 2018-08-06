@@ -16,6 +16,7 @@ declare let Swiper;
 @Component({
     selector: 'app-invoicenextform',
     templateUrl: './invoicenextform.html',
+    styleUrls: ['./invoicenextform.css']
 
 })
 export class InvoiceNextFormComponent implements OnInit {
@@ -33,6 +34,8 @@ export class InvoiceNextFormComponent implements OnInit {
     @Output() pageChange: EventEmitter<number>;
     JSON: any;
     invoiceTemplateInfo: any;
+    isCustomCaseEntry: boolean;
+    isCustomSaveClick: boolean = false;
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
         private router: Router, public sanitizer: DomSanitizer, private invoiceService: InvoicesService) {
         Window['InvoiceFormComponent'] = this;
@@ -40,9 +43,9 @@ export class InvoiceNextFormComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isCustomCaseEntry = false;
         this.BindInvoice();
         this.StoreInvoiceTemplateInfo();
-
     }
 
     StoreInvoiceTemplateInfo() {
@@ -72,58 +75,107 @@ export class InvoiceNextFormComponent implements OnInit {
     BindInvoice() {
         this.arrLocalInvoiceDetails = this.getInvoiceStorageDetail();
         this.arrInvoiceDetails = [];
-        let totalDescription = '';
+        // let totalDescription = '';
         this.arrLocalInvoiceDetails.forEach((element, index) => {
             element.isInvoiceFirstLoad = false;
-            totalDescription = '';
-            totalDescription = totalDescription + ('CaseId : ' + element.caseId
-                + ',  Recourse : ' + element.recourseName + ', Stage : ' + element.stageName);
-            this.arrInvoiceDetails.push(
-                {
-                    id: element.id,
-                    description: totalDescription,
-                    amount: element.amount,
-                    quantity: 1,
-                    billingDate: element.billingDate,
-                    institutionId: element.institutionId
-                });
+            // totalDescription = '';
+            // totalDescription = totalDescription + ('CaseId : ' + (element.caseId
+            //     + ',  Recourse : ' + element.recourseName + ', Stage : ' + element.stageName);
+            // element.description = totalDescription;
+            this.generateInvoiceViewDetail(element);
         });
+
         this.sumTotal();
         this.setInvoiceStorageDetail();
+    }
+
+    generateInvoiceViewDetail(element) {
+        if (element.isCustom) {
+            this.isCustomCaseEntry = true;
+        }
+        this.arrInvoiceDetails.push(
+            {
+                isCustom: (element.isCustom) ? element.isCustom : false,
+                id: (element.id) ? element.id : 0,
+                description: element.description,
+                amount: element.amount,
+                quantity: 1,
+                billingDate: element.billingDate,
+                institutionId: (element.institutionId) ? element.institutionId : 0
+            });
     }
 
     sumTotal() {
         const $this = this;
         this.totalAmount = 0;
         this.arrLocalInvoiceDetails.forEach(function (data) {
-            $this.totalAmount += parseFloat(data.amount);
+            if (data.amount && !isNaN(data.amount)) {
+                $this.totalAmount += parseFloat(data.amount);
+            }
         });
     }
 
-    RemoveInvoice(data) {
+    RemoveInvoice(currentRow) {
         if (confirm('Are you sure you want to delete?')) {
+            const deleteIndex = $(currentRow).closest('tr').index();
             const ar = this.arrInvoiceDetails;
             if (this.arrInvoiceDetails.length > 0) {
-                const deleteIndex = this.arrInvoiceDetails.findIndex(x => x.id === data.id);
                 this.arrInvoiceDetails.splice(deleteIndex, 1);
                 this.arrLocalInvoiceDetails.splice(deleteIndex, 1);
             }
             this.CalculateFinalAmount(null);
         }
+        this.checkCustomCaseExist();
     }
 
     CalculateFinalAmount(currentRow) {
+        let isCustom;
         if (currentRow != null) {
             currentRow = $(currentRow).closest('tr');
-            this.arrLocalInvoiceDetails.filter(
-                invoiceDetails => {
-                    if (invoiceDetails.id == $(currentRow).find('.hfBillingId').val()) {
-                        invoiceDetails.amount = $(currentRow).find('.amount').val();
-                        invoiceDetails.description = $(currentRow).find('.description').val();
-                    }
-                });
+            isCustom = JSON.parse($(currentRow).find('.hfIsCustom').val());
+            const index = $(currentRow).index();
+            this.arrLocalInvoiceDetails[index].amount = $(currentRow).find('.amount').val();
+            this.arrLocalInvoiceDetails[index].description = $(currentRow).find('.description').val();
+            this.arrLocalInvoiceDetails[index].billingDate = $(currentRow).find('.billingDate').val();
         }
         this.sumTotal();
-        this.setInvoiceStorageDetail();
+        if (!isCustom) {
+            this.setInvoiceStorageDetail();
+        }
+    }
+
+    checkCustomCaseExist() {
+        const data = this.arrLocalInvoiceDetails.find(x => x.isCustom === true);
+        if (data) {
+            this.isCustomCaseEntry = true;
+        } else {
+            this.isCustomCaseEntry = false;
+        }
+    }
+
+    saveCustomCase() {
+        this.isCustomSaveClick = true;
+        let isValid = true;
+        this.arrLocalInvoiceDetails.forEach(function (data) {
+            if (data.amount === '' || data.description.length <= 0 || data.billingDate.length <= 0) {
+                isValid = false;
+            }
+        });
+        if (isValid) {
+            this.setInvoiceStorageDetail();
+        } else {
+            alert('Please enter all fields');
+        }
+    }
+
+    addCustomRow() {
+        const obj = {
+            isCustom: true,
+            description: '',
+            billingDate: '',
+            amount: ''
+        };
+        this.arrLocalInvoiceDetails.push(obj);
+        this.generateInvoiceViewDetail(obj);
     }
 }

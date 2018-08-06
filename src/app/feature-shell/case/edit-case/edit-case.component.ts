@@ -634,7 +634,7 @@ export class EditCaseComponent implements OnInit {
     var reqData = {
       userId: this._storageService.getUserId(),
     };
-    this.authService.listCustomers(reqData).subscribe(
+    this.authService.listCustomers(reqData, false).subscribe(
 
       result => {
 

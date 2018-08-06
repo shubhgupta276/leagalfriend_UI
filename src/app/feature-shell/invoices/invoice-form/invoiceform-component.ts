@@ -40,10 +40,15 @@ export class InvoiceFormComponent implements OnInit {
         let totalAmount = 0;
         let totalDescription = '';
         let description = '';
+        debugger
         invoiceDetails.forEach(element => {
             totalAmount = totalAmount + parseFloat(element.amount);
-            description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
-                + ', Stage : ' + element.stageName + '\n');
+            if (element.isCustom) {
+                description = element.description + '\n';
+            } else {
+                description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
+                    + ', Stage : ' + element.stageName + '\n');
+            }
             totalDescription = totalDescription + description;
             element.description = description;
         });
@@ -56,7 +61,7 @@ export class InvoiceFormComponent implements OnInit {
             id: invoiceDetails.id,
             institutionId: invoiceDetails.institutionId
         };
-        localStorage.setItem('invoiceDetails', JSON.stringify(invoiceDetails));
+       // localStorage.setItem('invoiceDetails', JSON.stringify(invoiceDetails));
 
     }
 
