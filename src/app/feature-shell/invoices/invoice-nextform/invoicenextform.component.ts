@@ -157,11 +157,12 @@ export class InvoiceNextFormComponent implements OnInit {
         this.isCustomSaveClick = true;
         let isValid = true;
         this.arrLocalInvoiceDetails.forEach(function (data) {
-            if (data.amount === '' || data.description.length <= 0 || data.billingDate.length <= 0) {
+            if (data.amount === '' || data.description.trim().length <= 0 || data.billingDate.trim().length <= 0) {
                 isValid = false;
             }
         });
         if (isValid) {
+            $.toaster({ priority: 'success', title: 'Success', message: 'Add Successfully.' });
             this.setInvoiceStorageDetail();
         } else {
             alert('Please enter all fields');

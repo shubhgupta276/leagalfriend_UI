@@ -77,29 +77,29 @@ export class InvoiceComponent implements OnInit {
   }
 
   onActionBtnClick(event) {
-    if (event.eventType == 'cancel') {
+    if (event.eventType === 'cancel') {
       this.cancelInvoice(event.data.id);
-    }
-    else if (event.eventType == 'history') {
-      var data = event.data;
-      var invoicedetails = [{
-        amount: data.amount,
-        billingDate: data.billingDate,
-        caseId: data.billingIds[0].caseId,
-        description: data.description,
-        id: data.id,
-        institutionId: data.billingIds[0].institution.id,
-        institutionName: data.billingIds[0].institution.institutionName,
-        isInvoiceFirstLoad: true,
-        recourseId: data.billingIds[0].recourse.id,
-        recourseName: data.billingIds[0].recourse.recourseName,
-        stageId: data.billingIds[0].stage.id,
-        stageName: data.billingIds[0].stage.stageName,
-        userId: 0,
-        isFromInvoice: true
-      }];
-      localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
-      this.router.navigateByUrl('/admin/invoices/invoiceform');
+    } else if (event.eventType === 'edit') {
+      const data = event.data;
+      debugger
+      // const invoicedetails = [{
+      //   amount: data.amount,
+      //   billingDate: data.billingDate,
+      //   caseId: data.billingIds[0].caseId,
+      //   description: data.description,
+      //   id: data.id,
+      //   institutionId: data.billingIds[0].institution.id,
+      //   institutionName: data.billingIds[0].institution.institutionName,
+      //   isInvoiceFirstLoad: true,
+      //   recourseId: data.billingIds[0].recourse.id,
+      //   recourseName: data.billingIds[0].recourse.recourseName,
+      //   stageId: data.billingIds[0].stage.id,
+      //   stageName: data.billingIds[0].stage.stageName,
+      //   userId: 0,
+      //   isFromInvoice: true
+      // }];
+      // localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
+      // this.router.navigateByUrl('/admin/invoices/invoiceform');
     }
   }
 
@@ -179,7 +179,7 @@ export class InvoiceComponent implements OnInit {
         });
         setTimeout(() => {
           this.dataTableComponent.ngOnInit();
-        });
+        }, 500);
 
       },
       err => {
