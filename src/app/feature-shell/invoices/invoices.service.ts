@@ -7,7 +7,7 @@ import { StorageService } from '../../shared/services/storage.service';
 import { Observable } from 'rxjs/Observable';
 import {
     InvoiceTemplate, addInstitutionalInvoice, addIndividualInvoice,
-    getIndividualInvoice, getInstitutionalInvoice, invoiceCancel
+    getIndividualInvoice, getInstitutionalInvoice, invoiceCancel, updatePaymentStatus
 } from './invoices.config';
 @Injectable()
 export class InvoicesService {
@@ -44,8 +44,14 @@ export class InvoicesService {
         const apiUrl = url + '?userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
+  
     caneclInvoice(invoiceId: any): Observable<any> {
         const apiUrl = invoiceCancel + '?invoiceId=' + invoiceId;
+        return this.apiGateWay.put<any>(apiUrl, null);
+    }
+
+    updatePaymentStatus(invoiceId: any): Observable<any> {
+        const apiUrl = updatePaymentStatus + '?invoiceId=' + invoiceId;
         return this.apiGateWay.put<any>(apiUrl, null);
     }
 

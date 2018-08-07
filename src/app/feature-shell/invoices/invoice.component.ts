@@ -1,22 +1,22 @@
-import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter } from "rxjs/operator/filter";
+import { filter } from 'rxjs/operator/filter';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { HtmlParser } from "@angular/compiler";
+import { HtmlParser } from '@angular/compiler';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
-import { DataTableComponent } from "../../shared/components/data-table/data-table.component";
-import { InvoicesService } from "./invoices.service";
-import { invoiceTableConfig } from "./invoices.config";
-import { ActionColumnModel } from "../../shared/models/data-table/action-column.model";
-import { SharedService } from "../../shared/services/shared.service";
+import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
+import { InvoicesService } from './invoices.service';
+import { invoiceTableConfig } from './invoices.config';
+import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
+import { SharedService } from '../../shared/services/shared.service';
 
 
 declare var $;
 declare let canvas;
 @Component({
-  selector: "app-invoice",
-  templateUrl: "./invoice.component.html",
+  selector: 'app-invoice',
+  templateUrl: './invoice.component.html',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./invoice.component.css'],
 
@@ -81,7 +81,13 @@ export class InvoiceComponent implements OnInit {
       this.cancelInvoice(event.data.id);
     } else if (event.eventType === 'edit') {
       const data = event.data;
-      debugger
+      // debugger
+      // this.invoiceService.updatePaymentStatus(data.id).subscribe((result) => {
+      //   debugger
+      // },
+      //   err => {
+      //     console.log(err);
+      //   })
       // const invoicedetails = [{
       //   amount: data.amount,
       //   billingDate: data.billingDate,
@@ -135,7 +141,7 @@ export class InvoiceComponent implements OnInit {
 
   showModal(invoice) {
     this.createForm(invoice);
-    $("#filterCaseModal").modal("show");
+    $('#filterCaseModal').modal('show');
   }
 
   cancelInvoice(invoiceId) {

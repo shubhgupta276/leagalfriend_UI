@@ -246,10 +246,11 @@ export class EditCaseComponent implements OnInit {
 
 
     this.courtSelected = [];
-
-    const objCourt = this.Court.filter(x => x.id === c.courtId);
-    this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
-    this.selectedCourt = this.courtSelected[0];
+    if (c.courtId) {
+      const objCourt = this.Court.filter(x => x.id === c.courtId);
+      this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
+      this.selectedCourt = this.courtSelected[0];
+    }
     if (c.stateId != null) {
       this.stateSelected = [];
       const objstate = this.State.filter(x => x.id === c.stateId);
