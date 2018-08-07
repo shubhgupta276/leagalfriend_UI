@@ -27,6 +27,15 @@ export class InvoicesService {
         }
         return this.apiGateWay.post<any>(url, data);
     }
+
+    saveCustomInvoice(data: any, isInstitutional): Observable<any> {
+        let url = 'billing';
+        if (!isInstitutional) {
+            url = 'billing/individual';
+        }
+        return this.apiGateWay.post<any>(url, data);
+    }
+
     getInvoiceData(isInstitutional): Observable<any> {
         let url = getInstitutionalInvoice;
         if (!isInstitutional) {

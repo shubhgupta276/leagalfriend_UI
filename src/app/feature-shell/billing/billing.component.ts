@@ -105,11 +105,18 @@ export class BillingComponent implements OnInit {
         this.dataTableComponent.resetFilters();
     }
     CreateInvoice() {
+        let institutionId = 0;
         this.selectedRowsCheckbox.forEach(item => {
             item.isInvoiceFirstLoad = true;
             item.isFromInvoice = false;
+            institutionId = item.institutionId;
             item.isInstitutional = this.isInstitutionalTab;
         });
+        const otherData = {
+            isInstitutional: this.isInstitutionalTab,
+            institutionId: institutionId
+        };
+        localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherData));
         localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
     }
     getBillingData() {
