@@ -327,6 +327,7 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
 
     clearFilters() {
         this.isFilterApplied = false;
+        this.changeRecourse(null);
         this.resetAllFilter();
         this.filterTable();
     }

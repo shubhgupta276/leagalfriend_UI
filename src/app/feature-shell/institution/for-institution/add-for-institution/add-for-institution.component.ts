@@ -28,10 +28,17 @@ export class AddForInstitutionComponent implements OnInit {
   arCityData: any[] = [];
   showZipError: boolean = false;
   showCsvError: boolean = false;
-
+  isFirstCall: boolean = false;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService, private _storageService: StorageService) {
     this.AddForInstitution();
     this.bindBranch();
+  }
+
+  ngOnInit() {
+    if (this._institutionService.isAgainstInstitution) {
+      this.ForInstitution = 'Against Institution';
+    }
+    $('#ERROR_casefile').hide();
   }
 
   AddForInstitution() {
@@ -80,16 +87,11 @@ export class AddForInstitutionComponent implements OnInit {
   }
 
   bindBranch() {
-    let data = this._storageService.getBranchData();
-    if (data)
+    this.isFirstCall = true;
+    const data = this._storageService.getBranchData();
+    if (data) {
       this.branchData = data;
-  }
-
-  ngOnInit() {
-    if (this._institutionService.isAgainstInstitution) {
-      this.ForInstitution = 'Against Institution';
     }
-    $('#ERROR_casefile').hide();
   }
 
   upload(event: any) {
@@ -108,6 +110,7 @@ export class AddForInstitutionComponent implements OnInit {
         this.showZipError = false;
       }
     }
+    this.isFirstCall = false;
   }
 
   validateFile(name: string, isZipFile: boolean = false): boolean {
