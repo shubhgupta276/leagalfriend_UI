@@ -94,6 +94,15 @@
                 <a *ngIf="actionColumnConfig.showCancel" title="Cancel" (click)="onActionBtnClick($event, row, 'cancel')">
                     <img width="20px" src="/assets/dist/img/close.png" />
                 </a>
+                <ng-container *ngFor="let CustomAction of actionColumnConfig.actionList">
+                    &nbsp;
+                    <a title="{{CustomAction.title}}" (click)="onActionBtnClick($event, row, CustomAction.eventType)">
+                        <img *ngIf="CustomAction.isImage" width="20px" [src]="CustomAction.icon" />
+                        <ng-container *ngIf="!CustomAction.isImage">
+                            <span [innerHTML]="CustomAction.icon"></span>
+                        </ng-container>
+                    </a>
+                </ng-container>
 
             </mat-cell>
         </ng-container>
