@@ -5,4 +5,5 @@ export class ActionColumnModel {
     showEdit: boolean = false;
     showHistory: boolean = false;
     showCancel: boolean = false;
+    actionList?: any[] = [];
 }

@@ -60,6 +60,12 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig.showCancel = true;
     this.actionColumnConfig.showEdit = true;
     this.actionColumnConfig.moduleName = 'Invoice';
+    this.actionColumnConfig.actionList.push({
+      eventType: 'payment',
+      title: 'Payment Received',
+      isImage: false,
+      icon: '<i class="fa fa-credit-card"></i>'
+    });
   }
 
   filterTableData() {
@@ -77,35 +83,48 @@ export class InvoiceComponent implements OnInit {
   }
 
   onActionBtnClick(event) {
-    if (event.eventType === 'cancel') {
-      this.cancelInvoice(event.data.id);
-    } else if (event.eventType === 'edit') {
+    try {
+
       const data = event.data;
-      // debugger
-      // this.invoiceService.updatePaymentStatus(data.id).subscribe((result) => {
-      //   debugger
-      // },
-      //   err => {
-      //     console.log(err);
-      //   })
-      // const invoicedetails = [{
-      //   amount: data.amount,
-      //   billingDate: data.billingDate,
-      //   caseId: data.billingIds[0].caseId,
-      //   description: data.description,
-      //   id: data.id,
-      //   institutionId: data.billingIds[0].institution.id,
-      //   institutionName: data.billingIds[0].institution.institutionName,
-      //   isInvoiceFirstLoad: true,
-      //   recourseId: data.billingIds[0].recourse.id,
-      //   recourseName: data.billingIds[0].recourse.recourseName,
-      //   stageId: data.billingIds[0].stage.id,
-      //   stageName: data.billingIds[0].stage.stageName,
-      //   userId: 0,
-      //   isFromInvoice: true
-      // }];
-      // localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
-      // this.router.navigateByUrl('/admin/invoices/invoiceform');
+      if (event.eventType === 'cancel') {
+        this.cancelInvoice(data.id);
+      } else if (event.eventType === 'edit') {
+        // const invoicedetails = [{
+        //   amount: data.amount,
+        //   billingDate: data.billingDate,
+        //   caseId: data.billingIds[0].caseId,
+        //   description: data.description,
+        //   id: data.id,
+        //   institutionId: data.billingIds[0].institution.id,
+        //   institutionName: data.billingIds[0].institution.institutionName,
+        //   isInvoiceFirstLoad: true,
+        //   recourseId: data.billingIds[0].recourse.id,
+        //   recourseName: data.billingIds[0].recourse.recourseName,
+        //   stageId: data.billingIds[0].stage.id,
+        //   stageName: data.billingIds[0].stage.stageName,
+        //   userId: 0,
+        //   isFromInvoice: true
+        // }];
+        // localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
+        // this.router.navigateByUrl('/admin/invoices/invoiceform');
+      } else if (event.eventType === 'payment') {
+        this.invoiceService.updatePaymentStatus(data.id).subscribe(
+          (result) => {
+            result = result.body;
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+            if (this.isInstitutionalTab) {
+              this.clickInstitutional();
+            } else {
+              this.clickIndividual();
+            }
+          },
+          err => {
+            console.log(err);
+          });
+      }
+
+    } catch (err) {
+      console.log(err);
     }
   }
 
