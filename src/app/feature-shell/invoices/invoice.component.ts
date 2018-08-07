@@ -111,12 +111,12 @@ export class InvoiceComponent implements OnInit {
         this.invoiceService.updatePaymentStatus(data.id).subscribe(
           (result) => {
             result = result.body;
-            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
             if (this.isInstitutionalTab) {
               this.clickInstitutional();
             } else {
               this.clickIndividual();
             }
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
           },
           err => {
             console.log(err);
