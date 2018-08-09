@@ -202,7 +202,7 @@
                                                     placeholder="Description">{{item.description}}</textarea>
                                             </td>
                                             <td>
-                                                <input class="form-control date" *ngIf="!item.isCustom" disabled value="{{item.billingDate}}" style="width:150px"
+                                                <input class="form-control date billingDate" *ngIf="!item.isCustom" disabled value="{{item.billingDate}}" style="width:150px"
                                                     placeholder="Date">
                                                 <ng-container *ngIf="item.isCustom">
                                                     <!-- <input class="form-control date billingDate" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" value="{{item.billingDate}}"

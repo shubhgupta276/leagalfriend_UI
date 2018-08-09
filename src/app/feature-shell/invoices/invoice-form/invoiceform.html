@@ -100,8 +100,7 @@
                                         <tr>
                                             <td style="text-align: right;font-weight: bold;font-size: 17px;padding-top: 9px;">Tax</td>
                                             <td>
-                                                <input type="text" maxlength="5" (change)="taxChange($event.target.value);" class="form-control"
-                                                    style="width:70px;display: inline-block;">%
+                                                <input type="text" maxlength="5" (change)="taxChange($event.target.value);" class="form-control" style="width:70px;display: inline-block;">%
                                             </td>
                                             <td>
                                                 {{taxableAmount}}
@@ -123,7 +122,7 @@
                                             </td>
                                             <td colspan="2">
                                                 <div *ngIf="arrInvoiceDetails && arrInvoiceDetails.totalAmount">
-                                                    <label id="totalAmount">{{(arrInvoiceDetails.totalAmount) |currency:'INR':true}}</label>
+                                                    <label id="totalAmount">{{(arrInvoiceDetails.totalAmount + taxableAmount) |currency:'INR':true}}</label>
                                                 </div>
                                             </td>
                                         </tr>

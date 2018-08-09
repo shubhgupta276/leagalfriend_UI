@@ -75,16 +75,10 @@ export class InvoiceNextFormComponent implements OnInit {
     BindInvoice() {
         this.arrLocalInvoiceDetails = this.getInvoiceStorageDetail();
         this.arrInvoiceDetails = [];
-        // let totalDescription = '';
         this.arrLocalInvoiceDetails.forEach((element, index) => {
             element.isInvoiceFirstLoad = false;
-            // totalDescription = '';
-            // totalDescription = totalDescription + ('CaseId : ' + (element.caseId
-            //     + ',  Recourse : ' + element.recourseName + ', Stage : ' + element.stageName);
-            // element.description = totalDescription;
             this.generateInvoiceViewDetail(element);
         });
-
         this.sumTotal();
         this.setInvoiceStorageDetail();
     }
@@ -100,8 +94,7 @@ export class InvoiceNextFormComponent implements OnInit {
                 description: element.description,
                 amount: element.amount,
                 quantity: 1,
-                billingDate: element.billingDate,
-                institutionId: (element.institutionId) ? element.institutionId : 0
+                billingDate: element.billingDate
             });
     }
 
@@ -130,7 +123,6 @@ export class InvoiceNextFormComponent implements OnInit {
 
     CalculateFinalAmount(currentRow) {
         let isCustom;
-        debugger
         if (currentRow != null) {
             currentRow = $(currentRow).closest('tr');
             isCustom = JSON.parse($(currentRow).find('.hfIsCustom').val());

@@ -44,7 +44,16 @@ export class InvoicesService {
         const apiUrl = url + '?userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
-  
+
+    getInvoiceDetail(invoiceId, isInstitutional): Observable<any> {
+        let url = 'invoice/institutional/single';
+        if (!isInstitutional) {
+            url = 'invoice/individual/single';
+        }
+        url = url + '?invoiceId=' + invoiceId;
+        return this.apiGateWay.get<any>(url, null);
+    }
+
     caneclInvoice(invoiceId: any): Observable<any> {
         const apiUrl = invoiceCancel + '?invoiceId=' + invoiceId;
         return this.apiGateWay.put<any>(apiUrl, null);

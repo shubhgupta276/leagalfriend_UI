@@ -10,6 +10,8 @@ import { InvoicesService } from './invoices.service';
 import { invoiceTableConfig } from './invoices.config';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { SharedService } from '../../shared/services/shared.service';
+import { debuglog } from 'util';
+import { StorageService } from '../../shared/services/storage.service';
 
 
 declare var $;
@@ -35,13 +37,16 @@ export class InvoiceComponent implements OnInit {
   moduleName = 'Invoice';
   anyForm: any;
   isPageLoad: boolean;
+  invoiceId: number;
+  paymentReceiveDate: any;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService,
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private _storageService: StorageService,
     private router: Router, private _sharedService: SharedService) {
     this.createForm(null);
     Window['InvoiceFormComponent'] = this;
   }
   ngOnInit() {
+    Window['InvoiceComponent'] = this;
     this.isPageLoad = true;
     this.clickInstitutional();
     this.setActionConfig();
@@ -76,8 +81,7 @@ export class InvoiceComponent implements OnInit {
     if (fromToDate && fromToDate.length > 0) {
       this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
         this._sharedService.convertStrToDate(fromToDate[1]), 'invoiceDate');
-    }
-    else {
+    } else {
       this.dataTableComponent.resetDateFilter();
     }
 
@@ -92,47 +96,63 @@ export class InvoiceComponent implements OnInit {
       if (event.eventType === 'cancel') {
         this.cancelInvoice(data.id);
       } else if (event.eventType === 'edit') {
-        // const invoicedetails = [{
-        //   amount: data.amount,
-        //   billingDate: data.billingDate,
-        //   caseId: data.billingIds[0].caseId,
-        //   description: data.description,
-        //   id: data.id,
-        //   institutionId: data.billingIds[0].institution.id,
-        //   institutionName: data.billingIds[0].institution.institutionName,
-        //   isInvoiceFirstLoad: true,
-        //   recourseId: data.billingIds[0].recourse.id,
-        //   recourseName: data.billingIds[0].recourse.recourseName,
-        //   stageId: data.billingIds[0].stage.id,
-        //   stageName: data.billingIds[0].stage.stageName,
-        //   userId: 0,
-        //   isFromInvoice: true
-        // }];
-        // localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
-        // this.router.navigateByUrl('/admin/invoices/invoiceform');
-      } else if (event.eventType === 'payment') {
-        this.invoiceService.updatePaymentStatus(data.id).subscribe(
+
+        this.invoiceService.getInvoiceDetail(data.id, this.isInstitutionalTab).subscribe(
           (result) => {
-            result = result.body;
-            if (result.httpCode === 200) {
-              if (this.isInstitutionalTab) {
-                this.clickInstitutional();
-              } else {
-                this.clickIndividual();
-              }
-              $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
-            } else {
-              $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+            if (result) {
+              this._storageService.clearInvoiceData();
+              const invoice = result.invoice;
+              const billingArray = result.institutionalBillings;
+              const invoicedetails = [{
+                isEditMode: event.eventType === 'edit',
+                isViewMode: event.eventType === 'view',
+                invoice: invoice,
+                billingArray: billingArray
+
+              }];
+              localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
+              this.router.navigateByUrl('/admin/invoices/invoiceform');
             }
           },
-          err => {
-            console.log(err);
-          });
+          err => console.log(err)
+        );
+
+
+      } else if (event.eventType === 'payment') {
+        this.paymentReceiveDate = '';
+        this.invoiceId = data.id;
+        $('#paymentReceivedPopup').modal('show');
       }
 
     } catch (err) {
       console.log(err);
     }
+  }
+
+  payemntReceiveDateChange(value) {
+    this.paymentReceiveDate = value;
+  }
+
+  paymentReceived() {
+    const date = new Date(this.paymentReceiveDate);
+    // this.invoiceService.updatePaymentStatus(this.invoiceId).subscribe(
+    //   (result) => {
+    //     result = result.body;
+    //     if (result.httpCode === 200) {
+    //       if (this.isInstitutionalTab) {
+    //         this.clickInstitutional();
+    //       } else {
+    //         this.clickIndividual();
+    //       }
+    // $('#paymentReceivedPopup').modal('hide');
+    //       $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+    //     } else {
+    //       $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+    //     }
+    //   },
+    //   err => {
+    //     console.log(err);
+    //   });
   }
 
   searchFilter(value) {
@@ -174,7 +194,6 @@ export class InvoiceComponent implements OnInit {
     if (confirm('Are you sure you want to cancel this invoice?')) {
       this.invoiceService.caneclInvoice(invoiceId).subscribe(
         result => {
-          // debugger
           $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });
           this.bindInvoiceAfterCancelled(invoiceId);
         },
@@ -188,10 +207,9 @@ export class InvoiceComponent implements OnInit {
     this.tableInputData.filter((item: any, index: number) => {
       if (item.id == invoiceId) {
         this.tableInputData.splice(index, 1);
-        this.dataTableComponent.ngOnInit();
-
+        this.getInvoice();
       }
-    })
+    });
   }
 
   getInvoice() {

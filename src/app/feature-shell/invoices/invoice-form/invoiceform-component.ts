@@ -4,6 +4,7 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { InvoicesService } from '../invoices.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { DatePipe } from '../../../../../node_modules/@angular/common';
 declare let $;
 @Component({
     selector: 'app-invoiceform',
@@ -29,14 +30,13 @@ export class InvoiceFormComponent implements OnInit {
     taxableAmount: number = 0;
     taxPercent: number = 0;
     todayDate: number = Date.now();
-    constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
+    constructor(private _institutionService: InstitutionService,
+        private _storageService: StorageService, private _datePipe: DatePipe,
         private _invoicesService: InvoicesService, public sanitizer: DomSanitizer, private router: Router, ) {
     }
 
     ngOnInit() {
         this.setInvoiceOtherDetails();
-        this.GetBillFrom();
-        this.GetAllInstitute();
         this.BindInvoice();
     }
 
@@ -54,36 +54,66 @@ export class InvoiceFormComponent implements OnInit {
 
     setInvoiceOtherDetails() {
         const otherDetail = JSON.parse(localStorage.getItem('invoiceOtherDetails'));
-        this.isInstitutional = otherDetail.isInstitutional;
-        this.institutionId = otherDetail.institutionId;
+        if (otherDetail) {
+            this.isInstitutional = otherDetail.isInstitutional;
+            this.institutionId = otherDetail.institutionId;
+            this.GetBillFrom();
+            this.GetAllInstitute();
+        }
     }
 
     BindInvoice() {
-        const invoiceDetails = this.getInvoiceStorageDetail();
+        let invoiceDetails = this.getInvoiceStorageDetail();
+        const arEditInvoiceDetails = [];
         let totalAmount = 0;
         invoiceDetails.forEach(element => {
-            let description = '';
-            totalAmount = totalAmount + parseFloat(element.amount);
-            if (element.isCustom) {
-                //  description = element.description.replace('\n', '') + '\n';
-            } else {
-                if (!element.description) {
-                    description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
-                        + ', Stage : ' + element.stageName + '\n');
-                    element.description = description;
-                }
-                this.description += ('CaseId : ' + element.caseId + ', ');
-            }
 
+            if (element.isEditMode || element.isViewMode) {
+                this.invoiceTemplateInfo.billToAddress = element.invoice.billTo;
+                this.invoiceTemplateInfo.CompanyAddress = element.invoice.billFrom;
+                this.invoiceTemplateInfo.termEndCond = element.invoice.termsCondition;
+                this.description = element.invoice.description;
+                this.institutionId = element.invoice.institution.id;
+
+                element.billingArray.forEach(ba => {
+                    const tempDescription = (!ba.billingDesc) ?
+                        ('CaseId : ' + ba.caseId + ',  Recourse : ' + ba.recourse.recourseName
+                            + ', Stage : ' + ba.stage.stageName + '\n') : null;
+                    arEditInvoiceDetails.push({
+                        caseId: ba.caseId,
+                        description: ba.billingDesc,
+                        billingDate: this._datePipe.transform(new Date(ba.billingDate), 'dd MMM yyyy'),
+                        amount: ba.amount,
+                        id: ba.id,
+                        isCustom: (ba.caseId) ? false : true
+                    });
+                    totalAmount = totalAmount + ba.amount;
+                });
+                invoiceDetails = arEditInvoiceDetails;
+
+            } else {
+                let description = '';
+                totalAmount = totalAmount + parseFloat(element.amount);
+                if (element.isCustom) {
+                    //  description = element.description.replace('\n', '') + '\n';
+                } else {
+                    if (!element.description) {
+                        description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
+                            + ', Stage : ' + element.stageName + '\n');
+                        element.description = description;
+                    }
+                    this.description += ('CaseId : ' + element.caseId + ', ');
+                }
+            }
         });
+
         this.invoiceTemplateInfo.isFromInvoice = (invoiceDetails && invoiceDetails.length > 0)
             ? invoiceDetails[0].isFromInvoice : false;
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
             totalQuantity: invoiceDetails.length,
             invoiceNo: Math.floor(Math.random() * 90000),
-            id: invoiceDetails.id,
-            institutionId: invoiceDetails.institutionId
+            id: invoiceDetails.id
         };
         this.setInvoiceStorageDetail(invoiceDetails);
     }
@@ -124,7 +154,6 @@ export class InvoiceFormComponent implements OnInit {
             const totalAmount = Number(this.arrInvoiceDetails.totalAmount);
             if (totalAmount) {
                 this.taxableAmount = (totalAmount * this.taxPercent) / 100;
-                this.arrInvoiceDetails.totalAmount = this.arrInvoiceDetails.totalAmount + this.taxableAmount;
             }
         }
     }
@@ -217,7 +246,6 @@ export class InvoiceFormComponent implements OnInit {
             delete arrSaveInvoice['institution'];
             arrSaveInvoice['individualBillings'] = billingArray;
         }
-
         this._invoicesService.saveInvoice(arrSaveInvoice, this.isInstitutional).subscribe(
             result => {
                 if (result.body.httpCode === 200) {
