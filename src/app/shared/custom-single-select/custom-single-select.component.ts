@@ -8,10 +8,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class CustomSingleSelectComponent implements OnInit {
   @Input() data: any[];
   @Input() config: any;
+  @Input() selectedItem: any;
   @Output() valueChanged: EventEmitter<any> = new EventEmitter();
   showDropdown: boolean = false;
   displayField: any;
-  selectedItem: any;
   constructor() { }
 
   ngOnInit() {
