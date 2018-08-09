@@ -20,4 +20,21 @@ export class CaseService {
             '/case/history?caseId=' + caseId
         );
     }
+
+    getIndividualCase(type,clientId,startDate,endDate): Observable<any> {
+        if(type == 'date'){
+            return this.apiGateWay.get('/case/date'+clientId+'&startDate='+
+            startDate+'&endDate='+endDate);
+        }
+        else if(type == 'week'){
+          return this.apiGateWay.get('/case/week'+clientId);
+        }
+        else{
+            return this.apiGateWay.get('/case/month'+clientId);
+        }
+    }
+
+    getRecentUpdatedCases(clientId): any{
+        return this.apiGateWay.get('/case/lastupdated'+clientId);
+    }
 }

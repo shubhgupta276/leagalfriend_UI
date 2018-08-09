@@ -49,4 +49,13 @@ export class BillingService {
             null
         );
     }
+
+    getBillingAmount(clientId, type): Observable<any>{
+        if(type == 'institutional'){
+            return this.apiGateWay.get('billing/institution'+clientId);
+        }
+        else if(type == 'individual'){
+            return this.apiGateWay.get('billing/individual'+clientId);
+        }
+    }
 }

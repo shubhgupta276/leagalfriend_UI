@@ -40,7 +40,7 @@
           <div class="icon">
             <i class="ion ion-bag"></i>
           </div>
-          <a class="small-box-footer">More info
+          <a (click)="goToUserDetails('/admin/user','customerdetails')" class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -113,13 +113,13 @@
             <div class="graph-filter pull-right">
               <ul class="pagination pagination-sm inline">
                 <li>
-                  <a (click)="ShowHideModeFilter('M','DailyLogin')">Monthly</a>
+                  <a id="dailyFilterMonth" (click)="ShowHideModeFilter('M','DailyLogin')">Monthly</a>
                 </li>
                 <li>
-                  <a (click)="ShowHideModeFilter('W','DailyLogin')">Weekly</a>
+                  <a id="dailyFilterWeek" (click)="ShowHideModeFilter('W','DailyLogin')">Weekly</a>
                 </li>
                 <li>
-                  <a (click)="ShowHideModeFilter('D','DailyLogin')">DateWise</a>
+                  <a id="dailyFilterDate" (click)="ShowHideModeFilter('D','DailyLogin')">DateWise</a>
                 </li>
               </ul>
               <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.dailyLoginMode=='M' ||graphMode.dailyLoginMode=='W' }">
@@ -144,13 +144,13 @@
             <div class="graph-filter pull-right">
               <ul class="pagination pagination-sm inline">
                 <li>
-                  <a (click)="ShowHideModeFilter('M','Customer')">Monthly</a>
+                  <a id="customerFilterMonth" (click)="ShowHideModeFilter('M','Customer')">Monthly</a>
                 </li>
                 <li>
-                  <a (click)="ShowHideModeFilter('W','Customer')">Weekly</a>
+                  <a id="customerFilterWeek" (click)="ShowHideModeFilter('W','Customer')">Weekly</a>
                 </li>
                 <li>
-                  <a (click)="ShowHideModeFilter('D','Customer')">DateWise</a>
+                  <a id="customerFilterDate" (click)="ShowHideModeFilter('D','Customer')">DateWise</a>
                 </li>
               </ul>
               <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.customerMode=='M' ||graphMode.customerMode=='W' }">
@@ -176,7 +176,9 @@
             <!-- <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div> -->
             <canvas id="billing-chart" style="position: relative; height: 300px;"></canvas>
           </div>
-
+          <div class="box-footer clearfix" style="text-align:center">
+            <a routerLink="/admin/billing" class="btn btn-sm btn-default btn-flat">View More</a>
+          </div>
         </div>
         <div class="box box-info">
           <div class="box-header">
@@ -192,15 +194,6 @@
         <div class="box box-info">
           <div class="box-header with-border">
             <h3 class="box-title">Most Active Employees</h3>
-
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove">
-                <i class="fa fa-times"></i>
-              </button>
-            </div>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -219,10 +212,10 @@
                   <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
                     <tr *ngIf="i<5">
                       <td>{{i+1}}</td>
-                      <td>{{item.Name}}</td>
-                      <td>{{item.Designation}}</td>
-                      <td>{{item.LastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
-                      <td>{{item.TotalLogin}}</td>
+                      <td>{{item.name}}</td>
+                      <td>{{item.designation}}</td>
+                      <td>{{item.lastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
+                      <td>{{item.totalLogin}}</td>
                     </tr>
                   </ng-template>
                 </tbody>
@@ -247,13 +240,13 @@
             <div class="graph-filter pull-right">
               <ul class="pagination pagination-sm inline">
                 <li>
-                  <a (click)="ShowHideModeFilter('M','Case')">Monthly</a>
+                  <a id="caseFilterMonth" (click)="ShowHideModeFilter('M','Case')">Monthly</a>
                 </li>
                 <li>
-                  <a (click)="ShowHideModeFilter('W','Case')">Weekly</a>
+                  <a id="caseFilterWeek" (click)="ShowHideModeFilter('W','Case')">Weekly</a>
                 </li>
                 <li>
-                  <a (click)="ShowHideModeFilter('D','Case')">DateWise</a>
+                  <a id="caseFilterDate" (click)="ShowHideModeFilter('D','Case')">DateWise</a>
                 </li>
               </ul>
               <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.caseMode=='M' ||graphMode.caseMode=='W' }">
@@ -306,15 +299,6 @@
         <div class="box box-info">
           <div class="box-header with-border">
             <h3 class="box-title">Recently Updated Cases</h3>
-
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove">
-                <i class="fa fa-times"></i>
-              </button>
-            </div>
           </div>
           <!-- /.box-header -->
           <div class="box-body">

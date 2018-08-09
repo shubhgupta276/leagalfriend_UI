@@ -1,3 +1,5 @@
+import { BillingService } from '../billing/billing.service';
+import { ReportDetail } from './../../shared/models/user/organization';
 import { Component, OnInit } from '@angular/core';
 //import 'chart.piecelabel.js';
 import 'chartjs-plugin-datalabels';
@@ -7,13 +9,16 @@ import { InstitutionService } from '../master/institution/institution.service';
 import { CityService } from '../master/city/city.service';
 import { SharedService } from '../../shared/services/shared.service';
 import { UserService } from '../user/user.service';
+import { CaseService } from '../case/case.service';
+import { Router } from '../../../../node_modules/@angular/router';
+
 declare let $;
 // declare var Chart: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [BranchService, InstitutionService, CityService, SharedService]
+  providers: [BranchService, InstitutionService, CityService, SharedService, UserService, CaseService, BillingService]
 })
 export class DashboardComponent implements OnInit {
   arrMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -34,14 +39,30 @@ export class DashboardComponent implements OnInit {
   branchPopupBody: string;
   isNoBranch = false;
   isNoInsitituion = false;
-  constructor(private userService: UserService, 
-    private _branchService: BranchService, private _institutionService: InstitutionService, private _cityService: CityService) {
-   }
+  constructor(private userService: UserService, private _caseService: CaseService, private _router: Router,
+    private _branchService: BranchService, private _institutionService: InstitutionService,
+     private _billingService: BillingService, private _cityService: CityService) {
+  }
 
-  ngOnInit() {    
+  dailyLoginData: any;
+  caseData: any;
+  caseDataWeekly: any;
+  dailyLoginWeekly: any;
+  dailyUserLogin: any;
+  dailyUserWeekly: any;
+  weeklyUserLogin: any;
+  monthTrialCustomer: any;
+  weekTrialCustomer: any;
+  monthPaidCustomer: any;
+  weekPaidCustomer: any;
+  individualBilling: any;
+  institutionalBilling: any;
+  clientId;
+  ngOnInit() {
     var $this = this;
     this.bindCity();
     const client = '?userId=' + localStorage.getItem('client_id');
+    this.clientId = client;
     this.userService.getUser(client).subscribe(
       data => {
         if (data && data.roles[0].roleName === 'ADMIN') {
@@ -50,20 +71,77 @@ export class DashboardComponent implements OnInit {
       },
       error => console.log(error)
     );
-    this.DailyChart(null, null);
+
+    this.initDailyLoginChart(client);
+
+    this._caseService.getIndividualCase('week',client,null,null).subscribe(
+      data => {
+        this.caseDataWeekly = data;
+      },
+      error => console.log(error)
+    );
+    this._caseService.getIndividualCase('month',client,null,null).subscribe(
+      data => {
+        this.caseData = data;
+        this.CaseChart(null, null);
+      },
+      error => console.log(error)
+    );
+
+    this.userService.getTrialCustomersCount(client,'month',null,null).subscribe(
+      data => {
+        this.monthTrialCustomer = data;
+        this.CustomerChart(null, null);
+      },
+      error => console.log(error)      
+    );
+
+    this.userService.getTrialCustomersCount(client,'week',null,null).subscribe(
+      data => {
+        this.weekTrialCustomer = data;
+      },
+      error => console.log(error)      
+    );
+
+    this.userService.getPaidCustomersCount(client,'week',null,null).subscribe(
+      data => {
+        this.weekPaidCustomer = data;
+      },
+      error => console.log(error)      
+    );
+
+    this.userService.getPaidCustomersCount(client,'month',null,null).subscribe(
+      data => {
+        this.monthPaidCustomer = data;
+      },
+      error => console.log(error)      
+    );
+ 
+    this._billingService.getBillingAmount(client,'institutional').subscribe(
+      data =>{
+        this.institutionalBilling = data;
+        this.BillingChart(null, null);
+      }
+    );
+    this._billingService.getBillingAmount(client,'individual').subscribe(
+      data =>{
+        this.individualBilling = data;
+      }
+    );
+
     this.CustomerChart(null, null);
-    this.CaseChart(null, null);
+    
     this.BankGraph();
     this.BranchGraph();
     this.RecourseGraph();
-    this.MostActiveEmployeeList();
-    this.CaseUpdateList();
-    this.BillingChart(null, null);
+    this.MostActiveEmployeeList(client);
+    this.CaseUpdateList(client);
+    
     this.ReceiptChart(null, null);
     $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter').daterangepicker({
       autoApply: true,
       locale: {
-        format: 'MM-DD-YYYY'
+        format: 'YYYY-MM-DD'
       }
     },
       function (start, end, label) {
@@ -72,11 +150,11 @@ export class DashboardComponent implements OnInit {
             $this.DailyChart(start, end);
             break;
           }
-          case 'customerChart': {
+          case 'customerFilter': {
             $this.CustomerChart(start, end);
             break;
           }
-          case 'caseChart': {
+          case 'caseFilter': {
             $this.CaseChart(start, end);
             break;
           }
@@ -89,30 +167,73 @@ export class DashboardComponent implements OnInit {
     );
 
   }
-  MostActiveEmployeeList() {
-    this.arrActiveEmployeeList = [
-      { Name: 'Anup', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 75 },
-      { Name: 'Puneet', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 70 },
-      { Name: 'Vipin', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 60 },
-      { Name: 'Anil', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 55 },
-      { Name: 'Mohit', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 50 },
-      { Name: 'Sourav', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 33 },
-    ]
+
+  initDailyLoginChart(client){
+    this.userService.getDailyLogin('month',client,null,null).subscribe(
+      data => {
+        this.dailyLoginData = data;
+        this.DailyChart(null, null);
+      },
+      error => console.log(error)
+    );
+
+    this.userService.getDailyLogin('week',client,null,null).subscribe(
+      data => {
+        this.dailyLoginWeekly = data;
+      },
+      error => console.log(error)
+    );
+    this.userService.getDailyLoginUser('month',client,null,null).subscribe(
+      data => {
+        this.dailyUserLogin = data;
+      },
+      error => console.log(error)
+    );
+
+    this.userService.getDailyLoginUser('week',client,null,null).subscribe(
+      data => {
+        this.dailyUserWeekly = data;
+      },
+      error => console.log(error)
+    );
   }
-  CaseUpdateList() {
-    this.arrCaseList = [
-      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
-      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
-      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
-      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
-      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
-      { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
-    ]
+  MostActiveEmployeeList(clientId) {
+
+    this.userService.getActiveEmployees(clientId).subscribe(
+      data => {
+        this.arrActiveEmployeeList = data;
+      }
+    );
+    // this.arrActiveEmployeeList = [
+    //   { Name: 'Anup', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 75 },
+    //   { Name: 'Puneet', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 70 },
+    //   { Name: 'Vipin', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 60 },
+    //   { Name: 'Anil', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 55 },
+    //   { Name: 'Mohit', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 50 },
+    //   { Name: 'Sourav', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 33 },
+    // ]
+  }
+  CaseUpdateList(client) {
+
+    this._caseService.getRecentUpdatedCases(client).subscribe(
+      data => {
+        this.arrCaseList = data;
+      }
+    );
+
+    // this.arrCaseList = [
+    //   { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+    //   { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+    //   { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+    //   { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+    //   { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+    //   { CaseId: '456111', CourtCaseId: '456111', Name: 'Anup', ResourceType: 75, CaseStage: '', NewHearingDate: new Date(), Branch: '', Employee: '', LastUpdate: new Date() },
+    // ]
   }
   ShowHideModeFilter(mode, graphMode) {
     switch (graphMode) {
       case 'DailyLogin':
-        {
+          {
           this.graphMode.dailyLoginMode = mode;
           this.DailyChart(null, null);
           break;
@@ -137,60 +258,64 @@ export class DashboardComponent implements OnInit {
 
     }
   }
+
+  GetFormattedDate(value): string {
+    var date = new Date(value);
+    return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+  }
+
   DailyChart(start, end) {
     var $this = this;
     var data;
+    var data1;
     var weeklyLabel;
+    start = this.GetFormattedDate(start);
+    end = this.GetFormattedDate(end);
+
     if (this.graphMode.dailyLoginMode == this.mode.DateWise) {
-      data = [
-        { x: '2016-05-10', y: 10 },
-        { x: '2016-05-11', y: 60 },
-        { x: '2016-05-12', y: 30 },
-        { x: '2016-05-13', y: 80 },
-        { x: '2016-05-14', y: 50 },
-        { x: '2016-05-15', y: 90 },
-        { x: '2016-05-16', y: 70 },
-        { x: '2016-05-17', y: 75 },
-        { x: '2016-05-18', y: 90 },
-        { x: '2016-05-19', y: 100 },
-        { x: '2016-05-20', y: 110 }
-      ];
+      this.changeColor('dailyFilterDate','dailyFilterMonth','dailyFilterWeek');
+      this.userService.getDailyLogin('date', this.clientId,start,end).subscribe(
+        result => {
+          data = result;
+          this.userService.getDailyLoginUser('date', this.clientId,start,end).subscribe(
+            result => {
+              data1 = result;
+            },
+            error => console.log(error)
+          );
+          this.createDailyChart(data,data1,weeklyLabel);
+        },
+        error => console.log(error)
+      );
+      
     }
     else if (this.graphMode.dailyLoginMode == this.mode.Weekly) {
-      data = [
-        { x: '1-7', y: 10 },
-        { x: '8-14', y: 60 },
-        { x: '15-21', y: 30 },
-        { x: '22-28', y: 80 },
-      ];
+      this.changeColor('dailyFilterWeek','dailyFilterDate','dailyFilterMonth');
+      data = this.dailyLoginWeekly;
+      data1 = this.dailyUserWeekly;
       weeklyLabel =
-        ['1-7', '8-14', '15-21', '22-28'];
-
+        ['1-7', '8-14', '15-21', '22-28','29-35','36-42','43-49','50-52'];
+      this.createDailyChart(data,data1,weeklyLabel);
     }
     else {
-      data = [
-        { x: '2015-01', y: 0, },
-        { x: '2015-02', y: 54, },
-        { x: '2015-03', y: 243, },
-        { x: '2015-04', y: 206, },
-        { x: '2015-05', y: 161, },
-        { x: '2015-06', y: 187, },
-        { x: '2015-07', y: 210, },
-        { x: '2015-08', y: 204, },
-        { x: '2015-09', y: 224, },
-        { x: '2015-10', y: 301, },
-        { x: '2015-11', y: 262, },
-        { x: '2015-12', y: 199, },
-      ];
+      this.changeColor('dailyFilterMonth','dailyFilterWeek','dailyFilterDate');
+      data = this.dailyLoginData;
+      data1 = this.dailyUserLogin;
+      this.createDailyChart(data,data1,weeklyLabel);
     }
+    
+  }
+
+  createDailyChart(data1,data2, weeklyLabel){
     var config = {
       type: 'line',
       data: {
-        labels: this.graphMode.dailyLoginMode == this.mode.Weekly ? weeklyLabel : data,
+        labels: this.graphMode.dailyLoginMode == this.mode.Weekly ? weeklyLabel : data1,
         datasets: [{
-          label: "Total Cases",
-          data: data,
+          label: "Customer Daily Login",
+          data: data1,
           backgroundColor: '#3c8dbc',
+          borderColor: '#3c8dbc',
           datalabels: {
             align: 'end',
             anchor: 'end',
@@ -204,7 +329,27 @@ export class DashboardComponent implements OnInit {
               return value.y;
             }
           }
-        }],
+        },
+        {
+          label: "Users Daily Login",
+          data: data2,
+          backgroundColor: '#a0d0e0',
+          borderColor: '#a0d0e0',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }
+      ],
 
       },
 
@@ -240,91 +385,59 @@ export class DashboardComponent implements OnInit {
     new Chart(ctx, config);
   }
   CustomerChart(start, end) {
-    var data;
-    var data1;
+    var trialData;
+    var premiumData;
     var weeklyLabel;
+    start = this.GetFormattedDate(start);
+    end = this.GetFormattedDate(end);
     if (this.graphMode.customerMode == this.mode.DateWise) {
-      data = [
-        { x: '2016-05-10', y: 10 },
-        { x: '2016-05-11', y: 60 },
-        { x: '2016-05-12', y: 30 },
-        { x: '2016-05-13', y: 80 },
-        { x: '2016-05-14', y: 50 },
-        { x: '2016-05-15', y: 90 },
-        { x: '2016-05-16', y: 70 },
-        { x: '2016-05-17', y: 75 },
-        { x: '2016-05-18', y: 90 },
-        { x: '2016-05-19', y: 100 },
-        { x: '2016-05-20', y: 110 }
-      ];
-      data1 = [
-        { x: '2016-05-10', y: 10 },
-        { x: '2016-05-11', y: 80 },
-        { x: '2016-05-12', y: 30 },
-        { x: '2016-05-13', y: 80 },
-        { x: '2016-05-14', y: 50 },
-        { x: '2016-05-15', y: 90 },
-        { x: '2016-05-16', y: 70 },
-        { x: '2016-05-17', y: 75 },
-        { x: '2016-05-18', y: 90 },
-        { x: '2016-05-19', y: 100 },
-        { x: '2016-05-20', y: 110 }
-      ];
-    }
-    else if (this.graphMode.customerMode == this.mode.Weekly) {
-      data = [
-        { x: '1-7', y: 10 },
-        { x: '8-14', y: 60 },
-        { x: '15-21', y: 30 },
-        { x: '22-28', y: 80 },
-      ];
-      data1 = [
-        { x: '1-7', y: 10 },
-        { x: '8-14', y: 50 },
-        { x: '15-21', y: 30 },
-        { x: '22-28', y: 80 },
-      ];
-      weeklyLabel =
-        ['1-7', '8-14', '15-21', '22-28'];
+      this.changeColor('customerFilterDate','customerFilterMonth','customerFilterWeek');
+     this.userService.getTrialCustomersCount(this.clientId,'date',start, end).subscribe(
+       result=>{
+        trialData = result;
+        this.userService.getTrialCustomersCount(this.clientId,'date',start, end).subscribe(
+          data=>{
+            premiumData = data;
+          }
+        );
+        this.createCustomerChart(trialData,premiumData, weeklyLabel);
+       }
+     );
+
 
     }
-    else {
-      data = [
-        { x: '2015-01', y: 0, },
-        { x: '2015-02', y: 54, },
-        { x: '2015-03', y: 243, },
-        { x: '2015-04', y: 206, },
-        { x: '2015-05', y: 161, },
-        { x: '2015-06', y: 187, },
-        { x: '2015-07', y: 210, },
-        { x: '2015-08', y: 204, },
-        { x: '2015-09', y: 224, },
-        { x: '2015-10', y: 301, },
-        { x: '2015-11', y: 262, },
-        { x: '2015-12', y: 199, },
-      ];
-      data1 = [
-        { x: '2015-01', y: 10, },
-        { x: '2015-02', y: 54, },
-        { x: '2015-03', y: 100, },
-        { x: '2015-04', y: 206, },
-        { x: '2015-05', y: 161, },
-        { x: '2015-06', y: 187, },
-        { x: '2015-07', y: 210, },
-        { x: '2015-08', y: 204, },
-        { x: '2015-09', y: 224, },
-        { x: '2015-10', y: 301, },
-        { x: '2015-11', y: 262, },
-        { x: '2015-12', y: 199, },
-      ];
+    else if (this.graphMode.customerMode == this.mode.Weekly) {
+      this.changeColor('customerFilterWeek','customerFilterMonth','customerFilterDate');
+      trialData = this.weekTrialCustomer;
+      premiumData = this.weekPaidCustomer;
+      // [
+      //   { x: '1-7', y: 10 },
+      //   { x: '8-14', y: 50 },
+      //   { x: '15-21', y: 30 },
+      //   { x: '22-28', y: 80 },
+      // ];
+      weeklyLabel =
+        ['1-7', '8-14', '15-21', '22-28'];
+        this.createCustomerChart(trialData,premiumData, weeklyLabel);
     }
+    else {
+      this.changeColor('customerFilterMonth','customerFilterDate','customerFilterWeek');
+      trialData = this.monthTrialCustomer;
+      premiumData = this.monthPaidCustomer;
+      this.createCustomerChart(trialData,premiumData, weeklyLabel);
+
+    }
+  
+  }
+
+  createCustomerChart(data1,data2, weeklyLabel){
     var config = {
       type: 'line',
       data: {
-        labels: this.graphMode.customerMode == this.mode.Weekly ? weeklyLabel : data,
+        labels: this.graphMode.customerMode == this.mode.Weekly ? weeklyLabel : data1,
         datasets: [{
           label: "Trial Customer",
-          data: data,
+          data: data1,
           fill: false,
           borderColor: '#3c8dbc',
           datalabels: {
@@ -342,8 +455,8 @@ export class DashboardComponent implements OnInit {
           }
         },
         {
-          label: "Boiled Customer",
-          data: data1,
+          label: "Premium Customer",
+          data: data2,
           fill: false,
           borderColor: '#a0d0e0',
           datalabels: {
@@ -395,59 +508,49 @@ export class DashboardComponent implements OnInit {
     var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
     new Chart(ctx, config);
   }
+
   CaseChart(start, end) {
     var $this = this;
-    var data;
+    var data1;
+    var data2;
+    start = this.GetFormattedDate(start);
+    end = this.GetFormattedDate(end);
     var weeklyLabel;
     if (this.graphMode.caseMode == this.mode.DateWise) {
-      data = [
-        { x: '2016-05-10', y: 10 },
-        { x: '2016-05-11', y: 60 },
-        { x: '2016-05-12', y: 30 },
-        { x: '2016-05-13', y: 80 },
-        { x: '2016-05-14', y: 50 },
-        { x: '2016-05-15', y: 90 },
-        { x: '2016-05-16', y: 70 },
-        { x: '2016-05-17', y: 75 },
-        { x: '2016-05-18', y: 90 },
-        { x: '2016-05-19', y: 100 },
-        { x: '2016-05-20', y: 110 }
-      ];
+      this.changeColor('caseFilterDate','caseFilterMonth','caseFilterWeek');
+      this._caseService.getIndividualCase('date',this.clientId,start,end).subscribe(
+        result=>{
+          data1= result;
+          this.createCaseChart(data1,data2,weeklyLabel);
+          console.log('Case Data : '+data1);
+        }
+      );
+ 
     }
     else if (this.graphMode.caseMode == this.mode.Weekly) {
-      data = [
-        { x: '1-7', y: 10 },
-        { x: '8-14', y: 60 },
-        { x: '15-21', y: 30 },
-        { x: '22-28', y: 80 },
-      ];
+      this.changeColor('caseFilterWeek','caseFilterDate','caseFilterMonth');
+      data1 = this.caseDataWeekly;
       weeklyLabel =
-        ['1-7', '8-14', '15-21', '22-28'];
+      ['1-7', '8-14', '15-21', '22-28','29-35','36-42','43-49','50-52'];
+      this.createCaseChart(data1,data2,weeklyLabel);
 
     }
     else {
-      data = [
-        { x: '2015-01', y: 0, },
-        { x: '2015-02', y: 54, },
-        { x: '2015-03', y: 243, },
-        { x: '2015-04', y: 206, },
-        { x: '2015-05', y: 161, },
-        { x: '2015-06', y: 187, },
-        { x: '2015-07', y: 210, },
-        { x: '2015-08', y: 204, },
-        { x: '2015-09', y: 224, },
-        { x: '2015-10', y: 301, },
-        { x: '2015-11', y: 262, },
-        { x: '2015-12', y: 199, },
-      ];
+      this.changeColor('caseFilterMonth','caseFilterDate','caseFilterWeek');
+      data1 = this.caseData;
+      this.createCaseChart(data1,data2,weeklyLabel);
     }
+    
+  }
+
+  createCaseChart(data1,data2,weeklyLabel){
     var config = {
       type: 'line',
       data: {
-        labels: this.graphMode.caseMode == this.mode.Weekly ? weeklyLabel : data,
+        labels: this.graphMode.caseMode == this.mode.Weekly ? weeklyLabel : data1,
         datasets: [{
           label: "Total Cases",
-          data: data,
+          data: data1,
           backgroundColor: '#3c8dbc',
           datalabels: {
             align: 'end',
@@ -497,7 +600,6 @@ export class DashboardComponent implements OnInit {
     var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
     new Chart(ctx, config);
   }
-
   BankGraph() {
     // var canvas = document.getElementById("referral-chart");
 
@@ -635,28 +737,31 @@ export class DashboardComponent implements OnInit {
   }
   BillingChart(start, end) {
     var $this = this;
-    var data = [
-      { x: '2015-01', y: 0, },
-      { x: '2015-02', y: 54, },
-      { x: '2015-03', y: 243, },
-      { x: '2015-04', y: 206, },
-      { x: '2015-05', y: 161, },
-      { x: '2015-06', y: 187, },
-      { x: '2015-07', y: 210, },
-      { x: '2015-08', y: 204, },
-      { x: '2015-09', y: 224, },
-      { x: '2015-10', y: 301, },
-      { x: '2015-11', y: 262, },
-      { x: '2015-12', y: 199, },
-    ];
+    // var data = [
+    //   { x: '2015-01', y: 0, },
+    //   { x: '2015-02', y: 54, },
+    //   { x: '2015-03', y: 243, },
+    //   { x: '2015-04', y: 206, },
+    //   { x: '2015-05', y: 161, },
+    //   { x: '2015-06', y: 187, },
+    //   { x: '2015-07', y: 210, },
+    //   { x: '2015-08', y: 204, },
+    //   { x: '2015-09', y: 224, },
+    //   { x: '2015-10', y: 301, },
+    //   { x: '2015-11', y: 262, },
+    //   { x: '2015-12', y: 199, },
+    // ];
+    var data = this.institutionalBilling;
+    var data1 = this.individualBilling;
     var config = {
       type: 'line',
       data: {
         labels: data,
         datasets: [{
-          label: "Total Billing Per Month",
+          label: "Institutional Billing",
           data: data,
-          backgroundColor: '#3c8dbc',
+          fill: false,
+          borderColor: '#3c8dbc',
           datalabels: {
             align: 'end',
             anchor: 'end',
@@ -670,7 +775,27 @@ export class DashboardComponent implements OnInit {
               return value.y;
             }
           }
-        }],
+        },
+        {
+          label: "Individual Billing",
+          data: data1,
+          fill: false,
+          borderColor: '#a0d0e0',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }
+        ],
 
       },
 
@@ -848,5 +973,15 @@ export class DashboardComponent implements OnInit {
       }
     })
 
+  }
+
+  goToUserDetails(url,mode){
+    this._router.navigate([url, {mode:mode}]);
+  }
+
+  changeColor(selectedId1,id2,id3){
+    document.getElementById(selectedId1).style.backgroundColor='orange';
+    document.getElementById(id2).style.backgroundColor='';
+    document.getElementById(id3).style.backgroundColor='';
   }
 }
