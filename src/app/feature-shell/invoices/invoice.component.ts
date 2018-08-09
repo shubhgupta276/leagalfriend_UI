@@ -34,6 +34,7 @@ export class InvoiceComponent implements OnInit {
   actionColumnConfig: ActionColumnModel;
   moduleName = 'Invoice';
   anyForm: any;
+  isPageLoad: boolean;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   constructor(private fb: FormBuilder, private invoiceService: InvoicesService,
     private router: Router, private _sharedService: SharedService) {
@@ -41,6 +42,7 @@ export class InvoiceComponent implements OnInit {
     Window['InvoiceFormComponent'] = this;
   }
   ngOnInit() {
+    this.isPageLoad = true;
     this.clickInstitutional();
     this.setActionConfig();
     $('#txtDateFilter').daterangepicker({
@@ -65,7 +67,8 @@ export class InvoiceComponent implements OnInit {
       title: 'Payment Received',
       isImage: false,
       icon: '<i class="fa fa-credit-card"></i>'
-    });
+    }
+    );
   }
 
   filterTableData() {
@@ -111,12 +114,16 @@ export class InvoiceComponent implements OnInit {
         this.invoiceService.updatePaymentStatus(data.id).subscribe(
           (result) => {
             result = result.body;
-            if (this.isInstitutionalTab) {
-              this.clickInstitutional();
+            if (result.httpCode === 200) {
+              if (this.isInstitutionalTab) {
+                this.clickInstitutional();
+              } else {
+                this.clickIndividual();
+              }
+              $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
             } else {
-              this.clickIndividual();
+              $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
             }
-            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
           },
           err => {
             console.log(err);
@@ -204,6 +211,10 @@ export class InvoiceComponent implements OnInit {
         });
         setTimeout(() => {
           this.dataTableComponent.ngOnInit();
+          const pendingData = this.tableInputData.find(x => x.status === 'PENDING');
+          if (pendingData) {
+            this.dataTableComponent.sortTable('PENDING', 'status');
+          }
         }, 500);
 
       },

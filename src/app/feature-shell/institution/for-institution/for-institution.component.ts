@@ -37,6 +37,7 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
     hoverTableRow = true;
     arInstitution = [];
     arRecourse: any[] = [];
+    recourseDefaultSelectedItem: any;
     InstitutionValue: any;
     recourseConfig: any;
     institutionConfig: any;
@@ -328,12 +329,16 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
     clearFilters() {
         this.isFilterApplied = false;
         this.changeRecourse(null);
+        this.recourseDefaultSelectedItem = this.recourseConfig.defaultText;
         this.resetAllFilter();
         this.filterTable();
     }
 
     changeRecourse(data: any) {
         this.recourseFilter = data;
+        if (data) {
+            this.recourseDefaultSelectedItem = data.recourseName;
+        }
         this.filterTable();
     }
 

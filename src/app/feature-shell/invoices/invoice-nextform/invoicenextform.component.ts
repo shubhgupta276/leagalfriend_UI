@@ -130,6 +130,7 @@ export class InvoiceNextFormComponent implements OnInit {
 
     CalculateFinalAmount(currentRow) {
         let isCustom;
+        debugger
         if (currentRow != null) {
             currentRow = $(currentRow).closest('tr');
             isCustom = JSON.parse($(currentRow).find('.hfIsCustom').val());

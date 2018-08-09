@@ -25,6 +25,9 @@ export class InvoiceFormComponent implements OnInit {
         isFromInvoice: false,
         url: null
     };
+    description: any = '';
+    taxableAmount: number = 0;
+    taxPercent: number = 0;
     todayDate: number = Date.now();
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
         private _invoicesService: InvoicesService, public sanitizer: DomSanitizer, private router: Router, ) {
@@ -58,25 +61,25 @@ export class InvoiceFormComponent implements OnInit {
     BindInvoice() {
         const invoiceDetails = this.getInvoiceStorageDetail();
         let totalAmount = 0;
-        let totalDescription = '';
-        let description = '';
-
         invoiceDetails.forEach(element => {
+            let description = '';
             totalAmount = totalAmount + parseFloat(element.amount);
             if (element.isCustom) {
-                description = element.description.replace('\n', '') + '\n';
+                //  description = element.description.replace('\n', '') + '\n';
             } else {
-                description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
-                    + ', Stage : ' + element.stageName + '\n');
+                if (!element.description) {
+                    description = ('CaseId : ' + element.caseId + ',  Recourse : ' + element.recourseName
+                        + ', Stage : ' + element.stageName + '\n');
+                    element.description = description;
+                }
+                this.description += ('CaseId : ' + element.caseId + ', ');
             }
-            totalDescription = totalDescription + description;
-            element.description = description;
+
         });
         this.invoiceTemplateInfo.isFromInvoice = (invoiceDetails && invoiceDetails.length > 0)
             ? invoiceDetails[0].isFromInvoice : false;
         this.arrInvoiceDetails = {
             totalAmount: totalAmount,
-            totalDescription: totalDescription,
             totalQuantity: invoiceDetails.length,
             invoiceNo: Math.floor(Math.random() * 90000),
             id: invoiceDetails.id,
@@ -106,7 +109,7 @@ export class InvoiceFormComponent implements OnInit {
                 if (result.httpCode === 200) {
                     for (let i = 0; i < result.institutions.length; i++) {
                         const obj = result.institutions[i];
-                        if (this.institutionId == obj.institutionId) {
+                        if (this.institutionId === this.institutionId) {
                             this.invoiceTemplateInfo.CompanyAddress = obj.address;
                         }
                     }
@@ -114,8 +117,20 @@ export class InvoiceFormComponent implements OnInit {
             });
     }
 
+    taxChange(value: number) {
+        this.taxableAmount = 0;
+        this.taxPercent = value;
+        if (value) {
+            const totalAmount = Number(this.arrInvoiceDetails.totalAmount);
+            if (totalAmount) {
+                this.taxableAmount = (totalAmount * this.taxPercent) / 100;
+                this.arrInvoiceDetails.totalAmount = this.arrInvoiceDetails.totalAmount + this.taxableAmount;
+            }
+        }
+    }
+
     isValid() {
-        if (this.invoiceTemplateInfo.billToAddress.trim().length > 0
+        if (this.description.trim().length > 0 && this.invoiceTemplateInfo.billToAddress.trim().length > 0
             && this.invoiceTemplateInfo.CompanyAddress.trim().length > 0 &&
             this.invoiceTemplateInfo.termEndCond.trim().length > 0) {
             return true;
@@ -177,11 +192,9 @@ export class InvoiceFormComponent implements OnInit {
     saveCompleteInvoice(billingArray) {
         const $this = this;
         let totalAmount = 0;
-        let description = '';
         billingArray.forEach(function (item) {
             item.fkInstitutionId = $this.institutionId;
             totalAmount += Number(item.amount);
-            description += item.description;
         });
 
         const arrSaveInvoice = {
@@ -190,7 +203,7 @@ export class InvoiceFormComponent implements OnInit {
             billFrom: this.invoiceTemplateInfo.CompanyAddress,
             billTo: this.invoiceTemplateInfo.billToAddress,
             createdBy: this._storageService.getUserId(),
-            description: description,
+            description: this.description,
             id: 0,
             institution: { id: this.institutionId },
             status: 'active',
@@ -204,6 +217,7 @@ export class InvoiceFormComponent implements OnInit {
             delete arrSaveInvoice['institution'];
             arrSaveInvoice['individualBillings'] = billingArray;
         }
+
         this._invoicesService.saveInvoice(arrSaveInvoice, this.isInstitutional).subscribe(
             result => {
                 if (result.body.httpCode === 200) {

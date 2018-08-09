@@ -32,7 +32,7 @@
 
               <div class="col-sm-2">
                 <div *ngIf="arRecourse.length>0">
-                  <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
+                  <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" [selectedItem]="recourseDefaultSelectedItem" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
                 </div>
               </div>
               <div class="col-sm-2">
