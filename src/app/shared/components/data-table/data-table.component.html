@@ -97,12 +97,21 @@
                 </a>
                 <ng-container *ngFor="let CustomAction of actionColumnConfig.actionList">
                     &nbsp;
-                    <a *ngIf="!(actionColumnConfig.moduleName=='Invoice' && row['status']=='PAID')" title="{{CustomAction.title}}" (click)="onActionBtnClick($event, row, CustomAction.eventType)">
-                        <img *ngIf="CustomAction.isImage" width="20px" [src]="CustomAction.icon" />
-                        <ng-container *ngIf="!CustomAction.isImage">
-                            <span [innerHTML]="CustomAction.icon"></span>
+                    <ng-container *ngIf="actionColumnConfig.moduleName=='Invoice' else elseCustomAction">
+                        <ng-container *ngIf="(row['status']=='PAID' && CustomAction.eventType=='view') || (row['status']=='PENDING' && CustomAction.eventType!='view')">
+                            <a title="{{CustomAction.title}}" (click)="onActionBtnClick($event, row, CustomAction.eventType)">
+                                <img *ngIf="CustomAction.isImage" width="20px" [src]="CustomAction.icon" />
+                                <span *ngIf="!CustomAction.isImage" [innerHTML]="CustomAction.icon"></span>
+                            </a>
                         </ng-container>
-                    </a>
+                    </ng-container>
+                    <ng-template #elseCustomAction>
+                        <a title="{{CustomAction.title}}" (click)="onActionBtnClick($event, row, CustomAction.eventType)">
+                            <img *ngIf="CustomAction.isImage" width="20px" [src]="CustomAction.icon" />
+                            <span *ngIf="!CustomAction.isImage" [innerHTML]="CustomAction.icon"></span>
+                        </a>
+                    </ng-template>
+
                 </ng-container>
 
             </mat-cell>

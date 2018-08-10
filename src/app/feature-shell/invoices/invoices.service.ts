@@ -28,6 +28,14 @@ export class InvoicesService {
         return this.apiGateWay.post<any>(url, data);
     }
 
+    updateInvoice(data: any, isInstitutional): Observable<any> {
+        let url = 'invoice/institutional';
+        if (!isInstitutional) {
+            url = 'invoice/individual';
+        }
+        return this.apiGateWay.put<any>(url, data);
+    }
+
     saveCustomInvoice(data: any, isInstitutional): Observable<any> {
         let url = 'billing';
         if (!isInstitutional) {
@@ -54,13 +62,16 @@ export class InvoicesService {
         return this.apiGateWay.get<any>(url, null);
     }
 
-    caneclInvoice(invoiceId: any): Observable<any> {
-        const apiUrl = invoiceCancel + '?invoiceId=' + invoiceId;
-        return this.apiGateWay.put<any>(apiUrl, null);
+    caneclInvoice(invoiceId: any, isInstitutional): Observable<any> {
+        let url = invoiceCancel + '?invoiceId=' + invoiceId;
+        if (!isInstitutional) {
+            url = 'invoice/individual/cancel';
+        }
+        return this.apiGateWay.put<any>(url, null);
     }
 
-    updatePaymentStatus(invoiceId: any): Observable<any> {
-        const apiUrl = updatePaymentStatus + '?invoiceId=' + invoiceId;
+    updatePaymentStatus(invoiceId: any, date): Observable<any> {
+        const apiUrl = updatePaymentStatus + '?invoiceId=' + invoiceId + '&date=' + date;
         return this.apiGateWay.put<any>(apiUrl, null);
     }
 

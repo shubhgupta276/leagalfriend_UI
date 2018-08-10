@@ -10,7 +10,6 @@ import { InvoicesService } from './invoices.service';
 import { invoiceTableConfig } from './invoices.config';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { SharedService } from '../../shared/services/shared.service';
-import { debuglog } from 'util';
 import { StorageService } from '../../shared/services/storage.service';
 
 
@@ -67,12 +66,19 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig.showCancel = true;
     this.actionColumnConfig.showEdit = true;
     this.actionColumnConfig.moduleName = 'Invoice';
-    this.actionColumnConfig.actionList.push({
-      eventType: 'payment',
-      title: 'Payment Received',
-      isImage: false,
-      icon: '<i class="fa fa-credit-card"></i>'
-    }
+    this.actionColumnConfig.actionList.push(
+      {
+        eventType: 'payment',
+        title: 'Payment Received',
+        isImage: false,
+        icon: '<i class="fa fa-credit-card" style="font-size: 20px"></i>'
+      },
+      {
+        eventType: 'view',
+        title: 'View',
+        isImage: false,
+        icon: '<i class="fa fa-eye" style="font-size: 20px !important"></i>'
+      },
     );
   }
 
@@ -91,11 +97,10 @@ export class InvoiceComponent implements OnInit {
 
   onActionBtnClick(event) {
     try {
-
       const data = event.data;
       if (event.eventType === 'cancel') {
         this.cancelInvoice(data.id);
-      } else if (event.eventType === 'edit') {
+      } else if (event.eventType === 'edit' || event.eventType === 'view') {
 
         this.invoiceService.getInvoiceDetail(data.id, this.isInstitutionalTab).subscribe(
           (result) => {
@@ -103,14 +108,13 @@ export class InvoiceComponent implements OnInit {
               this._storageService.clearInvoiceData();
               const invoice = result.invoice;
               const billingArray = result.institutionalBillings;
-              const invoicedetails = [{
-                isEditMode: event.eventType === 'edit',
-                isViewMode: event.eventType === 'view',
+              const otherDetails = {
+                mode: event.eventType,
                 invoice: invoice,
-                billingArray: billingArray
-
-              }];
-              localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
+                isInstitutional: this.isInstitutionalTab
+              };
+              localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherDetails));
+              localStorage.setItem('invoiceDetails', JSON.stringify(billingArray));
               this.router.navigateByUrl('/admin/invoices/invoiceform');
             }
           },
@@ -135,24 +139,28 @@ export class InvoiceComponent implements OnInit {
 
   paymentReceived() {
     const date = new Date(this.paymentReceiveDate);
-    // this.invoiceService.updatePaymentStatus(this.invoiceId).subscribe(
-    //   (result) => {
-    //     result = result.body;
-    //     if (result.httpCode === 200) {
-    //       if (this.isInstitutionalTab) {
-    //         this.clickInstitutional();
-    //       } else {
-    //         this.clickIndividual();
-    //       }
-    // $('#paymentReceivedPopup').modal('hide');
-    //       $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
-    //     } else {
-    //       $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
-    //     }
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   });
+    if (this.paymentReceiveDate && this.paymentReceiveDate.trim().length > 0) {
+      this.invoiceService.updatePaymentStatus(this.invoiceId, this.paymentReceiveDate).subscribe(
+        (result) => {
+          result = result.body;
+          if (result.httpCode === 200) {
+            $('#paymentReceivedPopup').modal('hide');
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+            if (this.isInstitutionalTab) {
+              this.clickInstitutional();
+            } else {
+              this.clickIndividual();
+            }
+          } else {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+          }
+        },
+        err => {
+          console.log(err);
+        });
+    } else {
+      alert('Please select date');
+    }
   }
 
   searchFilter(value) {
@@ -192,10 +200,13 @@ export class InvoiceComponent implements OnInit {
 
   cancelInvoice(invoiceId) {
     if (confirm('Are you sure you want to cancel this invoice?')) {
-      this.invoiceService.caneclInvoice(invoiceId).subscribe(
+      this.invoiceService.caneclInvoice(invoiceId, this.isInstitutionalTab).subscribe(
         result => {
-          $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });
-          this.bindInvoiceAfterCancelled(invoiceId);
+          result = result.body;
+          if (result.httpCode === 200) {
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+            this.bindInvoiceAfterCancelled(invoiceId);
+          }
         },
         err => {
           console.log(err);

@@ -36,6 +36,7 @@ export class InvoiceNextFormComponent implements OnInit {
     invoiceTemplateInfo: any;
     isCustomCaseEntry: boolean;
     isCustomSaveClick: boolean = false;
+    disableField: boolean = false;
     constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
         private router: Router, public sanitizer: DomSanitizer, private invoiceService: InvoicesService) {
         Window['InvoiceFormComponent'] = this;
@@ -46,6 +47,12 @@ export class InvoiceNextFormComponent implements OnInit {
         this.isCustomCaseEntry = false;
         this.BindInvoice();
         this.StoreInvoiceTemplateInfo();
+        this.setInvoiceOtherDetails();
+    }
+
+    setInvoiceOtherDetails() {
+        const otherDetail = JSON.parse(localStorage.getItem('invoiceOtherDetails'));
+        this.disableField = otherDetail.mode === 'view';
     }
 
     StoreInvoiceTemplateInfo() {
@@ -150,7 +157,8 @@ export class InvoiceNextFormComponent implements OnInit {
         this.isCustomSaveClick = true;
         let isValid = true;
         this.arrLocalInvoiceDetails.forEach(function (data) {
-            if (data.amount === '' || data.description.trim().length <= 0 || data.billingDate.trim().length <= 0) {
+            if (data.amount === '' || (!data.description || data.description.trim().length <= 0)
+                || (!data.billingDate || data.billingDate.trim().length <= 0)) {
                 isValid = false;
             }
         });

@@ -177,17 +177,10 @@
                                             <th>
                                                 Date
                                             </th>
-                                            <!-- <th>
-                                                Quantity
-                                            </th> -->
-                                            <!-- <th class="mount-header">
-                                        Unit price
-                                    </th> -->
-
-                                            <th>
+                                        <th>
                                                 Amount
                                             </th>
-                                            <th width="20">
+                                            <th width="20" *ngIf="!disableField">
                                                 <!-- <img height="30" (click)="addCustomRow()" src="assets/dist/img/toggle_plus.png"> -->
                                             </th>
                                         </tr>
@@ -198,7 +191,7 @@
                                         <tr *ngFor="let item of arrInvoiceDetails |  paginate: { itemsPerPage: 10, currentPage: p2 }" description="Description" qty="1"
                                             unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td style="width: 500px">
-                                                <textarea onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" rows="2" class="form-control description" type="text"
+                                                <textarea [disabled]="disableField" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" rows="2" class="form-control description" type="text"
                                                     placeholder="Description">{{item.description}}</textarea>
                                             </td>
                                             <td>
@@ -208,7 +201,7 @@
                                                     <!-- <input class="form-control date billingDate" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" value="{{item.billingDate}}"
                                                         style="width:150px" placeholder="Date"> -->
                                                     <div class="input-group date" data-provide="datepicker" data-date-format="dd MM yyyy">
-                                                        <input readonly onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" type="text" tabindex="14" value="{{item.billingDate}}"
+                                                        <input [disabled]="disableField" readonly onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" type="text" tabindex="14" value="{{item.billingDate}}"
                                                             placeholder="dd MM yyyy" class="form-control billingDate" size="10">
                                                         <div class="input-group-addon">
                                                             <span class="fa fa-calendar"></span>
@@ -223,12 +216,12 @@
 
                                             <td>
                                                 <!-- [ngClass]="{'has-error':isCustomSaveClick && (!item.amount || item.amount.length<1)}" -->
-                                                <input class="form-control amount" value="{{item.amount}}" OnlyNumber onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
+                                                <input [disabled]="disableField" class="form-control amount" value="{{item.amount}}" OnlyNumber onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
                                                     style="width:100px" placeholder="Amount">
 
                                             </td>
-                                            <td>
-                                                <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
+                                            <td *ngIf="!disableField">
+                                                <a  onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </a>
                                                 <input type="hidden" class="hfIsCustom" value="{{item.isCustom}}">
@@ -239,7 +232,7 @@
                                     </tbody>
                                     <tfoot id="TotalsSection">
                                         <tr>
-                                            <td colspan="4">
+                                            <td colspan="4" *ngIf="!disableField">
                                                 <button (click)="addCustomRow()" class="btn-custom">Add New Line Item</button>
                                                 <button style="float: right;" class="btn-custom" (click)="saveCustomCase();" *ngIf="isCustomCaseEntry">Save</button>
                                             </td>

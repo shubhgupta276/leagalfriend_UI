@@ -30,6 +30,9 @@ export class InvoiceFormComponent implements OnInit {
     taxableAmount: number = 0;
     taxPercent: number = 0;
     todayDate: number = Date.now();
+    isEditMode: boolean = false;
+    isViewMode: boolean = false;
+    disableField: boolean = false;
     constructor(private _institutionService: InstitutionService,
         private _storageService: StorageService, private _datePipe: DatePipe,
         private _invoicesService: InvoicesService, public sanitizer: DomSanitizer, private router: Router, ) {
@@ -55,10 +58,21 @@ export class InvoiceFormComponent implements OnInit {
     setInvoiceOtherDetails() {
         const otherDetail = JSON.parse(localStorage.getItem('invoiceOtherDetails'));
         if (otherDetail) {
+            this.isEditMode = otherDetail.mode === 'edit';
+            this.isViewMode = otherDetail.mode === 'view';
+            this.disableField = this.isViewMode;
             this.isInstitutional = otherDetail.isInstitutional;
-            this.institutionId = otherDetail.institutionId;
-            this.GetBillFrom();
-            this.GetAllInstitute();
+            if (this.isEditMode || this.isViewMode) {
+                this.invoiceTemplateInfo.billToAddress = otherDetail.invoice.billTo;
+                this.invoiceTemplateInfo.CompanyAddress = otherDetail.invoice.billFrom;
+                this.invoiceTemplateInfo.termEndCond = otherDetail.invoice.termsCondition;
+                this.description = otherDetail.invoice.description;
+                this.institutionId = otherDetail.invoice.institution.id;
+            } else {
+                this.institutionId = otherDetail.institutionId;
+                this.GetBillFrom();
+                this.GetAllInstitute();
+            }
         }
     }
 
@@ -68,29 +82,16 @@ export class InvoiceFormComponent implements OnInit {
         let totalAmount = 0;
         invoiceDetails.forEach(element => {
 
-            if (element.isEditMode || element.isViewMode) {
-                this.invoiceTemplateInfo.billToAddress = element.invoice.billTo;
-                this.invoiceTemplateInfo.CompanyAddress = element.invoice.billFrom;
-                this.invoiceTemplateInfo.termEndCond = element.invoice.termsCondition;
-                this.description = element.invoice.description;
-                this.institutionId = element.invoice.institution.id;
-
-                element.billingArray.forEach(ba => {
-                    const tempDescription = (!ba.billingDesc) ?
-                        ('CaseId : ' + ba.caseId + ',  Recourse : ' + ba.recourse.recourseName
-                            + ', Stage : ' + ba.stage.stageName + '\n') : null;
-                    arEditInvoiceDetails.push({
-                        caseId: ba.caseId,
-                        description: ba.billingDesc,
-                        billingDate: this._datePipe.transform(new Date(ba.billingDate), 'dd MMM yyyy'),
-                        amount: ba.amount,
-                        id: ba.id,
-                        isCustom: (ba.caseId) ? false : true
-                    });
-                    totalAmount = totalAmount + ba.amount;
+            if (this.isEditMode || this.isViewMode) {
+                arEditInvoiceDetails.push({
+                    caseId: element.caseId,
+                    description: (element.description) ? element.description : element.billingDesc,
+                    billingDate: this._datePipe.transform(new Date(element.billingDate), 'dd MMM yyyy'),
+                    amount: parseFloat(element.amount),
+                    id: element.id,
+                    isCustom: (element.caseId) ? false : true
                 });
-                invoiceDetails = arEditInvoiceDetails;
-
+                totalAmount = totalAmount + parseFloat(element.amount);
             } else {
                 let description = '';
                 totalAmount = totalAmount + parseFloat(element.amount);
@@ -106,6 +107,9 @@ export class InvoiceFormComponent implements OnInit {
                 }
             }
         });
+        if (this.isEditMode || this.isViewMode) {
+            invoiceDetails = arEditInvoiceDetails;
+        }
 
         this.invoiceTemplateInfo.isFromInvoice = (invoiceDetails && invoiceDetails.length > 0)
             ? invoiceDetails[0].isFromInvoice : false;
@@ -246,18 +250,34 @@ export class InvoiceFormComponent implements OnInit {
             delete arrSaveInvoice['institution'];
             arrSaveInvoice['individualBillings'] = billingArray;
         }
-        this._invoicesService.saveInvoice(arrSaveInvoice, this.isInstitutional).subscribe(
-            result => {
-                if (result.body.httpCode === 200) {
-                    this._storageService.clearInvoiceData();
-                    $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
-                    this.router.navigate(['/admin/invoices']);
-                } else {
-                    $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
-                }
-            },
-            err => {
-                console.log(err);
-            });
+        if (this.isEditMode) {
+            this._invoicesService.updateInvoice(arrSaveInvoice, this.isInstitutional).subscribe(
+                result => {
+                    if (result.body.httpCode === 200) {
+                        this._storageService.clearInvoiceData();
+                        $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
+                        this.router.navigate(['/admin/invoices']);
+                    } else {
+                        $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+                    }
+                },
+                err => {
+                    console.log(err);
+                });
+        } else {
+            this._invoicesService.saveInvoice(arrSaveInvoice, this.isInstitutional).subscribe(
+                result => {
+                    if (result.body.httpCode === 200) {
+                        this._storageService.clearInvoiceData();
+                        $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
+                        this.router.navigate(['/admin/invoices']);
+                    } else {
+                        $.toaster({ priority: 'error', title: 'Error', message: result.body.failureReason });
+                    }
+                },
+                err => {
+                    console.log(err);
+                });
+        }
     }
 }
