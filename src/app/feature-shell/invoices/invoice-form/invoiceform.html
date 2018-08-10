@@ -37,7 +37,7 @@
                                         <label>Bill To</label>
                                     </div>
                                     <div class="col-md-5" style="text-align:left">
-                                        <textarea [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" id="txtBillToAddress" [(ngModel)]="invoiceTemplateInfo.billToAddress"
+                                        <textarea [disabled]="disableField" id="txtBillToAddress" [(ngModel)]="invoiceTemplateInfo.billToAddress"
                                             rows="2" class="form-control"></textarea>
                                         <span *ngIf="invoiceTemplateInfo.billToAddress.trim().length<=0" class="text-danger">Required </span>
                                     </div>
@@ -45,7 +45,7 @@
                                         <label>Bill From</label>
                                     </div>
                                     <div class="col-md-5" style="text-align:right">
-                                        <textarea id="txtcompanyAddress" [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" [(ngModel)]="invoiceTemplateInfo.CompanyAddress"
+                                        <textarea id="txtcompanyAddress" [disabled]="disableField" [(ngModel)]="invoiceTemplateInfo.CompanyAddress"
                                             rows="2" class="form-control"></textarea>
                                         <span style="float: left;" *ngIf="invoiceTemplateInfo.CompanyAddress.trim().length<=0" class="text-danger">Required </span>
                                     </div>
@@ -85,7 +85,7 @@
                                     <tbody id="itemsInvoice">
                                         <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td [ngClass]="{'has-error':!description || description.trim().length<=0}" style="width: 500px">
-                                                <textarea maxlength="252" rows="4" [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" class="form-control description"
+                                                <textarea maxlength="252" rows="4" [disabled]="disableField" class="form-control description"
                                                     type="text" placeholder="Description" [(ngModel)]="description"></textarea>
                                             </td>
                                             <td *ngIf="arrInvoiceDetails && arrInvoiceDetails.totalQuantity">
@@ -100,8 +100,7 @@
                                         <tr>
                                             <td style="text-align: right;font-weight: bold;font-size: 17px;padding-top: 9px;">Tax</td>
                                             <td>
-                                                <input type="text" maxlength="5" (change)="taxChange($event.target.value);" class="form-control"
-                                                    style="width:70px;display: inline-block;">%
+                                                <input type="text" [disabled]="disableField" maxlength="5" (change)="taxChange($event.target.value);" class="form-control" style="width:70px;display: inline-block;">%
                                             </td>
                                             <td>
                                                 {{taxableAmount}}
@@ -123,7 +122,7 @@
                                             </td>
                                             <td colspan="2">
                                                 <div *ngIf="arrInvoiceDetails && arrInvoiceDetails.totalAmount">
-                                                    <label id="totalAmount">{{(arrInvoiceDetails.totalAmount) |currency:'INR':true}}</label>
+                                                    <label id="totalAmount">{{(arrInvoiceDetails.totalAmount + taxableAmount) |currency:'INR':true}}</label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -137,13 +136,13 @@
                                     <tbody>
                                         <tr>
                                             <td style="padding-left: 0px !important">
-                                                <textarea [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" rows="4" id="remarksInvoice" class="form-control"
+                                                <textarea [disabled]="disableField" rows="4" id="remarksInvoice" class="form-control"
                                                     placeholder="Type your notes here" [(ngModel)]="invoiceTemplateInfo.termEndCond"></textarea>
                                                 <span *ngIf="invoiceTemplateInfo.termEndCond.trim().length<=0" class="text-danger">Required </span>
                                             </td>
                                         </tr>
                                         <tr *ngIf="!invoiceTemplateInfo.isFromInvoice">
-                                            <td>
+                                            <td *ngIf="!disableField">
                                                 <button class="btn btn bg-navy margin pull-right" (click)="SaveInvoice()" style="margin-right:0px" type="submit">Submit</button>
                                             </td>
                                         </tr>
