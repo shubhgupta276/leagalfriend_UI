@@ -187,8 +187,8 @@ export class InvoiceFormComponent implements OnInit {
     SaveInvoice() {
         if (this.isValid()) {
             let invoiceDetails = this.getInvoiceStorageDetail();
-            const arCustom = invoiceDetails.filter(x => x.isCustom);
-            invoiceDetails = invoiceDetails.filter(x => !x.isCustom);
+            const arCustom = invoiceDetails.filter(x => x.isCustom && (!x.id || x.id <= 0));
+            invoiceDetails = invoiceDetails.filter(x => !x.isCustom || x.id > 0);
             const billingArray = [];
             const $this = this;
             invoiceDetails.forEach(item => {
@@ -196,12 +196,12 @@ export class InvoiceFormComponent implements OnInit {
                     {
                         amount: item.amount,
                         id: item.id,
-                        description: item.description,
+                        // billingDate: new Date(item.billingDate),
+                        billingDesc: item.description,
                         userId: $this._storageService.getUserId()
                     }
                 );
             });
-
             if (arCustom.length > 0) {
                 const arCustomInvoice = [];
                 arCustom.forEach(data => {
@@ -210,8 +210,17 @@ export class InvoiceFormComponent implements OnInit {
                         billingDate: new Date(data.billingDate),
                         billingDesc: data.description,
                         custom: true,
+                        institution: {
+                            id: this.institutionId
+                        },
+                        userId: $this._storageService.getUserId()
                     });
                 });
+
+                if (!this.isInstitutional) {
+                    delete arCustomInvoice['institution'];
+                }
+                debugger
                 this._invoicesService.saveCustomInvoice(arCustomInvoice, this.isInstitutional).subscribe(
                     result => {
                         result = result.body;
@@ -220,7 +229,8 @@ export class InvoiceFormComponent implements OnInit {
                                 billingArray.push({
                                     amount: item.amount,
                                     id: item.id,
-                                    description: item.billingDesc,
+                                    // billingDate: new Date(item.billingDate),
+                                    billingDesc: item.billingDesc,
                                     userId: $this._storageService.getUserId()
                                 });
                             });
@@ -235,26 +245,10 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     saveCompleteInvoice(billingArray) {
-        const $this = this;
         let totalAmount = 0;
         billingArray.forEach(function (item) {
-            item.fkInstitutionId = $this.institutionId;
             totalAmount += Number(item.amount);
         });
-
-        // const arrSaveInvoice = {
-        //     amount: totalAmount,
-        //     amountRecieved: true,
-        //     billFrom: this.invoiceTemplateInfo.CompanyAddress,
-        //     billTo: this.invoiceTemplateInfo.billToAddress,
-        //     createdBy: this._storageService.getUserId(),
-        //     description: this.description,
-        //     id: (this.editInvoiceId) ? this.editInvoiceId : 0,
-        //     institution: { id: this.institutionId },
-        //     status: 'active',
-        //     termsCondition: this.invoiceTemplateInfo.termEndCond,
-        //     userId: this._storageService.getUserId()
-        // };
 
         const arrSaveInvoice = {
             individualBillings: billingArray,
@@ -284,7 +278,6 @@ export class InvoiceFormComponent implements OnInit {
         }
         this._invoicesService.saveInvoice(arrSaveInvoice, this.isInstitutional, this.isEditMode).subscribe(
             result => {
-                
                 if (result.body.httpCode === 200) {
                     this._storageService.clearInvoiceData();
                     $.toaster({ priority: 'success', title: 'Success', message: result.body.successMessage });
