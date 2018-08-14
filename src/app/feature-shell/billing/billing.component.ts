@@ -212,7 +212,7 @@ export class BillingComponent implements OnInit {
                         // const deleteIndex = this.tableInputData.findIndex(x => x.id === event.id);
                         // this.tableInputData.splice(deleteIndex, 1);
                         // this.dataTableComponent.ngOnInit();
-                        $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+                        $.toaster({ priority: 'success', title: 'Success', message: 'Billing Cancel Successfully.' });
                     },
                     err => {
                         console.log(err);
