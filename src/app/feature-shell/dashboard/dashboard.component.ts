@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
       },
       error => console.log(error)
     );
-
+    this.initSalesChart();
     this.initDailyLoginChart(client);
 
     this._caseService.getIndividualCase('week',client,null,null).subscribe(
@@ -513,6 +513,7 @@ export class DashboardComponent implements OnInit {
     var $this = this;
     var data1;
     var data2;
+    var data3;
     start = this.GetFormattedDate(start);
     end = this.GetFormattedDate(end);
     var weeklyLabel;
@@ -521,8 +522,17 @@ export class DashboardComponent implements OnInit {
       this._caseService.getIndividualCase('date',this.clientId,start,end).subscribe(
         result=>{
           data1= result;
-          this.createCaseChart(data1,data2,weeklyLabel);
-          console.log('Case Data : '+data1);
+          this._caseService.getInstitutionalCases('date',this.clientId,start,end).subscribe(
+            result=>{
+              data2= result;
+              this._caseService.getAllTypeCases('date',this.clientId,start,end).subscribe(
+                result=>{
+                  data3= result;
+                  this.createCaseChart(data1,data2,data3,weeklyLabel);
+                }
+              );
+            }
+          );
         }
       );
  
@@ -532,26 +542,70 @@ export class DashboardComponent implements OnInit {
       data1 = this.caseDataWeekly;
       weeklyLabel =
       ['1-7', '8-14', '15-21', '22-28','29-35','36-42','43-49','50-52'];
-      this.createCaseChart(data1,data2,weeklyLabel);
+      this._caseService.getInstitutionalCases('week',this.clientId,null,null).subscribe(
+        result=>{
+          data2= result;
+          this._caseService.getAllTypeCases('week',this.clientId,null,null).subscribe(
+            result=>{
+              data3= result;
+              this.createCaseChart(data1,data2,data3,weeklyLabel);
+            }
+          );
+        }
+      );
 
     }
     else {
       this.changeColor('caseFilterMonth','caseFilterDate','caseFilterWeek');
       data1 = this.caseData;
-      this.createCaseChart(data1,data2,weeklyLabel);
-    }
+      this._caseService.getInstitutionalCases('month',this.clientId,null,null).subscribe(
+        result=>{
+          data2= result;
+          this._caseService.getAllTypeCases('month',this.clientId,null,null).subscribe(
+            result=>{
+              data3= result;
+              this.createCaseChart(data1,data2,data3,weeklyLabel);
+            }
+          );
+        }
+      );
+      }
     
   }
 
-  createCaseChart(data1,data2,weeklyLabel){
+  createCaseChart(data1,data2,data3,weeklyLabel){
     var config = {
       type: 'line',
+      // data: {
+      //   labels: this.graphMode.caseMode == this.mode.Weekly ? weeklyLabel : data1,
+      //   datasets: [{
+      //     label: "Total Cases",
+      //     data: data1,
+      //     fill: false,
+      //     borderColor: '#3c8dbc',
+      //     datalabels: {
+      //       align: 'end',
+      //       anchor: 'end',
+      //       display: true,
+      //       borderRadius: 4,
+      //       color: '#001f3f',
+      //       font: {
+      //         weight: 'bold'
+      //       },
+      //       formatter: function (value, context) {
+      //         return value.y;
+      //       }
+      //     }
+      //   }],
+
+      // },
       data: {
-        labels: this.graphMode.caseMode == this.mode.Weekly ? weeklyLabel : data1,
+        labels: this.graphMode.customerMode == this.mode.Weekly ? weeklyLabel : data1,
         datasets: [{
-          label: "Total Cases",
+          label: "Individual Cases",
           data: data1,
-          backgroundColor: '#3c8dbc',
+          fill: false,
+          borderColor: '#3c8dbc',
           datalabels: {
             align: 'end',
             anchor: 'end',
@@ -565,7 +619,46 @@ export class DashboardComponent implements OnInit {
               return value.y;
             }
           }
-        }],
+        },
+        {
+          label: "Institutional Cases",
+          data: data2,
+          fill: false,
+          borderColor: '#a0d0e0',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        },
+        {
+          label: "Total Cases",
+          data: data3,
+          fill: false,
+          borderColor: '#d0d0e0',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }
+        ],
 
       },
 
@@ -648,46 +741,91 @@ export class DashboardComponent implements OnInit {
   BranchGraph() {
     // var canvas = document.getElementById("referral-chart");
 
-    var data = {
-      labels: ["DCB Bank", "HDFC Bank", "RBS Bank",],
-      datasets: [{
-        data: [40, 20, 40],
-        backgroundColor: ['#c0504e', '#4aacc5', '#b9cf8a'],
-        borderColor: 'white',
-        borderWidth: 1,
-      }]
-    };
+    // var data = {
+    //   labels: ["DCB Bank", "HDFC Bank", "RBS Bank",],
+    //   datasets: [{
+    //     fill: false,
+    //     borderColor: '#3c8dbc',
+    //     data: [40, 20, 40],
+    //     backgroundColor: ['#c0504e', '#4aacc5', '#b9cf8a'],
+    //     borderWidth: 1,
+    //   }]
+    // };
+
+    var data = [
+      {
+        x:"Bank1",
+        y:20
+      },
+      {
+        x:"Bank2",
+        y:40
+      },
+      {
+        x:"Bank3",
+        y:60
+      },
+    ]
     var randomScalingFactor = function () {
       return Math.round(Math.random() * 100);
     };
+
+    var config = {
+      type: 'bar',
+      data: {
+        labels:  ['A','B','CS'],
+        datasets: [{
+          label: "Branch",
+          data: [10,20,30],
+          fill: false,
+          borderColor: '#3c8dbc',
+          datalabels: {
+            align: 'end',
+            anchor: 'end',
+            display: true,
+            borderRadius: 4,
+            color: '#001f3f',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function (value, context) {
+              return value.y;
+            }
+          }
+        }],
+
+      },
+
+      options: {
+        scales: {
+          xAxes: [{
+            type: this.graphMode.caseMode == this.mode.Weekly ? undefined : "time",
+            time: {
+              displayFormats: {
+                'millisecond': 'MMM DD',
+                'second': 'MMM DD',
+                'minute': 'MMM DD',
+                'hour': 'MMM DD',
+                'day': 'MMM DD',
+                'week': 'MMM DD',
+                'month': 'MMM',
+                'quarter': 'MMM DD',
+                'year': 'MMM DD',
+              },
+              unit: this.graphMode.caseMode == this.mode.monthly ? "month" : ""
+            },
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }],
+        },
+      }
+    };
     var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('branch-chart');
     var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-    var myDoughnut = new Chart(ctx, {
-      type: 'pie',
-      data: data,
-      showDatapoints: true,
-      options: {
-        tooltips: {
-          enabled: true
-        },
-        pieceLabel: {
-          mode: 'value'
-        },
-        responsive: true,
-        legend: {
-          position: 'right',
-        },
-        title: {
-          display: true,
-          text: 'Branch',
-          fontSize: 20
-        },
-        animation: {
-          animateScale: true,
-          animateRotate: true
-        }
-      }
-    });
+    var myDoughnut = new Chart(ctx, config);
 
   }
   RecourseGraph() {
@@ -975,7 +1113,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  goToUserDetails(url,mode){
+  goToPage(url,mode){
     this._router.navigate([url, {mode:mode}]);
   }
 
@@ -984,4 +1122,152 @@ export class DashboardComponent implements OnInit {
     document.getElementById(id2).style.backgroundColor='';
     document.getElementById(id3).style.backgroundColor='';
   }
+
+  initSalesChart(){
+    // var salesChartCanvas = $('#salesChart').get(0).getContext('2d');
+    // // This will get the first returned node in the jQuery collection. 
+    // var salesChart       = new Chart(salesChartCanvas);
+
+    var salesChartCanvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('salesChart');
+    var ctx: CanvasRenderingContext2D = salesChartCanvas.getContext("2d");
+
+    var helpers = Chart.helpers;
+
+    // var elemLeft = salesChartCanvas.offsetLeft;
+    //  var elemTop = salesChartCanvas.offsetTop;
+    // salesChartCanvas.addEventListener('click', function(event){
+    //   var x = event.pageX-elemLeft,
+    //   y = event.pageY-elemTop;
+    //   console.log("Clicked!! : X= "+x+" Y="+y);
+
+    //   var pointsArray = [],
+    //     eventPosition = helpers.getRelativePosition(event);
+    //     console.log("Clicked!! : X= "+eventPosition.x+" Y="+eventPosition.y);
+		// 	// helpers.each(this.datasets,function(dataset){
+		// 	// 	helpers.each(dataset.points,function(point){
+		// 	// 		if (point.inRange(eventPosition.x,eventPosition.y)) pointsArray.push(point);
+		// 	// 	});
+		// 	// },this);
+		// 	// return pointsArray;
+
+    // },false);
+    var config = {
+      type: 'line',
+      data: {
+        labels:  ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets:  [
+          {
+            label               : 'Electronics',
+            backgroundColor     : 'rgba(60,141,188,0.9)',
+            strokeColor         : 'rgb(210, 214, 222)',
+            pointColor          : 'rgb(210, 214, 222)',
+            pointStrokeColor    : '#c1c7d1',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgb(220,220,220)',
+            data                : [65, 59, 80, 81, 56, 55, 40]
+          },
+          {
+            label               : 'Digital Goods',
+            backgroundColor           : 'rgb(210, 214, 222)',
+            strokeColor         : 'rgba(60,141,188,0.8)',
+            pointColor          : '#3b8bba',
+            pointStrokeColor    : 'rgba(60,141,188,1)',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgba(60,141,188,1)',
+            data                : [28, 48, 40, 19, 86, 27, 90]
+          }
+        ],
+
+      },
+      options: {
+        // This chart will not respond to mousemove, etc
+        events: ['click'],
+        pointDot                : false,
+        onClick: this.chartClick(),
+        showDatapoints: false,
+    },    
+     
+    };
+    var salesChartData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Electronics',
+          fillColor           : 'rgb(210, 214, 222)',
+          strokeColor         : 'rgb(210, 214, 222)',
+          pointColor          : 'rgb(210, 214, 222)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgb(220,220,220)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+          label               : 'Digital Goods',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    };
+  
+    var salesChartOptions = {
+      // Boolean - If we should show the scale at all
+      showScale               : true,
+      // Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : false,
+      // String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      // Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      // Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      // Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      // Boolean - Whether the line is curved between points
+      bezierCurve             : true,
+      // Number - Tension of the bezier curve between points
+      bezierCurveTension      : 0.3,
+      // Boolean - Whether to show a dot for each point
+      pointDot                : false,
+      // Number - Radius of each point dot in pixels
+      pointDotRadius          : 4,
+      // Number - Pixel width of point dot stroke
+      pointDotStrokeWidth     : 1,
+      // Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+      pointHitDetectionRadius : 20,
+      // Boolean - Whether to show a stroke for datasets
+      datasetStroke           : true,
+      // Number - Pixel width of dataset stroke
+      datasetStrokeWidth      : 2,
+      // Boolean - Whether to fill the dataset with a color
+      datasetFill             : true,
+      // String - A legend template
+      legendTemplate          : '<ul class=\'<%=name.toLowerCase()%>-legend\'><% for (var i=0; i<datasets.length; i++){%><li><span style=\'background-color:<%=datasets[i].lineColor%>\'></span><%=datasets[i].label%></li><%}%></ul>',
+      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+      maintainAspectRatio     : true,
+      // Boolean - whether to make the chart responsive to window resizing
+      responsive              : true
+    };
+    var salesChart = new Chart(ctx,config);
+    
+    // ctx.click( 
+    //   function(evt){
+    //       var activePoints = salesChart.getSegmentsAtEvent(evt);
+    //       var url = "http://example.com/?label=" + activePoints[0].label + "&value=" + activePoints[0].value;
+    //       alert(url);
+    //   }
+    //   );     
+    // Create the line chart
+   // salesChart.Line(salesChartData, salesChartOptions);
+
+  }
+
+  chartClick(){
+    console.log("Click Event Called");
+  }
+
 }

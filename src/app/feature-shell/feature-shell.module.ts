@@ -20,6 +20,7 @@ import { SystemdashboardService } from './systemdashboard/systemdashboard.servic
 import { OrganizationdetailComponent } from './systemdashboard/organizationdetail/organizationdetail.component';
 import { MatTableModule } from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 // import { Ng2CompleterModule } from "ng2-completer";
 
 
@@ -37,6 +38,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
+    ChartsModule
   ],
   declarations: [FeatureShellComponent, 
     CalendarComponent, EmployeeActiveComponent,

@@ -11,9 +11,6 @@
         <div class="box">
 
           <div class="box-body">
-            <div class="btn-back">
-              <a routerLink="/admin/systemdash" class="btn btn-block btn-default pull-right" style="width:100px">Back</a>
-            </div>
             <div class="clearfix"></div>
             <mat-card>
             <table id="example1" class="table table-bordered table-hover" style="margin-top:5px">
@@ -55,7 +52,78 @@
 
             </table>
           </mat-card>
+            <mat-card>
+                <mat-table #table [dataSource]="dataSource">
+                  <!-- Name Column 
+                    <ng-container matColumnDef="position">
+                        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{index}} </mat-cell>
+                      </ng-container>
+                  -->
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lasttName}} </mat-cell>
+                      </ng-container>
+                  
+                      <ng-container matColumnDef="email">
+                          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+                        </ng-container>
+                      <!-- Weight Column -->
+                      <ng-container matColumnDef="organization">
+                        <mat-header-cell *matHeaderCellDef> Organization </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.organization}} </mat-cell>
+                      </ng-container>
+                  
+                      <ng-container matColumnDef="expandedDetail">
+                          <mat-cell *matCellDef="let detail"> 
+                            ABCD {{element.organization}} 
+                          </mat-cell>
+                        </ng-container>
+                      <!-- Symbol Column -->
+                  
+                  
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"
+            matRipple 
+            class="element-row" 
+            [class.expanded]="expandedElement == row"
+            (click)="expandedElement = row"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+            [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+            style="overflow: hidden"> 
+    </mat-row>
+
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[2, 4, 6]" showFirstLastButtons></mat-paginator>
+              
+            </mat-card>
           </div>
+          <div class="col-md-6">
+              <div style="display: block;">
+              <canvas baseChart width="400" height="400"
+                          [datasets]="lineChartData"
+                          [labels]="lineChartLabels"
+                          [options]="lineChartOptions"
+                          [colors]="lineChartColors"
+                          [legend]="lineChartLegend"
+                          [chartType]="lineChartType"
+                          (chartHover)="chartHovered($event)"
+                          (chartClick)="chartClicked($event)"></canvas>
+              </div>
+            </div>
+            <div class="col-md-6" style="margin-bottom: 10px">
+              <table class="table table-responsive table-condensed">
+                <tr>
+                  <th *ngFor="let label of lineChartLabels">{{label}}</th>
+                </tr>
+                <tr *ngFor="let d of lineChartData">
+                  <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
+                </tr>
+              </table>
+              <button (click)="randomize()">CLICK</button>
+            </div>
           <!-- /.box-body -->
         </div>
         <!-- /.box -->

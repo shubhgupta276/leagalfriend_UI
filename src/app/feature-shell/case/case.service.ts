@@ -34,6 +34,32 @@ export class CaseService {
         }
     }
 
+    getInstitutionalCases(type,clientId,startDate,endDate): Observable<any> {
+        if(type == 'date'){
+            return this.apiGateWay.get('/master/institutional/date'+clientId+'&startDate='+
+            startDate+'&endDate='+endDate);
+        }
+        else if(type == 'week'){
+          return this.apiGateWay.get('/master/institutional/week'+clientId);
+        }
+        else{
+            return this.apiGateWay.get('/master/institutional/month'+clientId);
+        }
+    }
+
+    getAllTypeCases(type,clientId,startDate,endDate): Observable<any> {
+        if(type == 'date'){
+            return this.apiGateWay.get('/master/allcases/date'+clientId+'&startDate='+
+            startDate+'&endDate='+endDate);
+        }
+        else if(type == 'week'){
+          return this.apiGateWay.get('/master/allcases/week'+clientId);
+        }
+        else{
+            return this.apiGateWay.get('/master/allcases/month'+clientId);
+        }
+    }
+
     getRecentUpdatedCases(clientId): any{
         return this.apiGateWay.get('/case/lastupdated'+clientId);
     }

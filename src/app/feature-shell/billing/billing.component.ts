@@ -60,6 +60,7 @@ export class BillingComponent implements OnInit {
         this.setActionConfig();
         const self = this;
         this.getAllInstitutions();
+        this.getBillingData();
         this.getAllRecourses();
         $($.document).ready(function () {
             $('#reservation').daterangepicker({
