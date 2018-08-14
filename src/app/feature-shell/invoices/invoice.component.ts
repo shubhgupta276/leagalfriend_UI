@@ -105,9 +105,10 @@ export class InvoiceComponent implements OnInit {
         this.invoiceService.getInvoiceDetail(data.id, this.isInstitutionalTab).subscribe(
           (result) => {
             if (result) {
+              
               this._storageService.clearInvoiceData();
               const invoice = result.invoice;
-              const billingArray = result.institutionalBillings;
+              const billingArray = (this.isInstitutionalTab)?result.institutionalBillings:result.individualBillings;
               const otherDetails = {
                 mode: event.eventType,
                 invoice: invoice,
@@ -282,4 +283,3 @@ export class InvoiceComponent implements OnInit {
 
   }
 }
-

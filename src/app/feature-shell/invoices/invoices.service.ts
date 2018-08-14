@@ -20,15 +20,20 @@ export class InvoicesService {
         const apiUrl = InvoiceTemplate + '?userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
-    saveInvoice(data: any, isInstitutional): Observable<any> {
-        let url = addInstitutionalInvoice;
-        if (!isInstitutional) {
-            url = addIndividualInvoice;
+    saveInvoice(data: any, isInstitutional, isEditMode): Observable<any> {
+        if (!isEditMode) {
+            let url = addInstitutionalInvoice;
+            if (!isInstitutional) {
+                url = addIndividualInvoice;
+            }
+            return this.apiGateWay.post<any>(url, data);
+        } else {
+            return this.updateInvoice(data, isInstitutional);
         }
-        return this.apiGateWay.post<any>(url, data);
+
     }
 
-    updateInvoice(data: any, isInstitutional): Observable<any> {
+    private updateInvoice(data: any, isInstitutional): Observable<any> {
         let url = 'invoice/institutional';
         if (!isInstitutional) {
             url = 'invoice/individual';
