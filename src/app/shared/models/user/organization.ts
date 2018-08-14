@@ -3,3 +3,8 @@ export class Organization{
   total: number;
 
 }
+
+export class ReportDetail{
+  category: string;
+  count: number;
+}
