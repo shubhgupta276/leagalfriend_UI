@@ -1,116 +1,91 @@
 <div class="content-wrapper">
-    <div class="page-heading">
-      Master Management
-    </div>
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <!-- /.box -->
-          <div class="box">
-            <div class="box-body">
-              <div>
-                <div class="row table-toolbar">
-                  <div class="col-sm-4 heading">Document Templates</div>
-                  <div class="col-sm-2"></div>
-                  <div class="col-sm-2"></div>
-                </div>
-              </div>
-              <table id="example1" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="padding-bottom">File Name</th>
-                    <th class="padding-bottom">Last Updated</th>
-                    <th class="padding-bottom">Last Updated By</th>
-                    <!-- <th class="padding-bottom">Actions</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let user of arr; let i=index" (dblclick)="setDataToPreview(user.Id)">
-                    <td>{{user.FileName}}</td>
-                    <td>{{user.Lastupdated}}</td>
-                    <td>{{user.LastUpdatedBy}}</td>
-                    <!-- <td>
-                      <a title="Edit">
-                        <i class="fa fa-edit" data-toggle="modal" data-target="#previewFile" (click)="setDataToPreview(user.Id)"></i>
-                      </a>
-                    </td> -->
-                  </tr>
-                </tbody>
-  
-              </table>
-            </div>
-            <!-- /.box-body -->
+  <div class="page-heading">
+    Master Management
+  </div>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- /.box -->
+        <div class="box">
+          <div class="box-body">
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
+              (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow"
+              (actionBtnClick)="onActionBtnClick($event)">
+            </app-data-table>
           </div>
-          <!-- /.box -->
+          <!-- /.box-body -->
         </div>
-        <!-- /.col -->
+        <!-- /.box -->
       </div>
-      <!-- /.row -->
-    </section>
-  
-    <div class="favicon">
-      <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
-        <span class="tooltip-text">Add Document</span>
-      </div>
-      <a>
-        <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addMasterTemplate"></i>
-      </a>
+      <!-- /.col -->
     </div>
-    <div class="modal fade" id="addMasterTemplate">
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-radius: 5px;">
-          <div class="modal-header modal-header-addedit">
-            <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Upload Template</h4>
+    <!-- /.row -->
+  </section>
+
+  <div class="favicon">
+    <div class="tooltip bg-black text-white font-size-12 padding-5 border-radius-3 fw-700">
+      <span class="tooltip-text">Add Document</span>
+    </div>
+    <a>
+      <i class="fa fa-plus" type="button" data-toggle="modal" data-target="#addMasterTemplate"></i>
+    </a>
+  </div>
+
+  <div class="modal fade" id="addMasterTemplate">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border-radius: 5px;">
+        <div class="modal-header modal-header-addedit">
+          <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Upload Template</h4>
+        </div>
+
+
+        <div class="modal-body">
+          <div class="form-wizard">
+            <div class="form-body">
+              <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <label for="avatar">Avatar</label>
+                  <input type="file" id="avatar" (change)="onFileChange($event)" #fileInput>
+                </div>
+                <button type="submit" class="btn btn-success">Submit
+                  <i class="fa fa-spinner fa-spin fa-fw"></i>
+                </button>
+              </form>
+            </div>
           </div>
-  
-  
-          <div class="modal-body">
-            <div class="form-wizard">
-              <div class="form-body">
-                <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                  <div class="form-group">
-                    <label for="avatar">Avatar</label>
-                    <input type="file" id="avatar" (change)="onFileChange($event)" #fileInput>
-                  </div>
-                  <button type="submit" class="btn btn-success">Submit
-                    <i class="fa fa-spinner fa-spin fa-fw"></i>
-                  </button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+
+  </div>
+  <div class="modal fade" id="previewFile">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border-radius: 5px;">
+        <div class="modal-header modal-header-addedit">
+          <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Preview Your Template</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-wizard">
+            <div class="form-body">
+              <div class="box-body pad">
+                <form>
+                  <textarea id="editor2" name="editor2" rows="10" cols="80">
+                                      </textarea>
+                  <button (click)="getCkeditorValue()" data-dismiss="modal">Submit</button>
                 </form>
               </div>
             </div>
           </div>
         </div>
-        <!-- /.modal-content -->
-      </div>
-  
-    </div>
-    <div class="modal fade" id="previewFile">
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-radius: 5px;">
-          <div class="modal-header modal-header-addedit">
-            <button type="button" class="close close-addedit" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Preview Your Template</h4>
-          </div>
-          <div class="modal-body">
-            <div class="form-wizard">
-              <div class="form-body">
-                <div class="box-body pad">
-                  <form>
-                    <textarea id="editor2" name="editor2" rows="10" cols="80">
-                                      </textarea>
-                    <button (click)="getCkeditorValue()" data-dismiss="modal">Submit</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  
   </div>
+
+</div>
