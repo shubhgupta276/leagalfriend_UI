@@ -343,7 +343,7 @@
                   <i class="fa fa-circle-o"></i> Institution</a>
               </li>
             </ng-template>
-            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
+            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM','ADMIN_LAWYER']">
               <li [routerLinkActive]="['active']">
                 <a routerLink="master/billing">
                   <i class="fa fa-circle-o"></i> Billing</a>
@@ -365,7 +365,7 @@
           </ul>
         </li>
       </ng-template>
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
+      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM','ADMIN_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="billing">
             <i class="fa fa-dollar"></i>

@@ -1,262 +1,168 @@
-<style type="text/css">
-    body {
-        background: #fafafa;
-        font: 12px/20px Arial, Helvetica, sans-serif
-    }
-
-    .invoice-wrap {
-        width: 915px;
-        margin: 0 auto;
-        background: #FFF;
-        color: #000;
-        min-height: 700px;
-    }
-
-    .invoice-inner {
-        margin: 0 15px;
-        padding: 20px 0;
-    }
-
-    .invoice-address {
-        border-top: 3px double #000000;
-        margin: 20px 0;
-        padding-top: 25px;
-    }
-
-    .bussines-name {
-        font-size: 18px;
-        font-weight: 100
-    }
-
-    .invoice-name {
-        font-size: 22px;
-        font-weight: 700
-    }
-
-    .listing-table th {
-        background-color: #e5e5e5;
-        border-bottom: 1px solid #555555;
-        border-top: 1px solid #555555;
-        font-weight: bold;
-        text-align: left;
-        padding: 6px 4px
-    }
-
-    .listing-table td {
-        border-bottom: 1px solid #555555;
-        text-align: left;
-        padding: 5px 6px;
-        vertical-align: top
-    }
-
-    .total-table td {
-        border-left: 1px solid #555555;
-    }
-
-    .total-row {
-        background-color: #e5e5e5;
-        border-bottom: 1px solid #555555;
-        border-top: 1px solid #555555;
-        font-weight: bold;
-    }
-
-    .row-items {
-        margin: 5px 0;
-        display: block
-    }
-
-    .notes-block {
-        margin: 50px 0 0 0
-    }
-
-    /*tables*/
-
-    table td {
-        vertical-align: top
-    }
-
-    .items-table {
-        border: 1px solid #555555;
-        border-collapse: collapse;
-        width: 100%
-    }
-
-    .items-table td,
-    .items-table th {
-        border: 1px solid #555555;
-        padding: 4px 5px;
-        text-align: left
-    }
-
-    .items-table th {
-        background: #f5f5f5;
-    }
-
-    .totals-row .wide-cell {
-        border: 1px solid #fff;
-        border-right: 1px solid #555555;
-        border-top: 1px solid #555555
-    }
-
-    .html2canvas-container {
-        width: 3000px !important;
-        height: 3000px !important;
-    }
-
-    #NewPaginationContainer {
-        text-align: right;
-    }
-</style>
 <div class="content-wrapper" id="print-section">
-    <div class="page-heading">
-        Invoice
-    </div>
-    <!-- Main content -->
-    <div id="editor"></div>
-
-    <section class="content">
-        <div id="templateArea">
-            <div class="col-md-12">
-                <div class="col-md-2" style="text-align:right;" >
-                     <a *ngIf="invoiceTemplateInfo.isFromInvoice" [routerLink]="['/admin/invoices']" class="btn btn-primary">Back</a>
-                </div>
-                <div class="col-md-8">
-                    <div class="invoice-wrap">
-
-                        <div class="invoice-inner" id="pdfdownloaddiv">
-                            <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
-                                <tbody>
-                                    <tr>
-                                        <td align="center" valign="top">
-                                            <div>
-                                                <div id="logoDiv">
-                                                    <img height="102" *ngIf="invoiceTemplateInfo.photoUrl" [src]="invoiceTemplateInfo.photoUrl" class="img-fluid" alt="">
-                                                    <!-- <img height="102" id="logo" src="/assets/dist/img/logo.png" width="122" style="width: 122px; height: 102px;" data-original-title=""
-                                                        title=""> -->
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <div class="invoice-address">
-                                <div class="col-md-12 " style="padding:0px;margin-bottom:30px;">
-                                    <div class="col-md-1" style="padding:0px;">
-                                        <label>Bill To</label>
-                                    </div>
-                                    <div class="col-md-5" style="text-align:left">
-                                        <textarea [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" id="txtBillToAddress" value={{invoiceTemplateInfo.billToAddress}} rows="2" class="form-control"></textarea>
-                                    </div>
-                                    <div class="col-md-1" style="padding:0px;">
-                                            <label>Bill From</label>
-                                        </div>
-                                    <div class="col-md-5" style="text-align:right">
-                                        <textarea id="txtcompanyAddress" [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" value={{invoiceTemplateInfo.CompanyAddress}} rows="2" class="form-control"></textarea>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-12" style="padding:0px;">
-
-                                    <div class="col-md-6" style="padding:0px;">
-                                        <label>Invoice No : </label>
-                                        <label id=invoiceNo>{{invoiceTemplateInfo.invoiceNo}}</label>
-                                    </div>
-                                    <div class="col-md-6" style="text-align:right;padding:0px;">
-                                        <div style="display: inline-flex">
-                                            <label>Date : </label>
-                                            <label> {{ todayDate | date}}</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div>
-                                <table id="tblInvoice" class="table table-condensed table-bordered table-striped items-table">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Description
-                                            </th>
-                                            <th class="mount-header">
-                                                Quantity
-                                            </th>
-                                            <th class="subtotal-header">
-                                                Amount
-                                            </th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="itemsInvoice">
-                                        <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
-                                            <td *ngIf="arrInvoiceDetails.totalDescription" style="width: 500px">
-                                                <textarea rows="4" [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" class="form-control description" type="text" placeholder="Description">{{arrInvoiceDetails.totalDescription}}</textarea>
-                                            </td>
-                                            <td *ngIf="arrInvoiceDetails.totalQuantity">
-                                                <input class="form-control quantity" disabled value="{{arrInvoiceDetails.totalQuantity}}" style="width:100px" placeholder="Quantity">
-                                            </td>
-                                            <td>
-                                                <div *ngIf="arrInvoiceDetails.totalAmount">
-                                                    <input class="form-control amount" disabled value="{{arrInvoiceDetails.totalAmount}}" style="width:100px" placeholder="Amount">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot id="TotalsSection">
-
-                                        <tr class="totals-row" id="TotalRow">
-                                            <!-- <td class="wide-cell" colspan="1">
-                                                        <button type="button" (click)="AddMoreInvoice()" id="AddProduct" class="btn btn-small btn-primary">
-                                                            <i class="fa fa-plus"></i> Add Line</button>
-                                                    </td> -->
-                                            <td colspan="2">
-                                                <strong>
-                                                    <!-- <input type="text" id="label_total" value="Total" class="invoice-input" style="font-weight: bold;"> -->
-                                                    <label style="font-weight:bold">Total</label>
-                                                </strong>
-                                            </td>
-                                            <td colspan="2">
-                                                <div *ngIf="arrInvoiceDetails.totalAmount">
-                                                    <label id="totalAmount">{{arrInvoiceDetails.totalAmount |currency:'INR':true}}</label>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                    </tfoot>
-                                </table>
-                            </div>
-
-                            <div class="notes-block" >
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <div class="page-heading">
+            Invoice
+        </div>
+        <!-- Main content -->
+        <div id="editor"></div>
+    
+        <section class="content">
+            <div id="templateArea">
+                <div class="col-md-12">
+                    <div class="col-md-2" style="text-align:right;">
+                        <a *ngIf="invoiceTemplateInfo.isFromInvoice" [routerLink]="['/admin/invoices']" class="btn btn-primary">Back</a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="invoice-wrap">
+    
+                            <div class="invoice-inner" id="pdfdownloaddiv">
+                                <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
                                     <tbody>
                                         <tr>
-                                            <td style="padding-left: 0px !important">
-                                                <textarea [attr.disabled]="invoiceTemplateInfo.isFromInvoice ? 'null' : disabled" rows="4" id="remarksInvoice" class="form-control" placeholder="Type your notes here">{{invoiceTemplateInfo.termEndCond}}</textarea>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="!invoiceTemplateInfo.isFromInvoice">
-                                            <td>
-                                                <button class="btn btn bg-navy margin pull-right" (click)="SaveInvoice()" style="margin-right:0px" type="submit">Submit</button>
+                                            <td align="center" valign="top">
+                                                <div>
+                                                    <div id="logoDiv">
+                                                        <img height="102" *ngIf="invoiceTemplateInfo.photoUrl" [src]="invoiceTemplateInfo.photoUrl" class="img-fluid" alt="">
+                                                        <!-- <img height="102" id="logo" src="/assets/dist/img/logo.png" width="122" style="width: 122px; height: 102px;" data-original-title=""
+                                                            title=""> -->
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+    
+                                <div class="invoice-address">
+                                    <div class="col-md-12 " style="padding:0px;margin-bottom:30px;">
+                                        <div class="col-md-1" style="padding:0px;">
+                                            <label>Bill To</label>
+                                        </div>
+                                        <div class="col-md-5" style="text-align:left" [ngClass]="{'has-error':!invoiceTemplateInfo.billToAddress || invoiceTemplateInfo.billToAddress.trim().length<=0}">
+                                            <textarea [disabled]="disableField" id="txtBillToAddress" [(ngModel)]="invoiceTemplateInfo.billToAddress" rows="2" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-md-1" style="padding:0px;">
+                                            <label>Bill From</label>
+                                        </div>
+                                        <div class="col-md-5" style="text-align:right" [ngClass]="{'has-error':!invoiceTemplateInfo.CompanyAddress || invoiceTemplateInfo.CompanyAddress.trim().length<=0}">
+                                            <textarea id="txtcompanyAddress" [disabled]="disableField" [(ngModel)]="invoiceTemplateInfo.CompanyAddress" rows="2" class="form-control"></textarea>
+                                        </div>
+    
+                                    </div>
+                                    <div class="col-md-12" style="padding:0px;">
+    
+                                        <div class="col-md-6" style="padding:0px;">
+                                            <label>Invoice No : </label>
+                                            <span [ngClass]="{'has-error':!invoiceTemplateInfo.invoiceNo || invoiceTemplateInfo.invoiceNo.trim().length<=0}">
+                                                <input type="text" [disabled]="disableField"  [(ngModel)]="invoiceTemplateInfo.invoiceNo" class="form-control" style="width:50%; display: inline-block;">
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6" style="text-align:right;padding:0px;">
+                                            <div style="display: inline-flex">
+                                                <label>Date : </label>
+                                                <label> {{ todayDate | date}}</label>
+                                            </div>
+                                         </div>
+    
+                                    </div>
+                                </div>
+                                <div>
+                                    <table id="tblInvoice" class="table table-condensed table-bordered table-striped items-table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Description
+                                                </th>
+                                                <th class="mount-header">
+                                                    Quantity
+                                                </th>
+                                                <th class="subtotal-header">
+                                                    Amount
+                                                </th>
+                                            </tr>
+                                        </thead>
+    
+                                        <tbody id="itemsInvoice">
+                                            <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
+                                                <td [ngClass]="{'has-error':!description || description.trim().length<=0}" style="width: 500px">
+                                                    <textarea maxlength="252" rows="4" [disabled]="disableField" class="form-control description" type="text" placeholder="Description"
+                                                        [(ngModel)]="description"></textarea>
+                                                </td>
+                                                <td *ngIf="arrInvoiceDetails && arrInvoiceDetails.totalQuantity">
+                                                    <input class="form-control quantity" disabled value="{{arrInvoiceDetails.totalQuantity}}" style="width:70px" placeholder="Quantity">
+                                                </td>
+                                                <td>
+                                                    <div *ngIf="arrInvoiceDetails && arrInvoiceDetails.totalAmount">
+                                                        <input class="form-control amount" disabled value="{{arrInvoiceDetails.totalAmount}}" style="width:100px" placeholder="Amount">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right;font-weight: bold;font-size: 17px;padding-top: 9px;">Tax</td>
+                                                <td>
+                                                    <input type="text" [disabled]="disableField" maxlength="5" [(ngModel)]="taxPercent" (change)="taxChange($event.target.value);" class="form-control"
+                                                        style="width:70px;display: inline-block;">%
+                                                </td>
+                                                <td>
+                                                    {{taxableAmount}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot id="TotalsSection">
+    
+                                            <tr class="totals-row" id="TotalRow">
+                                                <!-- <td class="wide-cell" colspan="1">
+                                                            <button type="button" (click)="AddMoreInvoice()" id="AddProduct" class="btn btn-small btn-primary">
+                                                                <i class="fa fa-plus"></i> Add Line</button>
+                                                        </td> -->
+                                                <td colspan="2">
+                                                    <strong>
+                                                        <!-- <input type="text" id="label_total" value="Total" class="invoice-input" style="font-weight: bold;"> -->
+                                                        <label style="font-weight:bold">Total</label>
+                                                    </strong>
+                                                </td>
+                                                <td colspan="2">
+                                                    <div *ngIf="arrInvoiceDetails && arrInvoiceDetails.totalAmount">
+                                                        <label id="totalAmount">{{(arrInvoiceDetails.totalAmount + taxableAmount) |currency:'INR':true}}</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+    
+                                        </tfoot>
+                                    </table>
+                                </div>
+    
+                                <div class="notes-block">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-left: 0px !important">
+                                                    <textarea [disabled]="disableField" rows="4" id="remarksInvoice" class="form-control" placeholder="Type your notes here"
+                                                        [(ngModel)]="invoiceTemplateInfo.termEndCond"></textarea>
+                                                    <span *ngIf="invoiceTemplateInfo.termEndCond.trim().length<=0" class="text-danger">Required </span>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="!invoiceTemplateInfo.isFromInvoice">
+                                                <td *ngIf="!disableField">
+                                                    <button class="btn btn bg-navy margin pull-right" (click)="SaveInvoice()" style="margin-right:0px" type="submit">Submit</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <br> &nbsp;
                             </div>
-                            <br>
-                            <br>
-                            <br>
-                            <br> &nbsp;
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <a (click)="StoreInvoiceTemplateInfo()" [routerLink]="['/admin/invoices/invoicenextform']" class="btn btn-default">Next</a>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <a (click)="StoreInvoiceTemplateInfo()" [routerLink]="['/admin/invoices/invoicenextform']" class="btn btn-default">Next</a>
-                </div>
+    
+    
             </div>
-
-
-        </div>
-    </section>
-
-</div>
-<div style="clear: both;"></div>
+        </section>
+    
+    </div>
+    <div style="clear: both;"></div>

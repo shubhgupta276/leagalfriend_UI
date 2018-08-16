@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, DebugElement } from '@angular/core';
 import { debuglog } from 'util';
 import { AuthService } from '../../auth-shell/auth-shell.service';
 import { Branch } from '../../shared/models/auth/case.model';
@@ -34,6 +34,7 @@ import { setTimeout } from 'timers';
 import { CaseHistoryComponent } from './case-history/case-history-component';
 import { ActivatedRoute } from '@angular/router';
 import { MasterService } from '../master/master.service';
+import { AddCaseComponent } from './Add-case/Add-case.component';
 
 const now = new Date();
 
@@ -49,6 +50,7 @@ const now = new Date();
 })
 export class CaseComponent implements OnInit, OnDestroy {
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
+  @ViewChild(AddCaseComponent) addChild: AddCaseComponent;
   tableInputData = [];
   columns = caseRunningTableConfig;
   @ViewChild('caseRunningTable') runningDataTableComponent: DataTableComponent;
@@ -91,11 +93,13 @@ export class CaseComponent implements OnInit, OnDestroy {
     private _storageService: StorageService, private _sharedService: SharedService, private masterService: MasterService) {
     this.caseCompleted = CasesCompleted;
   }
+
   ngOnDestroy() {
     this.branchSubscription.unsubscribe();
-    //this.isLoad=true;
   }
+
   ngOnInit() {
+
     this.GetAllCourt();
     this.rowSelect = !this.isViewOnly;
     this._activatedRoute.params.subscribe((param) => {
@@ -133,14 +137,10 @@ export class CaseComponent implements OnInit, OnDestroy {
     }, function (start_date, end_date) {
       $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
     });
-    var self = this;
-    $('body').on('change', '.newHiringDate', function () {
-      self.updateNewHiringDate($(this).val())
-      $(this).closest('mat-cell')
-        .animate({ backgroundColor: '#88d288' }, 1000)
-        .animate({ backgroundColor: '' }, 2000);
+    const self = this;
+    $('body').unbind().on('change', '.newHiringDate', function (event) {
+      self.updateNewHiringDate($(this));
     });
-
   }
 
   GetAllCourt() {
@@ -314,7 +314,7 @@ export class CaseComponent implements OnInit, OnDestroy {
   }
 
   onRowDoubleClickCompleted(event) {
-    console.log(event);
+    this.showEditPop(event);
   }
 
   onRowSelectCompleted(event) {
@@ -556,20 +556,27 @@ export class CaseComponent implements OnInit, OnDestroy {
     this.newHiringCasedata = items;
 
   }
-  updateNewHiringDate(newHiring) {
-    this.newHiringCasedata.nextHearingDate = newHiring;
-    this.caseRunning.forEach(element => {
-      if (element.id == this.newHiringCasedata.id) {
-        element.nextHearingDate = newHiring;
-        return false;
-      }
-    })
-    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
-      result => {
-      },
-      err => {
-        console.log(err);
+  updateNewHiringDate(ref) {
+    try {
+      const newHiring = $(ref).val();
+      this.newHiringCasedata.nextHearingDate = newHiring;
+      this.caseRunning.forEach(data => {
+        if (data.id === this.newHiringCasedata.id) {
+          data.nextHearingDate = newHiring;
+          return false;
+        }
       });
+      this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
+        result => {
+          $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
+          $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
+        },
+        err => {
+          console.log(err);
+        });
+    } catch (err) {
+
+    }
 
   }
   onMouseHover(i) {
@@ -585,4 +592,16 @@ export class CaseComponent implements OnInit, OnDestroy {
 
   }
 
+  caseSaved() {
+    this.getCasesData();
+  }
+
+  resetGrid() {
+    this.getCasesData();
+  }
+
+  addCase() {
+    this.addChild.AddCaseUser();
+    $('#addCaseModal').modal('show');
+  }
 }

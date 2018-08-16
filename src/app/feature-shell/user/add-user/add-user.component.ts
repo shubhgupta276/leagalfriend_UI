@@ -50,14 +50,13 @@ export class AddUserComponent implements OnInit {
       mobileNumber: [null, Validators.compose([Validators.required, Validators.minLength(10)])],
       role: [2],
       status: [1],
-      userTypeRole: ['1', Validators.nullValidator],
-      branchName: ['1', Validators.nullValidator],
-      institutions: ['1', Validators.nullValidator],
+      userTypeRole: [null, Validators.nullValidator],
+      branchName: [null, Validators.nullValidator],
+      institutions: [null, Validators.nullValidator],
     });
   }
 
   submitAddUser(data) {
-    
     const userDetails = new UserModel();
     userDetails.firstName = data.firstName;
     userDetails.lastName = data.lastName;

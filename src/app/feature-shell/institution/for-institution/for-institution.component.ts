@@ -28,16 +28,16 @@ declare let $;
     encapsulation: ViewEncapsulation.None
 })
 
-export class ForInstitutionComponent implements OnInit {
+export class ForInstitutionComponent implements OnInit, OnDestroy {
     tableInputData = [];
     actionColumnConfig: ActionColumnModel;
     columns = forInstitutionTableConfig;
     completeCaseColumns: any;
     rowSelect = true;
     hoverTableRow = true;
-    showSearchFilter = false;
     arInstitution = [];
     arRecourse: any[] = [];
+    recourseDefaultSelectedItem: any;
     InstitutionValue: any;
     recourseConfig: any;
     institutionConfig: any;
@@ -68,6 +68,7 @@ export class ForInstitutionComponent implements OnInit {
         private _institutionService: InstitutionService,
         private _recourseService: RecourseService,
         private _sharedService: SharedService,
+        private _datePipe: DatePipe,
         private _activatedRoute: ActivatedRoute,
         private _storageService: StorageService) {
 
@@ -134,11 +135,18 @@ export class ForInstitutionComponent implements OnInit {
                 $('#txtFromToDate').val(start_date.format('DD MMM YYYY') + ' To ' + end_date.format('DD MMM YYYY'));
             });
 
-            $('body').on('change', '.newHiringDate,.lastHiringDate', function (evt) {
+            $('body').unbind().on('change', '.newHiringDate', function (evt) {
                 const isNewHearingDate = $(evt.target).hasClass('newHiringDate');
                 selfnew.updateNewHearingDate($(this), isNewHearingDate);
             });
         });
+    }
+
+    ngOnDestroy() {
+        // const lstClass = document.getElementsByClassName('newHiringDate');
+        // [].forEach.call(lstClass, function (el) {
+        //     el.classList.remove('newHiringDate');
+        // });
     }
 
     bindInstitutionBranchAccordingUser() {
@@ -320,12 +328,17 @@ export class ForInstitutionComponent implements OnInit {
 
     clearFilters() {
         this.isFilterApplied = false;
+        this.changeRecourse(null);
+        this.recourseDefaultSelectedItem = this.recourseConfig.defaultText;
         this.resetAllFilter();
         this.filterTable();
     }
 
     changeRecourse(data: any) {
         this.recourseFilter = data;
+        if (data) {
+            this.recourseDefaultSelectedItem = data.recourseName;
+        }
         this.filterTable();
     }
 
@@ -344,10 +357,12 @@ export class ForInstitutionComponent implements OnInit {
         if (!this.isViewOnlyForUser) {
             this.branchData = this._storageService.getBranchData();
         }
+        this.selectedRowsCheckbox = [];
         this.tableInputData = [];
         if (this.branchData) {
             this._institutionService.getAllForInstitutions(this.InstitutionValue.id, this.branchData.id).subscribe(
                 result => {
+                    this.tableInputData = [];
                     this.isPageLoad = false;
                     for (let i = 0; i < result.length; i++) {
                         const obj = result[i];
@@ -416,7 +431,8 @@ export class ForInstitutionComponent implements OnInit {
                                 ndohNullReason: obj.ndohNullReason,
                                 nextActionDate: obj.nextActionDate,
                                 nextActionPlan: obj.nextActionPlan,
-                                nextHearingDate: this._sharedService.convertDateToStr(obj.nextHearingDate),
+                                nextHearingDate: this._sharedService.convertDateToStr(
+                                    this._sharedService.convertStrToDate(obj.nextHearingDate)),
                                 noticeAmount: obj.noticeAmount,
                                 noticeDate: obj.noticeDate,
                                 noticeDateAppointmentArbitrator: obj.noticeDateAppointmentArbitrator,
@@ -438,7 +454,8 @@ export class ForInstitutionComponent implements OnInit {
                                 posOnEpFilingDate: obj.posOnEpFilingDate,
                                 posOnFilingDate: obj.posOnFilingDate,
                                 posOnNoticeDate: obj.posOnNoticeDate,
-                                previousHearingDate: this._sharedService.convertDateToStr(obj.previousHearingDate),
+                                previousHearingDate: this._sharedService.convertDateToStr(
+                                    this._sharedService.convertStrToDate(obj.previousHearingDate)),
                                 product: obj.product,
                                 productGroup: obj.productGroup,
                                 publicationDatePhysicalPossessionNotice: obj.publicationDatePhysicalPossessionNotice,
@@ -488,7 +505,7 @@ export class ForInstitutionComponent implements OnInit {
                     this.dataTableComponent.ngOnInit();
                     setTimeout(() => {
                         this.filterTable();
-                    }, 100);
+                    }, 400);
 
                 },
                 err => {
@@ -544,35 +561,28 @@ export class ForInstitutionComponent implements OnInit {
             const date = $(ref).val();
 
             const obj = this.tableInputData.find(x => x.id === this.newHiringdata.id);
-            if (isNewHearingDate) {
-                obj.nextHearingDate = this._sharedService.convertStrToDate(date);
-                obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
-            } else {
-                obj.previousHearingDate = this._sharedService.convertStrToDate(date);
-                obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
+            if (obj) {
+                if (isNewHearingDate) {
+                    obj.nextHearingDate = this._datePipe.transform(this._sharedService.convertStrToDate(date), 'MM/dd/yyyy');
+                    // obj.previousHearingDate = this._sharedService.convertStrToDate(obj.previousHearingDate);
+                } else {
+                    obj.previousHearingDate = this._sharedService.convertStrToDate(date);
+                    obj.nextHearingDate = this._sharedService.convertStrToDate(obj.nextHearingDate);
+                }
+
+                this._institutionService.updateHearingDate(obj).subscribe(
+                    (result) => {
+
+                        if (result.status === 200) {
+                            $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
+                            obj.nextHearingDate = this._sharedService.convertDateToStr(new Date(obj.nextHearingDate));
+                            $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    });
             }
-
-            this._institutionService.updateHearingDate(obj).subscribe(
-                (result) => {
-
-                    if (result.status === 200) {
-                        $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 2000);
-                        if (!isNaN(obj.nextHearingDate.getTime())) {
-                            obj.nextHearingDate = this._sharedService.convertDateToStr(obj.nextHearingDate);
-                        } else {
-                            obj.nextHearingDate = '';
-                        }
-
-                        if (!isNaN(obj.previousHearingDate.getTime())) {
-                            obj.previousHearingDate = this._sharedService.convertDateToStr(obj.previousHearingDate);
-                        } else {
-                            obj.previousHearingDate = '';
-                        }
-                        $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
-                    }
-                },
-                err => {
-                });
         }
     }
 
@@ -594,26 +604,28 @@ export class ForInstitutionComponent implements OnInit {
     }
 
     ExportCase() {
-        const arrInsitituionId = [];
-        if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {
-            this.selectedRowsCheckbox.forEach(item => {
-                arrInsitituionId.push(item.id);
-            });
-        }
-        const data = {
-            branchId: this.branchData.id,
-            institutionId: this.InstitutionValue.id,
-            institutionalCaseIds: arrInsitituionId
+        if (this.selectedRowsCheckbox.length > 0) {
+            const arrInsitituionId = [];
+            if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {
+                this.selectedRowsCheckbox.forEach(item => {
+                    arrInsitituionId.push(item.id);
+                });
+            }
+            const data = {
+                branchId: this.branchData.id,
+                institutionId: this.InstitutionValue.id,
+                institutionalCaseIds: arrInsitituionId
 
-        };
-        this._institutionService.exportCase(data).subscribe(
-            (result) => {
-                const blob = new Blob([result]);
-                saveAs(blob, 'file.csv');
-            },
-            err => {
-                console.log(err);
-            });
+            };
+            this._institutionService.exportCase(data).subscribe(
+                (result) => {
+                    const blob = new Blob([result]);
+                    saveAs(blob, 'file.csv');
+                },
+                err => {
+                    console.log(err);
+                });
+        }
     }
 }
 

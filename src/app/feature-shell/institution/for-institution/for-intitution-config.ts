@@ -1,5 +1,5 @@
 export const forInstitutionTableConfig = [
-    { uniqueId: 'caseId', displayName: 'Case Id', sortable: true, dropDownFilter: false, display: true },
+    { uniqueId: 'caseId', displayName: 'Case ID', sortable: true, dropDownFilter: false, display: true },
     { uniqueId: 'caseStage', displayName: 'Stage', sortable: true, dropDownFilter: false, display: true },
     { uniqueId: 'courtCaseId', displayName: 'Court Case ID', sortable: true, dropDownFilter: false, display: true },
     { uniqueId: 'legalCaseId', displayName: 'Legal Case ID', sortable: false, dropDownFilter: false, display: true },

@@ -44,6 +44,7 @@ export let getBillFrom = 'master/branches';
 export let updateInstitutionUrl = 'master/update/institution';
 export let updateDefaultInstitutionUrl = '/master/update/default/institution';
 export let addBillingUrl = 'master/add/billing';
+export let addBillingIndividualUrl = 'master/add/billing/individual';
 export let getBillingUrl = 'master/billings';
 export let deleteBillingUrl = 'billings';
 export let updateBillingUrl = 'master/update/billing';

@@ -23,4 +23,14 @@ export class StorageService {
     getUserDetails() {
         return JSON.parse(this.getValue('userDetails'));
     }
+
+    getPermissionLevel() {
+        return localStorage.getItem('permission_level');
+    }
+
+    clearInvoiceData() {
+        this.setValue('invoiceOtherDetails', null);
+        this.setValue('invoiceDetails', null);
+        this.setValue('invoiceTemplateInfo', null);
+    }
 }

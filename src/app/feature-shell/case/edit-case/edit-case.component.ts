@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
@@ -25,6 +25,8 @@ export class EditCaseComponent implements OnInit {
   myDocument: File;
   @Input() tableInputData = [];
   @Input() Court: any = [];
+  @Input() isRunningCase: boolean;
+  @Output() addCaseSuccess: EventEmitter<any> = new EventEmitter();
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
@@ -43,7 +45,7 @@ export class EditCaseComponent implements OnInit {
   id: any = [];
   caseId: any = [];
   complianceGridData = [];
-  caseFile: any = [];
+  caseFile: any[] = [];
   public searchStr1: string;
   dataService: CompleterData;
   dataService1: CompleterData;
@@ -75,7 +77,7 @@ export class EditCaseComponent implements OnInit {
   parentcaseSelectedauto: Array<any> = [];
   childcaseSelectedauto: Array<any> = [];
   stageId: any;
-
+  isSubmitClick: boolean;
   childCaseText: string;
   childParentText: string;
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
@@ -85,6 +87,7 @@ export class EditCaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isSubmitClick = false;
     this.CourtPlace = this.Court;
     const self = this;
     $(document).ready(function () {
@@ -188,6 +191,33 @@ export class EditCaseComponent implements OnInit {
     console.log('Removed value is: ', value);
   }
 
+  removeRecourse(data) {
+    this.selectedRecourse = null;
+  }
+
+  removedStage(data) {
+    this.selectedStage = null;
+  }
+
+  removedBranch(data) {
+    this.selectedBranch = null;
+  }
+
+  removedManager(data) {
+    this.selectedManager = null;
+  }
+
+  removedEmployee(data) {
+    this.selectedEmployee = null;
+  }
+
+  removedCustomer(data) {
+    this.selectedCustomerName = null;
+  }
+
+  removedState(data) {
+    this.selectedState = null;
+  }
   public typed(value: any): void {
     console.log('New search input: ', value);
   }
@@ -216,10 +246,11 @@ export class EditCaseComponent implements OnInit {
 
 
     this.courtSelected = [];
-    
-    const objCourt = this.Court.filter(x => x.id === c.courtId);
-    this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
-    this.selectedCourt = this.courtSelected[0];
+    if (c.courtId) {
+      const objCourt = this.Court.filter(x => x.id === c.courtId);
+      this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
+      this.selectedCourt = this.courtSelected[0];
+    }
     if (c.stateId != null) {
       this.stateSelected = [];
       const objstate = this.State.filter(x => x.id === c.stateId);
@@ -317,16 +348,21 @@ export class EditCaseComponent implements OnInit {
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c.completionDate, 'yyyy-MM-dd')]
     });
+    setTimeout(() => {
+      if (!this.isRunningCase) {
+        this.editCaseForm.disable();
+      } else {
+        this.editCaseForm.enable();
+      }
+      if (localStorage.userRole == 'CLIENT') {
+        this.editCaseForm.disable();
+        this._disabledV = '1';
+        this.disabled = true;
+        // $("#Compliance").hide();
+        $("#btnSubmit").hide();
 
-    if (localStorage.userRole == 'CLIENT') {
-      this.editCaseForm.disable();
-      this._disabledV = '1';
-      this.disabled = true;
-      // $("#Compliance").hide();
-      $("#btnSubmit").hide();
-
-    }
-
+      }
+    }, 200);
   }
 
 
@@ -599,7 +635,7 @@ export class EditCaseComponent implements OnInit {
     var reqData = {
       userId: this._storageService.getUserId(),
     };
-    this.authService.listCustomers(reqData).subscribe(
+    this.authService.listCustomers(reqData, false).subscribe(
 
       result => {
 
@@ -754,54 +790,72 @@ export class EditCaseComponent implements OnInit {
 
     if (event.target.files && event.target.files.length) {
       this.myDocument = event.target.files[0];
-
-    };
+    }
   }
   submitEditCaseUser(data) {
-    //const objEditCase = new EditCase();
-    let objEditCase: FormData = new FormData();
+    this.isSubmitClick = true;
+    const objEditCase: FormData = new FormData();
+    try {
+      if (this.editCaseForm.get('remark').invalid) {
+        // tslint:disable-next-line:no-string-throw
+        throw 'enter remarks';
+      }
 
-    //var a=data.parentCase.substr(data.parentCase.lastIndexOf("/")+1);
-    const x = {
-      "id": this.id,
-      "caseId": this.caseId,
-      "courtCaseId": data.courtCaseId,
-      "userId": parseInt(localStorage.getItem('client_id')),
-      "branchId": this.selectedBranch.id,
-      "stageId": this.selectedStage.id,
-      "recourseId": this.selectedRecourse.id,
-      "employeeId": this.selectedEmployee.id,
-      "courtId": this.selectedCourt.id,
-      "stateId": this.selectedState.id,
-      "nextHearingDate": this.datePipe.transform(data.nextHearingDate, "yyyy-MM-dd"),
-      "customerId": this.selectedCustomerName.id,
-      "managerId": this.selectedManager.id,
-      "filingDate": this.datePipe.transform(data.filingdate, "yyyy-MM-dd"),
-      "childCase": (data.childCase == undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf("/") + 1))),
-      "oppLawyer": data.oppLawyer,
-      "lastHearingDate": this.datePipe.transform(data.lastHearingDate, "yyyy-MM-dd"),
-      "remark": data.remark,
-      "parentCaseId": (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf("/") + 1))),
-      "completionDate": this.datePipe.transform(data.completionDate, "yyyy-MM-dd"),
-    };
-    objEditCase.append('legalCase', JSON.stringify(x));
-    objEditCase.append('file', this.myDocument);
+      const x = {
+        'id': this.id,
+        'caseId': this.caseId,
+        'courtCaseId': data.courtCaseId,
+        // tslint:disable-next-line:radix
+        'userId': this._storageService.getUserId(),
+        'branchId': this.selectedBranch.id,
+        'stageId': this.selectedStage.id,
+        'recourseId': this.selectedRecourse.id,
+        'employeeId': this.selectedEmployee.id,
+        'courtId': (this.selectedCourt) ? this.selectedCourt.id : null,
+        'stateId': this.selectedState.id,
+        'nextHearingDate': this.datePipe.transform(data.nextHearingDate, 'yyyy-MM-dd'),
+        'customerId': this.selectedCustomerName.id,
+        'managerId': this.selectedManager.id,
+        'filingDate': this.datePipe.transform(data.filingdate, 'yyyy-MM-dd'),
+        'childCase': (data.childCase == undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
+        'oppLawyer': data.oppLawyer,
+        'lastHearingDate': this.datePipe.transform(data.lastHearingDate, 'yyyy-MM-dd'),
+        'remark': data.remark,
+        'parentCaseId': (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
+        'completionDate': this.datePipe.transform(data.completionDate, 'yyyy-MM-dd')
+      };
+      objEditCase.append('legalCase', JSON.stringify(x));
+      objEditCase.append('file', this.myDocument);
+      if (!x.completionDate) {
+        this.updateCase(objEditCase, data);
+      } else {
+        if (confirm('Are you sure you want to close this case?')) {
+          this.updateCase(objEditCase, data);
+        }
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  updateCase(objEditCase, data) {
     this.authService.updateEditCaseUser(objEditCase).subscribe(
       result => {
 
         if (result.body.httpCode == 200) { //success
+          this.addCaseSuccess.emit();
           this.BindCaseGridOnEdit(data);
           $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
           this.closeModal();
           $('#editCaseModal').modal('hide');
-          $(window.location.href = "/admin/case");
         }
       },
       err => {
         console.log(err);
       });
-
   }
+
   BindCaseGridOnEdit(data) {
 
     this.tableInputData.filter(
@@ -831,14 +885,16 @@ export class EditCaseComponent implements OnInit {
 
   }
   deleteCaseFile(item) {
-    var a = item.id;
-    this.authService.deleteCaseById(a).subscribe(
-      result => {
-        $.toaster({ priority: 'success', title: 'Success', message: 'Case File deleted successfully' });
-        $(window.location.href = "/admin/case");
-      }
-    )
-  };
+    if (confirm('Are you sure you want to delete?')) {
+      this.authService.deleteCaseById(item.id).subscribe(
+        result => {
+          $.toaster({ priority: 'success', title: 'Success', message: 'Case File deleted successfully' });
+          const deleteIndex = this.caseFile.findIndex(x => x.id === item.id);
+          this.caseFile.splice(deleteIndex, 1);
+        }
+      );
+    }
+  }
 
   downloadCaseFile(data) {
     this.authService.downloadFile(data.id).subscribe(

@@ -46,8 +46,14 @@ export class BillingComponent implements OnInit {
   hoverTableRow = true;
   actionColumnConfig: ActionColumnModel;
   isInstitutionalTab: boolean = true;
+  hideInstitutional: boolean = false;
   constructor(private fb: FormBuilder, private _institutionService: InstitutionService,
-    private _recourseService: RecourseService, private _billingservice: BillingService, private _storageservice: StorageService) {
+    private _recourseService: RecourseService, private _billingservice: BillingService,
+    private _storageService: StorageService) {
+    if (_storageService.getPermissionLevel() === 'ADMIN_LAWYER') {
+      this.clickIndividual();
+      this.hideInstitutional = true;
+    }
   }
 
   ngOnInit() {
@@ -78,18 +84,19 @@ export class BillingComponent implements OnInit {
     }
 
   }
-  
+
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
     this.actionColumnConfig.displayName = 'Action';
     this.actionColumnConfig.showEdit = true;
   }
- 
+
   getBillingData() {
     this.tableInputData = [];
     this._billingservice.getBilling().subscribe(
       result => {
         if (result.httpCode === 200) {
+
           for (let i = 0; i < result.billings.length; i++) {
             const obj = result.billings[i];
             this.tableInputData.push({
@@ -121,6 +128,28 @@ export class BillingComponent implements OnInit {
       });
   }
 
+  getBillingIndividualData() {
+    this.tableInputData = [];
+    this._billingservice.getBillingIndividual().subscribe(
+      result => {
+
+        for (let i = 0; i < result.billings.length; i++) {
+          const obj = result.billings[i];
+          this.tableInputData.push({
+            id: obj.id,
+            amount: obj.amount,
+            recourseName: obj.recourse.recourseName,
+            recourseId: obj.recourse.id,
+            stageId: obj.stage.id,
+            stageName: obj.stage.stageName,
+            userId: obj.userId
+          });
+        }
+        this.dataTableComponent.ngOnInit();
+        this.setDropdownUniqueValues();
+      });
+
+  }
   getAllInstitutions() {
 
     this._institutionService.getInstitutions().subscribe(
@@ -147,21 +176,21 @@ export class BillingComponent implements OnInit {
         }
       });
   }
- 
+
   onActionBtnClick(event) {
     this.editChild.createForm(event.data);
     $('#editBillModal').modal('show');
   }
-  
+
   onRowClick(event) {
     console.log(event);
   }
- 
+
   onRowDoubleClick(event) {
     this.editChild.createForm(event);
     $('#editBillModal').modal('show');
   }
- 
+
   onRowSelect(event) {
     console.log(event);
   }
@@ -179,7 +208,7 @@ export class BillingComponent implements OnInit {
   clickIndividual() {
     this.showTableColumns(false);
     this.isInstitutionalTab = false;
-    this.getBillingData();
+    this.getBillingIndividualData();
   }
 
   showTableColumns(show) {
