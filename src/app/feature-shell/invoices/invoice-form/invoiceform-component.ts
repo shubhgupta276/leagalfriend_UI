@@ -22,7 +22,7 @@ export class InvoiceFormComponent implements OnInit {
         termEndCond: '',
         Date: null,
         photoUrl: null,
-        invoiceNo: '',
+        invoiceNo: this._datePipe.transform(new Date(), 'ddMMyyyyhhmm'),
         isFromInvoice: false,
         url: null
     };
@@ -196,7 +196,7 @@ export class InvoiceFormComponent implements OnInit {
                     {
                         amount: item.amount,
                         id: item.id,
-                        // billingDate: new Date(item.billingDate),
+                        billingDate: new Date(item.billingDate),
                         billingDesc: item.description,
                         userId: $this._storageService.getUserId()
                     }
@@ -209,7 +209,6 @@ export class InvoiceFormComponent implements OnInit {
                         amount: Number(data.amount),
                         billingDate: new Date(data.billingDate),
                         billingDesc: data.description,
-                        custom: true,
                         institution: {
                             id: this.institutionId
                         },
@@ -220,7 +219,6 @@ export class InvoiceFormComponent implements OnInit {
                 if (!this.isInstitutional) {
                     delete arCustomInvoice['institution'];
                 }
-                debugger
                 this._invoicesService.saveCustomInvoice(arCustomInvoice, this.isInstitutional).subscribe(
                     result => {
                         result = result.body;
@@ -229,7 +227,7 @@ export class InvoiceFormComponent implements OnInit {
                                 billingArray.push({
                                     amount: item.amount,
                                     id: item.id,
-                                    // billingDate: new Date(item.billingDate),
+                                    billingDate: new Date(item.billingDate),
                                     billingDesc: item.billingDesc,
                                     userId: $this._storageService.getUserId()
                                 });

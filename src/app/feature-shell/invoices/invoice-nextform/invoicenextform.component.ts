@@ -118,7 +118,6 @@ export class InvoiceNextFormComponent implements OnInit {
     RemoveInvoice(currentRow) {
         if (confirm('Are you sure you want to delete?')) {
             const deleteIndex = $(currentRow).closest('tr').index();
-            const ar = this.arrInvoiceDetails;
             if (this.arrInvoiceDetails.length > 0) {
                 this.arrInvoiceDetails.splice(deleteIndex, 1);
                 this.arrLocalInvoiceDetails.splice(deleteIndex, 1);
@@ -126,6 +125,9 @@ export class InvoiceNextFormComponent implements OnInit {
             this.CalculateFinalAmount(null);
         }
         this.checkCustomCaseExist();
+        if (this.arrLocalInvoiceDetails.length === 0) {
+            this.addCustomRow();
+        }
     }
 
     CalculateFinalAmount(currentRow) {
