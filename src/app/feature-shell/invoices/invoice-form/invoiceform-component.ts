@@ -34,6 +34,9 @@ export class InvoiceFormComponent implements OnInit {
     isViewMode: boolean = false;
     disableField: boolean = false;
     editInvoiceId: any;
+    oldInvoiceNo: any;
+    invoiceNumberAlreadyExists: boolean = false;
+    invoiceAlreadyMessage: any;
     constructor(private _institutionService: InstitutionService,
         private _storageService: StorageService, private _datePipe: DatePipe,
         private _invoicesService: InvoicesService, public sanitizer: DomSanitizer, private router: Router, ) {
@@ -71,13 +74,14 @@ export class InvoiceFormComponent implements OnInit {
                 this.invoiceTemplateInfo.CompanyAddress = otherDetail.invoice.billFrom;
                 this.invoiceTemplateInfo.termEndCond = otherDetail.invoice.termsCondition;
                 this.description = otherDetail.invoice.description;
+                this.oldInvoiceNo = otherDetail.invoice.invoiceNumber.toString();
                 this.invoiceTemplateInfo.invoiceNo = otherDetail.invoice.invoiceNumber.toString();
                 this.institutionId = (otherDetail.invoice.institution) ? otherDetail.invoice.institution.id : 0;
             } else {
                 this.institutionId = otherDetail.institutionId;
-                this.GetBillFrom();
                 this.GetAllInstitute();
             }
+            this.GetBillFrom();
         }
     }
 
@@ -132,13 +136,15 @@ export class InvoiceFormComponent implements OnInit {
 
         this._invoicesService.getInvoiceTemplate().subscribe(
             result => {
-                const address = result.invoiceFooter.address;
-                this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,'
-                    + address.city + ' ,' + address.state + ' ,' + address.zipCode;
                 this.invoiceTemplateInfo.photoUrl =
                     this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + result.invoiceHeader.logo);
-                this.invoiceTemplateInfo.termEndCond = result.invoiceFooter.termsCondition;
                 this.invoiceTemplateInfo.url = result.invoiceHeader.logo;
+                if (!this.isEditMode && !this.isViewMode) {
+                    const address = result.invoiceFooter.address;
+                    this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,'
+                        + address.city + ' ,' + address.state + ' ,' + address.zipCode;
+                    this.invoiceTemplateInfo.termEndCond = result.invoiceFooter.termsCondition;
+                }
             });
     }
 
@@ -157,6 +163,30 @@ export class InvoiceFormComponent implements OnInit {
             });
     }
 
+    invoiceNumberChange() {
+        try {
+            if (!this.isEditMode || (this.isEditMode && (this.oldInvoiceNo !== this.invoiceTemplateInfo.invoiceNo))) {
+                this._invoicesService.invoiceNumberAlreadyExists(this.invoiceTemplateInfo.invoiceNo).subscribe(
+                    (result) => {
+                        if (result.httpCode === 409) {
+                            this.invoiceAlreadyMessage = result.failureReason;
+                            this.invoiceNumberAlreadyExists = true;
+                        } else {
+                            this.invoiceNumberAlreadyExists = false;
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    });
+            } else {
+                this.invoiceNumberAlreadyExists = false;
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     taxChange(value: number) {
         this.taxableAmount = 0;
         this.taxPercent = value;
@@ -173,7 +203,7 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     isValid() {
-        if (this.description.trim().length > 0 &&
+        if (!this.invoiceNumberAlreadyExists && this.description.trim().length > 0 &&
             this.invoiceTemplateInfo.invoiceNo.trim().length > 0 &&
             this.invoiceTemplateInfo.billToAddress.trim().length > 0 &&
             this.invoiceTemplateInfo.CompanyAddress.trim().length > 0 &&
