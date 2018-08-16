@@ -248,7 +248,7 @@
                 <h4 class="modal-title">Payment Received Date</h4>
             </div>
             <!-- <div style="width:120px;height:10%;background-color:black;"></div> -->
-            <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+            <div class="modal-body modal-body-adedit" style="margin-top: -15px;" id="divPayment">
                 <div class="box-body widget-content">
                     <div class="form-group has-feedback">
                         <div class="input-group date" data-provide="datepicker" data-date-format="dd MM yyyy">
@@ -265,7 +265,7 @@
                             <button type="submit" data-dismiss="modal" class="btn btn-default" style="display: inline-block;width: 100%;">Cancel</button>
                         </div>
                         <div class="col-xs-2">
-                            <button type="submit" (click)="paymentReceived()" class="btn btn-modal-addedit" style="display: inline-block;width: 100%;">Done</button>
+                            <button type="submit" [disabled]="!paymentReceiveDate" (click)="paymentReceived()" class="btn btn-modal-addedit" style="display: inline-block;width: 100%;">Done</button>
                         </div>
                     </div>
                 </div>
