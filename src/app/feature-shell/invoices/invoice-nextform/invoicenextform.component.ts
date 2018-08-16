@@ -37,8 +37,8 @@ export class InvoiceNextFormComponent implements OnInit {
     isCustomCaseEntry: boolean;
     isCustomSaveClick: boolean = false;
     disableField: boolean = false;
-    constructor(private _institutionService: InstitutionService, private _storageService: StorageService,
-        private router: Router, public sanitizer: DomSanitizer, private invoiceService: InvoicesService) {
+    isInstitutional: boolean = false;
+    constructor(private router: Router, public sanitizer: DomSanitizer, private _invoiceService: InvoicesService) {
         Window['InvoiceFormComponent'] = this;
         this.JSON = JSON;
     }
@@ -52,6 +52,7 @@ export class InvoiceNextFormComponent implements OnInit {
 
     setInvoiceOtherDetails() {
         const otherDetail = JSON.parse(localStorage.getItem('invoiceOtherDetails'));
+        this.isInstitutional = otherDetail.isInstitutional;
         this.disableField = otherDetail.mode === 'view';
     }
 
@@ -119,14 +120,39 @@ export class InvoiceNextFormComponent implements OnInit {
         if (confirm('Are you sure you want to delete?')) {
             const deleteIndex = $(currentRow).closest('tr').index();
             if (this.arrInvoiceDetails.length > 0) {
-                this.arrInvoiceDetails.splice(deleteIndex, 1);
-                this.arrLocalInvoiceDetails.splice(deleteIndex, 1);
+                const deleteObj = this.arrLocalInvoiceDetails[deleteIndex];
+
+                if (deleteObj.id && deleteObj.id > 0) {
+                    this._invoiceService.deleteBilling(deleteObj.id, this.isInstitutional).subscribe(
+                        (result) => {
+                            if (result === null) {
+                                $.toaster({ priority: 'success', title: 'Success', message: 'Delete Successfully.' });
+                                this.arrInvoiceDetails.splice(deleteIndex, 1);
+                                this.arrLocalInvoiceDetails.splice(deleteIndex, 1);
+                                this.CalculateFinalAmount(null);
+                                this.checkCustomCaseExist();
+                                if (this.arrLocalInvoiceDetails.length === 0) {
+                                    this.addCustomRow();
+                                }
+                                this.setInvoiceStorageDetail();
+                                document.getElementById('tblInvoice').click();
+                            } else {
+                                $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+                            }
+                        },
+                        err => {
+                            console.log(err);
+                        });
+                } else {
+                    this.arrInvoiceDetails.splice(deleteIndex, 1);
+                    this.arrLocalInvoiceDetails.splice(deleteIndex, 1);
+                }
             }
             this.CalculateFinalAmount(null);
-        }
-        this.checkCustomCaseExist();
-        if (this.arrLocalInvoiceDetails.length === 0) {
-            this.addCustomRow();
+            this.checkCustomCaseExist();
+            if (this.arrLocalInvoiceDetails.length === 0) {
+                this.addCustomRow();
+            }
         }
     }
 
