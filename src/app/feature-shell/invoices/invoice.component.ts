@@ -38,6 +38,7 @@ export class InvoiceComponent implements OnInit {
   isPageLoad: boolean;
   invoiceId: number;
   paymentReceiveDate: any;
+  downloadData: any;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private _storageService: StorageService,
     private router: Router, private _sharedService: SharedService) {
@@ -79,6 +80,12 @@ export class InvoiceComponent implements OnInit {
         isImage: false,
         icon: '<i class="fa fa-eye" style="font-size: 20px !important"></i>'
       },
+      {
+        eventType: 'download',
+        title: 'Download',
+        isImage: false,
+        icon: '<i class="fa fa-download" style="font-size: 20px !important"></i>'
+      }
     );
   }
 
@@ -97,15 +104,15 @@ export class InvoiceComponent implements OnInit {
 
   onActionBtnClick(event) {
     try {
+      this.downloadData = null;
       const data = event.data;
       if (event.eventType === 'cancel') {
         this.cancelInvoice(data.id);
-      } else if (event.eventType === 'edit' || event.eventType === 'view') {
+      } else if (event.eventType === 'edit' || event.eventType === 'view' || event.eventType === 'download') {
 
         this.invoiceService.getInvoiceDetail(data.id, this.isInstitutionalTab).subscribe(
           (result) => {
             if (result) {
-
               this._storageService.clearInvoiceData();
               const invoice = result.invoice;
               const billingArray = (this.isInstitutionalTab) ? result.institutionalBillings : result.individualBillings;
@@ -114,9 +121,17 @@ export class InvoiceComponent implements OnInit {
                 invoice: invoice,
                 isInstitutional: this.isInstitutionalTab
               };
-              localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherDetails));
-              localStorage.setItem('invoiceDetails', JSON.stringify(billingArray));
-              this.router.navigateByUrl('/admin/invoices/invoiceform');
+              if (event.eventType === 'download') {
+                this.downloadData = {
+                  data: invoice,
+                  list: billingArray
+                };
+                this.generatepdf();
+              } else {
+                localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherDetails));
+                localStorage.setItem('invoiceDetails', JSON.stringify(billingArray));
+                this.router.navigateByUrl('/admin/invoices/invoiceform');
+              }
             }
           },
           err => console.log(err)
@@ -174,16 +189,17 @@ export class InvoiceComponent implements OnInit {
   }
 
   generatepdf() {
-    var hiddenDiv = document.getElementById('pdfdownload')
-    hiddenDiv.style.display = 'block';
-    var pdf;
-    pdf = new jsPDF();
-    pdf.addHTML(document.getElementById('pdfdownload'), function () {
-
-      pdf.save('stacking-plan.pdf');
-      hiddenDiv.style.display = 'none';
-    });
-
+    const $this = this;
+    setTimeout(() => {
+      const hiddenDiv = document.getElementById('pdfdownload');
+      let pdf;
+      pdf = new jsPDF();
+      hiddenDiv.style.display = 'block';
+      pdf.addHTML(document.getElementById('pdfdownload'), function () {
+        hiddenDiv.style.display = 'none';
+        pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
+      });
+    }, 200);
   }
 
   createForm(c) {
