@@ -98,7 +98,7 @@
                 <ng-container *ngFor="let CustomAction of actionColumnConfig.actionList">
                     &nbsp;
                     <ng-container *ngIf="actionColumnConfig.moduleName=='Invoice' else elseCustomAction">
-                        <ng-container *ngIf="(row['status']=='PAID' && CustomAction.eventType=='view') || (row['status']=='PENDING' && CustomAction.eventType!='view')">
+                        <ng-container *ngIf="(row['status']=='PAID' && (CustomAction.eventType=='view' || CustomAction.eventType=='download')) || (row['status']=='PENDING' && CustomAction.eventType!='view')">
                             <a title="{{CustomAction.title}}" (click)="onActionBtnClick($event, row, CustomAction.eventType)">
                                 <img *ngIf="CustomAction.isImage" width="20px" [src]="CustomAction.icon" />
                                 <span *ngIf="!CustomAction.isImage" [innerHTML]="CustomAction.icon"></span>

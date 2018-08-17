@@ -89,7 +89,7 @@
         </div>
 
         <div class="invoice-wrap">
-            <div class="invoice-inner" id="pdfdownload" style="background-color:#ffffff;padding:20px; display:none;">
+            <div class="invoice-inner" *ngIf="downloadData" id="pdfdownload" style="background-color:#ffffff;padding:20px;display: none">
                 <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
                     <tbody>
                         <tr>
@@ -123,9 +123,8 @@
                                                                 <tr>
                                                                     <td align="left" style="padding-left: 25px;">
                                                                         <div class="reset_editor invoice-input mce-content-body" id="client_info_editor" style="width: 200px; min-height: 80px; position: relative;">
-                                                                            <p>Global Logic
-                                                                                <br /> Tower A, Oxygen Park, Plot No.7, Sector-144
-                                                                                <br /> Noida, 201304</p>
+                                                                            <p>Global Logic {{downloadData.data.billTo}}
+                                                                            </p>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -147,11 +146,7 @@
                                                             <tr>
                                                                 <td align="right">
                                                                     <div class="reset_editor invoice-input mce-content-body" id="business_info_editor" style="width: 255px; min-height: 80px; position: relative;">
-                                                                        <p style="font-size: 14pt;">Global Logic</p>
-                                                                        <p>Global Logic
-                                                                            <br /> Noida, 110096
-                                                                            <br /> 408-273-8900
-                                                                            <br /> sales@globallogic.com</p>
+                                                                        <p>{{downloadData.data.billFrom}}</p>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -168,10 +163,10 @@
                                             <tr>
                                                 <td align="right">
                                                     <strong>
-                                                        <label style="text-align: right; font-weight: bold;">Invoice NO</label>
+                                                        <label style="text-align: right; font-weight: bold;">Invoice NO.</label>
                                                     </strong>
                                                 </td>
-                                                <td align="left" style="padding-left: 20px;">44444</td>
+                                                <td align="left" style="padding-left: 20px;">{{downloadData.data.invoiceNumber}}</td>
                                             </tr>
                                             <tr>
                                                 <td align="right">
@@ -179,7 +174,7 @@
                                                         <label style="text-align: right; font-weight: bold;">Date</label>
                                                     </strong>
                                                 </td>
-                                                <td align="left" style="padding-left: 20px;">4/2/2018</td>
+                                                <td align="left" style="padding-left: 20px;">{{downloadData.data.createdDate}}</td>
                                             </tr>
                                             <!-- /Field10-->
                                         </tbody>
@@ -195,18 +190,16 @@
                             <tr style="height: 32px;">
                                 <th style="height: 32px;">Description</th>
                                 <th class="mount-header" style="height: 32px;">Quantity</th>
-                                <th class="mount-header" style="height: 32px;">Unit price</th>
                                 <th class="subtotal-header" style="height: 32px;">Amount</th>
                                 <th width="20" style="height: 32px;">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody id="itemsInvoice">
-                            <tr description="Product name" qty="1" unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow" style="height: 36px;">
-                                <td style="height: 36px;">product name</td>
-                                <td style="height: 36px;">10</td>
-                                <td style="height: 36px;">1000</td>
+                            <tr *ngFor="let item of downloadData.list" class="invoiceRow" style="height: 36px;">
+                                <td style="height: 36px;">{{item.billingDesc}}</td>
+                                <td style="height: 36px;">1</td>
                                 <td style="height: 36px;">$
-                                    <label class="amount">10000</label>
+                                    <label class="amount">{{item.amount}}</label>
                                 </td>
                                 <td style="height: 36px;"></td>
                             </tr>
