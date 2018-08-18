@@ -40,6 +40,7 @@ export class MasterTemplatesComponent implements OnInit {
   }
   ngOnInit() {
     this.reset();
+    this.setActionConfig();
     this.getDocuments();
   }
 
@@ -47,7 +48,6 @@ export class MasterTemplatesComponent implements OnInit {
     this.tableInputData = [];
     this.masterService.getDocumentTemplatesList().subscribe(
       result => {
-        console.log(result);
         if (result && result.length > 0) {
           this.arr = result;
           result.forEach(element => {
@@ -76,6 +76,16 @@ export class MasterTemplatesComponent implements OnInit {
 
   onRowSelect(event) {
     console.log(event);
+  }
+  onActionBtnClick(event) {
+    if (event.eventType==='delete' && event.data) {
+        this.deleteTemplate(event.data.id);
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showDelete = true;
   }
 
   createForm() {
@@ -120,10 +130,15 @@ export class MasterTemplatesComponent implements OnInit {
       );
       this.masterService.addDocumentTemplate(documentTemplateModel).subscribe(
         result => {
-          console.log(result);
           this.getDocuments();
+          if (result && result.httpcode && result.httpcode === 500) {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+          } else {
+            $.toaster({ priority: 'success', title: 'Success', message: 'Template added successfully' });
+          }
         },
         err => {
+          $.toaster({ priority: 'error', title: 'Error', message: 'Error occurred' });
           console.log(err);
         }
       );
@@ -180,6 +195,23 @@ export class MasterTemplatesComponent implements OnInit {
       objFileInfo.document = btoa(rtfContent);
     });
     $('#previewFile').modal('hide');
+  }
+
+  deleteTemplate(templateId){
+      this.masterService.deleteDocumentTemplate(templateId).subscribe(
+        result => {
+          this.getDocuments();
+          if (result && result.httpcode && result.httpcode === 500) {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+          } else {
+            $.toaster({ priority: 'success', title: 'Success', message: 'Template deleted successfully' });
+          }
+        },
+        err => {
+          console.log(err.error);
+          $.toaster({ priority: 'error', title: 'Error', message: 'Error occurred' });
+        }
+      );
   }
 }
 

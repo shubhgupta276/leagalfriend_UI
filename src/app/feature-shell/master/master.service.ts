@@ -42,4 +42,8 @@ export class MasterService {
   getDocumentTemplatesList(): Observable<any> {
     return this.apiGateWay.get<any>(featureConfig.addDocumentTemplate, null);
   }
+  deleteDocumentTemplate(templateId) {
+    const url = featureConfig.addDocumentTemplate + '?documentTemplateId=' + String(templateId);
+    return this.apiGateWay.delete<any>(url, null);
+  }
 }

@@ -6,4 +6,5 @@ export class ActionColumnModel {
     showHistory: boolean = false;
     showCancel: boolean = false;
     actionList?: any[] = [];
+    showDelete: boolean = false;
 }
