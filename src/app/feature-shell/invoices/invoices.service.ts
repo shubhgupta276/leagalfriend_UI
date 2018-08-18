@@ -58,6 +58,13 @@ export class InvoicesService {
         return this.apiGateWay.get<any>(apiUrl, null);
     }
 
+    invoiceNumberAlreadyExists(invoiceNumber: any): Observable<any> {
+        const url = 'invoice/validate';
+        const apiUrl = url + '?invoiceNumber=' + invoiceNumber + '&userId=' + this._storageService.getUserId();
+        return this.apiGateWay.get<any>(apiUrl, null);
+    }
+
+
     getInvoiceDetail(invoiceId, isInstitutional): Observable<any> {
         let url = 'invoice/institutional/single';
         if (!isInstitutional) {
@@ -68,12 +75,23 @@ export class InvoicesService {
     }
 
     caneclInvoice(invoiceId: any, isInstitutional): Observable<any> {
-        let url = invoiceCancel + '?invoiceId=' + invoiceId;
+        let url = invoiceCancel;
         if (!isInstitutional) {
             url = 'invoice/individual/cancel';
         }
+        url += '?invoiceId=' + invoiceId;
         return this.apiGateWay.put<any>(url, null);
     }
+
+    deleteBilling(billingId: any, isInstitutional: boolean): Observable<any> {
+        let url = '/billing';
+        if (!isInstitutional) {
+            url = 'billing/individual';
+        }
+        url += '?billingId=' + billingId;
+        return this.apiGateWay.delete<any>(url, null);
+    }
+
 
     updatePaymentStatus(invoiceId: any, date): Observable<any> {
         const apiUrl = updatePaymentStatus + '?invoiceId=' + invoiceId + '&date=' + date;
