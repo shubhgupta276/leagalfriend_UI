@@ -68,7 +68,8 @@ export class InvoiceFormComponent implements OnInit {
             this.disableField = this.isViewMode;
             this.isInstitutional = otherDetail.isInstitutional;
             if (this.isEditMode || this.isViewMode) {
-                this.taxPercent = otherDetail.invoice.tax;
+                this.taxPercent = otherDetail.invoice.taxPercent;
+                this.taxableAmount = otherDetail.invoice.taxAmount;
                 this.editInvoiceId = otherDetail.invoice.id;
                 this.invoiceTemplateInfo.billToAddress = otherDetail.invoice.billTo;
                 this.invoiceTemplateInfo.CompanyAddress = otherDetail.invoice.billFrom;
@@ -282,16 +283,18 @@ export class InvoiceFormComponent implements OnInit {
             individualBillings: billingArray,
             institutionalBillings: billingArray,
             invoice: {
-                amount: totalAmount + this.taxableAmount,
+                amount: totalAmount, //  + this.taxableAmount,
                 amountRecieved: true,
                 billFrom: this.invoiceTemplateInfo.CompanyAddress,
                 billTo: this.invoiceTemplateInfo.billToAddress,
                 createdBy: this._storageService.getUserId(),
+                createdDate: new Date(),
                 description: this.description,
                 id: (this.editInvoiceId) ? this.editInvoiceId : 0,
                 institution: { id: this.institutionId },
                 invoiceNumber: this.invoiceTemplateInfo.invoiceNo,
-                tax: this.taxPercent,
+                taxPercent: this.taxPercent,
+                taxAmount: this.taxableAmount,
                 active: 'active',
                 termsCondition: this.invoiceTemplateInfo.termEndCond,
                 updatedBy: this._storageService.getUserId(),

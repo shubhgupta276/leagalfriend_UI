@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter } from 'rxjs/operator/filter';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { HtmlParser } from '@angular/compiler';
-import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
 import { InvoicesService } from './invoices.service';
@@ -11,6 +8,7 @@ import { invoiceTableConfig } from './invoices.config';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { SharedService } from '../../shared/services/shared.service';
 import { StorageService } from '../../shared/services/storage.service';
+import { DomSanitizer } from '../../../../node_modules/@angular/platform-browser';
 
 
 declare var $;
@@ -38,9 +36,9 @@ export class InvoiceComponent implements OnInit {
   isPageLoad: boolean;
   invoiceId: number;
   paymentReceiveDate: any;
-  downloadData: any;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private _storageService: StorageService,
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService,
+    private _storageService: StorageService, public sanitizer: DomSanitizer,
     private router: Router, private _sharedService: SharedService) {
     this.createForm(null);
     Window['InvoiceFormComponent'] = this;
@@ -58,7 +56,6 @@ export class InvoiceComponent implements OnInit {
     }, function (start_date, end_date) {
       $('#txtDateFilter').val(start_date.format('DD MMM YYYY') + ' To ' + end_date.format('DD MMM YYYY'));
     });
-
   }
 
   setActionConfig() {
@@ -104,11 +101,14 @@ export class InvoiceComponent implements OnInit {
 
   onActionBtnClick(event) {
     try {
-      this.downloadData = null;
       const data = event.data;
       if (event.eventType === 'cancel') {
         this.cancelInvoice(data.id);
-      } else if (event.eventType === 'edit' || event.eventType === 'view' || event.eventType === 'download') {
+      } else if (event.eventType === 'download') {
+
+        window.open('/admin/invoices/invoicedownload/' + data.id + ';institutional=' + this.isInstitutionalTab, '_blank');
+
+      } else if (event.eventType === 'edit' || event.eventType === 'view') {
 
         this.invoiceService.getInvoiceDetail(data.id, this.isInstitutionalTab).subscribe(
           (result) => {
@@ -121,23 +121,14 @@ export class InvoiceComponent implements OnInit {
                 invoice: invoice,
                 isInstitutional: this.isInstitutionalTab
               };
-              if (event.eventType === 'download') {
-                this.downloadData = {
-                  data: invoice,
-                  list: billingArray
-                };
-                this.generatepdf();
-              } else {
-                localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherDetails));
-                localStorage.setItem('invoiceDetails', JSON.stringify(billingArray));
-                this.router.navigateByUrl('/admin/invoices/invoiceform');
-              }
+
+              localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherDetails));
+              localStorage.setItem('invoiceDetails', JSON.stringify(billingArray));
+              this.router.navigateByUrl('/admin/invoices/invoiceform');
             }
           },
           err => console.log(err)
         );
-
-
       } else if (event.eventType === 'payment') {
         this.paymentReceiveDate = '';
         this.invoiceId = data.id;
@@ -186,20 +177,6 @@ export class InvoiceComponent implements OnInit {
   clearFilters() {
     this.searchTextbox = '';
     this.dataTableComponent.resetFilters();
-  }
-
-  generatepdf() {
-    const $this = this;
-    setTimeout(() => {
-      const hiddenDiv = document.getElementById('pdfdownload');
-      let pdf;
-      pdf = new jsPDF();
-      hiddenDiv.style.display = 'block';
-      pdf.addHTML(document.getElementById('pdfdownload'), function () {
-        hiddenDiv.style.display = 'none';
-        pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
-      });
-    }, 200);
   }
 
   createForm(c) {
