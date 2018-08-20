@@ -33,4 +33,17 @@ export class MasterService {
     const apiUrl = featureConfig.createInvoiceTemplate + '?userId=' + String(user_id);
     return this.apiGateWay.get<any>(apiUrl, null);
   }
+  addDocumentTemplate(templateData) {
+    return this.apiGateWay.post<any>(
+      featureConfig.addDocumentTemplate,
+      JSON.stringify(templateData)
+    );
+  }
+  getDocumentTemplatesList(): Observable<any> {
+    return this.apiGateWay.get<any>(featureConfig.addDocumentTemplate, null);
+  }
+  deleteDocumentTemplate(templateId) {
+    const url = featureConfig.addDocumentTemplate + '?documentTemplateId=' + String(templateId);
+    return this.apiGateWay.delete<any>(url, null);
+  }
 }

@@ -1,135 +1,92 @@
-import { Component, OnInit, ElementRef, ViewChild, NgModule } from '@angular/core';
+import {  Component, OnInit, ElementRef, ViewChild, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileInfo } from '../../../shared/models/master/FileInfo';
-import { MasterTemplateService } from "../masterTemplates/masterTemplate.component.service";
-
+import { DocumentTemplateModel } from '../../../shared/models/master/document-template.model';
+import { MasterService } from '../master.service';
+import { saveAs } from 'file-saver/FileSaver.js';
+import { masterTemplateConfig } from './masterTemplate.config';
+import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
+import { ActionColumnModel } from '../../../shared/models/data-table/action-column.model';
+import { DataTableModule } from '../../../shared/components/data-table/data-table.module';
 declare var $;
 declare var myExtObject;
 declare var System: any;
 
 @Component({
-  selector: 'app-maseterTemplate',
+  selector: 'app-master-template',
   templateUrl: './masterTemplate.component.html',
   styleUrls: ['./masterTemplate.component.css'],
-  providers:[]
+  providers: [MasterService]
 })
-
 export class MasterTemplatesComponent implements OnInit {
+  @ViewChild('fileInput')
+  fileInput: ElementRef;
+  arr = [];
   table: any;
-  fileIdSelected: string;
+  fileIdSelected: number;
   form: FormGroup;
-
-  constructor(private fb: FormBuilder, private masterTemplateService: MasterTemplateService) {
+  tableInputData = [];
+  columns = masterTemplateConfig;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  rowSelect = false;
+  hoverTableRow = true;
+  actionColumnConfig: ActionColumnModel;
+  constructor(
+    private fb: FormBuilder,
+    private masterService: MasterService
+  ) {
     this.createForm();
-    // $($.document).ready(function () {
-    //   //$('#previewFile').on('show.bs.modal', function (e) {
-    //   //  myExtObject.loadCKEDITOR();
-    //   //});
-    // });
   }
   ngOnInit() {
-    this.GetAllCustomer();
-    this.getUploadedFileInfo();
     this.reset();
+    this.setActionConfig();
+    this.getDocuments();
   }
 
-  getUploadedFileInfo(): void {
-    this.masterTemplateService.getuploadedFile()
-      .subscribe(x => this.arr = x);
-
-  }
-
-  arr: FileInfo[];
-  GetAllCustomer() {
-
-    $($.document).ready(function () {
-      var arLengthMenu = [[10, 15, 25, -1], [10, 15, 25, "All"]];
-      var selectedPageLength = 15;
-      this.table = $("#example1").DataTable({
-
-        lengthMenu: arLengthMenu,
-        pageLength: selectedPageLength,
-        oLanguage: {
-          sLengthMenu: "Show _MENU_ rows",
-          sSearch: "",
-          sSearchPlaceholder: "Search..."
-        },
-        initComplete: function () {
-          var tableid = "example1";
-          var $rowSearching = $("#" + tableid + "_wrapper");
-          $rowSearching.find(".row:eq(0)").hide();
-
-          for (var i = 0; i < arLengthMenu[0].length; i++) {
-            var selectText = (arLengthMenu[0][i] == selectedPageLength) ? 'selected' : '';
-            $("#ddlLengthMenu").append(
-
-
-              "<option " + selectText + " value=" +
-              arLengthMenu[0][i] +
-              ">" +
-              arLengthMenu[1][i] +
-              "</option>"
-            );
-          }
-          // $("#ddlLengthMenu").val(selectedPageLength);
-          $("#ddlLengthMenu").on("change", function () {
-            $rowSearching
-              .find(".row:eq(0)")
-              .find("select")
-              .val($(this).val())
-              .change();
+  getDocuments() {
+    this.tableInputData = [];
+    this.masterService.getDocumentTemplatesList().subscribe(
+      result => {
+        if (result && result.length > 0) {
+          this.arr = result;
+          result.forEach(element => {
+            const tableRow = {
+              'fileName': element.description,
+              'lastUpdated': element.updatedDate,
+              'lastUpdatedBy': element.firstName,
+              'id': element.id
+            };
+            this.tableInputData.push(tableRow);
           });
+          this.dataTableComponent.ngOnInit();
         }
-      });
-
-      this.table.columns().every(function () {
-        $("#txtSearch").on("keyup change", function () {
-          if (this.table.search() !== this.value) {
-            this.table.search(this.value).draw();
-          }
-        });
-      });
-
-      this.table.columns().every(function () {
-        // user filter
-        $("#ddlUserFilter").on("change", function () {
-          const status = $(this).val();
-          if (status === "All") {
-            this.table
-              .columns(0)
-              .search("")
-              .draw();
-          } else if (this.table.columns(0).search() !== this.value) {
-            this.table
-              .columns(0)
-              .search(this.value)
-              .draw();
-          } else {
-          }
-        });
-        // status filter
-        $("#ddlStatusFilter").on("change", function () {
-          const status = $(this).val();
-          if (status === "All") {
-            this.table
-              .columns(2)
-              .search("")
-              .draw();
-          } else if (this.table.columns(2).search() !== this.value) {
-            this.table
-              .columns(2)
-              .search(this.value)
-              .draw();
-          } else {
-          }
-        });
-      });
-    });
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+  onRowClick(event) {
+    console.log(event);
+  }
+  onRowDoubleClick(event) {
+    this.setDataToPreview(event.id);
   }
 
-  @ViewChild('fileInput') fileInput: ElementRef;
-
+  onRowSelect(event) {
+    console.log(event);
+  }
+  onActionBtnClick(event) {
+    if (event.eventType==='delete' && event.data) {
+        this.deleteTemplate(event.data.id);
+    }
+  }
+  setActionConfig() {
+    this.actionColumnConfig = new ActionColumnModel();
+    this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showDelete = true;
+  }
 
   createForm() {
     this.form = this.fb.group({
@@ -139,9 +96,9 @@ export class MasterTemplatesComponent implements OnInit {
   }
 
   onFileChange(event) {
-    let reader = new FileReader();
+    const reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
-      let file = event.target.files[0];
+      const file = event.target.files[0];
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.form.get('avatar').setValue({
@@ -149,106 +106,117 @@ export class MasterTemplatesComponent implements OnInit {
           filetype: file.type,
           Lastupdated: file.lastModifiedDate,
           value: reader.result.split(',')[1]
-        })
+        });
       };
     }
   }
 
   onSubmit() {
     if (!!this.form.value.avatar) {
+      const documentTemplateModel = new DocumentTemplateModel();
       const formModel = this.form.value;
-
-      // this.http.post('apiUrl', formModel)
-      var decodedString = atob(formModel.avatar.value);
-      var FileInfoObje = new FileInfo();
-      FileInfoObje.FileName = formModel.avatar.filename;
-      FileInfoObje.Id = this.guid();
-      FileInfoObje.IsChecked = false;
-      FileInfoObje.Lastupdated = formModel.avatar.Lastupdated;
-      FileInfoObje.LastUpdatedBy = "priyanka";
-      FileInfoObje.Value = decodedString;
-      FileInfoObje.FileType = formModel.avatar.filetype;
-      if (!!FileInfoObje) {
-        this.masterTemplateService.AddUpladedFile(FileInfoObje);
-      }
-      this.getUploadedFileInfo();
-
+      documentTemplateModel.createdDate = formModel.avatar.Lastupdated;
+      documentTemplateModel.description = formModel.avatar.filename.split('.')[0];
+      documentTemplateModel.document = formModel.avatar.value;
+      documentTemplateModel.id = 12345;
+      // tslint:disable-next-line:radix
+      documentTemplateModel.updatedBy = parseInt(
+        localStorage.getItem('client_id')
+      );
+      documentTemplateModel.updatedDate = formModel.avatar.Lastupdated;
+      // tslint:disable-next-line:radix
+      documentTemplateModel.userId = parseInt(
+        localStorage.getItem('client_id')
+      );
+      this.masterService.addDocumentTemplate(documentTemplateModel).subscribe(
+        result => {
+          this.getDocuments();
+          if (result && result.httpcode && result.httpcode === 500) {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+          } else {
+            $.toaster({ priority: 'success', title: 'Success', message: 'Template added successfully' });
+          }
+        },
+        err => {
+          $.toaster({ priority: 'error', title: 'Error', message: 'Error occurred' });
+          console.log(err);
+        }
+      );
       $('#addMasterTemplate').modal('hide');
-      //var somerows =this.table.rows().data();
-      //this.table.draw();
-      //this.table = $("#example1").DataTable();
-      //this.table.destroy();
-
-      //var rowNode = this.table
-      //.row.add( [ FileInfoObje.FileName, FileInfoObje.Lastupdated, FileInfoObje.LastUpdatedBy,"<a title='Edit' ><i class='fa fa-edit' data-toggle='modal' data-target='#previewFile' (click) = 'setDataToPreview("+ FileInfoObje.Id +") ></i " + " > </a> " ] )
-      //.draw()
-      //.node();
-      FileInfoObje = null;
       this.reset();
     }
   }
 
-  reset() {
-    this.createForm();
-    this.fileInput.nativeElement.value = "";
+  base64ToBlob(b64Data, contentType, sliceSize = 512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
 
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, { type: contentType });
   }
 
-  //set data to editor from the grid for previewing and editing into the editor
+  reset() {
+    this.createForm();
+    this.fileInput.nativeElement.value = '';
+  }
+
+  // set data to editor from the grid for previewing and editing into the editor
   setDataToPreview(FileId) {
     $('#previewFile').modal('show');
     this.fileIdSelected = FileId;
-    var docValue = '';
-    var objFileInfo = this.arr.find(x => x.Id == FileId);
-    System.import('@iarna/rtf-to-html')
-      .then(xJS => {
-        xJS.fromString(objFileInfo.Value, (err, html) => {
-          var error = err;
-          docValue = html;
-          var bodyHtml = /<body.*?>([\s\S]*)<\/body>/.exec(docValue)[1];
-          myExtObject.setEditorValue(bodyHtml);
-          var getDAta = true;
-        })
+    let docValue = '';
+    const objFileInfo = this.arr.find(x => x.id === FileId);
+    System.import('@iarna/rtf-to-html').then(xJS => {
+      xJS.fromString(atob(objFileInfo.document), (err, html) => {
+        const error = err;
+        docValue = html;
+        const bodyHtml = /<body.*?>([\s\S]*)<\/body>/.exec(docValue)[1];
+        myExtObject.setEditorValue(bodyHtml);
+        const getDAta = true;
       });
+    });
   }
-
-  guid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4();
-  }
-
-
 
   getCkeditorValue() {
-
-    var newget = System.import('html-to-rtf');
-    var ckEditorValue = myExtObject.getEditorValue();
-    var rtfContent = "";
-    System.import('html-to-rtf')
-      .then(xJS => {
-        rtfContent = xJS.convertHtmlToRtf(ckEditorValue);
-        var objFileInfo = this.arr.find(x => x.Id == this.fileIdSelected);
-        objFileInfo.Value = rtfContent;
-      });
-    // $('#previewFile').modal('hide');
+    const newget = System.import('html-to-rtf');
+    const ckEditorValue = myExtObject.getEditorValue();
+    let rtfContent = '';
+    System.import('html-to-rtf').then(xJS => {
+      rtfContent = xJS.convertHtmlToRtf(ckEditorValue);
+      const objFileInfo = this.arr.find(x => x.id === this.fileIdSelected);
+      objFileInfo.document = btoa(rtfContent);
+    });
+    $('#previewFile').modal('hide');
   }
 
+  deleteTemplate(templateId){
+      this.masterService.deleteDocumentTemplate(templateId).subscribe(
+        result => {
+          this.getDocuments();
+          if (result && result.httpcode && result.httpcode === 500) {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+          } else {
+            $.toaster({ priority: 'success', title: 'Success', message: 'Template deleted successfully' });
+          }
+        },
+        err => {
+          console.log(err.error);
+          $.toaster({ priority: 'error', title: 'Error', message: 'Error occurred' });
+        }
+      );
+  }
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  declarations: [
-    MasterTemplatesComponent
-  ]
-}
-
-)
-export class MasterTemplatesModule
-{
-  
-}
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTableModule],
+  declarations: [MasterTemplatesComponent]
+})
+export class MasterTemplatesModule {}

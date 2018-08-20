@@ -1,22 +1,23 @@
-import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter } from "rxjs/operator/filter";
+import { filter } from 'rxjs/operator/filter';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { HtmlParser } from "@angular/compiler";
+import { HtmlParser } from '@angular/compiler';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
-import { DataTableComponent } from "../../shared/components/data-table/data-table.component";
-import { InvoicesService } from "./invoices.service";
-import { invoiceTableConfig } from "./invoices.config";
-import { ActionColumnModel } from "../../shared/models/data-table/action-column.model";
-import { SharedService } from "../../shared/services/shared.service";
+import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
+import { InvoicesService } from './invoices.service';
+import { invoiceTableConfig } from './invoices.config';
+import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
+import { SharedService } from '../../shared/services/shared.service';
+import { StorageService } from '../../shared/services/storage.service';
 
 
 declare var $;
 declare let canvas;
 @Component({
-  selector: "app-invoice",
-  templateUrl: "./invoice.component.html",
+  selector: 'app-invoice',
+  templateUrl: './invoice.component.html',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./invoice.component.css'],
 
@@ -33,16 +34,22 @@ export class InvoiceComponent implements OnInit {
   columns = invoiceTableConfig;
   actionColumnConfig: ActionColumnModel;
   moduleName = 'Invoice';
+  anyForm: any;
+  isPageLoad: boolean;
+  invoiceId: number;
+  paymentReceiveDate: any;
+  downloadData: any;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
-  constructor(private fb: FormBuilder, private invoiceService: InvoicesService,
+  constructor(private fb: FormBuilder, private invoiceService: InvoicesService, private _storageService: StorageService,
     private router: Router, private _sharedService: SharedService) {
     this.createForm(null);
     Window['InvoiceFormComponent'] = this;
   }
   ngOnInit() {
+    Window['InvoiceComponent'] = this;
+    this.isPageLoad = true;
     this.clickInstitutional();
     this.setActionConfig();
-    this.getInvoice();
     $('#txtDateFilter').daterangepicker({
       autoUpdateInput: false,
       locale: {
@@ -60,109 +67,183 @@ export class InvoiceComponent implements OnInit {
     this.actionColumnConfig.showCancel = true;
     this.actionColumnConfig.showEdit = true;
     this.actionColumnConfig.moduleName = 'Invoice';
+    this.actionColumnConfig.actionList.push(
+      {
+        eventType: 'payment',
+        title: 'Payment Received',
+        isImage: false,
+        icon: '<i class="fa fa-credit-card" style="font-size: 20px"></i>'
+      },
+      {
+        eventType: 'view',
+        title: 'View',
+        isImage: false,
+        icon: '<i class="fa fa-eye" style="font-size: 20px !important"></i>'
+      },
+      {
+        eventType: 'download',
+        title: 'Download',
+        isImage: false,
+        icon: '<i class="fa fa-download" style="font-size: 20px !important"></i>'
+      }
+    );
   }
+
   filterTableData() {
     const fromToDate = $('#txtDateFilter').val().split(' To ');
     if (fromToDate && fromToDate.length > 0) {
       this.dataTableComponent.dateRangeFilter(this._sharedService.convertStrToDate(fromToDate[0]),
         this._sharedService.convertStrToDate(fromToDate[1]), 'invoiceDate');
-    }
-    else {
+    } else {
       this.dataTableComponent.resetDateFilter();
     }
 
     $('#filterCaseModal').modal('hide');
 
   }
+
   onActionBtnClick(event) {
-    if (event.eventType == 'cancel') {
-      this.cancelInvoice(event.data.id);
-    }
-    else if (event.eventType == 'history') {
-      var data = event.data;
-      var invoicedetails = [{
-        amount: data.amount,
-        billingDate: data.billingDate,
-        caseId: data.billingIds[0].caseId,
-        description: data.description,
-        id: data.id,
-        institutionId: data.billingIds[0].institution.id,
-        institutionName: data.billingIds[0].institution.institutionName,
-        isInvoiceFirstLoad: true,
-        recourseId: data.billingIds[0].recourse.id,
-        recourseName: data.billingIds[0].recourse.recourseName,
-        stageId: data.billingIds[0].stage.id,
-        stageName: data.billingIds[0].stage.stageName,
-        userId: 0,
-        isFromInvoice: true
-      }];
-      localStorage.setItem('invoiceDetails', JSON.stringify(invoicedetails));
-      this.router.navigateByUrl('/admin/invoices/invoiceform');
+    try {
+      this.downloadData = null;
+      const data = event.data;
+      if (event.eventType === 'cancel') {
+        this.cancelInvoice(data.id);
+      } else if (event.eventType === 'edit' || event.eventType === 'view' || event.eventType === 'download') {
+
+        this.invoiceService.getInvoiceDetail(data.id, this.isInstitutionalTab).subscribe(
+          (result) => {
+            if (result) {
+              this._storageService.clearInvoiceData();
+              const invoice = result.invoice;
+              const billingArray = (this.isInstitutionalTab) ? result.institutionalBillings : result.individualBillings;
+              const otherDetails = {
+                mode: event.eventType,
+                invoice: invoice,
+                isInstitutional: this.isInstitutionalTab
+              };
+              if (event.eventType === 'download') {
+                this.downloadData = {
+                  data: invoice,
+                  list: billingArray
+                };
+                this.generatepdf();
+              } else {
+                localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherDetails));
+                localStorage.setItem('invoiceDetails', JSON.stringify(billingArray));
+                this.router.navigateByUrl('/admin/invoices/invoiceform');
+              }
+            }
+          },
+          err => console.log(err)
+        );
+
+
+      } else if (event.eventType === 'payment') {
+        this.paymentReceiveDate = '';
+        this.invoiceId = data.id;
+        $('#paymentReceivedPopup').modal('show');
+      }
+
+    } catch (err) {
+      console.log(err);
     }
   }
+
+  payemntReceiveDateChange(value) {
+    this.paymentReceiveDate = value;
+    document.getElementById('divPayment').click();
+  }
+
+  paymentReceived() {
+    if (this.paymentReceiveDate && this.paymentReceiveDate.trim().length > 0) {
+      this.invoiceService.updatePaymentStatus(this.invoiceId, this.paymentReceiveDate).subscribe(
+        (result) => {
+          result = result.body;
+          if (result.httpCode === 200) {
+            $('#paymentReceivedPopup').modal('hide');
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+            if (this.isInstitutionalTab) {
+              this.clickInstitutional();
+            } else {
+              this.clickIndividual();
+            }
+          } else {
+            $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+          }
+        },
+        err => {
+          console.log(err);
+        });
+    } else {
+      alert('Please select date');
+    }
+  }
+
   searchFilter(value) {
     this.dataTableComponent.applyFilter(value);
   }
+
   clearFilters() {
     this.searchTextbox = '';
     this.dataTableComponent.resetFilters();
   }
-  anyForm: any;
+
   generatepdf() {
-    var hiddenDiv = document.getElementById('pdfdownload')
-    hiddenDiv.style.display = 'block';
-    var pdf;
-    pdf = new jsPDF();
-    pdf.addHTML(document.getElementById('pdfdownload'), function () {
-
-      pdf.save('stacking-plan.pdf');
-      hiddenDiv.style.display = 'none';
-    });
-
+    const $this = this;
+    setTimeout(() => {
+      const hiddenDiv = document.getElementById('pdfdownload');
+      let pdf;
+      pdf = new jsPDF();
+      hiddenDiv.style.display = 'block';
+      pdf.addHTML(document.getElementById('pdfdownload'), function () {
+        hiddenDiv.style.display = 'none';
+        pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
+      });
+    }, 200);
   }
 
   createForm(c) {
     this.editCaseForm1 = this.fb.group({
-
       Bank: [c == null ? null : c.Bank],
       Amount: [c == null ? null : c.Amount],
-      CaseID: [c == null ? null : c.CaseID],
-
-
+      CaseID: [c == null ? null : c.CaseID]
     });
   }
 
   showModal(invoice) {
     this.createForm(invoice);
-    $("#filterCaseModal").modal("show");
+    $('#filterCaseModal').modal('show');
   }
 
   cancelInvoice(invoiceId) {
-    this.invoiceService.caneclInvoice(invoiceId).subscribe(
-      result => {
-        $.toaster({ priority: 'success', title: 'Success', message: 'Invoice has been cancelled successfully' });
-        this.bindInvoiceAfterCancelled(invoiceId);
-      },
-      err => {
-        console.log(err);
-      });
+    if (confirm('Are you sure you want to cancel this invoice?')) {
+      this.invoiceService.caneclInvoice(invoiceId, this.isInstitutionalTab).subscribe(
+        result => {
+          result = result.body;
+          if (result.httpCode === 200) {
+            $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+            this.bindInvoiceAfterCancelled(invoiceId);
+          }
+        },
+        err => {
+          console.log(err);
+        });
+    }
   }
 
   bindInvoiceAfterCancelled(invoiceId) {
     this.tableInputData.filter((item: any, index: number) => {
       if (item.id == invoiceId) {
         this.tableInputData.splice(index, 1);
-        this.dataTableComponent.ngOnInit();
-
+        this.getInvoice();
       }
-    })
+    });
   }
 
   getInvoice() {
     this.tableInputData = [];
     this.invoiceService.getInvoiceData(this.isInstitutionalTab).subscribe(
       result => {
-      //  debugger
         result.forEach(item => {
           this.tableInputData.push({
             id: item.id,
@@ -176,7 +257,11 @@ export class InvoiceComponent implements OnInit {
         });
         setTimeout(() => {
           this.dataTableComponent.ngOnInit();
-        });
+          const pendingData = this.tableInputData.find(x => x.status === 'PENDING');
+          if (pendingData) {
+            this.dataTableComponent.sortTable('PENDING', 'status');
+          }
+        }, 500);
 
       },
       err => {
@@ -191,11 +276,13 @@ export class InvoiceComponent implements OnInit {
     this.isInstitutionalTab = true;
     this.getInvoice();
   }
+
   clickIndividual() {
     this.showTableColumns(false);
     this.isInstitutionalTab = false;
     this.getInvoice();
   }
+
   showTableColumns(show) {
     this.columns.forEach(function (data) {
       if (data.uniqueId === 'institutionName') {
@@ -203,5 +290,12 @@ export class InvoiceComponent implements OnInit {
       }
     });
   }
-}
 
+  onRowClick() {
+
+  }
+
+  onRowDoubleClick() {
+
+  }
+}

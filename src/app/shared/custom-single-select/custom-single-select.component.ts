@@ -8,10 +8,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class CustomSingleSelectComponent implements OnInit {
   @Input() data: any[];
   @Input() config: any;
+  @Input() selectedItem: any;
   @Output() valueChanged: EventEmitter<any> = new EventEmitter();
   showDropdown: boolean = false;
   displayField: any;
-  selectedItem: any;
   constructor() { }
 
   ngOnInit() {
@@ -22,21 +22,19 @@ export class CustomSingleSelectComponent implements OnInit {
 
         if (this.config.showFirstSelectedValue) {
           this.selectedItem = this.data.filter(x => x[this.config.showFirstSelectedKey]
-            == this.config.showFirstSelectedValue[this.config.showFirstSelectedKey])[0];
+            === this.config.showFirstSelectedValue[this.config.showFirstSelectedKey])[0];
 
           this.selectItem(this.selectedItem);
-        }
-        else
+        } else {
           this.selectItem(this.data[0]);
-      }
-      else
+        }
+      } else {
         this.selectItem(this.data[0]);
-
+      }
       this.showDropdown = false;
+    } else {
+      this.selectedItem = (this.config.defaultText) ? this.config.defaultText : '';
     }
-    else
-      this.selectedItem = (this.config.defaultText) ? this.config.defaultText : "";
-
   }
 
   selectClick() {
@@ -53,7 +51,7 @@ export class CustomSingleSelectComponent implements OnInit {
     this.selectedItem = data;
     this.valueChanged.emit(undefined);
   }
- 
+
   onClickedOutside(e: Event) {
     this.showDropdown = false;
   }

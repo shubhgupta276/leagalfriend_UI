@@ -7,7 +7,7 @@ import { StorageService } from '../../shared/services/storage.service';
 import { Observable } from 'rxjs/Observable';
 import {
     InvoiceTemplate, addInstitutionalInvoice, addIndividualInvoice,
-    getIndividualInvoice, getInstitutionalInvoice, invoiceCancel
+    getIndividualInvoice, getInstitutionalInvoice, invoiceCancel, updatePaymentStatus
 } from './invoices.config';
 @Injectable()
 export class InvoicesService {
@@ -20,13 +20,35 @@ export class InvoicesService {
         const apiUrl = InvoiceTemplate + '?userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
-    saveInvoice(data: any, isInstitutional): Observable<any> {
-        let url = addInstitutionalInvoice;
+    saveInvoice(data: any, isInstitutional, isEditMode): Observable<any> {
+        if (!isEditMode) {
+            let url = addInstitutionalInvoice;
+            if (!isInstitutional) {
+                url = addIndividualInvoice;
+            }
+            return this.apiGateWay.post<any>(url, data);
+        } else {
+            return this.updateInvoice(data, isInstitutional);
+        }
+
+    }
+
+    private updateInvoice(data: any, isInstitutional): Observable<any> {
+        let url = 'invoice/institutional';
         if (!isInstitutional) {
-            url = addIndividualInvoice;
+            url = 'invoice/individual';
+        }
+        return this.apiGateWay.put<any>(url, data);
+    }
+
+    saveCustomInvoice(data: any, isInstitutional): Observable<any> {
+        let url = 'billing';
+        if (!isInstitutional) {
+            url = 'billing/individual';
         }
         return this.apiGateWay.post<any>(url, data);
     }
+
     getInvoiceData(isInstitutional): Observable<any> {
         let url = getInstitutionalInvoice;
         if (!isInstitutional) {
@@ -35,8 +57,44 @@ export class InvoicesService {
         const apiUrl = url + '?userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
-    caneclInvoice(invoiceId: any): Observable<any> {
-        const apiUrl = invoiceCancel + '?invoiceId=' + invoiceId;
+
+    invoiceNumberAlreadyExists(invoiceNumber: any): Observable<any> {
+        const url = 'invoice/validate';
+        const apiUrl = url + '?invoiceNumber=' + invoiceNumber + '&userId=' + this._storageService.getUserId();
+        return this.apiGateWay.get<any>(apiUrl, null);
+    }
+
+
+    getInvoiceDetail(invoiceId, isInstitutional): Observable<any> {
+        let url = 'invoice/institutional/single';
+        if (!isInstitutional) {
+            url = 'invoice/individual/single';
+        }
+        url = url + '?invoiceId=' + invoiceId;
+        return this.apiGateWay.get<any>(url, null);
+    }
+
+    caneclInvoice(invoiceId: any, isInstitutional): Observable<any> {
+        let url = invoiceCancel;
+        if (!isInstitutional) {
+            url = 'invoice/individual/cancel';
+        }
+        url += '?invoiceId=' + invoiceId;
+        return this.apiGateWay.put<any>(url, null);
+    }
+
+    deleteBilling(billingId: any, isInstitutional: boolean): Observable<any> {
+        let url = '/billing';
+        if (!isInstitutional) {
+            url = 'billing/individual';
+        }
+        url += '?billingId=' + billingId;
+        return this.apiGateWay.delete<any>(url, null);
+    }
+
+
+    updatePaymentStatus(invoiceId: any, date): Observable<any> {
+        const apiUrl = updatePaymentStatus + '?invoiceId=' + invoiceId + '&date=' + date;
         return this.apiGateWay.put<any>(apiUrl, null);
     }
 

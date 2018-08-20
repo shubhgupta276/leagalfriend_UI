@@ -56,11 +56,12 @@ export class BillingComponent implements OnInit {
         }
     }
     ngOnInit() {
-        this.clickInstitutional();
         this.setActionConfig();
         const self = this;
         this.getAllInstitutions();
-        this.getBillingData();
+        setTimeout(() => {
+            this.clickInstitutional();
+        }, 600);
         this.getAllRecourses();
         $($.document).ready(function () {
             $('#reservation').daterangepicker({
@@ -104,11 +105,18 @@ export class BillingComponent implements OnInit {
         this.dataTableComponent.resetFilters();
     }
     CreateInvoice() {
+        let institutionId = 0;
         this.selectedRowsCheckbox.forEach(item => {
             item.isInvoiceFirstLoad = true;
             item.isFromInvoice = false;
+            institutionId = item.institutionId;
             item.isInstitutional = this.isInstitutionalTab;
         });
+        const otherData = {
+            isInstitutional: this.isInstitutionalTab,
+            institutionId: institutionId
+        };
+        localStorage.setItem('invoiceOtherDetails', JSON.stringify(otherData));
         localStorage.setItem('invoiceDetails', JSON.stringify(this.selectedRowsCheckbox));
     }
     getBillingData() {
@@ -123,12 +131,12 @@ export class BillingComponent implements OnInit {
                             institutionId: obj.institution == null ? null : obj.institution.id,
                             institutionName: obj.institution == null ? null : obj.institution.institutionName,
                             amount: obj.amount,
-                            recourseName: obj.recourse.recourseName,
-                            recourseId: obj.recourse.id,
-                            stageId: obj.stage.id,
-                            stageName: obj.stage.stageName,
+                            recourseName: (obj.recourse) ? obj.recourse.recourseName : '',
+                            recourseId: (obj.recourse) ? obj.recourse.id : '',
+                            stageId: (obj.stage) ? obj.stage.id : '',
+                            stageName: (obj.stage) ? obj.stage.stageName : '',
                             userId: obj.userId,
-                            caeId: obj.caseId,
+                            caseId: obj.caseId,
                             billingDate: this._sharedService.convertDateToStr(obj.billingDate)
                         });
                     }
@@ -173,7 +181,6 @@ export class BillingComponent implements OnInit {
                     result.institutions.forEach(element => {
                         this.arAllInstitution.push(element);
                     });
-                    this.getBillingData();
                 }
             });
     }
@@ -205,7 +212,7 @@ export class BillingComponent implements OnInit {
                         // const deleteIndex = this.tableInputData.findIndex(x => x.id === event.id);
                         // this.tableInputData.splice(deleteIndex, 1);
                         // this.dataTableComponent.ngOnInit();
-                        $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
+                        $.toaster({ priority: 'success', title: 'Success', message: 'Billing Cancel Successfully.' });
                     },
                     err => {
                         console.log(err);

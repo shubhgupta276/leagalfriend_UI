@@ -78,22 +78,45 @@
                 <button class="table-make-default-inst-btn btn btn-primary" (click)="onActionBtnClick($event, row)" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && !row.defaultInstitution">{{ actionColumnConfig.btnText[0] }}</button>
                 <span class="table-default-inst-btn btn btn btn-primary" style="background: green;cursor: default;" *ngIf="actionColumnConfig.moduleName==='Master_Institution' && row.defaultInstitution">{{ actionColumnConfig.btnText[1] }}</span>
                 <!-- <span class="table-default-inst-btn btn btn btn-primary" style="background: green;cursor: default;" *ngIf="actionColumnConfig.moduleName==='user'">actionColumnConfig.btnText[0] </span> -->
-
-                <a title="Edit" *ngIf="actionColumnConfig.showEdit" (click)="onActionBtnClick($event, row, 'edit')">
+                <a title="Edit" *ngIf="actionColumnConfig.showEdit 
+                && !(actionColumnConfig.moduleName=='Invoice' && row['status']=='PAID')" (click)="onActionBtnClick($event, row, 'edit')">
                     <!-- <i class="fa fa-edit"></i> -->
                     <img width="24px" src="/assets/dist/img/editsvg.png" />
                 </a>&nbsp;
                 <a title="Change Password" (click)="onActionBtnClickForChangePasswordPopup($event, row)" *ngIf="actionColumnConfig.moduleName==='user'">
                     <img width="20px" src="/assets/dist/img/pro.png" />
                 </a>
+                <a title="Delete" (click)="onActionBtnClick($event, row, 'delete')" *ngIf="actionColumnConfig.showDelete">
+                        <!-- <i class="fa fa-delete"></i> -->
+                    <img width="20px" src="/assets/dist/img/delete.png" />
+                </a>
 
                 <span *ngIf="actionColumnConfig.showEdit && actionColumnConfig.showHistory">&nbsp;</span>
                 <a *ngIf="actionColumnConfig.showHistory" (click)="onActionBtnClick($event, row, 'history')">
                     <i class="fa fa-history"></i>
                 </a>
-                <a *ngIf="actionColumnConfig.showCancel" title="Cancel" (click)="onActionBtnClick($event, row, 'cancel')">
+                <a *ngIf="actionColumnConfig.showCancel && !(actionColumnConfig.moduleName=='Invoice' && row['status']=='PAID')" title="Cancel"
+                    (click)="onActionBtnClick($event, row, 'cancel')">
                     <img width="20px" src="/assets/dist/img/close.png" />
                 </a>
+                <ng-container *ngFor="let CustomAction of actionColumnConfig.actionList">
+                    &nbsp;
+                    <ng-container *ngIf="actionColumnConfig.moduleName=='Invoice' else elseCustomAction">
+                        <ng-container *ngIf="(row['status']=='PAID' && (CustomAction.eventType=='view' || CustomAction.eventType=='download')) || (row['status']=='PENDING' && CustomAction.eventType!='view')">
+                            <a title="{{CustomAction.title}}" (click)="onActionBtnClick($event, row, CustomAction.eventType)">
+                                <img *ngIf="CustomAction.isImage" width="20px" [src]="CustomAction.icon" />
+                                <span *ngIf="!CustomAction.isImage" [innerHTML]="CustomAction.icon"></span>
+                            </a>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #elseCustomAction>
+                        <a title="{{CustomAction.title}}" (click)="onActionBtnClick($event, row, CustomAction.eventType)">
+                            <img *ngIf="CustomAction.isImage" width="20px" [src]="CustomAction.icon" />
+                            <span *ngIf="!CustomAction.isImage" [innerHTML]="CustomAction.icon"></span>
+                        </a>
+                    </ng-template>
+
+                </ng-container>
 
             </mat-cell>
         </ng-container>

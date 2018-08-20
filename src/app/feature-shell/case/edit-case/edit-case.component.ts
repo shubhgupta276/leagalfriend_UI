@@ -41,7 +41,6 @@ export class EditCaseComponent implements OnInit {
   selectedEmployee: any;
   selectedCourtPlace: any;
   // arrCompliance = [];
-  
   arr: any = [];
   id: any = [];
   caseId: any = [];
@@ -78,7 +77,7 @@ export class EditCaseComponent implements OnInit {
   parentcaseSelectedauto: Array<any> = [];
   childcaseSelectedauto: Array<any> = [];
   stageId: any;
-
+  isSubmitClick: boolean;
   childCaseText: string;
   childParentText: string;
   constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
@@ -88,6 +87,7 @@ export class EditCaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isSubmitClick = false;
     this.CourtPlace = this.Court;
     const self = this;
     $(document).ready(function () {
@@ -191,6 +191,33 @@ export class EditCaseComponent implements OnInit {
     console.log('Removed value is: ', value);
   }
 
+  removeRecourse(data) {
+    this.selectedRecourse = null;
+  }
+
+  removedStage(data) {
+    this.selectedStage = null;
+  }
+
+  removedBranch(data) {
+    this.selectedBranch = null;
+  }
+
+  removedManager(data) {
+    this.selectedManager = null;
+  }
+
+  removedEmployee(data) {
+    this.selectedEmployee = null;
+  }
+
+  removedCustomer(data) {
+    this.selectedCustomerName = null;
+  }
+
+  removedState(data) {
+    this.selectedState = null;
+  }
   public typed(value: any): void {
     console.log('New search input: ', value);
   }
@@ -219,10 +246,11 @@ export class EditCaseComponent implements OnInit {
 
 
     this.courtSelected = [];
-
-    const objCourt = this.Court.filter(x => x.id === c.courtId);
-    this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
-    this.selectedCourt = this.courtSelected[0];
+    if (c.courtId) {
+      const objCourt = this.Court.filter(x => x.id === c.courtId);
+      this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
+      this.selectedCourt = this.courtSelected[0];
+    }
     if (c.stateId != null) {
       this.stateSelected = [];
       const objstate = this.State.filter(x => x.id === c.stateId);
@@ -607,7 +635,7 @@ export class EditCaseComponent implements OnInit {
     var reqData = {
       userId: this._storageService.getUserId(),
     };
-    this.authService.listCustomers(reqData).subscribe(
+    this.authService.listCustomers(reqData, false).subscribe(
 
       result => {
 
@@ -765,41 +793,49 @@ export class EditCaseComponent implements OnInit {
     }
   }
   submitEditCaseUser(data) {
-    // const objEditCase = new EditCase();
+    this.isSubmitClick = true;
     const objEditCase: FormData = new FormData();
-
-    // var a=data.parentCase.substr(data.parentCase.lastIndexOf('/')+1);
-    const x = {
-      'id': this.id,
-      'caseId': this.caseId,
-      'courtCaseId': data.courtCaseId,
-      // tslint:disable-next-line:radix
-      'userId': parseInt(localStorage.getItem('client_id')),
-      'branchId': this.selectedBranch.id,
-      'stageId': this.selectedStage.id,
-      'recourseId': this.selectedRecourse.id,
-      'employeeId': this.selectedEmployee.id,
-      'courtId': this.selectedCourt.id,
-      'stateId': this.selectedState.id,
-      'nextHearingDate': this.datePipe.transform(data.nextHearingDate, 'yyyy-MM-dd'),
-      'customerId': this.selectedCustomerName.id,
-      'managerId': this.selectedManager.id,
-      'filingDate': this.datePipe.transform(data.filingdate, 'yyyy-MM-dd'),
-      'childCase': (data.childCase == undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
-      'oppLawyer': data.oppLawyer,
-      'lastHearingDate': this.datePipe.transform(data.lastHearingDate, 'yyyy-MM-dd'),
-      'remark': data.remark,
-      'parentCaseId': (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
-      'completionDate': this.datePipe.transform(data.completionDate, 'yyyy-MM-dd'),
-    };
-    objEditCase.append('legalCase', JSON.stringify(x));
-    objEditCase.append('file', this.myDocument);
-    if (!x.completionDate) {
-      this.updateCase(objEditCase, data);
-    } else {
-      if (confirm('Are you sure you want to close this case?')) {
-        this.updateCase(objEditCase, data);
+    try {
+      if (this.editCaseForm.get('remark').invalid) {
+        // tslint:disable-next-line:no-string-throw
+        throw 'enter remarks';
       }
+
+      const x = {
+        'id': this.id,
+        'caseId': this.caseId,
+        'courtCaseId': data.courtCaseId,
+        // tslint:disable-next-line:radix
+        'userId': this._storageService.getUserId(),
+        'branchId': this.selectedBranch.id,
+        'stageId': this.selectedStage.id,
+        'recourseId': this.selectedRecourse.id,
+        'employeeId': this.selectedEmployee.id,
+        'courtId': (this.selectedCourt) ? this.selectedCourt.id : null,
+        'stateId': this.selectedState.id,
+        'nextHearingDate': this.datePipe.transform(data.nextHearingDate, 'yyyy-MM-dd'),
+        'customerId': this.selectedCustomerName.id,
+        'managerId': this.selectedManager.id,
+        'filingDate': this.datePipe.transform(data.filingdate, 'yyyy-MM-dd'),
+        'childCase': (data.childCase == undefined ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
+        'oppLawyer': data.oppLawyer,
+        'lastHearingDate': this.datePipe.transform(data.lastHearingDate, 'yyyy-MM-dd'),
+        'remark': data.remark,
+        'parentCaseId': (data.parentCase == undefined ? null : (data.parentCase.substr(data.parentCase.lastIndexOf('/') + 1))),
+        'completionDate': this.datePipe.transform(data.completionDate, 'yyyy-MM-dd')
+      };
+      objEditCase.append('legalCase', JSON.stringify(x));
+      objEditCase.append('file', this.myDocument);
+      if (!x.completionDate) {
+        this.updateCase(objEditCase, data);
+      } else {
+        if (confirm('Are you sure you want to close this case?')) {
+          this.updateCase(objEditCase, data);
+        }
+      }
+
+    } catch (err) {
+      console.log(err);
     }
   }
 

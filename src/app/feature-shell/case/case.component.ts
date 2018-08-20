@@ -30,10 +30,11 @@ import { ActionColumnModel } from '../../shared/models/data-table/action-column.
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
 import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
-import { MasterTemplateService } from '../master/masterTemplates/masterTemplate.component.service';
 import { setTimeout } from 'timers';
 import { CaseHistoryComponent } from './case-history/case-history-component';
 import { ActivatedRoute } from '@angular/router';
+import { MasterService } from '../master/master.service';
+import { AddCaseComponent } from './Add-case/Add-case.component';
 
 const now = new Date();
 
@@ -42,13 +43,14 @@ const now = new Date();
   selector: 'app-case',
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.css'],
-  providers: [AuthService, StorageService],
+  providers: [AuthService, StorageService, MasterService],
   'styles': [
     '../node_modules/ngx-select-dropdown/dist/assets/style.css'
   ],
 })
 export class CaseComponent implements OnInit, OnDestroy {
   @ViewChild(EditCaseComponent) editChild: EditCaseComponent;
+  @ViewChild(AddCaseComponent) addChild: AddCaseComponent;
   tableInputData = [];
   columns = caseRunningTableConfig;
   @ViewChild('caseRunningTable') runningDataTableComponent: DataTableComponent;
@@ -87,16 +89,17 @@ export class CaseComponent implements OnInit, OnDestroy {
   isViewOnly = this._sharedService.isViewOnly();
   recourseConfig: any;
   arCourts: any = [];
-  constructor(private masterTemplateService: MasterTemplateService,
-    private fb: FormBuilder, private authService: AuthService, private _activatedRoute: ActivatedRoute,
-    private _storageService: StorageService, private _sharedService: SharedService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private _activatedRoute: ActivatedRoute,
+    private _storageService: StorageService, private _sharedService: SharedService, private masterService: MasterService) {
     this.caseCompleted = CasesCompleted;
   }
+
   ngOnDestroy() {
     this.branchSubscription.unsubscribe();
-    //this.isLoad=true;
   }
+
   ngOnInit() {
+
     this.GetAllCourt();
     this.rowSelect = !this.isViewOnly;
     this._activatedRoute.params.subscribe((param) => {
@@ -134,14 +137,10 @@ export class CaseComponent implements OnInit, OnDestroy {
     }, function (start_date, end_date) {
       $('#reservation').val(start_date.format('DD-MM-YYYY') + ' To ' + end_date.format('DD-MM-YYYY'));
     });
-    var self = this;
-    $('body').on('change', '.newHiringDate', function () {
-      self.updateNewHiringDate($(this).val())
-      $(this).closest('mat-cell')
-        .animate({ backgroundColor: '#88d288' }, 1000)
-        .animate({ backgroundColor: '' }, 2000);
+    const self = this;
+    $('body').unbind().on('change', '.newHiringDate', function (event) {
+      self.updateNewHiringDate($(this));
     });
-
   }
 
   GetAllCourt() {
@@ -405,8 +404,8 @@ export class CaseComponent implements OnInit, OnDestroy {
       });
   }
   bindRecourseDDL() {
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.bindRecourseDDL(reqData).subscribe(
@@ -491,58 +490,93 @@ export class CaseComponent implements OnInit, OnDestroy {
 
   }
   getUploadedDocuments() {
-    this.masterTemplateService.getuploadedFile().subscribe(x => this.lstUploadedDocuments = x);
+    this.tableInputData = [];
+    this.masterService.getDocumentTemplatesList().subscribe(
+      result => {
+        console.log(result);
+        if (result && result.length > 0) {
+          this.lstUploadedDocuments = result;
+          }
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+  base64ToBlob(b64Data, contentType, sliceSize = 512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, { type: contentType });
   }
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
       this.SelectedFileIds.push(FileId);
-    }
-    else {
+    }else {
       this.SelectedFileIds = this.SelectedFileIds.filter(function (i) {
-        return i != FileId;
+        return i !== FileId;
       });
     }
 
   }
   getMappingFilesTodownload() {
-    for (var i = 0; i < this.SelectedFileIds.length; i++) {
-      var data = this.lstUploadedDocuments.find(x => x.Id === this.SelectedFileIds[i]);
-      const localData = JSON.parse(JSON.stringify(data))
-      var selectedCases = this.selectedRowsCheckbox.filter(function (x) {
+    for (let i = 0; i < this.SelectedFileIds.length; i++) {
+      const data = this.lstUploadedDocuments.find(x => x.id === this.SelectedFileIds[i]);
+      const localData = JSON.parse(JSON.stringify(data));
+      let selectedCases = this.selectedRowsCheckbox.filter(function (x) {
         return true;
-      })
-      var selectedCasescompelted = this.caseCompleted.filter(function (x) {
-        return x.IsChecked == true;
+      });
+      const selectedCasescompelted = this.caseCompleted.filter(function (x) {
+        return x.IsChecked === true;
       });
       selectedCases = selectedCases.concat(selectedCasescompelted);
 
-      for (var j = 0; j < selectedCases.length; j++) {
-        let value = localData.Value;
+      for (let j = 0; j < selectedCases.length; j++) {
+        let value = atob(localData.document);
         value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
-        value = value.replace('@CustomerName', + selectedCases[j].customerFirstName);
-        saveAs(new Blob([value], { type: localData.FileType }), localData.FileName);
+        value = value.replace('@CustomerName', selectedCases[j].customerFirstName);
+        saveAs(new Blob([value], { type: 'application/rtf' }), localData.description);
       }
     }
+    $('#lstUploadedDocument').modal('hide');
+    this.runningDataTableComponent.selection.clear();
+
   }
 
   onShowCalendar(items) {
     this.newHiringCasedata = items;
 
   }
-  updateNewHiringDate(newHiring) {
-    this.newHiringCasedata.nextHearingDate = newHiring;
-    this.caseRunning.forEach(element => {
-      if (element.id == this.newHiringCasedata.id) {
-        element.nextHearingDate = newHiring;
-        return false;
-      }
-    })
-    this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
-      result => {
-      },
-      err => {
-        console.log(err);
+  updateNewHiringDate(ref) {
+    try {
+      const newHiring = $(ref).val();
+      this.newHiringCasedata.nextHearingDate = newHiring;
+      this.caseRunning.forEach(data => {
+        if (data.id === this.newHiringCasedata.id) {
+          data.nextHearingDate = newHiring;
+          return false;
+        }
       });
+      this.authService.updateCaseHearingDate(this.newHiringCasedata).subscribe(
+        result => {
+          $(ref).closest('mat-cell').animate({ backgroundColor: '#88d288' }, 100).animate({ backgroundColor: '' }, 1500);
+          $.toaster({ priority: 'success', title: 'Success', message: 'Date Update Successfully.' });
+        },
+        err => {
+          console.log(err);
+        });
+    } catch (err) {
+
+    }
 
   }
   onMouseHover(i) {
@@ -564,5 +598,10 @@ export class CaseComponent implements OnInit, OnDestroy {
 
   resetGrid() {
     this.getCasesData();
+  }
+
+  addCase() {
+    this.addChild.AddCaseUser();
+    $('#addCaseModal').modal('show');
   }
 }

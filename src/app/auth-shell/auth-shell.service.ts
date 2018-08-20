@@ -240,22 +240,22 @@ export class AuthService {
     );
   }
   listManager(reqData): Observable<any> {
-    
+
     return this.apiGateWay.get<Recourse>(
       'usermanagement/managers' + '?userId=' + reqData.userId, null,
 
     );
   }
-  listCustomers(reqData): Observable<any> {
+  listCustomers(reqData, isInstitutional): Observable<any> {
     return this.apiGateWay.get<Recourse>(
-      'usermanagement/customers' + '?userId=' + reqData.userId, null,
+      'usermanagement/customers' + '?userId=' + reqData.userId + '&isInstitutional=' + isInstitutional, null,
 
     );
   }
 
   getUser(userId: string): Observable<any> {
     return this.apiGateWay.get<any>(getUser + userId);
-}
+  }
 
 
 
