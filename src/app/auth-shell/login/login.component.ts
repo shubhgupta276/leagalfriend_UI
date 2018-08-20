@@ -146,50 +146,56 @@ export class LoginComponent implements OnInit {
     loginDetails.username = data.email;
     loginDetails.password = data.password;
     loginDetails.clientId = data.clientId;
-    this.authService.login(loginDetails).subscribe(
-      result => {
-        this._login = result;
-        const accessToken = this._login.body.token;
-        const clientId = this._login.body.clientId;
-        if (accessToken) {
-          localStorage.setItem('access_token', accessToken);
-          localStorage.setItem('client_id', clientId);
-          localStorage.setItem('user_id', data.email);
-          const client = '?userId=' + localStorage.getItem('client_id');
-          // localStorage.setItem('permission_level', 'ADMIN_LAWYER');
-          // const permission = localStorage.getItem('permission_level');
-          // console.log(permission);
-          this.authService.getUser(client).subscribe(
-            userDetails => {
-              if (userDetails) {
-                localStorage.setItem('userDetails', JSON.stringify(userDetails));
-                this.setUserRole(userDetails);
-                const permission = localStorage.getItem('permission_level');
-                if (permission.indexOf('CLIENT') >= 0) {
-                  if (permission === 'CLIENT_LAWYER_FIRM_Institutional') {
-                    this.router.navigateByUrl('admin/institution');
-                  } else {
-                    this.router.navigateByUrl('admin/case');
-                  }
-                } else {
-                  this.router.navigateByUrl('admin/dashboard');
-                }
-              }
-            },
-            error => {
-              console.log(error);
-            }
-          );
-          this.isLoggedInError = false;
-        } else {
-          this.errLoginMsg = 'Your account has been suspended please contact your administrator.';
-          this.isLoggedInError = false;
-        }
-      },
-      err => {
-        this.errLoginMsg = 'Invalid username or password';
-        this.isLoggedInError = true;
-        console.log(err);
-      });
+    localStorage.setItem("access_token","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrYXBpbC5tYWhlc2h3YXJpQGdsb2JhbGxvZ2ljLmNvbSIsImV4cCI6MTUzMjMzODcyN30.fDU9EJ9HlmxM7IQKyb-o0lpWNCd9FsU-WOTH1EuE14kYy215XYsyh_H9xJBws2bK-LslVvOZp-_XKO47sixd8A");
+    localStorage.setItem("permission_level","ADMIN_LAWYER_FIRM");
+    localStorage.setItem("userRole","ADMIN");
+    localStorage.setItem("user_id","vaibhav.joshi@globallogic.com");
+    localStorage.setItem("client_id","1");
+ //   localstorage.setItem();
+//    this.authService.login(loginDetails).subscribe(
+//      result => {
+//        this._login = result;
+//        const accessToken = this._login.body.token;
+//        const clientId = this._login.body.clientId;
+//        if (accessToken) {
+//          localStorage.setItem('access_token', accessToken);
+//          localStorage.setItem('client_id', clientId);
+//          localStorage.setItem('user_id', data.email);
+//          const client = '?userId=' + localStorage.getItem('client_id');
+//          // localStorage.setItem('permission_level', 'ADMIN_LAWYER');
+//          // const permission = localStorage.getItem('permission_level');
+//          // console.log(permission);
+//          this.authService.getUser(client).subscribe(
+//            userDetails => {
+//              if (userDetails) {
+//                localStorage.setItem('userDetails', JSON.stringify(userDetails));
+//                this.setUserRole(userDetails);
+//                const permission = localStorage.getItem('permission_level');
+//                if (permission.indexOf('CLIENT') >= 0) {
+//                  if (permission === 'CLIENT_LAWYER_FIRM_Institutional') {
+//                    this.router.navigateByUrl('admin/institution');
+//                  } else {
+//                    this.router.navigateByUrl('admin/case');
+//                  }
+//                } else {
+//                  this.router.navigateByUrl('admin/dashboard');
+//                }
+//              }
+//            },
+//            error => {
+//              console.log(error);
+//            }
+//          );
+//          this.isLoggedInError = false;
+//        } else {
+//          this.errLoginMsg = 'Your account has been suspended please contact your administrator.';
+//          this.isLoggedInError = false;
+//        }
+//      },
+//      err => {
+//        this.errLoginMsg = 'Invalid username or password';
+//        this.isLoggedInError = true;
+//        console.log(err);
+//      });
   }
 }

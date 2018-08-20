@@ -184,7 +184,7 @@ export class AuthInterceptor implements HttpInterceptor {
             const authReq = req.clone({
                 headers: req.headers
                     .set('Authorization', authHeader.access_token.toString())
-                    .set('customer-id', authHeader.client_id.toString())
+                    //.set('customer-id', authHeader.client_id.toString())
                     .set('Content-Type', 'application/json')
             });
 
