@@ -11,6 +11,7 @@ import { LFAuthantication } from '../shared/services/lfAuthantication-service';
 import { NgxPermissionsGuard, NgxPermissionsService } from 'ngx-permissions';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
+import { RecentcasesComponent } from './case/recentcases/recentcases.component';
 
 const featureShellRoutes: Routes = [
     {
@@ -74,6 +75,7 @@ const featureShellRoutes: Routes = [
             { path: 'wallet', loadChildren: 'app/feature-shell/wallet/wallet.module#WalletModule' },
             { path: 'systemdash', component: SystemdashboardComponent },
             { path: 'userdetails', component: UserdetailComponent },
+            { path: 'recentcases', component: RecentcasesComponent }, 
             { path: 'orgdetails', component: OrganizationdetailComponent },
             {
                 path: 'dashboard',

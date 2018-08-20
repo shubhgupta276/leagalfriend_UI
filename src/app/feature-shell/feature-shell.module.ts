@@ -1,3 +1,4 @@
+import { RecentcasesComponent } from './case/recentcases/recentcases.component';
 import { UserdetailComponent } from './systemdashboard/userdetail/userdetail.component';
 import { SystemdashboardComponent } from './systemdashboard/systemdashboard.component';
 import { NgModule } from '@angular/core';
@@ -21,6 +22,7 @@ import { OrganizationdetailComponent } from './systemdashboard/organizationdetai
 import { MatTableModule } from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+
 // import { Ng2CompleterModule } from "ng2-completer";
 
 
@@ -44,7 +46,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     CalendarComponent, EmployeeActiveComponent,
     SystemdashboardComponent,
     UserdetailComponent,
-    OrganizationdetailComponent
+    OrganizationdetailComponent,
+    RecentcasesComponent 
   ],
   providers: [AuthService, SystemdashboardService]
 })

@@ -58,4 +58,9 @@ export class BillingService {
             return this.apiGateWay.get('billing/individual'+clientId);
         }
     }
+
+    getBranchBilling(clientId): Observable<any>{
+        return this.apiGateWay.get('master/branch/billing'+clientId);
+    }
+  
 }

@@ -59,7 +59,7 @@
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a (click)="goToPage('/admin/case')" class="small-box-footer">More info
+          <a routerLink='/admin/case' class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -93,7 +93,7 @@
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
           </div>
-          <a (click)="goToPage('/admin/billing')" class="small-box-footer">More info
+          <a routerLink='/admin/billing' class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -187,7 +187,15 @@
           </div>
           <div class="box-body">
             <!-- <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="branch-chart" style="position: relative; height: 300px;"></canvas>
+            <mat-tab-group [color]="primary" [backgroundColor]="accent">
+              <mat-tab label="Billing">
+                <canvas id="branch-chart" style="position: relative; height: 300px;"></canvas>
+              </mat-tab>
+              <mat-tab label="Revenue">
+                <canvas id="revenue-chart" style="position: relative; height: 300px;"></canvas>
+              </mat-tab>
+            </mat-tab-group>
+          
           </div>
 
         </div>
@@ -334,7 +342,7 @@
           </div>
           <!-- /.box-body -->
           <div class="box-footer clearfix" style="text-align:center">
-            <a routerLink="/admin/case" class="btn btn-sm btn-default btn-flat">View More</a>
+            <a routerLink="/admin/recentcases" class="btn btn-sm btn-default btn-flat">View More</a>
           </div>
           <!-- /.box-footer -->
         </div>
@@ -423,8 +431,21 @@
               </p>
 
               <div class="chart">
-                <!-- Sales Chart Canvas -->
-                <canvas id="salesChart" style="height: 180px; width: 912px;" width="912" height="180"></canvas>
+                <!-- Sales Chart Canvas
+                <canvas id="salesChart" style="height: 180px; width: 912px;" width="912" height="180"></canvas> -->
+               
+                  <div style="display: block;">
+                  <canvas baseChart style="height: 180px; width: 912px;"
+                              [datasets]="lineChartData"
+                              [labels]="lineChartLabels"
+                              [options]="lineChartOptions"
+                              [colors]="lineChartColors"
+                              [legend]="lineChartLegend"
+                              [chartType]="lineChartType"
+                              (chartHover)="chartHovered($event)"
+                              (chartClick)="chartClicked($event)"></canvas>
+            
+                </div>
               </div>
               <!-- /.chart-responsive -->
             </div>

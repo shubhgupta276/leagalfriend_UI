@@ -14,6 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
 import { CaseService } from './case.service';
 import { ActivatedRoute } from '@angular/router';
+import { RecentcasesComponent } from './recentcases/recentcases.component';
 @NgModule(
     {
         imports: [
@@ -28,7 +29,7 @@ import { ActivatedRoute } from '@angular/router';
             NgbModule,
             SharedModule
         ],
-        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent ],
+        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent, RecentcasesComponent ],
         providers:[CaseService]
     }
 )
