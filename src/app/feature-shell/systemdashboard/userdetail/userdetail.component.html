@@ -52,55 +52,7 @@
 
             </table>
           </mat-card>
-            <mat-card>
-                <mat-table #table [dataSource]="dataSource">
-                  <!-- Name Column 
-                    <ng-container matColumnDef="position">
-                        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{index}} </mat-cell>
-                      </ng-container>
-                  -->
-                      <!-- Name Column -->
-                      <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lasttName}} </mat-cell>
-                      </ng-container>
-                  
-                      <ng-container matColumnDef="email">
-                          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-                        </ng-container>
-                      <!-- Weight Column -->
-                      <ng-container matColumnDef="organization">
-                        <mat-header-cell *matHeaderCellDef> Organization </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.organization}} </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="expandedDetail">
-                          <mat-cell *matCellDef="let element"> 
-                            The symbol for {{element.element.name}} is {{element.element.symbol}}
-                          </mat-cell>
-                        </ng-container>
-                      <!-- Symbol Column -->
-                  
-                  
-                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumns;"
-                      matRipple 
-                      class="element-row" 
-                      [class.expanded]="expandedElement == row"
-                      (click)="expandedElement = row"></mat-row>
-              <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
-                      [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
-                      style="overflow: hidden"> 
-              </mat-row>
-
-                    </mat-table>
-                    <mat-paginator  #paginator
-                    [pageSize]="2"
-                    [pageSizeOptions]="[2, 4, 6]"
-                    [showFirstLastButtons]></mat-paginator>
-              
-            </mat-card>
+      
           </div>
           <!-- /.box-body -->
         </div>
