@@ -65,11 +65,11 @@ export class InvoiceDownloadComponent implements OnInit {
             let pdf;
             pdf = new jsPDF('p', 'pt', 'a4');
             pdf.addHTML(document.getElementById('pdfdownload'), function () {
-                 pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
+                pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
                 setTimeout(() => {
-                    // window.close();
+                    window.close();
                 }, 100);
-                // $this.downloadData = null;
+                $this.downloadData = null;
             });
         }, 100);
     }

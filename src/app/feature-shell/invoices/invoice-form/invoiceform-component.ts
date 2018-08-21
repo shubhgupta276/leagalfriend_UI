@@ -141,7 +141,7 @@ export class InvoiceFormComponent implements OnInit {
                 this.invoiceTemplateInfo.url = result.invoiceHeader.logo;
                 if (!this.isEditMode && !this.isViewMode) {
                     const address = result.invoiceFooter.address;
-                    this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,'
+                    this.invoiceTemplateInfo.CompanyAddress = address.address1 + ' ,'
                         + address.city + ' ,' + address.state + ' ,' + address.zipCode;
                     this.invoiceTemplateInfo.termEndCond = result.invoiceFooter.termsCondition;
                 }
@@ -155,8 +155,8 @@ export class InvoiceFormComponent implements OnInit {
                 if (result.httpCode === 200) {
                     for (let i = 0; i < result.institutions.length; i++) {
                         const obj = result.institutions[i];
-                        if (this.institutionId === this.institutionId) {
-                            this.invoiceTemplateInfo.CompanyAddress = obj.address;
+                        if (this.institutionId === obj.id) {
+                            this.invoiceTemplateInfo.billToAddress = obj.address;
                         }
                     }
                 }
