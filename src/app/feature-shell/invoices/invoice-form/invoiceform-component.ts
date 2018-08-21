@@ -61,7 +61,6 @@ export class InvoiceFormComponent implements OnInit {
 
     setInvoiceOtherDetails() {
         const otherDetail = JSON.parse(localStorage.getItem('invoiceOtherDetails'));
-
         if (otherDetail) {
             this.isEditMode = otherDetail.mode === 'edit';
             this.isViewMode = otherDetail.mode === 'view';
@@ -79,7 +78,7 @@ export class InvoiceFormComponent implements OnInit {
                 this.invoiceTemplateInfo.invoiceNo = otherDetail.invoice.invoiceNumber.toString();
                 this.institutionId = (otherDetail.invoice.institution) ? otherDetail.invoice.institution.id : 0;
             } else {
-                this.institutionId = otherDetail.institutionId;
+                this.institutionId = (this.isInstitutional) ? otherDetail.institutionId : 0;
                 this.GetAllInstitute();
             }
             this.GetBillFrom();
