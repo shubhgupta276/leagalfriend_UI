@@ -31,13 +31,13 @@ export class InvoiceDownloadComponent implements OnInit {
         }
 
         this.getDownloadTemplateDetail();
-        this.getDownloadDetail();
     }
 
     getDownloadTemplateDetail() {
         this.invoiceService.getInvoiceTemplate().subscribe(
             result => {
                 this.logoURL = this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + result.invoiceHeader.logo);
+                this.getDownloadDetail();
             });
     }
 
@@ -63,14 +63,14 @@ export class InvoiceDownloadComponent implements OnInit {
         const $this = this;
         setTimeout(() => {
             let pdf;
-            pdf = new jsPDF();
+            pdf = new jsPDF('p', 'pt', 'a4');
             pdf.addHTML(document.getElementById('pdfdownload'), function () {
                 pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
                 setTimeout(() => {
                     window.close();
-                }, 300);
+                }, 100);
                 $this.downloadData = null;
             });
-        }, 200);
+        }, 100);
     }
 }

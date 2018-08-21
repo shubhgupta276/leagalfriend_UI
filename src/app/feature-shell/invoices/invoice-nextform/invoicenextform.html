@@ -216,7 +216,7 @@
 
                                             <td>
                                                 <!-- [ngClass]="{'has-error':isCustomSaveClick && (!item.amount || item.amount.length<1)}" -->
-                                                <input [disabled]="disableField" class="form-control amount" value="{{item.amount}}" OnlyNumber onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
+                                                <input OnlyNumber="true" [disabled]="disableField" class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
                                                     style="width:100px" placeholder="Amount">
 
                                             </td>

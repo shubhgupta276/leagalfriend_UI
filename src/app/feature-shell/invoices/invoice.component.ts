@@ -105,9 +105,7 @@ export class InvoiceComponent implements OnInit {
       if (event.eventType === 'cancel') {
         this.cancelInvoice(data.id);
       } else if (event.eventType === 'download') {
-
         window.open('/admin/invoices/invoicedownload/' + data.id + ';institutional=' + this.isInstitutionalTab, '_blank');
-
       } else if (event.eventType === 'edit' || event.eventType === 'view') {
 
         this.invoiceService.getInvoiceDetail(data.id, this.isInstitutionalTab).subscribe(

@@ -61,7 +61,6 @@ export class InvoiceFormComponent implements OnInit {
 
     setInvoiceOtherDetails() {
         const otherDetail = JSON.parse(localStorage.getItem('invoiceOtherDetails'));
-
         if (otherDetail) {
             this.isEditMode = otherDetail.mode === 'edit';
             this.isViewMode = otherDetail.mode === 'view';
@@ -79,7 +78,7 @@ export class InvoiceFormComponent implements OnInit {
                 this.invoiceTemplateInfo.invoiceNo = otherDetail.invoice.invoiceNumber.toString();
                 this.institutionId = (otherDetail.invoice.institution) ? otherDetail.invoice.institution.id : 0;
             } else {
-                this.institutionId = otherDetail.institutionId;
+                this.institutionId = (this.isInstitutional) ? otherDetail.institutionId : 0;
                 this.GetAllInstitute();
             }
             this.GetBillFrom();
@@ -142,7 +141,7 @@ export class InvoiceFormComponent implements OnInit {
                 this.invoiceTemplateInfo.url = result.invoiceHeader.logo;
                 if (!this.isEditMode && !this.isViewMode) {
                     const address = result.invoiceFooter.address;
-                    this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,'
+                    this.invoiceTemplateInfo.CompanyAddress = address.address1 + ' ,'
                         + address.city + ' ,' + address.state + ' ,' + address.zipCode;
                     this.invoiceTemplateInfo.termEndCond = result.invoiceFooter.termsCondition;
                 }
@@ -156,8 +155,8 @@ export class InvoiceFormComponent implements OnInit {
                 if (result.httpCode === 200) {
                     for (let i = 0; i < result.institutions.length; i++) {
                         const obj = result.institutions[i];
-                        if (this.institutionId === this.institutionId) {
-                            this.invoiceTemplateInfo.CompanyAddress = obj.address;
+                        if (this.institutionId === obj.id) {
+                            this.invoiceTemplateInfo.billToAddress = obj.address;
                         }
                     }
                 }
