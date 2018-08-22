@@ -31,13 +31,13 @@ export class InvoiceDownloadComponent implements OnInit {
         }
 
         this.getDownloadTemplateDetail();
+        this.getDownloadDetail();
     }
 
     getDownloadTemplateDetail() {
         this.invoiceService.getInvoiceTemplate().subscribe(
             result => {
                 this.logoURL = this.sanitizer.bypassSecurityTrustUrl('data:image/png+xml;base64,' + result.invoiceHeader.logo);
-                this.getDownloadDetail();
             });
     }
 
@@ -64,13 +64,24 @@ export class InvoiceDownloadComponent implements OnInit {
         setTimeout(() => {
             let pdf;
             pdf = new jsPDF('p', 'pt', 'a4');
-            pdf.addHTML(document.getElementById('pdfdownload'), function () {
-                pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
-                setTimeout(() => {
-                    window.close();
-                }, 100);
-                $this.downloadData = null;
+
+            document.getElementById('page2').style.display = 'none';
+            const $downloadEl = document.getElementById('pdfdownload');
+            pdf.addHTML($downloadEl, function () {
+                pdf.addPage();
+                document.getElementById('page2').style.display = 'block';
+                [].forEach.call(document.querySelectorAll('.page1,.invoice-address,.invoice'), function (el) {
+                    el.style.display = 'none';
+                });
+                pdf.addHTML($downloadEl, function () {
+                    pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
+                    setTimeout(() => {
+                        window.close();
+                    }, 100);
+                    $this.downloadData = null;
+                });
             });
-        }, 100);
+
+        }, 200);
     }
 }
