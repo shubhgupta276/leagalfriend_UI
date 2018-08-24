@@ -163,7 +163,7 @@
                             </td>
                             <td class="center-align">
                                 <label [(ngModel)]="totalAmount" id="totalAmount">
-                                    {{downloadData.data.amount + downloadData.data.taxAmount |currency:'INR':true}}</label>
+                                  ₹ {{downloadData.data.amount + downloadData.data.taxAmount | number : '1.2'}}</label>
                             </td>
                         </tr>
                     </table>
@@ -186,7 +186,7 @@
                             <td style="height: 36px;">{{item.billingDesc}}</td>
                             <td style="height: 36px;" class="center-align">{{item.billingDate | date:'dd MMM yyyy'}}</td>
                             <td style="height: 36px;" class="center-align">
-                                {{item.amount |currency:'INR':true}}
+                                 ₹ {{item.amount | number : '1.2'}}
                             </td>
                         </tr>
                         <tr class="totals-row">
@@ -196,7 +196,7 @@
                                 </strong>
                             </td>
                             <td class="center-align">
-                                <label [(ngModel)]="totalAmount" id="totalAmount">{{downloadData.data.amount |currency:'INR':true}}</label>
+                                <label [(ngModel)]="totalAmount" id="totalAmount">₹ {{downloadData.data.amount | number : '1.2'}}</label>
                             </td>
                         </tr>
                     </table>
