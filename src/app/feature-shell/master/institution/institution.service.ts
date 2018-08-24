@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core'
-import { retry } from 'rxjs/operator/retry';
+import { Injectable } from '@angular/core';
 import { Institution } from './institution'
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 import { ApiGateway } from '../../../shared/services/api-gateway';
-import { addInstitutionUrl,getInstitutionsUrl,updateInstitutionUrl,updateDefaultInstitutionUrl ,getBillFrom} from '../master.config';
+import {
+    addInstitutionUrl, getInstitutionsUrl, updateInstitutionUrl,
+    updateDefaultInstitutionUrl, getBillFrom, getUserAddress
+} from '../master.config';
 import { StorageService } from '../../../shared/services/storage.service';
-
-import { ResourceLoader } from '@angular/compiler';
-import { JSONP_ERR_WRONG_METHOD } from '@angular/common/http/src/jsonp';
 @Injectable()
 export class InstitutionService {
 
@@ -17,12 +16,19 @@ export class InstitutionService {
 
     getInstitutions(): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getInstitutionsUrl + "?userId=" +this._storageService.getUserId()
+            getInstitutionsUrl + '?userId=' + this._storageService.getUserId()
         );
     }
+
+    getUserAddress(): Observable<any>  {
+        return this.apiGateWay.get<Institution>(
+            getUserAddress + '?userId=' + this._storageService.getUserId()
+        );
+    }
+
     getBilFrom(): Observable<any> {
         return this.apiGateWay.get<Institution>(
-            getBillFrom + "?userId=" +this._storageService.getUserId()
+            getBillFrom + '?userId=' + this._storageService.getUserId()
         );
     }
     addInstitution(reqData: any): Observable<any> {
