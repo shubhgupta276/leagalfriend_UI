@@ -79,7 +79,7 @@ export class InvoiceFormComponent implements OnInit {
                 this.institutionId = (otherDetail.invoice.institution) ? otherDetail.invoice.institution.id : 0;
             } else {
                 this.institutionId = (this.isInstitutional) ? otherDetail.institutionId : 0;
-                this.GetAllInstitute();
+                this.getToBillAddress();
             }
             this.GetBillFrom();
         }
@@ -148,6 +148,14 @@ export class InvoiceFormComponent implements OnInit {
             });
     }
 
+    getToBillAddress() {
+        if (this.isInstitutional) {
+            this.GetAllInstitute();
+        } else {
+            this.getIndividualAddress();
+        }
+    }
+
     GetAllInstitute() {
 
         this._institutionService.getInstitutions().subscribe(
@@ -161,6 +169,21 @@ export class InvoiceFormComponent implements OnInit {
                     }
                 }
             });
+    }
+
+    getIndividualAddress() {
+        try {
+            this._institutionService.getUserAddress().subscribe(
+                result => {
+                    if (result) {
+                        const address = result.address1 + `, ${result.city}, ${result.state}, ${result.zipCode}`;
+                        this.invoiceTemplateInfo.billToAddress = address;
+                    }
+                });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     invoiceNumberChange() {
