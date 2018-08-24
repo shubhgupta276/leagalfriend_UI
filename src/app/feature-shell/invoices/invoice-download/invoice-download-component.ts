@@ -48,6 +48,14 @@ export class InvoiceDownloadComponent implements OnInit {
                     this._storageService.clearInvoiceData();
                     const invoice = result.invoice;
                     const billingArray = (this.isInstitutionalTab) ? result.institutionalBillings : result.individualBillings;
+                    // let counter = 0;
+                    // const c = billingArray.length;
+                    // while (counter < 4) {
+                    //     for (let i = 0; i < c; i++) {
+                    //         billingArray.push(billingArray[i]);
+                    //     }
+                    //     counter++;
+                    // }
                     this.downloadData = {
                         data: invoice,
                         list: billingArray
@@ -76,9 +84,9 @@ export class InvoiceDownloadComponent implements OnInit {
                 pdf.addHTML($downloadEl, function () {
                     pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
                     setTimeout(() => {
-                        window.close();
+                        //  window.close();
                     }, 100);
-                    $this.downloadData = null;
+                    // $this.downloadData = null;
                 });
             });
 

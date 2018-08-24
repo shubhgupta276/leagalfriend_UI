@@ -150,23 +150,6 @@
                                 </tbody>
                             </table>
 
-                            <!-- <div class="invoice-address">
-                                <div class="col-md-12" style="padding:0px;">
-                                    <div class="col-md-6" style="padding:0px;">
-                                        <label>Invoice No : </label>
-                                        <label id=invoiceNo>{{invoiceTemplateInfo.invoiceNo}}</label>
-                                    </div>
-                                    <div class="col-md-6" style="text-align:right;padding:0px;">
-                                        <div style="display: inline-flex">
-                                            <label>Date : </label>
-                                            <label> {{todayDate | date}}</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div> -->
-
                             <div>
                                 <table id="tblInvoice" class="table table-condensed table-bordered table-striped items-table">
                                     <thead>
@@ -177,7 +160,7 @@
                                             <th>
                                                 Date
                                             </th>
-                                        <th>
+                                            <th>
                                                 Amount
                                             </th>
                                             <th width="20" *ngIf="!disableField">
@@ -191,37 +174,30 @@
                                         <tr *ngFor="let item of arrInvoiceDetails |  paginate: { itemsPerPage: 10, currentPage: p2 }" description="Description" qty="1"
                                             unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td style="width: 500px">
-                                                <textarea [disabled]="disableField" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" rows="2" class="form-control description" type="text"
-                                                    placeholder="Description">{{item.description}}</textarea>
+                                                <textarea [disabled]="disableField" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" rows="2" class="form-control description"
+                                                    type="text" placeholder="Description">{{item.description}}</textarea>
                                             </td>
                                             <td>
                                                 <input class="form-control date billingDate" *ngIf="!item.isCustom" disabled value="{{item.billingDate}}" style="width:150px"
                                                     placeholder="Date">
                                                 <ng-container *ngIf="item.isCustom">
-                                                    <!-- <input class="form-control date billingDate" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" value="{{item.billingDate}}"
-                                                        style="width:150px" placeholder="Date"> -->
                                                     <div class="input-group date" data-provide="datepicker" data-date-format="dd MM yyyy">
-                                                        <input [disabled]="disableField" readonly onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" type="text" tabindex="14" value="{{item.billingDate}}"
-                                                            placeholder="dd MM yyyy" class="form-control billingDate" size="10">
+                                                        <input [disabled]="disableField" readonly onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" type="text" tabindex="14"
+                                                            value="{{item.billingDate}}" placeholder="dd MM yyyy" class="form-control billingDate"
+                                                            size="10">
                                                         <div class="input-group-addon">
                                                             <span class="fa fa-calendar"></span>
                                                         </div>
                                                     </div>
                                                 </ng-container>
                                             </td>
-                                            <!-- <td>
-                                                <input class="form-control quantity" disabled value="{{item.quantity}}" style="width:100px" placeholder="Quantity">
-                                            </td> -->
-
-
                                             <td>
-                                                <!-- [ngClass]="{'has-error':isCustomSaveClick && (!item.amount || item.amount.length<1)}" -->
                                                 <input OnlyNumber="true" [disabled]="disableField" class="form-control amount" value="{{item.amount}}" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)"
                                                     style="width:100px" placeholder="Amount">
 
                                             </td>
                                             <td *ngIf="!disableField">
-                                                <a  onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
+                                                <a onclick="Window.InvoiceFormComponent.RemoveInvoice(this)" class="btn btn-danger btn-sm remove-item">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </a>
                                                 <input type="hidden" class="hfIsCustom" value="{{item.isCustom}}">
@@ -262,7 +238,7 @@
                 <pagination-template #p="paginationApi" (pageChange)="p2 = $event">
                     <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
                     <div class="custom-pagination">
-                        <div class="pagination-next" [class.disabled]="p.isLastPage()" (click)="CalculateFinalAmount(null)">
+                        <div class="pagination-next" [class.disabled]="p.isLastPage()">
                             <a class="btn btn-default" (click)="p.next()"> Next </a>
                         </div>
                     </div>
