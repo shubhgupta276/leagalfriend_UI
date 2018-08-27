@@ -22,7 +22,7 @@ export class InvoiceFormComponent implements OnInit {
         termEndCond: '',
         Date: null,
         photoUrl: null,
-        invoiceNo: this._datePipe.transform(new Date(), 'ddMMyyyyhhmm'),
+        invoiceNo: '',
         isFromInvoice: false,
         url: null
     };
@@ -79,10 +79,23 @@ export class InvoiceFormComponent implements OnInit {
                 this.institutionId = (otherDetail.invoice.institution) ? otherDetail.invoice.institution.id : 0;
             } else {
                 this.institutionId = (this.isInstitutional) ? otherDetail.institutionId : 0;
+                this.getInvoiceNumber();
                 this.getToBillAddress();
             }
             this.GetBillFrom();
         }
+    }
+
+    getInvoiceNumber() {
+        this._invoicesService.getInvoiceNumber().subscribe(
+            (result) => {
+                if (result) {
+                    this.invoiceTemplateInfo.invoiceNo = result + '';
+                }
+            },
+            err => console.log(err)
+        );
+
     }
 
     BindInvoice() {

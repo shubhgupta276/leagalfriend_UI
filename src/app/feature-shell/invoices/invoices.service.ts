@@ -30,7 +30,6 @@ export class InvoicesService {
         } else {
             return this.updateInvoice(data, isInstitutional);
         }
-
     }
 
     private updateInvoice(data: any, isInstitutional): Observable<any> {
@@ -64,6 +63,10 @@ export class InvoicesService {
         return this.apiGateWay.get<any>(apiUrl, null);
     }
 
+    getInvoiceNumber() {
+        const apiUrl = 'invoice/number' + '?userId=' + this._storageService.getUserId();
+        return this.apiGateWay.get<any>(apiUrl, null);
+    }
 
     getInvoiceDetail(invoiceId, isInstitutional): Observable<any> {
         let url = 'invoice/institutional/single';
@@ -92,10 +95,8 @@ export class InvoicesService {
         return this.apiGateWay.delete<any>(url, null);
     }
 
-
     updatePaymentStatus(invoiceId: any, date): Observable<any> {
         const apiUrl = updatePaymentStatus + '?invoiceId=' + invoiceId + '&date=' + date;
         return this.apiGateWay.put<any>(apiUrl, null);
     }
-
 }
