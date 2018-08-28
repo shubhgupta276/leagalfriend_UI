@@ -9,15 +9,16 @@ import { SharedModule } from '../../shared/shared.module';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { StorageService } from '../../shared/services/storage.service';
 import { InstitutionService } from '../../feature-shell/master/institution/institution.service';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { InvoicesService } from './invoices.service'
 import { DataTableModule } from '../../shared/components/data-table/data-table.module';
+import { InvoiceDownloadComponent } from './invoice-download/invoice-download-component';
 
 
 @NgModule(
     {
-        imports: [ 
-            InvoiceRoutingModule, 
+        imports: [
+            InvoiceRoutingModule,
             CommonModule,
             ReactiveFormsModule,
             FormsModule,
@@ -26,9 +27,9 @@ import { DataTableModule } from '../../shared/components/data-table/data-table.m
             NgxPaginationModule,
             DataTableModule
         ],
-        declarations: [ InvoiceComponent ,InvoiceFormComponent,InvoiceNextFormComponent],
-        providers: [InstitutionService,StorageService,InvoicesService]
-       
+        declarations: [InvoiceDownloadComponent, InvoiceComponent, InvoiceFormComponent, InvoiceNextFormComponent],
+        providers: [InstitutionService, StorageService, InvoicesService]
+
     }
-)    
-export class invoiceModule {}
+)
+export class invoiceModule { }

@@ -45,7 +45,7 @@ export class SharedService {
     }
 
     convertDateToStr(date: Date): string {
-        if (date == null) {
+        if (date == null || isNaN(new Date(date).getDate())) {
             return '';
         } else {
             return this._datePipe.transform(date, 'dd MMM yyyy');

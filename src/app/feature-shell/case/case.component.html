@@ -113,7 +113,7 @@
                   <div id="searchBox1" class="col-sm-5 case-search" *ngIf="runningCaseTabActive">
                     <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilterRunning($event.target.value)">
                     <div class="col-sm-2">
-                      <div *ngIf="arRecourse.length>0">
+                      <div *ngIf="arRecourse && arRecourse.length>0">
                         <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
                       </div>
                     </div>
@@ -122,7 +122,7 @@
                   <div id="searchBox2" class="col-sm-5 case-search" *ngIf="!runningCaseTabActive">
                     <input type="text" id="txtSearch2" class="input-sm custom-search" placeholder="Search..." (keyup)="searchFilterCompleted($event.target.value)">
                     <div class="col-sm-2">
-                      <div *ngIf="arRecourse.length>0">
+                      <div *ngIf="arRecourse && arRecourse.length>0">
                         <app-custom-single-select [data]="arRecourse" [config]="recourseConfig" (valueChanged)="changeRecourse($event)"></app-custom-single-select>
                       </div>
                     </div>

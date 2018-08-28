@@ -1,0 +1,53 @@
+@media print
+{
+      .page-break  { display:block; page-break-before:always; }
+
+}
+
+.invoice-address {
+    margin-right: 70px;
+    margin-top: 60px;
+}
+
+.invoice,
+.invoice-address {
+    margin-left: 10px
+}
+
+.heading-line {
+    padding: 50px 0px 8px 0px;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+
+.center-align {
+    text-align: center;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.righ-align {
+    text-align: right;
+}
+
+.font-normal {
+    font-size: 20px;
+}
+
+.font-address {
+    font-size: 24px !important;
+}
+
+.page1 {
+    page-break-after: always;
+    padding: 0px 80px 0px 80px;
+}
+
+.page2 {
+    padding: 60px 80px 0px 80px;
+    page-break-before: always;
+}
+

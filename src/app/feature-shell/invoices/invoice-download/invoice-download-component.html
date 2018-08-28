@@ -1,0 +1,212 @@
+<div class="content-wrapper">
+    <div *ngIf="downloadData" id="pdfdownload" style="background-color:#ffffff;padding:20px;">
+        <table border="0" cellpadding="0" cellspacing="0" class="is_logo" width="100%">
+            <tbody>
+                <tr>
+                    <td align="center" valign="top">
+                        <div>
+                            <div id="logoDiv">
+                                <img height="102" id="logo" [src]="logoURL" style="width: 122px; height: 102px;" title="" width="122">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="firstPage">
+            <table class="invoice-address ustom-table font-address" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td align="left" valign="top" width="50%">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td valign="top" width="32%" style="padding-left: 10px !important;">
+                                            <strong>
+                                                <label>Bill To</label>
+                                            </strong>
+                                        </td>
+                                        <td align="left" valign="top">
+                                            <div>
+                                                <table border="0" cellpadding="0" cellspacing="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="left" style="padding-left: 25px;">
+                                                                <div style="width: 300px; min-height: 80px; position: relative;">
+                                                                    <p>{{downloadData.data.billTo}}
+                                                                    </p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td align="right" valign="top" width="50%">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td valign="top" width="40%">
+                                            <strong style="padding-left: 130px;">
+                                                <label>Bill From</label>
+                                            </strong>
+                                        </td>
+                                        <td class="left-align" width="60%" style="padding-right: 80px;">
+                                            {{downloadData.data.billFrom}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="clear: both;">&nbsp;</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <table class="invoice font-address" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 15px; border:none;">
+                <tbody>
+                    <tr>
+                        <td align="left" valign="top" width="50%">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td valign="top" width="32%">
+                                            <strong>
+                                                <label>Invoice NO.</label>
+                                            </strong>
+                                        </td>
+                                        <td align="left" valign="top">
+                                            <div>
+                                                <table border="0" cellpadding="0" cellspacing="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="left">
+                                                                <div style="width: 300px; min-height: 80px; position: relative;">
+                                                                    <p>{{downloadData.data.invoiceNumber}}
+                                                                    </p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td align="right" valign="top" width="50%">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td valign="top" width="40%">
+                                            <strong style="padding-left: 130px;">
+                                                <label>Date</label>
+                                            </strong>
+                                        </td>
+                                        <td class="left-align" width="60%" style="padding-right: 80px;">
+                                            {{downloadData.data.createdDate | date:'dd MMM yyyy'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="clear: both;">&nbsp;</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="page-padding">
+                <div class="page1">
+                    <div class="heading-line">
+                        Statement
+                    </div>
+
+                    <div style="border: 1px solid;">
+
+                        <table class="font-normal custom-table table table-condensed table-bordered table-striped items-table" style="height: 68px;">
+                            <tr style="height: 32px;">
+                                <th style="height: 32px;" width="60%">Description</th>
+                                <th style="height: 32px;" width="20%" class="center-align">Quantity</th>
+                                <th style="height: 32px;" width="20%" class="center-align">Amount</th>
+                            </tr>
+                            <tr class="invoiceRow" style="height: 36px;">
+                                <td style="height: 36px;">{{downloadData.data.description}}</td>
+                                <td style="height: 36px;" class="center-align">{{downloadData.list.length}}</td>
+                                <td style="height: 36px;" class="center-align">
+                                    {{downloadData.data.amount |currency:'INR':true}}
+                                </td>
+                                <td style="height: 36px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;font-weight: bold;font-size: 20px;padding-top: 3px;">Tax</td>
+                                <td class="center-align">
+                                    {{downloadData.data.taxPercent}}%
+                                </td>
+                                <td class="center-align">
+                                    {{downloadData.data.taxAmount}}
+                                </td>
+                            </tr>
+                            <tr class="totals-row">
+                                <td class="righ-align">
+                                    <strong>
+                                        <label style="font-weight:bold">Total</label>
+                                    </strong>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td class="center-align">
+                                    <label [(ngModel)]="totalAmount" id="totalAmount">
+                                        ₹ {{downloadData.data.amount + downloadData.data.taxAmount | number : '1.2'}}</label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-padding">
+            <ng-container *ngFor="let lineItem of downloadData.list; let rowIndex=index">
+                <div class="page2" style="display: block; page-break-after:always">
+                    <div class="heading-line line-items">
+                    </div>
+
+                    <div style="border: 1px solid;page-break-before:always">
+                        <table id="tblInvoice" class="font-normal table table-condensed table-bordered table-striped items-table" style="height: 68px;">
+                            <tr style="height: 32px;">
+                                <th style="height: 32px;" width="60%">Description</th>
+                                <th class="center-align" width="20%" style="height: 32px;">Date</th>
+                                <th class="center-align" width="20%" style="height: 32px;">Amount</th>
+                            </tr>
+                            <tr *ngFor="let item of lineItem" class="invoiceRow" style="height: 36px;">
+                                <td style="height: 36px;">{{item.billingDesc}}</td>
+                                <td style="height: 36px;" class="center-align">{{item.billingDate | date:'dd MMM yyyy'}}</td>
+                                <td style="height: 36px;" class="center-align">
+                                    ₹ {{item.amount | number : '1.2'}}
+                                </td>
+                            </tr>
+                            <tr class="totals-row" *ngIf="(downloadData.list.length-1)==rowIndex">
+                                <td colspan="2" class="righ-align">
+                                    <strong>
+                                        <label style="font-weight:bold">Total</label>
+                                    </strong>
+                                </td>
+                                <td class="center-align">
+                                    <label [(ngModel)]="totalAmount" id="totalAmount">₹ {{downloadData.data.amount | number : '1.2'}}</label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
