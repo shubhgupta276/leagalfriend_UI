@@ -96,6 +96,9 @@ export class InvoiceDownloadComponent implements OnInit {
                     $('.page2:eq(' + (counter++) + ')').show();
                     pdf.addHTML($downloadEl, function () {
                         pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
+                        setTimeout(() => {
+                            window.close();
+                        }, 200);
                     });
                     addPageCount++;
                 });
