@@ -29,7 +29,7 @@ import { RecentcasesComponent } from './recentcases/recentcases.component';
             NgbModule,
             SharedModule
         ],
-        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent, RecentcasesComponent ],
+        declarations: [ CaseComponent, EditCaseComponent, AddCaseComponent, CaseHistoryComponent],
         providers:[CaseService]
     }
 )

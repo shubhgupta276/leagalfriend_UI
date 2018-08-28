@@ -11,14 +11,14 @@ export class RecentcasesComponent implements OnInit {
 
   constructor(private _caseService: CaseService) { }
  
-  datasource;
+  dataSource;
   displayedColumns;
   ngOnInit() {
     const client = '?userId=' + localStorage.getItem('client_id');
     this.displayedColumns= ['caseId','name','resourceType','hearingDate','branch','employee','lastUpdate'];
     this._caseService.getRecentUpdatedCases(client).subscribe(
       data => {
-        this.datasource = data;
+        this.dataSource =data;
       }
     );
   }

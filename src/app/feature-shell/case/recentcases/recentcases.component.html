@@ -19,34 +19,34 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="caseId">
                   <mat-header-cell *matHeaderCellDef> CaseId </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.CaseId}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.caseId}} </mat-cell>
                 </ng-container>
           
                 <!-- Weight Column -->
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.Name}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                 </ng-container>
             
                 <ng-container matColumnDef="resourceType">
                   <mat-header-cell *matHeaderCellDef> Resource Type </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.ResourceType}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.resourceType}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="hearingDate">
                   <mat-header-cell *matHeaderCellDef> Near Hearing Date </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.NearHearingDate | date}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.nearHearingDate | date}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="branch">
                   <mat-header-cell *matHeaderCellDef> Branch </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.Branch}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.branch}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="employee">
                   <mat-header-cell *matHeaderCellDef> Employee </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.Employee}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.employee}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="lastUpdate">
                   <mat-header-cell *matHeaderCellDef> Last Update </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.LastUpdate | date}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.lastUpdateDate | date}} </mat-cell>
                 </ng-container>
             
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -61,7 +61,7 @@
          
           </div>
           <div class="btn-back">
-            <a routerLink="/admin/systemdash" class="btn btn-block btn-default pull-right" style="width:100px">Back</a>
+            <a routerLink="/admin/dashboard" class="btn btn-block btn-default pull-right" style="width:100px">Back</a>
           </div>
           <!-- /.box-body -->
         </div>

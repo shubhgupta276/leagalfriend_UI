@@ -34,7 +34,7 @@
         <!-- small box -->
         <div class="small-box bg-green">
           <div class="inner">
-            <h3>{{result.totalCases}}
+            <h3>{{totalCases}}
               <!-- <sup style="font-size: 20px">%</sup> -->
             </h3>
 
@@ -53,7 +53,7 @@
           <!-- small box -->
           <div class="small-box bg-orange">
             <div class="inner">
-              <h3>{{result.institutionalCases}}
+              <h3>{{institutionalCases}}
                 <!-- <sup style="font-size: 20px">%</sup> -->
               </h3>
   
@@ -73,7 +73,7 @@
             <!-- small box -->
             <div class="small-box bg-blue">
               <div class="inner">
-                <h3>{{result.againstInstitutionalCases}}</h3>
+                <h3>{{againstInstitutionalCases}}</h3>
     
                 <p>Total Against Institutional Cases</p>
               </div>
@@ -90,7 +90,7 @@
         <!-- small box -->
         <div class="small-box bg-red">
           <div class="inner">
-            <h3>{{result.totalUsers}}</h3>
+            <h3>{{totalUsers}}</h3>
 
             <p>Total Users</p>
           </div>
@@ -108,7 +108,7 @@
         <!-- small box -->
         <div class="small-box bg-blue">
           <div class="inner">
-            <h3>{{result.trialUsers}}</h3>
+            <h3>{{trialUsers}}</h3>
 
             <p>Total Trial Users</p>
           </div>
@@ -126,7 +126,7 @@
         <!-- small box -->
         <div class="small-box bg-orange">
           <div class="inner">
-            <h3>{{result.totalOrganization}}</h3>
+            <h3>{{totalOrganization}}</h3>
 
             <p>Total Organization</p>
           </div>
@@ -144,7 +144,7 @@
         <!-- small box -->
         <div class="small-box bg-light-blue">
           <div class="inner">
-            <h3>{{result.oneMonthInActiveUsers}}</h3>
+            <h3>{{totalOrganization}}</h3>
 
             <p>Users Not Logged In Since Last Month</p>
           </div>
@@ -162,10 +162,10 @@
             <!-- small box -->
             <div class="small-box bg-green">
               <div class="inner">
-                <h4 class="text-center">Total Cases : {{result.totalCases}}</h4>
+                <h4 class="text-center">Total Cases : {{totalCases}}</h4>
                 <hr>
-                <p class="col-xs-6 small-padding">Total For Institutional Cases : {{result.institutionalCases}}</p>
-                <p class="col-xs-6 small-padding">Total Against Institutional Cases : {{result.againstInstitutionalCases}}</p>
+                <p class="col-xs-6 small-padding">Total For Institutional Cases : {{institutionalCases}}</p>
+                <p class="col-xs-6 small-padding">Total Against Institutional Cases : {{againstInstitutionalCases}}</p>
                 <p  class="small-box-footer-demo">
                 <a  (click)="showCases('/case')"><font color="white">More info
                   <i class="fa fa-arrow-circle-right"></i></font>
@@ -176,19 +176,7 @@
             </div>
           </div>
           <!-- ./col -->
-        <div class="col-lg-3">
-            <!-- small box -->
-            <div class="small-box bg-green">
-              <div class="inner">
-                <h4 class="text-center">Total Cases : {{result.totalCases}}</h4>
-                <hr>
-                <p class="col-xs-6">Total For Institutional Cases : {{result.institutionalCases}}</p>
-                <p class="col-xs-6">Total Against Institutional Cases : {{result.againstInstitutionalCases}}</p>
-                
-              </div>
-           
-            </div>
-          </div>
+    
     </div>
     <!-- /.row -->
     <!-- Main row -->

@@ -80,6 +80,20 @@ export class UserService {
         return this.apiGateWay.get('usermanagement/allcustomers'+clientId);
     }
 
+    getAllCustomerCount(clientId, type,startDate,endDate): Observable<any> {
+        if(type == 'date'){
+            return this.apiGateWay.get('usermanagement/allcustomers/date'+clientId+'&startDate='+
+            startDate+'&endDate='+endDate);
+        }
+        else if(type == 'month'){
+            return this.apiGateWay.get('usermanagement/allcustomers/month'+clientId);
+        }
+        else{
+            return this.apiGateWay.get('usermanagement/allcustomers/week'+clientId);
+        }
+        
+    }    
+
     getTrialCustomersCount(clientId, type,startDate,endDate): Observable<any> {
         if(type == 'date'){
             return this.apiGateWay.get('usermanagement/trial/customers/date'+clientId+'&startDate='+
