@@ -138,7 +138,7 @@
                             </tr>
                             <tr class="invoiceRow" style="height: 36px;">
                                 <td style="height: 36px;">{{downloadData.data.description}}</td>
-                                <td style="height: 36px;" class="center-align">{{downloadData.list.length}}</td>
+                                <td style="height: 36px;" class="center-align">{{totalQuantity}}</td>
                                 <td style="height: 36px;" class="center-align">
                                     {{downloadData.data.amount |currency:'INR':true}}
                                 </td>
@@ -175,7 +175,7 @@
 
         <div class="page-padding">
             <ng-container *ngFor="let lineItem of downloadData.list; let rowIndex=index">
-                <div class="page2" style="display: block; page-break-after:always">
+                <div class="page2" style="display: block; page-break-before:always">
                     <div class="heading-line line-items">
                     </div>
 
