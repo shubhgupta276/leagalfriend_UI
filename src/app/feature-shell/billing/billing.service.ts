@@ -49,4 +49,42 @@ export class BillingService {
             null
         );
     }
+
+    getBillingAmount(clientId, type): Observable<any>{
+        if(type == 'institutional'){
+            return this.apiGateWay.get('billing/institutions'+clientId);
+        }
+        else if(type == 'individual'){
+            return this.apiGateWay.get('billing/individual'+clientId);
+        }
+    }
+
+    
+    getInstitutionBilling(clientId,institutionName): Observable<any>{
+         return this.apiGateWay.get('billing/institution'+clientId+'&name='+institutionName);     
+    }
+
+    getBranchBilling(clientId,start, end): Observable<any>{
+        return this.apiGateWay.get('master/branch/billing'+clientId+'&start='+start+'&end='+end);
+    }
+
+    getSelectedBranchBilling(clientId, branches,start, end): Observable<any>{
+        return this.apiGateWay.get('master/selectedbranch/billing'+clientId+'&branches='+branches
+        +'&start='+start+'&end='+end);
+    }
+
+    getBranchInstBilling(clientId, month,start, end): Observable<any>{
+        return this.apiGateWay.get('master/branch/institutions/billing'+clientId+'&month='+month+
+        '&start='+start+'&end='+end);
+    }
+
+    getSelectedBranchInstBilling(clientId, branches,start, end): Observable<any>{
+        return this.apiGateWay.get('master/branch/institution/billing'+clientId+'&branches='+
+        branches+'&start='+start+'&end='+end);
+    }
+  
+    getBranchInstMonthBilling(clientId, branches, month,start, end): Observable<any>{
+        return this.apiGateWay.get('master/branch/institution/monthbilling'+clientId+
+        '&branches='+branches+'&month='+month+'&start='+start+'&end='+end);
+    }
 }

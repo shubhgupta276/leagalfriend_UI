@@ -38,9 +38,9 @@
             <p>Total Customers</p>
           </div>
           <div class="icon">
-            <i class="ion ion-bag"></i>
+            <i class="ion ion-ios-people-outline"></i>
           </div>
-          <a class="small-box-footer">More info
+          <a (click)="goToPage('/admin/userdetails','customerdetails')" class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -59,7 +59,7 @@
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a class="small-box-footer">More info
+          <a routerLink='/admin/case' class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -93,7 +93,7 @@
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
           </div>
-          <a class="small-box-footer">More info
+          <a routerLink='/admin/billing' class="small-box-footer">More info
             <i class="fa fa-arrow-circle-right"></i>
           </a>
         </div>
@@ -104,311 +104,306 @@
     <!-- Main row -->
     <div class="row">
       <!-- Left col -->
-      <section class="col-lg-6 connectedSortable">
-        <!-- quick email widget -->
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Daily Login</h3>
-            <div class="graph-filter pull-right">
-              <ul class="pagination pagination-sm inline">
-                <li>
-                  <a (click)="ShowHideModeFilter('M','DailyLogin')">Monthly</a>
-                </li>
-                <li>
-                  <a (click)="ShowHideModeFilter('W','DailyLogin')">Weekly</a>
-                </li>
-                <li>
-                  <a (click)="ShowHideModeFilter('D','DailyLogin')">DateWise</a>
-                </li>
-              </ul>
-              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.dailyLoginMode=='M' ||graphMode.dailyLoginMode=='W' }">
+      <div class="box box-info">
+        <div class="box-header">
+          <i class="fa fa-inbox"></i>
+          <h3 class="box-title">Branch Wise Billing</h3>
+          <div class="graph-filter pull-right">
+          <ul class="pagination pagination-sm inline">
+              <li>
+                <a id="branchBillYear" [style.background-color]="branchWiseYearColor" (click)="selectBranchWiseTab('year');">Yearly</a>
+              </li>
+              <li>
+                <a id="branchBillMonth" [style.background-color]="branchWiseMonthColor" (click)="selectBranchWiseTab('month');">DateWise</a>
+              </li>
+            </ul>
+            <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' :branchWiseTab=='year'}" >
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control pull-right" id="dailyFilter">
+                <input type="text" class="form-control pull-right" id="branchFilter">
               </div>
+            <mat-form-field style="float:right" [ngClass]="{ 'hide' :branchWiseTab!='year'}">
+                <mat-select placeholder="Year" (selectionChange)="updateBranchChart()" [(ngModel)]="selectedYear">
+                  <mat-option *ngFor="let year of years" [value]="year">
+                    {{year}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
+        </div>
+        <div class="box-body">
+          <div class="col-md-6">
+              <mat-form-field style="float:right">
+                  <mat-select placeholder="All Branches" (selectionChange)="updateBranchChart()" [(ngModel)]="selectedBranch">
+                    <mat-option [value]="All">All Branches</mat-option>
+                    <mat-option *ngFor="let branch of branches" [value]="branch">
+                      {{branch}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            <canvas id="branch-chart" style="height: 450px; width: 950px;"></canvas>
+            </div>
+            <div class="col-md-6">
+            <canvas id="branch-institution-chart"></canvas>
           </div>
-          <div class="box-body">
-            <!-- <div class="chart tab-pane active" id="daily-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="daily-chart" style="position: relative; height: 300px;"></canvas>
           </div>
 
-        </div>
-        <!-- quick email widget -->
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Customers</h3>
-            <div class="graph-filter pull-right">
-              <ul class="pagination pagination-sm inline">
-                <li>
-                  <a (click)="ShowHideModeFilter('M','Customer')">Monthly</a>
-                </li>
-                <li>
-                  <a (click)="ShowHideModeFilter('W','Customer')">Weekly</a>
-                </li>
-                <li>
-                  <a (click)="ShowHideModeFilter('D','Customer')">DateWise</a>
-                </li>
-              </ul>
-              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.customerMode=='M' ||graphMode.customerMode=='W' }">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
+        </div>  
+              <app-invoice-chart></app-invoice-chart>
+        <section class="col-lg-6 connectedSortable">
+          <!-- quick email widget -->
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-inbox"></i>
+              <h3 class="box-title">Daily Login</h3>
+              <div class="graph-filter pull-right">
+                <ul class="pagination pagination-sm inline">
+                  <li>
+                    <a id="dailyFilterMonth" (click)="ShowHideModeFilter('M','DailyLogin')">Monthly</a>
+                  </li>
+                  <li>
+                    <a id="dailyFilterWeek" (click)="ShowHideModeFilter('W','DailyLogin')">Weekly</a>
+                  </li>
+                  <li>
+                    <a id="dailyFilterDate" (click)="ShowHideModeFilter('D','DailyLogin')">DateWise</a>
+                  </li>
+                </ul>
+                <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.dailyLoginMode=='M' ||graphMode.dailyLoginMode=='W' }">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="dailyFilter">
                 </div>
-                <input type="text" class="form-control pull-right" id="customerFilter">
               </div>
             </div>
-          </div>
-          <div class="box-body">
-            <!-- <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="customer-chart" style="position: relative; height: 300px;"></canvas>
-          </div>
-
-        </div>
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Total Billing</h3>
-          </div>
-          <div class="box-body">
-            <!-- <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="billing-chart" style="position: relative; height: 300px;"></canvas>
-          </div>
-
-        </div>
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Branch</h3>
-          </div>
-          <div class="box-body">
-            <!-- <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="branch-chart"></canvas>
-          </div>
-
-        </div>
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Most Active Employees</h3>
-
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove">
-                <i class="fa fa-times"></i>
-              </button>
+            <div class="box-body">
+              <canvas id="daily-chart" style="position: relative; height: 300px;"></canvas>
             </div>
+
           </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <div class="table-responsive">
-              <table class="table no-margin">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Designation</th>
-                    <th>Last Login</th>
-                    <th>Total Login</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
-                    <tr *ngIf="i<5">
-                      <td>{{i+1}}</td>
-                      <td>{{item.Name}}</td>
-                      <td>{{item.Designation}}</td>
-                      <td>{{item.LastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
-                      <td>{{item.TotalLogin}}</td>
+          <!-- quick email widget -->
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-inbox"></i>
+              <h3 class="box-title">Customers</h3>
+              <div class="graph-filter pull-right">
+                <ul class="pagination pagination-sm inline">
+                  <li>
+                    <a id="customerFilterMonth" (click)="ShowHideModeFilter('M','Customer')">Monthly</a>
+                  </li>
+                  <li>
+                    <a id="customerFilterWeek" (click)="ShowHideModeFilter('W','Customer')">Weekly</a>
+                  </li>
+                  <li>
+                    <a id="customerFilterDate" (click)="ShowHideModeFilter('D','Customer')">DateWise</a>
+                  </li>
+                </ul>
+                <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.customerMode=='M' ||graphMode.customerMode=='W' }">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="customerFilter">
+                </div>
+              </div>
+            </div>
+            <div class="box-body">
+              <canvas id="customer-chart" style="position: relative; height: 300px;"></canvas>
+            </div>
+
+          </div>
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Most Active Employees</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Designation</th>
+                      <th>Last Login</th>
+                      <th>Total Login</th>
                     </tr>
-                  </ng-template>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <!-- <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
+                      <tr *ngIf="i<5">
+                        <td>{{i+1}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.designation}}</td>
+                        <td>{{item.lastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
+                        <td>{{item.totalLogin}}</td>
+                      </tr>
+                    </ng-template> -->
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
             </div>
-            <!-- /.table-responsive -->
+            <!-- /.box-body -->
+            <div class="box-footer clearfix" style="text-align:center">
+              <a routerLink="/admin/employeeactive" class="btn btn-sm btn-default btn-flat">View More</a>
+            </div>
+            <!-- /.box-footer -->
           </div>
-          <!-- /.box-body -->
-          <div class="box-footer clearfix" style="text-align:center">
-            <a routerLink="/admin/employeeactive" class="btn btn-sm btn-default btn-flat">View More</a>
-          </div>
-          <!-- /.box-footer -->
-        </div>
-      </section>
-      <!-- /.Left col -->
-      <!-- right col (We are only adding the ID to make the widgets sortable)-->
-      <section class="col-lg-6 connectedSortable">
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Case</h3>
-            <div class="graph-filter pull-right">
-              <ul class="pagination pagination-sm inline">
-                <li>
-                  <a (click)="ShowHideModeFilter('M','Case')">Monthly</a>
-                </li>
-                <li>
-                  <a (click)="ShowHideModeFilter('W','Case')">Weekly</a>
-                </li>
-                <li>
-                  <a (click)="ShowHideModeFilter('D','Case')">DateWise</a>
-                </li>
-              </ul>
-              <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.caseMode=='M' ||graphMode.caseMode=='W' }">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
+        </section>
+        <!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <section class="col-lg-6 connectedSortable">
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-inbox"></i>
+              <h3 class="box-title">Case</h3>
+              <div class="graph-filter pull-right">
+                <ul class="pagination pagination-sm inline">
+                  <li>
+                    <a id="caseFilterMonth" (click)="ShowHideModeFilter('M','Case')">Monthly</a>
+                  </li>
+                  <li>
+                    <a id="caseFilterWeek" (click)="ShowHideModeFilter('W','Case')">Weekly</a>
+                  </li>
+                  <li>
+                    <a id="caseFilterDate" (click)="ShowHideModeFilter('D','Case')">DateWise</a>
+                  </li>
+                </ul>
+                <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' : graphMode.caseMode=='M' ||graphMode.caseMode=='W' }">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="caseFilter">
                 </div>
-                <input type="text" class="form-control pull-right" id="caseFilter">
               </div>
             </div>
-          </div>
-          <div class="box-body">
-            <!-- <div class="chart tab-pane" id="case-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="case-chart" style="position: relative; height: 300px;"></canvas>
+            <div class="box-body">
+              <!-- <div class="chart tab-pane" id="case-chart" style="position: relative; height: 300px;"></div> -->
+              <canvas id="case-chart" style="position: relative; height: 300px;"></canvas>
+            </div>
+
           </div>
 
-        </div>
-
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Total Receipt</h3>
-          </div>
-          <div class="box-body">
-            <canvas id="receipt-chart" style="position: relative; height: 300px;"></canvas>
-          </div>
-
-        </div>
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Bank</h3>
-          </div>
-          <div class="box-body">
-            <!-- <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="bank-chart"></canvas>
-          </div>
-
-        </div>
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-inbox"></i>
-            <h3 class="box-title">Recourse</h3>
-          </div>
-          <div class="box-body">
-            <!-- <div class="chart tab-pane" id="referral-chart" style="position: relative; height: 300px;"></div> -->
-            <canvas id="recourse-chart"></canvas>
-          </div>
-
-        </div>
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Recently Updated Cases</h3>
-
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove">
-                <i class="fa fa-times"></i>
-              </button>
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-inbox"></i>
+              <h3 class="box-title">Total Billing</h3>
+              <mat-form-field style="float:right;">
+                <mat-select placeholder="Institutions" (selectionChange)="updateBillingChart()" [(ngModel)]="selectedInstitution">
+                  <mat-option [value]="All">All</mat-option>
+                  <mat-option *ngFor="let institution of institutions" [value]="institution.institutionName">
+                    {{institution.institutionName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="box-body">
+              <!-- <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div> -->
+              <canvas id="billing-chart" style="position: relative; height: 300px;"></canvas>
+            </div>
+            <div class="box-footer clearfix" style="text-align:center">
+              <a routerLink="/admin/billing" class="btn btn-sm btn-default btn-flat">View More</a>
             </div>
           </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <div class="table-responsive">
-              <table class="table no-margin">
-                <thead>
-                  <tr>
-                    <th>CaseId</th>
-                    <th>Name</th>
-                    <th>Resource Type</th>
-                    <th>Near Hearing Date</th>
-                    <th>Branch</th>
-                    <th>Employee</th>
-                    <th>Last Update</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-template ngFor let-item [ngForOf]="arrCaseList" let-i="index">
-                    <tr *ngIf="i<5">
-                      <td>{{item.CaseId}}</td>
-                      <td>{{item.Name}}</td>
-                      <td>{{item.ResourceType}}</td>
-                      <td>{{item.NearHearingDate | date}}</td>
-                      <td>{{item.Branch}}</td>
-                      <td>{{item.Employee}}</td>
-                      <td>{{item.LastUpdate | date}}</td>
+   
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Recently Updated Individual Cases</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                    <tr>
+                      <th>CaseId</th>
+                      <th>Name</th>
+                      <th>Resource Type</th>
+                      <th>Near Hearing Date</th>
+                      <th>Branch</th>
+                      <th>Employee</th>
+                      <th>Last Update</th>
                     </tr>
-                  </ng-template>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <!-- <ng-template ngFor let-item [ngForOf]="arrCaseList" let-i="index">
+                      <tr *ngIf="i<5">
+                        <td>{{item.caseId}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.resourceType}}</td>
+                        <td>{{item.nearHearingDate | date}}</td>
+                        <td>{{item.branch}}</td>
+                        <td>{{item.employee}}</td>
+                        <td>{{item.lastUpdatedDate | date}}</td>
+                      </tr>
+                    </ng-template> -->
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
             </div>
-            <!-- /.table-responsive -->
+            <!-- /.box-body -->
+            <div class="box-footer clearfix" style="text-align:center">
+              <a routerLink="/admin/recentcases" class="btn btn-sm btn-default btn-flat">View More</a>
+            </div>
+            <!-- /.box-footer -->
           </div>
-          <!-- /.box-body -->
-          <div class="box-footer clearfix" style="text-align:center">
-            <a routerLink="/admin/case" class="btn btn-sm btn-default btn-flat">View More</a>
-          </div>
-          <!-- /.box-footer -->
-        </div>
-      </section>
-      <!-- right col -->
-    </div>
-    <!-- /.row (main row) -->
-    <!-- Popup Start -->
-    <div class="modal fade" id="subscriptionWarningModal">
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-radius: 5px;">
-          <div class="modal-header modal-header-addedit">
-            <button type="button" id="closebtn" class="close close-addedit">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">User Onboarding</h4>
-          </div>
-          <!-- <div style="background-color:#ffd42a; color: white; border-color: #ddd; border-radius: 5px;
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+      <!-- Popup Start -->
+      <div class="modal fade" id="subscriptionWarningModal">
+        <div class="modal-dialog">
+          <div class="modal-content" style="border-radius: 5px;">
+            <div class="modal-header modal-header-addedit">
+              <button type="button" id="closebtn" class="close close-addedit">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">User Onboarding</h4>
+            </div>
+            <!-- <div style="background-color:#ffd42a; color: white; border-color: #ddd; border-radius: 5px;
         height:99px ">
             <img src="/assets/dist/img/warning.png" style="width:70px;margin-left:250px" />
           </div> -->
-          <div style="width:120px;height:10%;background-color:black;"></div>
-          <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
-            <div class="row">
-              <!-- <div class="col-md-12"> -->
-              <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-              <div>
-                <div class="box-body widget-content">
-                  <form class="form-horizontal">
-                    <div class="form-body">
-                      <div class="tab-content">
-                        <div class="tab-pane active">
-                          <div class="form-group row" style="text-align: center">
-                            <!-- <h2>{{branchPopupBody}}</h2> -->
-                            <h4 style="color: green">Thank you for registration. Please fill further details for setup.</h4>
+            <div style="width:120px;height:10%;background-color:black;"></div>
+            <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
+              <div class="row">
+                <!-- <div class="col-md-12"> -->
+                <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
+                <div>
+                  <div class="box-body widget-content">
+                    <form class="form-horizontal">
+                      <div class="form-body">
+                        <div class="tab-content">
+                          <div class="tab-pane active">
+                            <div class="form-group row" style="text-align: center">
+                              <!-- <h2>{{branchPopupBody}}</h2> -->
+                              <h4 style="color: green">Thank you for registration. Please fill further details for setup.</h4>
+                            </div>
                           </div>
                         </div>
+                        <div style="text-align: right">
+                          <a type="submit" (click)="ShowBranchPopup()" class="btn btn-modal-addedit">Next</a>
+                        </div>
                       </div>
-                      <div style="text-align: right">
-                        <a type="submit" (click)="ShowBranchPopup()" class="btn btn-modal-addedit">Next</a>
-                      </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
+                <!-- </div> -->
               </div>
-              <!-- </div> -->
+              <!-- Create User ends -->
             </div>
-            <!-- Create User ends -->
           </div>
+          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
       </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- Popup End -->
-    <app-add-branch [arCity]="arCity"></app-add-branch>
-    <app-add-institution [arCity]="arCity"></app-add-institution>
+      <!-- Popup End -->
+      <app-add-branch [arCity]="arCity"></app-add-branch>
+      <app-add-institution [arCity]="arCity"></app-add-institution>
   </section>
   <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+  </div>
+  <!-- /.content-wrapper -->
