@@ -52,18 +52,28 @@ export class InvoiceDownloadComponent implements OnInit {
                     this._storageService.clearInvoiceData();
                     const invoice = result.invoice;
                     const billingArray = (this.isInstitutionalTab) ? result.institutionalBillings : result.individualBillings;
+                    // // start test
                     // let counter = 0;
                     // const c = billingArray.length;
-                    // while (counter < 4) {
+                    // while (counter < 8) {
                     //     for (let i = 0; i < c; i++) {
-                    //         billingArray.push(billingArray[i]);
+                    //         billingArray.push(Object.assign({}, billingArray[i]));
                     //     }
                     //     counter++;
                     // }
+                    // let lineNumber = 1;
+                    // for (let i = 0; i < billingArray.length; i++) {
+                    //     billingArray[i].billingDesc = lineNumber + ' ' + billingArray[i].billingDesc;
+                    //     lineNumber++;
+                    // }
+                    // // end test
                     this.totalQuantity = billingArray.length;
                     const newArray = [];
-                    newArray[0] = billingArray; // .splice(0, 20);
-                    // newArray[1] = billingArray.splice(21, 40);
+                    let index = 0;
+                    const sliceNumber = 25;
+                    while (billingArray.length > 0) {
+                        newArray[index++] = billingArray.splice(0, sliceNumber);
+                    }
                     this.downloadData = {
                         data: invoice,
                         list: newArray
@@ -108,8 +118,9 @@ export class InvoiceDownloadComponent implements OnInit {
                 $this.recursivePage(pdf, $selector);
             } else {
                 pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
+                document.getElementById('pdfdownload').style.display = 'none';
                 setTimeout(() => {
-                    window.close();
+                    // window.close();
                 }, 200);
             }
         });
