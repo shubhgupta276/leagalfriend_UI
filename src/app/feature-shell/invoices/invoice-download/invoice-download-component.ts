@@ -120,7 +120,7 @@ export class InvoiceDownloadComponent implements OnInit {
                 pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
                 document.getElementById('pdfdownload').style.display = 'none';
                 setTimeout(() => {
-                    // window.close();
+                    window.close();
                 }, 200);
             }
         });
