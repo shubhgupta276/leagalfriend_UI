@@ -1,3 +1,4 @@
+import { isUndefined } from 'util';
 import { Injectable } from '@angular/core';
 import { retry } from 'rxjs/operator/retry';
 import { ResourceLoader } from '@angular/compiler';
@@ -98,5 +99,37 @@ export class InvoicesService {
     updatePaymentStatus(invoiceId: any, date): Observable<any> {
         const apiUrl = updatePaymentStatus + '?invoiceId=' + invoiceId + '&date=' + date;
         return this.apiGateWay.put<any>(apiUrl, null);
+    }
+
+    getInvoicesAmount(year): Observable<any>{
+        return this.apiGateWay.get('/invoice/amount?userId=' + this._storageService.getUserId()
+        +'&year='+year);
+    }
+
+    getInvoicesInstAmount(year,month): Observable<any>{
+        if(month==null){
+            return this.apiGateWay.get('/invoice/inst/amount?userId=' + this._storageService.getUserId()
+            +'&year='+year);
+        }
+        else{
+            return this.apiGateWay.get('/invoice/inst/amount/month?userId=' + this._storageService.getUserId()
+            +'&year='+year+'&month='+month);
+        }
+    }
+
+    getInvoicesAmountByDate(start, end): Observable<any>{
+        return this.apiGateWay.get('/invoice/date/amount?userId=' + this._storageService.getUserId()
+        +'&start='+start+'&end='+end);
+    }
+
+    getInvoicesInstAmountByDate(start, end, month): Observable<any>{
+        if(month==null){
+            return this.apiGateWay.get('/invoice/date/inst/amount?userId=' + this._storageService.getUserId()
+            +'&start='+start+'&end='+end);
+        }
+        else{
+            return this.apiGateWay.get('/invoice/date/inst/amount/month?userId=' + this._storageService.getUserId()
+            +'&start='+start+'&end='+end+'&month='+month);
+        }
     }
 }

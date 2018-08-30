@@ -73,6 +73,7 @@ export class DashboardComponent implements OnInit {
   branchInstitutionLabels = [];
   branchInstitutionData = [];
   pieChart: any;
+  branchChart: any;
   selectedYear: string = '2018';
   years = [];
   minYear = 2015;
@@ -81,6 +82,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     try {
       var $this = this;
+      this.initBranches();
       this.bindCity();
       const client = '?userId=' + localStorage.getItem('client_id');
 
@@ -167,6 +169,23 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  initBranches(){
+    this.branches = [];
+    this._branchService.getBranches().subscribe(
+        result => {
+          if (result != null) {
+            result = result.branches;
+            for(let i=0;i<result.length;i++){
+              this.branches.push(result[i].branchName);
+            }
+            
+          }
+        },
+        err => {
+          console.log(err);
+        });
   }
 
   initCaseChart() {
@@ -296,7 +315,7 @@ export class DashboardComponent implements OnInit {
 
   GetFormattedDate(value): string {
     var date = new Date(value);
-    return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
   }
 
   DailyChart(start, end) {
@@ -817,7 +836,15 @@ export class DashboardComponent implements OnInit {
 
       var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('branch-chart');
       var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-      var myDoughnut = new Chart(ctx, config);
+     // var branchChart = new Chart(ctx, config);
+      if (this.branchChart) {
+
+        this.branchChart.destroy();
+        this.branchChart = new Chart(ctx, config);
+      }
+      else {
+        this.branchChart = new Chart(ctx, config);
+      }
     } catch (error) {
       console.log(error);
     }

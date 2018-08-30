@@ -9,7 +9,8 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AddBranchDashboardComponent } from './add-branch/add-branch.component';
 import { AddInstitutionDashboardComponent } from './add-institution/add-institution.component';
 import {MatTabsModule, } from '@angular/material/tabs';
-import { MatFormFieldModule } from '../../../../node_modules/@angular/material';
+import { MatFormFieldModule } from '@angular/material';
+import { InvoicechartComponent } from './invoice-chart/invoice-chart.component';
 
 
 @NgModule(
@@ -25,7 +26,7 @@ import { MatFormFieldModule } from '../../../../node_modules/@angular/material';
             MatSelectModule,
             MatFormFieldModule
         ],
-        declarations: [ DashboardComponent,AddBranchDashboardComponent,AddInstitutionDashboardComponent]
+        declarations: [ DashboardComponent,AddBranchDashboardComponent,AddInstitutionDashboardComponent, InvoicechartComponent]
     }
 )
 export class DashboardModule { }
