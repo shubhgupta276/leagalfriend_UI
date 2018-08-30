@@ -58,11 +58,13 @@
         <!-- /.box -->
         <ng-container *ngIf="selectedRowsCheckbox && selectedRowsCheckbox.length > 0">
           <div class="export1">
-            <img src="/assets/dist/img/download1.png" height="40">
+            <a (click)="downloadFile()">
+                <img src="/assets/dist/img/download1.png" height="40"></a>
+           
           </div>
 
           <div class="export2">
-            <a (click)="ExportCase()">
+            <a (click)="downloadCSV()">
               <img src="/assets/dist/img/download2.png" height="40">
             </a>
           </div>

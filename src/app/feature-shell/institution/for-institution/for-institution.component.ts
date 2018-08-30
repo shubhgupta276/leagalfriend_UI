@@ -603,7 +603,11 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
         this.GetAllForIntitution();
     }
 
-    ExportCase() {
+    downloadFile() {
+
+    }
+
+    downloadCSV() {
         if (this.selectedRowsCheckbox.length > 0) {
             const arrInsitituionId = [];
             if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {

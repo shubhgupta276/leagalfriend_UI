@@ -239,8 +239,7 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     isValid() {
-        if (!this.invoiceNumberAlreadyExists && this.description.trim().length > 0 &&
-            this.invoiceTemplateInfo.invoiceNo.trim().length > 0 &&
+        if (this.description.trim().length > 0 &&
             this.invoiceTemplateInfo.billToAddress.trim().length > 0 &&
             this.invoiceTemplateInfo.CompanyAddress.trim().length > 0 &&
             this.invoiceTemplateInfo.termEndCond.trim().length > 0) {

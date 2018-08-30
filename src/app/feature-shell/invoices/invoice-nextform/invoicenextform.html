@@ -175,7 +175,7 @@
                                             unit_price="0" discount="0" subtotal="0" total="0" class="invoiceRow">
                                             <td style="width: 500px">
                                                 <textarea [disabled]="disableField" onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" rows="2" class="form-control description"
-                                                    type="text" placeholder="Description">{{item.description}}</textarea>
+                                                    type="text" maxlength="100" placeholder="Description">{{item.description}}</textarea>
                                             </td>
                                             <td>
                                                 <input class="form-control date billingDate" *ngIf="!item.isCustom" disabled value="{{item.billingDate}}" style="width:150px"
