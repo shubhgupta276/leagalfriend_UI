@@ -18,7 +18,6 @@ import { BusyModule } from 'angular2-busy';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 @NgModule({
   imports: [
@@ -31,8 +30,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     NgxPermissionsModule.forRoot(),
     BusyModule,
     NgbModule.forRoot(),
-    HttpClientModule,
-    ChartsModule
+    HttpClientModule
   ],
   declarations: [
     AppComponent

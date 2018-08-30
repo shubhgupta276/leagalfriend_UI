@@ -12,19 +12,15 @@ import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthService } from '../auth-shell/auth-shell.service';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActive.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { SharedModule } from '../shared/shared.module';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { SystemdashboardService } from './systemdashboard/systemdashboard.service';
 import { OrganizationdetailComponent } from './systemdashboard/organizationdetail/organizationdetail.component';
 import { MatTableModule } from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import { ChartsModule } from 'ng2-charts/ng2-charts';
-
-// import { Ng2CompleterModule } from "ng2-completer";
-
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   imports: [
@@ -35,19 +31,18 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     // InstitutionModule,
     SelectDropDownModule,
     FeatureShellRoutingModule,
-    CommonModule ,
+    CommonModule,
     SharedModule,
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    ChartsModule
   ],
-  declarations: [FeatureShellComponent, 
+  declarations: [FeatureShellComponent,
     CalendarComponent, EmployeeActiveComponent,
     SystemdashboardComponent,
     UserdetailComponent,
     OrganizationdetailComponent,
-    RecentcasesComponent 
+    RecentcasesComponent
   ],
   providers: [AuthService, SystemdashboardService]
 })
