@@ -1,5 +1,4 @@
 import { MatSelectModule } from '@angular/material/select';
-import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,6 +10,7 @@ import { AddInstitutionDashboardComponent } from './add-institution/add-institut
 import {MatTabsModule, } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material';
 import { InvoicechartComponent } from './invoice-chart/invoice-chart.component';
+import { DashboardTilesComponent } from './dashboard-tiles/dashboard-tiles.component';
 
 
 @NgModule(
@@ -21,12 +21,11 @@ import { InvoicechartComponent } from './invoice-chart/invoice-chart.component';
             ReactiveFormsModule,
             CommonModule,
             SharedModule,
-            ChartsModule,
             MatTabsModule,
             MatSelectModule,
             MatFormFieldModule
         ],
-        declarations: [ DashboardComponent,AddBranchDashboardComponent,AddInstitutionDashboardComponent, InvoicechartComponent]
+        declarations: [ DashboardComponent,AddBranchDashboardComponent,AddInstitutionDashboardComponent, InvoicechartComponent, DashboardTilesComponent]
     }
 )
 export class DashboardModule { }

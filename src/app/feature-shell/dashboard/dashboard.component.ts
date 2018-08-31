@@ -1072,10 +1072,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  goToPage(url, mode) {
-    this._router.navigate([url, { mode: mode }]);
-  }
-
   changeColor(selectedId1, id2, id3) {
     document.getElementById(selectedId1).style.backgroundColor = 'orange';
     document.getElementById(id2).style.backgroundColor = '';
