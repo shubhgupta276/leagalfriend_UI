@@ -25,7 +25,8 @@ import { InvoiceDownloadComponent } from './invoice-download/invoice-download-co
             SelectDropDownModule,
             SharedModule,
             NgxPaginationModule,
-            DataTableModule
+            DataTableModule,
+            NgxPaginationModule
         ],
         declarations: [InvoiceDownloadComponent, InvoiceComponent, InvoiceFormComponent, InvoiceNextFormComponent],
         providers: [InstitutionService, StorageService, InvoicesService]
