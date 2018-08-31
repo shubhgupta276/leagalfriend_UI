@@ -29,6 +29,7 @@ export class InvoiceNextFormComponent implements OnInit {
     todayDate: number = Date.now();
     p: number = 1;
     p2: number = 1;
+    perPageItem: number = 10;
     @Input() id: string;
     @Input() maxSize: number;
     @Output() pageChange: EventEmitter<number>;
@@ -161,7 +162,10 @@ export class InvoiceNextFormComponent implements OnInit {
         if (currentRow != null) {
             currentRow = $(currentRow).closest('tr');
             isCustom = JSON.parse($(currentRow).find('.hfIsCustom').val());
-            const index = $(currentRow).index();
+            let index = $(currentRow).index();
+            if (this.p2 > 1) {
+                index = ((this.p2 - 1) * this.perPageItem) + index;
+            }
             this.arrLocalInvoiceDetails[index].amount = $(currentRow).find('.amount').val();
             this.arrLocalInvoiceDetails[index].description = $(currentRow).find('.description').val();
             this.arrLocalInvoiceDetails[index].billingDate = $(currentRow).find('.billingDate').val();
