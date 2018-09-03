@@ -181,7 +181,7 @@
                                                 <input class="form-control date billingDate" *ngIf="!item.isCustom" disabled value="{{item.billingDate}}" style="width:150px"
                                                     placeholder="Date">
                                                 <ng-container *ngIf="item.isCustom">
-                                                    <div class="input-group date" data-provide="datepicker" data-date-format="dd MM yyyy">
+                                                    <div class="input-group date" data-provide="datepicker" data-date-format="dd M yyyy">
                                                         <input [disabled]="disableField" readonly onchange="Window.InvoiceFormComponent.CalculateFinalAmount(this)" type="text" tabindex="14"
                                                             value="{{item.billingDate}}" placeholder="dd MM yyyy" class="form-control billingDate"
                                                             size="10">
@@ -239,7 +239,7 @@
                     <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
                     <div class="custom-pagination">
                         <div class="pagination-next" [class.disabled]="p.isLastPage()">
-                            <a class="btn btn-default" (click)="p.next()"> Next </a>
+                            <a class="btn btn-default" (click)="p.next();" id="btnNext"> Next </a>
                         </div>
                     </div>
 
