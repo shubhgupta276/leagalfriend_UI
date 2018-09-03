@@ -55,14 +55,14 @@ export class InvoiceDownloadComponent implements OnInit {
                     // // start test
                     // let counter = 0;
                     // const c = billingArray.length;
-                    // while (counter < 8) {
-                    //     for (let i = 0; i < c; i++) {
+                    // while (counter < 1) {
+                    //     for (let i = 0; i < 14; i++) {
                     //         billingArray.push(Object.assign({}, billingArray[i]));
                     //     }
                     //     counter++;
                     // }
                     // let lineNumber = 1;
-                    // for (let i = 0; i < billingArray.length; i++) {
+                    // for (let i = 0; i < 15; i++) {
                     //     billingArray[i].billingDesc = lineNumber + ' ' + billingArray[i].billingDesc;
                     //     lineNumber++;
                     // }
@@ -70,7 +70,7 @@ export class InvoiceDownloadComponent implements OnInit {
                     this.totalQuantity = billingArray.length;
                     const newArray = [];
                     let index = 0;
-                    const sliceNumber = 25;
+                    const sliceNumber = 24;
                     while (billingArray.length > 0) {
                         newArray[index++] = billingArray.splice(0, sliceNumber);
                     }
@@ -120,7 +120,7 @@ export class InvoiceDownloadComponent implements OnInit {
                 pdf.save($this.downloadData.data.invoiceNumber + '.pdf');
                 document.getElementById('pdfdownload').style.display = 'none';
                 setTimeout(() => {
-                    window.close();
+                     window.close();
                 }, 200);
             }
         });

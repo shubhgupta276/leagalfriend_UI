@@ -27,7 +27,7 @@ export class InvoiceNextFormComponent implements OnInit {
     arrInvoiceDetails = [];
     totalAmount: number;
     todayDate: number = Date.now();
-    p: number = 1;
+    p: any = 1;
     p2: number = 1;
     perPageItem: number = 10;
     @Input() id: string;
@@ -66,10 +66,11 @@ export class InvoiceNextFormComponent implements OnInit {
     }
 
     PreviousCheck() {
-        if (this.p2 == 0) {
+        if (this.p2 === 0) {
             this.router.navigate(['/admin/invoices/invoiceform']);
         } else {
             this.CalculateFinalAmount(null);
+            this.BindInvoice();
         }
     }
 
@@ -119,7 +120,7 @@ export class InvoiceNextFormComponent implements OnInit {
 
     RemoveInvoice(currentRow) {
         if (confirm('Are you sure you want to delete?')) {
-            const deleteIndex = $(currentRow).closest('tr').index();
+            const deleteIndex = this.getIndex($(currentRow).closest('tr').index());
             if (this.arrInvoiceDetails.length > 0) {
                 const deleteObj = this.arrLocalInvoiceDetails[deleteIndex];
 
@@ -157,6 +158,10 @@ export class InvoiceNextFormComponent implements OnInit {
         }
     }
 
+    getIndex(index) {
+        return ((this.p2 - 1) * this.perPageItem) + index;
+    }
+
     CalculateFinalAmount(currentRow) {
         let isCustom;
         if (currentRow != null) {
@@ -164,7 +169,7 @@ export class InvoiceNextFormComponent implements OnInit {
             isCustom = JSON.parse($(currentRow).find('.hfIsCustom').val());
             let index = $(currentRow).index();
             if (this.p2 > 1) {
-                index = ((this.p2 - 1) * this.perPageItem) + index;
+                index = this.getIndex(index);
             }
             this.arrLocalInvoiceDetails[index].amount = $(currentRow).find('.amount').val();
             this.arrLocalInvoiceDetails[index].description = $(currentRow).find('.description').val();
@@ -203,6 +208,9 @@ export class InvoiceNextFormComponent implements OnInit {
     }
 
     addCustomRow() {
+        if (this.arrLocalInvoiceDetails.length % 10 === 0) {
+            document.getElementById('btnNext').click();
+        }
         const obj = {
             isCustom: true,
             description: '',

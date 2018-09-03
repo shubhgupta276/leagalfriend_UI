@@ -28,8 +28,8 @@
                   <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.getRawValue())">
                     <div style="margin-right: 17px;float: right;">
                       <input type="submit" *ngIf="!isCaseCompletedOpen" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
-                      <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid" class="btn btn-modal-addedit"
-                        value="Update">
+                      <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid"
+                        class="btn btn-modal-addedit" value="Update">
                     </div>
                     <div class="form-body">
                       <div class="tab-content">
@@ -45,28 +45,25 @@
                             </div>
                           </div>
                           <div class="form-group row" *ngIf="isCompliance"></div>
-                          <div class="form-group row">
+                          <div *ngIf="showField('recourse');">
                             <label class="col-sm-3 col-form-label createUserLabel">Recourse:
                               <em class="astrick">*</em>
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('recourse').invalid &&  editForInstitutionForm.get('recourse').touched">
                               <input class="form-control" placeholder="Recourse" formControlName="recourse">
                             </div>
+                          </div>
 
+                          <div *ngIf="showField('legalCaseId');">
                             <label class="col-sm-3 col-form-label createUserLabel">Legal Case ID:
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('legalCaseId').invalid &&  editForInstitutionForm.get('legalCaseId').touched">
                               <input class="form-control" disabled placeholder="Legal Case ID" formControlName="legalCaseId">
                             </div>
-
-                            <!-- <div class="col-sm-3" *ngIf="editForInstitutionForm.get('legalCaseId').invalid &&  editForInstitutionForm.get('legalCaseId').touched">
-                              <small class="text-danger">
-                                <span>Legal Case ID is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+
+                          <div *ngIf="showField('caseStage');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Stage:
                               <em class="astrick">*</em>
                             </label>
@@ -76,146 +73,101 @@
                                 <option *ngFor="let item of arStage" value="{{item.stageCode}}">{{item.stageName}}</option>
                               </select>
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('caseStage').invalid &&  editForInstitutionForm.get('caseStage').touched">
-                              <small class="text-danger">
-                                <span>Case Stage is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('region');">
                             <label class="col-sm-3 col-form-label createUserLabel">Region:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('region').invalid &&  editForInstitutionForm.get('region').touched">
                               <input class="form-control" placeholder="Region" formControlName="region">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('region').invalid &&  editForInstitutionForm.get('region').touched">
-                              <small class="text-danger">
-                                <span>Region is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('state');">
                             <label class="col-sm-3 col-form-label createUserLabel">State:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('state').invalid &&  editForInstitutionForm.get('state').touched">
                               <input class="form-control" placeholder="State" formControlName="state">
                             </div>
-
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('state').invalid &&  editForInstitutionForm.get('state').touched">
-                              <small class="text-danger">
-                                <span>State is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('location');">
                             <label class="col-sm-3 col-form-label createUserLabel">Location:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('location').invalid &&  editForInstitutionForm.get('location').touched">
                               <input class="form-control" placeholder="Location" formControlName="location">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('location').invalid &&  editForInstitutionForm.get('location').touched">
-                              <small class="text-danger">
-                                <span>Location is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('product');">
                             <label class="col-sm-3 col-form-label createUserLabel">Product:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('product').invalid &&  editForInstitutionForm.get('product').touched">
                               <input class="form-control" placeholder="Product" formControlName="product">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('product').invalid &&  editForInstitutionForm.get('product').touched">
-                              <small class="text-danger">
-                                <span>Product is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('productGroup');">
                             <label class="col-sm-3 col-form-label createUserLabel">Product Group:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('productGroup').invalid &&  editForInstitutionForm.get('productGroup').touched">
                               <input class="form-control" placeholder="Product Group" formControlName="productGroup">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('productGroup').invalid &&  editForInstitutionForm.get('productgroup').touched">
-                              <small class="text-danger">productGroup
-                                <span>Product Group is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('loanAccountNumber');">
                             <label class="col-sm-3 col-form-label createUserLabel">Loan Account Number:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('loanAccountNumber').invalid &&  editForInstitutionForm.get('loanAccountNumber').touched">
                               <input class="form-control" placeholder="Loan Account Number" formControlName="loanAccountNumber">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('loanAccountNumber').invalid &&  editForInstitutionForm.get('loanAccountNumber').touched">
-                              <small class="text-danger">
-                                <span>Loan Account Number is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('customerName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('customerName').invalid &&  editForInstitutionForm.get('customerName').touched">
                               <input class="form-control" placeholder="Customer Name" formControlName="customerName">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('customerName').invalid &&  editForInstitutionForm.get('customerName').touched">
-                              <small class="text-danger">
-                                <span>Customer Name is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('posOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">POS as on filing date:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('posOnFilingDate').invalid &&  editForInstitutionForm.get('posOnFilingDate').touched">
                               <input class="form-control" placeholder="POS as on filing date" formControlName="posOnFilingDate">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('posOnFilingDate').invalid &&  editForInstitutionForm.get('posOnFilingDate').touched">
-                              <small class="text-danger">
-                                <span>POS as on filing date is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('dpdOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">DPD as on filing date:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('dpdOnFilingDate').invalid &&  editForInstitutionForm.get('dpdOnFilingDate').touched">
                               <input class="form-control" placeholder="DPD as on filing date" formControlName="dpdOnFilingDate">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('dpdOnFilingDate').invalid &&  editForInstitutionForm.get('dpdOnFilingDate').touched">
-                              <small class="text-danger">
-                                <span>DPD as on filing date is required.</span>
-                              </small>
-                            </div> -->
-
+                          </div>
+                          <div *ngIf="showField('npaStageOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">NPA Stage as on filing date:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('npaStageOnFilingDate').invalid &&  editForInstitutionForm.get('npaStageOnFilingDate').touched">
                               <input class="form-control" placeholder="NPA Stage as on filing date" formControlName="npaStageOnFilingDate">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('npaStageOnFilingDate').invalid &&  editForInstitutionForm.get('npaStageOnFilingDate').touched">
-                              <small class="text-danger">
-                                <span>NPA Stage as on filing date is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('npaStageOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Date Of Filing Case:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -227,108 +179,72 @@
                                 </div>
                               </div>
                             </div>
+                          </div>
 
+                          <div *ngIf="showField('caseType');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Type:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('caseType').invalid &&  editForInstitutionForm.get('caseType').touched">
                               <input class="form-control" placeholder="Case Type" formControlName="caseType">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('caseType').invalid &&  editForInstitutionForm.get('caseType').touched">
-                              <small class="text-danger">
-                                <span>Case Type is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-
-
-                          <div class="form-group row">
+                          <div *ngIf="showField('courtCaseId');">
                             <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('courtCaseId').invalid &&  editForInstitutionForm.get('courtCaseId').touched">
                               <input class="form-control" placeholder="Court Case Id" formControlName="courtCaseId">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('courtCaseId').invalid &&  editForInstitutionForm.get('courtCaseId').touched">
-                              <small class="text-danger">
-                                <span>Court Case Id is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('courtName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Court Name:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('courtName').invalid &&  editForInstitutionForm.get('courtName').touched">
                               <input class="form-control" placeholder="Court Name" formControlName="courtName">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('courtName').invalid &&  editForInstitutionForm.get('courtName').touched">
-                              <small class="text-danger">
-                                <span>Court Name is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
-
-                          <div class="form-group row">
+                          <div *ngIf="showField('courtPlace');">
                             <label class="col-sm-3 col-form-label createUserLabel">Court Place:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('courtPlace').invalid &&  editForInstitutionForm.get('courtPlace').touched">
                               <input class="form-control" placeholder="Court Place" formControlName="courtPlace">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('courtPlace').invalid &&  editForInstitutionForm.get('courtPlace').touched">
-                              <small class="text-danger">
-                                <span>Court Place is required.</span>
-                              </small>
-                            </div> -->
-
+                          </div>
+                          <div *ngIf="showField('amountInvolved');">
                             <label class="col-sm-3 col-form-label createUserLabel">Amount involved:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('amountInvolved').invalid &&  editForInstitutionForm.get('amountInvolved').touched">
                               <input class="form-control" placeholder="Amount involved" formControlName="amountInvolved">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('amountInvolved').invalid &&  editForInstitutionForm.get('amountInvolved').touched">
-                              <small class="text-danger">
-                                <span>Amount involved is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('lawyerName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Lawyer Name:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('lawyerName').invalid &&  editForInstitutionForm.get('lawyerName').touched">
                               <input class="form-control" placeholder="Lawyer Name" formControlName="lawyerName">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('lawyerName').invalid &&  editForInstitutionForm.get('lawyerName').touched">
-                              <small class="text-danger">
-                                <span>Lawyer Name is required.</span>
-                              </small>
-                            </div> -->
-
-
                           </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Stage in Court:
 
-                            </label>
+                          <div *ngIf="showField('stageInCourt');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Stage in Court:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('stageInCourt').invalid &&  editForInstitutionForm.get('stageInCourt').touched">
                               <input class="form-control" placeholder="Stage in Court" formControlName="stageInCourt">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('stageInCourt').invalid &&  editForInstitutionForm.get('stageInCourt').touched">
-                              <small class="text-danger">
-                                <span>Stage in Court is required.</span>
-                              </small>
-                            </div> -->
-                            <label class="col-sm-3 col-form-label createUserLabel">Previous Hearing Date:
+                          </div>
 
-                            </label>
-
+                          <div *ngIf="showField('previousHearingDate');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Previous Hearing Date:</label>
                             <div class="col-md-3">
-
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
                                 <input type="text" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control" size="10" formControlName="previousHearingDate">
                                 <div class="input-group-addon">
@@ -336,10 +252,9 @@
                                 </div>
                               </div>
                             </div>
-
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('nextHearingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Next Hearing date:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -352,25 +267,19 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('nextHearingDate').invalid &&  editForInstitutionForm.get('nextHearingDate').touched">
-                              <small class="text-danger">
-                                <span>Next Hearing date is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
+
+                          <div *ngIf="showField('ndohNullReason');">
                             <label class="col-sm-3 col-form-label createUserLabel">NDOH Null Reason:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('ndohNullReason').invalid &&  editForInstitutionForm.get('ndohNullReason').touched">
                               <input class="form-control" placeholder="NDOH Null Reason" formControlName="ndohNullReason">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('ndohNullReason').invalid &&  editForInstitutionForm.get('ndohNullReason').touched">
-                              <small class="text-danger">
-                                <span>NDOH Null Reason is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+
+                          <div *ngIf="showField('orderReceivedDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Order Received date:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -383,38 +292,27 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('orderReceivedDate').invalid &&  editForInstitutionForm.get('orderReceivedDate').touched">
-                              <small class="text-danger">
-                                <span>Order Received date is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('receiverName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Receiver Name:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('receiverName').invalid &&  editForInstitutionForm.get('receiverName').touched">
                               <input class="form-control" placeholder="Receiver Name" formControlName="receiverName">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('receiverName').invalid &&  editForInstitutionForm.get('receiverName').touched">
-                              <small class="text-danger">
-                                <span>Receiver Name is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('receiveOrderStatus');">
                             <label class="col-sm-3 col-form-label createUserLabel">RO Status:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('receiveOrderStatus').invalid &&  editForInstitutionForm.get('receiveOrderStatus').touched">
                               <input class="form-control" placeholder="RO Status" formControlName="receiveOrderStatus">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('receiveOrderStatus').invalid &&  editForInstitutionForm.get('receiveOrderStatus').touched">
-                              <small class="text-danger">
-                                <span>RO Status is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('receiverOrderAppliedDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">RO Execution Date:</label>
                             <div class="col-md-3">
 
@@ -426,16 +324,9 @@
                               </div>
 
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('receiverOrderAppliedDate').invalid &&  editForInstitutionForm.get('receiverOrderAppliedDate').touched">
-                              <small class="text-danger">
-                                <span>RO Execution date is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-
-
-                          <div class="form-group row">
+                          <div *ngIf="showField('arbitrationInitiated');">
 
                             <label class="col-sm-3 col-form-label createUserLabel">Arbitration Initiated:
 
@@ -443,26 +334,18 @@
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('arbitrationInitiated').invalid &&  editForInstitutionForm.get('arbitrationInitiated').touched">
                               <input class="form-control" placeholder="Arbitration Initiated" formControlName="arbitrationInitiated">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('arbitrationInitiated').invalid &&  editForInstitutionForm.get('arbitrationInitiated').touched">
-                              <small class="text-danger">
-                                <span>Arbitration Initiated is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('arbitrationCaseId');">
                             <label class="col-sm-3 col-form-label createUserLabel">Arbitration Case ID:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('arbitrationCaseId').invalid &&  editForInstitutionForm.get('arbitrationCaseId').touched">
                               <input class="form-control" placeholder="Arbitration Case ID" formControlName="arbitrationCaseId">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('arbitrationCaseId').invalid &&  editForInstitutionForm.get('arbitrationCaseId').touched">
-                              <small class="text-danger">
-                                <span>Arbitration Case ID is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('repoFlag');">
 
                             <label class="col-sm-3 col-form-label createUserLabel">Repo Flag:
 
@@ -470,55 +353,39 @@
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('repoFlag').invalid &&  editForInstitutionForm.get('repoFlag').touched">
                               <input class="form-control" placeholder="Repo Flag" formControlName="repoFlag">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('repoFlag').invalid &&  editForInstitutionForm.get('repoFlag').touched">
-                              <small class="text-danger">
-                                <span>Repo Flag is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('remarks');">
                             <label class="col-sm-3 col-form-label createUserLabel">Remarks:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('remarks').invalid &&  editForInstitutionForm.get('remarks').touched">
                               <input class="form-control" placeholder="Remarks" formControlName="remarks">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('remarks').invalid &&  editForInstitutionForm.get('remarks').touched">
-                              <small class="text-danger">
-                                <span>Remarks is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
-                          <div class="form-group row">
+                          <div *ngIf="showField('legalManager');">
                             <label class="col-sm-3 col-form-label createUserLabel">Legal Manager:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('legalManager').invalid &&  editForInstitutionForm.get('legalManager').touched">
                               <input class="form-control" placeholder="Legal Manager" formControlName="legalManager">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('legalManager').invalid &&  editForInstitutionForm.get('legalManager').touched">
-                              <small class="text-danger">
-                                <span>Legal Manager is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
+                          <div *ngIf="showField('caseStatus');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Status:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('caseStatus').invalid &&  editForInstitutionForm.get('caseStatus').touched">
                               <input class="form-control" placeholder="Case Status" formControlName="caseStatus">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('caseStatus').invalid &&  editForInstitutionForm.get('caseStatus').touched">
-                              <small class="text-danger">
-                                <span>Case Status is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Closure Date:
-
-                            </label>
+                          <div *ngIf="showField('closureDate');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Closure Date:</label>
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
                                 <input type="text" tabindex="14" readonly placeholder="mm/dd/yyyy" class="form-control" size="10" value="2017-12-22" formControlName="closureDate">
@@ -527,15 +394,10 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('closureDate').invalid &&  editForInstitutionForm.get('closureDate').touched">
-                              <small class="text-danger">
-                                <span>Closure Date is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
-                            <label class="col-sm-3 col-form-label createUserLabel">Closure Reporting Date:
-
-                            </label>
+                          <div *ngIf="showField('closureReportingDate');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Closure Reporting Date:</label>
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
                                 <input type="text" tabindex="14" id="closure-reporting-date" name="closure-reporting-date" readonly="" placeholder="mm/dd/yyyy"
@@ -545,91 +407,51 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('closureReportingDate').invalid &&  editForInstitutionForm.get('closureReportingDate').touched">
-                              <small class="text-danger">
-                                <span>Closure Reporting Date is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
 
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Total Amt Recovered:
-
-                            </label>
+                          <div *ngIf="showField('totalAmtRecovered');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Total Amt Recovered:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('totalAmtRecovered').invalid &&  editForInstitutionForm.get('totalAmtRecovered').touched">
                               <input class="form-control" placeholder="Total Amt Recovered" formControlName="totalAmtRecovered">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('totalAmtRecovered').invalid &&  editForInstitutionForm.get('totalAmtRecovered').touched">
-                              <small class="text-danger">
-                                <span>Total Amt Recovered is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
-                            <label class="col-sm-3 col-form-label createUserLabel">Account Status:
-
-                            </label>
+                          <div *ngIf="showField('accountStatus');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Account Status:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('accountStatus').invalid &&  editForInstitutionForm.get('accountStatus').touched">
                               <input class="form-control" placeholder="Account Status" formControlName="accountStatus">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('accountStatus').invalid &&  editForInstitutionForm.get('accountStatus').touched">
-                              <small class="text-danger">
-                                <span>Account Status is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Case Filed Against:
-
-                            </label>
+                          <div *ngIf="showField('caseFiledAgainst');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Case Filed Against:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('caseFiledAgainst').invalid &&  editForInstitutionForm.get('caseFiledAgainst').touched">
                               <input class="form-control" placeholder="Case Filed Against" formControlName="caseFiledAgainst">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('caseFiledAgainst').invalid &&  editForInstitutionForm.get('caseFiledAgainst').touched">
-                              <small class="text-danger">
-                                <span>Case Filed Against is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
-                            <label class="col-sm-3 col-form-label createUserLabel">POS as on current system Date:
-
-                            </label>
+                          <div *ngIf="showField('posOnCurrentDate');">
+                            <label class="col-sm-3 col-form-label createUserLabel">POS as on current system Date:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('posOnCurrentDate').invalid &&  editForInstitutionForm.get('posOnCurrentDate').touched">
                               <input class="form-control" placeholder="POS as on current system Date" formControlName="posOnCurrentDate">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('posOnCurrentDate').invalid &&  editForInstitutionForm.get('posOnCurrentDate').touched">
-                              <small class="text-danger">
-                                <span>POS as on current system Date is required.</span>
-                              </small>
-                            </div> -->
                           </div>
 
 
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">DPD as on current system date:
-
-                            </label>
+                          <div *ngIf="showField('dpdOnCurrentDate');">
+                            <label class="col-sm-3 col-form-label createUserLabel">DPD as on current system date:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('dpdOnCurrentDate').invalid &&  editForInstitutionForm.get('dpdOnCurrentDate').touched">
                               <input class="form-control" placeholder="DPD as on current system date" formControlName="dpdOnCurrentDate">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('dpdOnCurrentDate').invalid &&  editForInstitutionForm.get('dpdOnCurrentDate').touched">
-                              <small class="text-danger">
-                                <span>DPD as on current system date is required.</span>
-                              </small>
-                            </div> -->
+                          </div>
 
-                            <label class="col-sm-3 col-form-label createUserLabel">NPA Stage as on current system date:
-
-                            </label>
+                          <div *ngIf="showField('npaStageOnCurrentDate');">
+                            <label class="col-sm-3 col-form-label createUserLabel">NPA Stage as on current system date:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('npaStageOnCurrentDate').invalid &&  editForInstitutionForm.get('npaStageOnCurrentDate').touched">
                               <input class="form-control" placeholder="NPA Stage as on current system date" formControlName="npaStageOnCurrentDate">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('npaStageOnCurrentDate').invalid &&  editForInstitutionForm.get('npaStageOnCurrentDate').touched">
-                              <small class="text-danger">
-                                <span>NPA Stage as on current system date is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
 
@@ -640,11 +462,6 @@
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('caseCriticalityLevel').invalid &&  editForInstitutionForm.get('caseCriticalityLevel').touched">
                               <input class="form-control" placeholder="Case Criticality Level" formControlName="caseCriticalityLevel">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('caseCriticalityLevel').invalid &&  editForInstitutionForm.get('caseCriticalityLevel').touched">
-                              <small class="text-danger">
-                                <span>Case Criticality Level is required.</span>
-                              </small>
-                            </div> -->
 
                             <label class="col-sm-3 col-form-label createUserLabel">Type:
 
@@ -652,11 +469,7 @@
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('type').invalid &&  editForInstitutionForm.get('type').touched">
                               <input class="form-control" placeholder="Type" formControlName="type">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('type').invalid &&  editForInstitutionForm.get('type').touched">
-                              <small class="text-danger">
-                                <span>Type is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
                           <div class="form-group row">
@@ -666,23 +479,13 @@
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('parentId').invalid &&  editForInstitutionForm.get('parentId').touched">
                               <input class="form-control" placeholder="parentId" formControlName="parentId">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('parentId').invalid &&  editForInstitutionForm.get('parentId').touched">
-                              <small class="text-danger">
-                                <span>parentId is required.</span>
-                              </small>
-                            </div> -->
-
                             <label class="col-sm-3 col-form-label createUserLabel">Child Case:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('childCase').invalid &&  editForInstitutionForm.get('childCase').touched">
                               <input class="form-control" placeholder="Child Case" formControlName="childCase">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('childCase').invalid &&  editForInstitutionForm.get('childCase').touched">
-                              <small class="text-danger">
-                                <span>Child Case is required.</span>
-                              </small>
-                            </div> -->
+
                           </div>
 
                           <div class="form-group row">
@@ -692,22 +495,12 @@
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('generatedBy').invalid &&  editForInstitutionForm.get('generatedBy').touched">
                               <input class="form-control" placeholder="Generated By" formControlName="generatedBy">
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('generatedBy').invalid &&  editForInstitutionForm.get('generatedBy').touched">
-                              <small class="text-danger">
-                                <span>Generated By is required.</span>
-                              </small>
-                            </div> -->
-
                             <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No:</label>
                               <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('disposedOffFileNo').invalid &&  editForInstitutionForm.get('disposedOffFileNo').touched">
                                 <input class="form-control" placeholder="Disposed off File No" formControlName="disposedOffFileNo">
                               </div>
-                              <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('disposedOffFileNo').invalid &&  editForInstitutionForm.get('disposedOffFileNo').touched">
-                                <small class="text-danger">
-                                  <span>Disposed off File No is required.</span>
-                                </small>
-                              </div> -->
+
                             </div>
                           </div>
 
@@ -733,15 +526,8 @@
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('groundForClosingFile').invalid &&  editForInstitutionForm.get('groundForClosingFile').touched">
                               <textarea multiple="multiple" class="form-control" placeholder="Ground for closing file" formControlName="groundForClosingFile"></textarea>
                             </div>
-                            <!-- <div class="col-sm-3 valodation-padding" *ngIf="editForInstitutionForm.get('groundForClosingFile').invalid &&  editForInstitutionForm.get('groundForClosingFile').touched">
-                              <small class="text-danger">
-                                <span>Ground for closing file is required.</span>
-                              </small>
-                            </div> -->
-
 
                           </div>
-
 
 
                           <div class="form-group row">
@@ -781,7 +567,8 @@
                           </table>
                           <div class="modal-footer">
                             <input type="submit" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
-                            <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit" value="Update">
+                            <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit"
+                              value="Update">
                           </div>
                         </div>
                       </div>

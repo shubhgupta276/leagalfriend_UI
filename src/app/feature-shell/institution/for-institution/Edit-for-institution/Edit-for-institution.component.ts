@@ -1,16 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { InstitutionService } from '../../institution.service';
-import { Institution } from '../../institution';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { saveAs } from 'file-saver';
 import { StageService } from '../../../master/stage/stage.service';
 import { SharedService } from '../../../../shared/services/shared.service';
-import { parse } from 'querystring';
+import { ListInstitutionFieldShowConfig } from '../../institution-field-show-config';
 declare let $;
 
 @Component({
@@ -38,6 +35,7 @@ export class EditForInstitutionComponent implements OnInit {
   isPageLoad: boolean = true;
   isViewOnlyForUser: boolean = false;
   branchId: any;
+  listFieldMapping: any[] = ListInstitutionFieldShowConfig;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -255,6 +253,7 @@ export class EditForInstitutionComponent implements OnInit {
       this._institutionService.getForInstitution(this.institutionId, branchId, this.institutionalCaseId).
         subscribe((result) => {
           if (result) {
+            this.listFieldMapping = this.listFieldMapping.filter(x => x.key === 'SEC_138');
             this.caseFiles = result.caseFiles;
             this.createForm(result);
           }
@@ -263,6 +262,13 @@ export class EditForInstitutionComponent implements OnInit {
             console.log(err);
           });
     }
+  }
+
+  showField(fieldName: string): boolean {
+    if (this.listFieldMapping.find(x => x.value.toLowerCase() === fieldName.toLowerCase())) {
+      return true;
+    }
+    return false;
   }
 
   submitEditinstitutionUser(data: any) {
