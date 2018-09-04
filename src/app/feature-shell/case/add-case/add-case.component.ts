@@ -107,6 +107,7 @@ export class AddCaseComponent implements OnInit {
   AddCaseUser() {
     this.isSubmitClick = false;
     this.addCaseForm = this.fb.group({
+      title: [null, Validators.required],
       branch: [null, Validators.required],
       courtCaseId: [],
       customerName: [null, Validators.required],
@@ -395,7 +396,14 @@ export class AddCaseComponent implements OnInit {
     if (event.target.files && event.target.files.length) {
       this.myDocument = event.target.files[0];
 
-    };
+    }
+  }
+
+  isValid(data: any): boolean {
+    if (!data.title || data.title.length <= 0) {
+      return false;
+    }
+    return true;
   }
 
   submitAddCaseUser(data) {
@@ -403,6 +411,7 @@ export class AddCaseComponent implements OnInit {
       this.isSubmitClick = true;
       const objEditCase: FormData = new FormData();
       const x = {
+        title: data.title,
         'branchId': data.branch[0].id,
         'childCase': (!data.childCase ? null : (data.childCase.substr(data.childCase.lastIndexOf('/') + 1))),
         'courtCaseId': data.courtCaseId,
@@ -424,42 +433,42 @@ export class AddCaseComponent implements OnInit {
 
       objEditCase.append('legalCase', JSON.stringify(x));
       objEditCase.append('file', this.myDocument);
-
-      this.authService.submitEditCaseUser(objEditCase).subscribe(
-        result => {
-          result = result.body;
-          if (result.httpCode == 200) { //success
-            this.addCaseSuccess.emit();
-            $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
-            $('#addCaseModal').modal('hide');
-            this.closeModal();
-          }
-
-        },
-        err => {
-          console.log(err);
-        });
-    } catch (err) {
-      console.log(err);
+      if (this.isValid(data)) {
+        this.authService.submitEditCaseUser(objEditCase).subscribe(
+          result => {
+            result = result.body;
+            if (result.httpCode == 200) { // success
+              this.addCaseSuccess.emit();
+              $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
+              $('#addCaseModal').modal('hide');
+              this.closeModal();
+            }
+          },
+          err => {
+            console.log(err);
+          });
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
-  BindCaseGridOnEdit(data) {
+}
+  ndCaseGridOnEdit(data) {
 
   }
   closeModal() {
     $('#closebtn1').click();
-  }
 
-  ngOnInit() {
-    this.isSubmitClick = false;
-    const self = this;
-    $(document).ready(function () {
-      $('.input-group.date').datepicker().on('changeDate', function (ev) {
-        const attrName = $(this).find('input').attr('formControlName');
-        const attrValue = $(this).find('input').val();
 
-        self.addCaseForm.controls[attrName].setValue(attrValue);
-      });
+    Init() {
+      .isSubmitClick = false;
+      t self = this;
+      $(document).ready(function () {
+        '.input-group.date').datepicker().on('changeDate', function (ev) {
+          const attrName = $(this).find('input').attr('formControlName');
+          const attrValue = $(this).find('input').val();
+
+          self.addCaseForm.controls[attrName].setValue(attrValue);
+        });
     });
 
   }
