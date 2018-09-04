@@ -26,7 +26,7 @@
               <div class="row">
                 <div class="box-body widget-content">
                   <form [formGroup]="editForInstitutionForm" class="form-horizontal" (ngSubmit)="submitEditinstitutionUser(editForInstitutionForm.getRawValue())">
-                    <div style="margin-right: 17px;float: right;">
+                    <div class="top-right">
                       <input type="submit" *ngIf="!isCaseCompletedOpen" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
                       <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" [disabled]="editForInstitutionForm.invalid"
                         class="btn btn-modal-addedit" value="Update">
@@ -35,7 +35,7 @@
                       <div class="tab-content">
                         <div class="tab-pane active">
 
-                          <div class="form-group row">
+                          <div class="form-group compliance-row">
                             <label class="col-sm-3 col-form-label createUserLabel">Compliance:
 
                             </label>
@@ -45,7 +45,8 @@
                             </div>
                           </div>
                           <div class="form-group row" *ngIf="isCompliance"></div>
-                          <div *ngIf="showField('recourse');">
+                          <div style="clear: both"></div>
+                          <div class="custom-field" *ngIf="showField('recourse');">
                             <label class="col-sm-3 col-form-label createUserLabel">Recourse:
                               <em class="astrick">*</em>
                             </label>
@@ -54,7 +55,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('legalCaseId');">
+                          <div class="custom-field" *ngIf="showField('legalCaseId');">
                             <label class="col-sm-3 col-form-label createUserLabel">Legal Case ID:
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('legalCaseId').invalid &&  editForInstitutionForm.get('legalCaseId').touched">
@@ -63,7 +64,7 @@
                           </div>
 
 
-                          <div *ngIf="showField('caseStage');">
+                          <div class="custom-field" *ngIf="showField('caseStage');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Stage:
                               <em class="astrick">*</em>
                             </label>
@@ -76,7 +77,7 @@
 
                           </div>
 
-                          <div *ngIf="showField('region');">
+                          <div class="custom-field" *ngIf="showField('region');">
                             <label class="col-sm-3 col-form-label createUserLabel">Region:
 
                             </label>
@@ -85,7 +86,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('state');">
+                          <div class="custom-field" *ngIf="showField('state');">
                             <label class="col-sm-3 col-form-label createUserLabel">State:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -94,7 +95,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('location');">
+                          <div class="custom-field" *ngIf="showField('location');">
                             <label class="col-sm-3 col-form-label createUserLabel">Location:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -103,7 +104,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('product');">
+                          <div class="custom-field" *ngIf="showField('product');">
                             <label class="col-sm-3 col-form-label createUserLabel">Product:
 
                             </label>
@@ -113,7 +114,7 @@
                           </div>
 
 
-                          <div *ngIf="showField('productGroup');">
+                          <div class="custom-field" *ngIf="showField('productGroup');">
                             <label class="col-sm-3 col-form-label createUserLabel">Product Group:
 
                             </label>
@@ -122,7 +123,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('loanAccountNumber');">
+                          <div class="custom-field" *ngIf="showField('loanAccountNumber');">
                             <label class="col-sm-3 col-form-label createUserLabel">Loan Account Number:
 
                             </label>
@@ -132,7 +133,7 @@
 
                           </div>
 
-                          <div *ngIf="showField('customerName');">
+                          <div class="custom-field" *ngIf="showField('customerName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -141,7 +142,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('posOnFilingDate');">
+                          <div class="custom-field" *ngIf="showField('posOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">POS as on filing date:
 
                             </label>
@@ -150,7 +151,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('dpdOnFilingDate');">
+                          <div class="custom-field" *ngIf="showField('dpdOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">DPD as on filing date:
 
                             </label>
@@ -158,7 +159,7 @@
                               <input class="form-control" placeholder="DPD as on filing date" formControlName="dpdOnFilingDate">
                             </div>
                           </div>
-                          <div *ngIf="showField('npaStageOnFilingDate');">
+                          <div class="custom-field" *ngIf="showField('npaStageOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">NPA Stage as on filing date:
 
                             </label>
@@ -167,13 +168,13 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('npaStageOnFilingDate');">
+                          <div class="custom-field" *ngIf="showField('npaStageOnFilingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Date Of Filing Case:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
-                                <input type="text" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control" size="10" formControlName="filingDate">
+                                <input type="text" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control custom-date-input" size="10" formControlName="filingDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
                                 </div>
@@ -181,7 +182,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('caseType');">
+                          <div class="custom-field" *ngIf="showField('caseType');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Type:
 
                             </label>
@@ -190,7 +191,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('courtCaseId');">
+                          <div class="custom-field" *ngIf="showField('courtCaseId');">
                             <label class="col-sm-3 col-form-label createUserLabel">Court Case Id:
 
                             </label>
@@ -199,7 +200,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('courtName');">
+                          <div class="custom-field" *ngIf="showField('courtName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Court Name:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -209,7 +210,7 @@
 
                           </div>
 
-                          <div *ngIf="showField('courtPlace');">
+                          <div class="custom-field" *ngIf="showField('courtPlace');">
                             <label class="col-sm-3 col-form-label createUserLabel">Court Place:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -217,7 +218,7 @@
                               <input class="form-control" placeholder="Court Place" formControlName="courtPlace">
                             </div>
                           </div>
-                          <div *ngIf="showField('amountInvolved');">
+                          <div class="custom-field" *ngIf="showField('amountInvolved');">
                             <label class="col-sm-3 col-form-label createUserLabel">Amount involved:
 
                             </label>
@@ -226,7 +227,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('lawyerName');">
+                          <div class="custom-field" *ngIf="showField('lawyerName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Lawyer Name:
 
                             </label>
@@ -235,18 +236,18 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('stageInCourt');">
+                          <div class="custom-field" *ngIf="showField('stageInCourt');">
                             <label class="col-sm-3 col-form-label createUserLabel">Stage in Court:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('stageInCourt').invalid &&  editForInstitutionForm.get('stageInCourt').touched">
                               <input class="form-control" placeholder="Stage in Court" formControlName="stageInCourt">
                             </div>
                           </div>
 
-                          <div *ngIf="showField('previousHearingDate');">
+                          <div class="custom-field" *ngIf="showField('previousHearingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Previous Hearing Date:</label>
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
-                                <input type="text" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control" size="10" formControlName="previousHearingDate">
+                                <input type="text" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control custom-date-input" size="10" formControlName="previousHearingDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
                                 </div>
@@ -254,13 +255,13 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('nextHearingDate');">
+                          <div class="custom-field" *ngIf="showField('nextHearingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Next Hearing date:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3">
                               <div class="input-group date" data-date-format="mm/dd/yyyy">
-                                <input type="text" tabindex="14" id="next_hearing_date" readonly="" placeholder="mm/dd/yyyy" class="form-control" size="10"
+                                <input type="text" tabindex="14" id="next_hearing_date" readonly="" placeholder="mm/dd/yyyy" class="form-control custom-date-input" size="10"
                                   value="2017-12-22" formControlName="nextHearingDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
@@ -269,7 +270,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('ndohNullReason');">
+                          <div class="custom-field" *ngIf="showField('ndohNullReason');">
                             <label class="col-sm-3 col-form-label createUserLabel">NDOH Null Reason:
 
                             </label>
@@ -279,13 +280,13 @@
                           </div>
 
 
-                          <div *ngIf="showField('orderReceivedDate');">
+                          <div class="custom-field" *ngIf="showField('orderReceivedDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Order Received date:
                               <!-- <em class="astrick">*</em> -->
                             </label>
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
-                                <input type="text" tabindex="14" id="order_received_date" readonly="" placeholder="mm/dd/yyyy" class="form-control" size="10"
+                                <input type="text" tabindex="14" id="order_received_date" readonly="" placeholder="mm/dd/yyyy" class="form-control custom-date-input" size="10"
                                   formControlName="orderReceivedDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
@@ -294,7 +295,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('receiverName');">
+                          <div class="custom-field" *ngIf="showField('receiverName');">
                             <label class="col-sm-3 col-form-label createUserLabel">Receiver Name:
 
                             </label>
@@ -303,7 +304,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('receiveOrderStatus');">
+                          <div class="custom-field" *ngIf="showField('receiveOrderStatus');">
                             <label class="col-sm-3 col-form-label createUserLabel">RO Status:
 
                             </label>
@@ -312,12 +313,12 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('receiverOrderAppliedDate');">
+                          <div class="custom-field" *ngIf="showField('receiverOrderAppliedDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">RO Execution Date:</label>
                             <div class="col-md-3">
 
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
-                                <input type="text" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control" size="10" formControlName="receiverOrderAppliedDate">
+                                <input type="text" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control custom-date-input" size="10" formControlName="receiverOrderAppliedDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
                                 </div>
@@ -326,7 +327,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('arbitrationInitiated');">
+                          <div class="custom-field" *ngIf="showField('arbitrationInitiated');">
 
                             <label class="col-sm-3 col-form-label createUserLabel">Arbitration Initiated:
 
@@ -336,7 +337,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('arbitrationCaseId');">
+                          <div class="custom-field" *ngIf="showField('arbitrationCaseId');">
                             <label class="col-sm-3 col-form-label createUserLabel">Arbitration Case ID:
 
                             </label>
@@ -345,7 +346,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('repoFlag');">
+                          <div class="custom-field" *ngIf="showField('repoFlag');">
 
                             <label class="col-sm-3 col-form-label createUserLabel">Repo Flag:
 
@@ -355,7 +356,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('remarks');">
+                          <div class="custom-field" *ngIf="showField('remarks');">
                             <label class="col-sm-3 col-form-label createUserLabel">Remarks:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -365,7 +366,7 @@
 
                           </div>
 
-                          <div *ngIf="showField('legalManager');">
+                          <div class="custom-field" *ngIf="showField('legalManager');">
                             <label class="col-sm-3 col-form-label createUserLabel">Legal Manager:
 
                             </label>
@@ -374,7 +375,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('caseStatus');">
+                          <div class="custom-field" *ngIf="showField('caseStatus');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Status:
                               <!-- <em class="astrick">*</em> -->
                             </label>
@@ -384,11 +385,11 @@
 
                           </div>
 
-                          <div *ngIf="showField('closureDate');">
+                          <div class="custom-field" *ngIf="showField('closureDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Closure Date:</label>
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
-                                <input type="text" tabindex="14" readonly placeholder="mm/dd/yyyy" class="form-control" size="10" value="2017-12-22" formControlName="closureDate">
+                                <input type="text" tabindex="14" readonly placeholder="mm/dd/yyyy" class="form-control custom-date-input" size="10" value="2017-12-22" formControlName="closureDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
                                 </div>
@@ -396,12 +397,12 @@
                             </div>
                           </div>
 
-                          <div *ngIf="showField('closureReportingDate');">
+                          <div class="custom-field" *ngIf="showField('closureReportingDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">Closure Reporting Date:</label>
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
-                                <input type="text" tabindex="14" id="closure-reporting-date" name="closure-reporting-date" readonly="" placeholder="mm/dd/yyyy"
-                                  class="form-control" size="10" value="2017-12-22" formControlName="closureReportingDate">
+                                <input type="text" tabindex="14" id="closure-reporting-date" name="closure-reporting-date" readonly="" placeholder="mm/dd/yyyy" class="form-control custom-date-input"
+                                size="10" value="2017-12-22" formControlName="closureReportingDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
                                 </div>
@@ -410,28 +411,28 @@
                           </div>
 
 
-                          <div *ngIf="showField('totalAmtRecovered');">
+                          <div class="custom-field" *ngIf="showField('totalAmtRecovered');">
                             <label class="col-sm-3 col-form-label createUserLabel">Total Amt Recovered:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('totalAmtRecovered').invalid &&  editForInstitutionForm.get('totalAmtRecovered').touched">
                               <input class="form-control" placeholder="Total Amt Recovered" formControlName="totalAmtRecovered">
                             </div>
                           </div>
 
-                          <div *ngIf="showField('accountStatus');">
+                          <div class="custom-field" *ngIf="showField('accountStatus');">
                             <label class="col-sm-3 col-form-label createUserLabel">Account Status:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('accountStatus').invalid &&  editForInstitutionForm.get('accountStatus').touched">
                               <input class="form-control" placeholder="Account Status" formControlName="accountStatus">
                             </div>
                           </div>
 
-                          <div *ngIf="showField('caseFiledAgainst');">
+                          <div class="custom-field" *ngIf="showField('caseFiledAgainst');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Filed Against:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('caseFiledAgainst').invalid &&  editForInstitutionForm.get('caseFiledAgainst').touched">
                               <input class="form-control" placeholder="Case Filed Against" formControlName="caseFiledAgainst">
                             </div>
                           </div>
 
-                          <div *ngIf="showField('posOnCurrentDate');">
+                          <div class="custom-field" *ngIf="showField('posOnCurrentDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">POS as on current system Date:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('posOnCurrentDate').invalid &&  editForInstitutionForm.get('posOnCurrentDate').touched">
                               <input class="form-control" placeholder="POS as on current system Date" formControlName="posOnCurrentDate">
@@ -439,14 +440,14 @@
                           </div>
 
 
-                          <div *ngIf="showField('dpdOnCurrentDate');">
+                          <div class="custom-field" *ngIf="showField('dpdOnCurrentDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">DPD as on current system date:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('dpdOnCurrentDate').invalid &&  editForInstitutionForm.get('dpdOnCurrentDate').touched">
                               <input class="form-control" placeholder="DPD as on current system date" formControlName="dpdOnCurrentDate">
                             </div>
                           </div>
 
-                          <div *ngIf="showField('npaStageOnCurrentDate');">
+                          <div class="custom-field" *ngIf="showField('npaStageOnCurrentDate');">
                             <label class="col-sm-3 col-form-label createUserLabel">NPA Stage as on current system date:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('npaStageOnCurrentDate').invalid &&  editForInstitutionForm.get('npaStageOnCurrentDate').touched">
                               <input class="form-control" placeholder="NPA Stage as on current system date" formControlName="npaStageOnCurrentDate">
@@ -455,14 +456,16 @@
                           </div>
 
 
-                          <div class="form-group row">
+                          <div class="custom-field" *ngIf="showField('caseCriticalityLevel');">
                             <label class="col-sm-3 col-form-label createUserLabel">Case Criticality Level:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('caseCriticalityLevel').invalid &&  editForInstitutionForm.get('caseCriticalityLevel').touched">
                               <input class="form-control" placeholder="Case Criticality Level" formControlName="caseCriticalityLevel">
                             </div>
+                          </div>
 
+                          <div class="custom-field" *ngIf="showField('type');">
                             <label class="col-sm-3 col-form-label createUserLabel">Type:
 
                             </label>
@@ -472,54 +475,54 @@
 
                           </div>
 
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">ParentId:
-
-                            </label>
+                          <div class="custom-field" *ngIf="showField('parentId');">
+                            <label class="col-sm-3 col-form-label createUserLabel">ParentId:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('parentId').invalid &&  editForInstitutionForm.get('parentId').touched">
                               <input class="form-control" placeholder="parentId" formControlName="parentId">
                             </div>
-                            <label class="col-sm-3 col-form-label createUserLabel">Child Case:
+                          </div>
 
-                            </label>
+                          <div class="custom-field" *ngIf="showField('childCase');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Child Case:</label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('childCase').invalid &&  editForInstitutionForm.get('childCase').touched">
                               <input class="form-control" placeholder="Child Case" formControlName="childCase">
                             </div>
 
                           </div>
 
-                          <div class="form-group row">
+                          <div class="custom-field" *ngIf="showField('generatedBy');">
                             <label class="col-sm-3 col-form-label createUserLabel">Generated By:
 
                             </label>
                             <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('generatedBy').invalid &&  editForInstitutionForm.get('generatedBy').touched">
                               <input class="form-control" placeholder="Generated By" formControlName="generatedBy">
                             </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No:</label>
-                              <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('disposedOffFileNo').invalid &&  editForInstitutionForm.get('disposedOffFileNo').touched">
-                                <input class="form-control" placeholder="Disposed off File No" formControlName="disposedOffFileNo">
-                              </div>
+                          </div>
 
+                          <div class="custom-field" *ngIf="showField('disposedOffFileNo');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No:</label>
+                            <div class="col-md-3" [class.has-error]="editForInstitutionForm.get('disposedOffFileNo').invalid &&  editForInstitutionForm.get('disposedOffFileNo').touched">
+                              <input class="form-control" placeholder="Disposed off File No" formControlName="disposedOffFileNo">
                             </div>
+
                           </div>
 
 
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label createUserLabel">Case Completion Date:
-
-                            </label>
+                          <div class="custom-field" *ngIf="showField('completionDate');">
+                            <label class="col-sm-3 col-form-label createUserLabel">Case Completion Date:</label>
 
                             <div class="col-md-3">
                               <div class="input-group date" data-provide="datepicker" data-date-format="mm/dd/yyyy">
-                                <input type="text" id="txtCompletionDate" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control" size="10"
+                                <input type="text" id="txtCompletionDate" tabindex="14" readonly="" placeholder="mm/dd/yyyy" class="form-control custom-date-input" size="10"
                                   formControlName="completionDate">
                                 <div class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
                                 </div>
                               </div>
                             </div>
+                          </div>
 
+                          <div class="custom-field" *ngIf="showField('groundForClosingFile');">
                             <label class="col-sm-3 col-form-label createUserLabel">Ground for Closing Case:
                               <em class="astrick" *ngIf="editForInstitutionForm.get('groundForClosingFile').invalid">*</em>
                             </label>
@@ -530,7 +533,7 @@
                           </div>
 
 
-                          <div class="form-group row">
+                          <div class="custom-field" *ngIf="showField('uploadFile');">
 
                             <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
 
@@ -565,7 +568,8 @@
                               </td>
                             </tr>
                           </table>
-                          <div class="modal-footer">
+                          <div class="modal-footer footer-right">
+                            <br>
                             <input type="submit" class="btn btn-default btn-default-add-edit" (click)="back();" value="Back">
                             <input type="submit" *ngIf="!isViewOnlyForUser && editData && !isCompliance && !isCaseComplete" class="btn btn-modal-addedit"
                               value="Update">

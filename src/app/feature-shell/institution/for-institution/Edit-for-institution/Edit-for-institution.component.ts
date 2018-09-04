@@ -240,8 +240,6 @@ export class EditForInstitutionComponent implements OnInit {
         } else {
           this.disableForm(false);
         }
-        this.editForInstitutionForm.controls['recourse'].disable();
-        // this.editForInstitutionForm.controls['legalCaseId'].disable();
       }, 10);
     }
   }
@@ -253,8 +251,8 @@ export class EditForInstitutionComponent implements OnInit {
       this._institutionService.getForInstitution(this.institutionId, branchId, this.institutionalCaseId).
         subscribe((result) => {
           if (result) {
-            this.listFieldMapping = this.listFieldMapping.filter(x => x.key === 'SEC_138');
             this.caseFiles = result.caseFiles;
+            this.listFieldMapping = this.listFieldMapping.filter(x => x.key.toLowerCase() === result.recourse.toLowerCase());
             this.createForm(result);
           }
         },
@@ -265,8 +263,10 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   showField(fieldName: string): boolean {
-    if (this.listFieldMapping.find(x => x.value.toLowerCase() === fieldName.toLowerCase())) {
-      return true;
+    if (this.editData) {
+      if (this.listFieldMapping.length === 0 || this.listFieldMapping.find(x => x.value.toLowerCase() === fieldName.toLowerCase())) {
+        return true;
+      }
     }
     return false;
   }
@@ -323,12 +323,17 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   disableForm(isDisable) { // disable form if compliance is true
-    if (isDisable) {
-      this.editForInstitutionForm.disable();
-    } else {
-      this.editForInstitutionForm.enable();
-    }
-    this.myFileUpload.nativeElement.disabled = isDisable;
+    setTimeout(() => {
+      if (isDisable) {
+        this.editForInstitutionForm.disable();
+      } else {
+        this.editForInstitutionForm.enable();
+      }
+      if (this.myFileUpload) {
+        this.myFileUpload.nativeElement.disabled = isDisable;
+      }
+      this.editForInstitutionForm.controls['recourse'].disable();
+    }, 200);
   }
 
   changeCompliance(isChecked) {

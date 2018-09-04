@@ -32,6 +32,7 @@
                         <div class="tab-content">
                           <div class="tab-pane active">
 
+
                             <div class="form-group row" id="complianceDiv" *ngIf="!isViewOnly">
                               <label class="col-sm-3 col-form-label createUserLabel">Compliance:
                                 <em class="astrick">*</em>
@@ -39,6 +40,21 @@
                               <div class="col-md-9">
 
                                 <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" (click)="compliance();">
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <label class="col-sm-3 col-form-label createUserLabel">Title: 
+                                <em class="astrick">*</em>
+                              </label>
+                              <div class="col-md-9">
+                                <input class="form-control" placeholder="Title" formControlName="title">
+                              </div>
+
+                              <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('title').invalid && editCaseForm.get('title').touched">
+                                <small class="text-danger">
+                                  <span>Title is required </span>
+                                </small>
                               </div>
                             </div>
                             <div class="tab-pane active" id="activity">
@@ -85,8 +101,8 @@
                               <div class="col-md-9">
 
                                 <ng-select [allowClear]="true" [items]="Stage" [active]="stageSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedSatge1($event)" (removed)="removedStage($event)" (typed)="typed($event)" placeholder="No stage selected"
-                                  formControlName="stage">
+                                  (selected)="selectedSatge1($event)" (removed)="removedStage($event)" (typed)="typed($event)"
+                                  placeholder="No stage selected" formControlName="stage">
                                 </ng-select>
                                 <div class="col-sm-9" *ngIf="!selectedStage">
                                   <small class="text-danger">
@@ -184,7 +200,8 @@
                               <div class="col-md-9" id="divState" *ngIf="State.length > 0">
 
                                 <ng-select [allowClear]="true" [items]="State" [active]="stateSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedState1($event)" (removed)="removedState($event)" (typed)="typed($event)" placeholder="No state selected">
+                                  (selected)="selectedState1($event)" (removed)="removedState($event)" (typed)="typed($event)"
+                                  placeholder="No state selected">
                                 </ng-select>
                                 <div class="col-sm-9" *ngIf="!selectedState">
                                   <small class="text-danger">
