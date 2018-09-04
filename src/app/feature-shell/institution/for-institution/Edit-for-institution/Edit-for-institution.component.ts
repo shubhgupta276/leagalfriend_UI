@@ -268,7 +268,7 @@ export class EditForInstitutionComponent implements OnInit {
         return true;
       }
     }
-    return false;
+    return true;
   }
 
   submitEditinstitutionUser(data: any) {

@@ -103,6 +103,17 @@ export class AddCaseComponent implements OnInit {
   public refreshValue(value: any): void {
     this.value = value;
   }
+  ngOnInit() {
+    this.isSubmitClick = false;
+    const self = this;
+    $(document).ready(function () {
+      $('.input-group.date').datepicker().on('changeDate', function (ev) {
+        const attrName = $(this).find('input').attr('formControlName');
+        const attrValue = $(this).find('input').val();
+        self.addCaseForm.controls[attrName].setValue(attrValue);
+      });
+    });
+  }
 
   AddCaseUser() {
     this.isSubmitClick = false;
@@ -447,30 +458,16 @@ export class AddCaseComponent implements OnInit {
           err => {
             console.log(err);
           });
-      } catch (err) {
-        console.log(err);
       }
+    } catch (err) {
+      console.log(err);
     }
-}
+  }
   ndCaseGridOnEdit(data) {
 
   }
   closeModal() {
     $('#closebtn1').click();
-
-
-    Init() {
-      .isSubmitClick = false;
-      t self = this;
-      $(document).ready(function () {
-        '.input-group.date').datepicker().on('changeDate', function (ev) {
-          const attrName = $(this).find('input').attr('formControlName');
-          const attrValue = $(this).find('input').val();
-
-          self.addCaseForm.controls[attrName].setValue(attrValue);
-        });
-    });
-
   }
 }
 
