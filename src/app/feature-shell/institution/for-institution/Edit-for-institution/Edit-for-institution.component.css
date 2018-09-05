@@ -1,52 +1,23 @@
-@media (max-width: 800px) {
-    .custom-field input, .custom-field .button {
-      margin: 10px 0;
-    }
-    
-    .custom-field {
-        display: inline-block;
-      flex-direction: column;
-      align-items: stretch;
-    }
-  }
-
 .custom-field {
-    padding: 8px 0px 8px 30px;
-    display: inline-block;
-    width: 49%;
+    padding-left: 50px;
 }
 
-.custom-field label {
-    width: 200px;
-}
-
-.form-control {
-    width: 450px;
-}
-
-.custom-date-input {
-    width: 412px;
-}
-
-.createUserLabel {
-    font-weight: 400;
-    padding-left: 0xp !important;
-    padding-top: 7px;
-}
-
-.compliance-row {
-    margin-left: 30px;
-}
-
-.compliance-row label {
-    width: 200px;
+.table-custom {
+    padding: 0px 50px 0px 62px;
 }
 
 .top-right {
-    margin-right: 37px;
-    float: right;
+    padding-left:56px;
+}
+
+.top-right-back {
+    padding-left: 140px;
 }
 
 .footer-right {
-    margin-right: 20px;
+    padding-left: 55px;
+}
+
+.footer-right-back {
+    padding-left: 140px;
 }

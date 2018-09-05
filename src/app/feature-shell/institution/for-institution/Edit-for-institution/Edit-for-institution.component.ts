@@ -36,6 +36,7 @@ export class EditForInstitutionComponent implements OnInit {
   isViewOnlyForUser: boolean = false;
   branchId: any;
   listFieldMapping: any[] = ListInstitutionFieldShowConfig;
+  isViewMode: boolean = false;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -324,6 +325,7 @@ export class EditForInstitutionComponent implements OnInit {
 
   disableForm(isDisable) { // disable form if compliance is true
     setTimeout(() => {
+      this.isViewMode = isDisable;
       if (isDisable) {
         this.editForInstitutionForm.disable();
       } else {
@@ -337,12 +339,12 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   changeCompliance(isChecked) {
-    this.isCompliance = isChecked;
     if (isChecked) {
       if (confirm('Do you want to put this case into compliance?')) {
         this.updateCaseToCompliance();
       }
     } else {
+      this.isCompliance = isChecked;
       this.disableForm(isChecked);
     }
   }
@@ -368,6 +370,7 @@ export class EditForInstitutionComponent implements OnInit {
       (result) => {
         result = result.body;
         if (result.httpCode === 200) {
+          this.isCompliance = true;
           this.editData.compliance = true;
           // this.submitEditinstitutionUser(this.editData);
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
@@ -436,14 +439,15 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   deleteFile(data) {
-
-    this._institutionService.deleteFile(data.id).subscribe(
-      (result) => {
-        this.caseFiles = this.caseFiles.filter(x => x.id != data.id);
-      },
-      err => {
-        console.log(err);
-      });
+    if (confirm('Are you sure you want to delete?')) {
+      this._institutionService.deleteFile(data.id).subscribe(
+        (result) => {
+          this.caseFiles = this.caseFiles.filter(x => x.id !== data.id);
+        },
+        err => {
+          console.log(err);
+        });
+    }
   }
 
   downloadFile(data) {
