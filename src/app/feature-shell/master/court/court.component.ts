@@ -17,7 +17,7 @@ declare let $;
   selector: 'app-court',
   templateUrl: './court.component.html',
   styleUrls: ['./court.component.css'],
-  encapsulation:ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 export class CourtComponent implements OnInit {
   @ViewChild(EditCourtMasterComponent) editChild: EditCourtMasterComponent;
@@ -57,8 +57,8 @@ export class CourtComponent implements OnInit {
     console.log(event);
   }
   onRowDoubleClick(event) {
-    this.editChild.createForm(event);
-    $('#editCourtMasterModal').modal('show');
+    // this.editChild.createForm(event);
+    // $('#editCourtMasterModal').modal('show');
   }
 
   onRowSelect(event) {
@@ -72,8 +72,8 @@ export class CourtComponent implements OnInit {
   }
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
-    this.actionColumnConfig.displayName = 'Action';
-    this.actionColumnConfig.showEdit = true;
+    // this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = false;
   }
 }
 

@@ -168,8 +168,8 @@ export class StageComponent implements OnInit {
     console.log(event);
   }
   onRowDoubleClick(event) {
-    this.editChild.createForm(event);
-    $('#editStageMasterModal').modal('show');
+    // this.editChild.createForm(event);
+    // $('#editStageMasterModal').modal('show');
   }
 
   onRowSelect(event) {
@@ -185,8 +185,8 @@ export class StageComponent implements OnInit {
 
   setActionConfig() {
     this.actionColumnConfig = new ActionColumnModel();
-    this.actionColumnConfig.displayName = 'Action';
-    this.actionColumnConfig.showEdit = true;
+    // this.actionColumnConfig.displayName = 'Action';
+    this.actionColumnConfig.showEdit = false;
   }
 
 }
