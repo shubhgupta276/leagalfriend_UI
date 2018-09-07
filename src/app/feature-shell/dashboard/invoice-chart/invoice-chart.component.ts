@@ -49,6 +49,11 @@ export class InvoicechartComponent implements OnInit {
       }
     );
 
+      $("#yearFilter").datepicker({
+        changeMonth: false,
+        changeYear: true
+      });
+
 
   }
 
@@ -191,7 +196,7 @@ export class InvoicechartComponent implements OnInit {
             var activePoints = this.chart.getElementsAtEvent(e);
             var firstPoint = activePoints[0];
             var month = this.chart.scales['x-axis-0'].ticks[firstPoint._index];
-
+            console.log(this.chart.scales['x-axis-0']);
             if (month != null && !isUndefined(month)) {
               $this.initInvoiceInstChart(month);
             }

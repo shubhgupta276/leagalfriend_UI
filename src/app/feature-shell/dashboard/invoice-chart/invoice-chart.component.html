@@ -4,9 +4,15 @@
     <h3 class="box-title">Invoice Amount</h3>
     <div class="graph-filter pull-right">
     <ul class="pagination pagination-sm inline">
-        <li>
+        <li >
+            <!-- <b (click)="selectInvoiceTab('year')">
+                <select style="height: 30px;" [style.background-color]="yearColor" (onchange)="updateInvoiceChart()" [(ngModel)]="selectedYear">
+                    <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                  
+                  </select>
+            </b> -->
           <a id="branchBillYear" [style.background-color]="yearColor" (click)="selectInvoiceTab('year');">
-            <b>Yearly</b>
+            <b>Yearly</b>           
           </a>
         </li>
         <li>
@@ -15,12 +21,12 @@
           </a>
         </li>
       </ul>
-      <!-- <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' :selectedTab=='year'}" >
+      <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' :selectedTab=='year'}" >
           <div class="input-group-addon">
             <i class="fa fa-calendar"></i>
           </div>
           <input type="text" class="form-control pull-right" id="invoiceFilter">
-        </div> -->
+        </div>
       <mat-form-field style="float:right" [ngClass]="{ 'hide' :selectedTab!='year'}">
           <mat-select placeholder="Year" (selectionChange)="updateInvoiceChart()" [(ngModel)]="selectedYear">
             <mat-option *ngFor="let year of years" [value]="year">

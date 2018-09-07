@@ -108,14 +108,16 @@ export class DashboardComponent implements OnInit {
       this._billingService.getBillingAmount(client, 'institutional').subscribe(
         data => {
           this.institutionalBilling = data;
-          this.BillingChart(null, null);
+          this._billingService.getBillingAmount(client, 'individual').subscribe(
+            data => {
+              this.individualBilling = data;
+              this.BillingChart(null, null);
+            }
+          );
+
         }
       );
-      this._billingService.getBillingAmount(client, 'individual').subscribe(
-        data => {
-          this.individualBilling = data;
-        }
-      );
+     
 
       this._institutionService.getInstitutions().subscribe(
         result => {
@@ -230,7 +232,13 @@ export class DashboardComponent implements OnInit {
       this.userService.getDailyLogin('month', client, null, null).subscribe(
         data => {
           this.dailyLoginData = data;
-          this.DailyChart(null, null);
+          this.userService.getDailyLoginUser('month', client, null, null).subscribe(
+            data => {
+              this.dailyUserLogin = data;
+              this.DailyChart(null, null);
+            },
+            error => console.log(error)
+          );
         },
         error => console.log(error)
       );
@@ -241,12 +249,7 @@ export class DashboardComponent implements OnInit {
         },
         error => console.log(error)
       );
-      this.userService.getDailyLoginUser('month', client, null, null).subscribe(
-        data => {
-          this.dailyUserLogin = data;
-        },
-        error => console.log(error)
-      );
+      
 
       this.userService.getDailyLoginUser('week', client, null, null).subscribe(
         data => {
@@ -336,10 +339,11 @@ export class DashboardComponent implements OnInit {
             this.userService.getDailyLoginUser('date', this.clientId, start, end).subscribe(
               result => {
                 data1 = result;
+                this.createDailyChart(data, data1, weeklyLabel);
               },
               error => console.log(error)
             );
-            this.createDailyChart(data, data1, weeklyLabel);
+           
           },
           error => console.log(error)
         );

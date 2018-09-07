@@ -159,15 +159,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
-                      <tr *ngIf="i<5">
+                      <tr *ngFor="let item of arrActiveEmployeeList |  slice:0:5; let i=index">
                         <td>{{i+1}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.designation}}</td>
                         <td>{{item.lastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
                         <td>{{item.totalLogin}}</td>
                       </tr>
-                    </ng-template> -->
                   </tbody>
                 </table>
               </div>
@@ -256,8 +254,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <ng-template ngFor let-item [ngForOf]="arrCaseList" let-i="index">
-                      <tr *ngIf="i<5">
+                      <tr *ngFor="let item of arrCaseList| slice:0:5; let i=index">
                         <td>{{item.caseId}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.resourceType}}</td>
@@ -266,7 +263,6 @@
                         <td>{{item.employee}}</td>
                         <td>{{item.lastUpdatedDate | date}}</td>
                       </tr>
-                    </ng-template> -->
                   </tbody>
                 </table>
               </div>
