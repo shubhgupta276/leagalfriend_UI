@@ -69,7 +69,7 @@ const featureShellRoutes: Routes = [
             { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },
             { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },
             { path: 'wallet', loadChildren: 'app/feature-shell/wallet/wallet.module#WalletModule' },
-            { path: 'admin', loadChildren: 'app/feature-shell/admin/admin.module#AdminModule' },
+            { path: '', loadChildren: 'app/feature-shell/admin/admin.module#AdminModule' },
             {
                 path: 'dashboard',
                 loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule',
