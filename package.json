@@ -54,6 +54,7 @@
     "ng2-input-autocomplete": "^0.1.0",
     "ng2-select": "^2.0.0",
     "ng4-click-outside": "^1.0.1",
+    "ngx-ckeditor": "^0.3.2",
     "ngx-loading": "^1.0.14",
     "ngx-pagination": "^3.2.0",
     "ngx-permissions": "^5.0.0",
