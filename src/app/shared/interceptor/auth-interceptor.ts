@@ -84,17 +84,17 @@ export class AuthInterceptor implements HttpInterceptor {
                 }
             });
         }
-        else if (req.url.indexOf('type') >= 0) {
+        // else if (req.url.indexOf('type') >= 0) {
 
-            const verifyEmailReq = req.clone({
-                headers: req.headers.set('Content-Type', 'application/json')
-            });
-            return next.handle(verifyEmailReq).do(event => {
-                if (event instanceof HttpResponse) {
-                    loadingContainer.style.display = 'none';
-                }
-            });
-        }
+        //     const verifyEmailReq = req.clone({
+        //         headers: req.headers.set('Content-Type', 'application/json')
+        //     });
+        //     return next.handle(verifyEmailReq).do(event => {
+        //         if (event instanceof HttpResponse) {
+        //             loadingContainer.style.display = 'none';
+        //         }
+        //     });
+        // }
 
         else if (req.url.indexOf('verifyEmail') >= 0) {
 
