@@ -43,7 +43,7 @@ export class FeatureShellComponent implements OnInit {
     private _apiGateway: ApiGateway,
     private _router: Router,
     private _calendarService: CalenderService,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
     private datePipe: DatePipe) {
     this.permissionsService.loadPermissions([localStorage.getItem('permission_level')]);
     sharedService.changeUpcomingEmitted.subscribe(Zone.current.wrap(
