@@ -318,14 +318,12 @@ export class InvoicechartComponent implements OnInit {
 
   updateInvoiceChart() {
     if(this.selectedBranch){
+
+    }
+    else{
       this.initInvoiceChart();
       this.initInvoiceInstChart(null);
     }
-    else{
-
-    }
-  
-
   }
 
   selectInvoiceTab(value) {
