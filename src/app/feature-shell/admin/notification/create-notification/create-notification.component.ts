@@ -83,6 +83,7 @@ export class CreateNotificationComponent implements OnInit {
   }
 
   isValid(): boolean {
+    console.log('call');
     if (this.selectedNotificationType && this.subject && this.description) {
       if (this.isOtherNotificationSelected() && this.arSelectedEmails && this.arSelectedEmails.length <= 0) {
         return false;
