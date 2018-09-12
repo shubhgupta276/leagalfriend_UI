@@ -1,32 +1,39 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../user/user.service';
 declare let $;
 @Component({
   selector: 'app-employeeactive',
   // templateUrl: './dashboard/employeeactive.html',
   //template: `<h1>employee active</h1>`
-  templateUrl:'./employeeactive.html'
+  templateUrl:'./employeeactive.html',
+  providers: [UserService]
 })
 export class EmployeeActiveComponent implements OnInit {
 
   arrActiveEmployeeList = [];
   arrCaseList = [];
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
-
-    this.MostActiveEmployeeList();
+    const client = '?userId=' + localStorage.getItem('client_id');
+    this.MostActiveEmployeeList(client);
     this.CaseUpdateList();
   }
 
-  MostActiveEmployeeList() {
-    this.arrActiveEmployeeList = [
-      { Name: 'Anup', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 75 },
-      { Name: 'Puneet', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 70 },
-      { Name: 'Vipin', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 60 },
-      { Name: 'Anil', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 55 },
-      { Name: 'Mohit', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 50 },
-      { Name: 'Sourav', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 33 },
-    ]
+  MostActiveEmployeeList(client) {
+    this.userService.getActiveEmployees(client).subscribe(
+      data => {
+        this.arrActiveEmployeeList = data;
+      }
+    );
+    // this.arrActiveEmployeeList = [
+    //   { Name: 'Anup', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 75 },
+    //   { Name: 'Puneet', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 70 },
+    //   { Name: 'Vipin', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 60 },
+    //   { Name: 'Anil', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 55 },
+    //   { Name: 'Mohit', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 50 },
+    //   { Name: 'Sourav', Designation: 'Software Engineer', LastLogin: new Date(), TotalLogin: 33 },
+    // ]
   }
   CaseUpdateList() {
     this.arrCaseList = [

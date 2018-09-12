@@ -1,4 +1,7 @@
-import { NgModule } from '@angular/core';
+import { OrganizationdetailComponent } from './systemdashboard/organizationdetail/organizationdetail.component';
+import { UserdetailComponent } from './systemdashboard/userdetail/userdetail.component';
+import { SystemdashboardComponent } from './systemdashboard/systemdashboard.component';
+import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
@@ -8,6 +11,7 @@ import { LFAuthantication } from '../shared/services/lfAuthantication-service';
 import { NgxPermissionsGuard, NgxPermissionsService } from 'ngx-permissions';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
+import { RecentcasesComponent } from './case/recentcases/recentcases.component';
 
 const featureShellRoutes: Routes = [
     {
@@ -69,6 +73,10 @@ const featureShellRoutes: Routes = [
             { path: 'Referral', loadChildren: 'app/feature-shell/referral/referral.module#ReferralModule' },
             { path: 'Notification', loadChildren: 'app/feature-shell/notification/notification.module#NotificationModule' },
             { path: 'wallet', loadChildren: 'app/feature-shell/wallet/wallet.module#WalletModule' },
+            { path: 'systemdash', component: SystemdashboardComponent },
+            { path: 'userdetails', component: UserdetailComponent },
+            { path: 'recentcases', component: RecentcasesComponent }, 
+            { path: 'orgdetails', component: OrganizationdetailComponent },
             { path: '', loadChildren: 'app/feature-shell/admin/admin.module#AdminModule' },
             {
                 path: 'dashboard',

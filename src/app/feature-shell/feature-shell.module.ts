@@ -1,3 +1,6 @@
+import { RecentcasesComponent } from './case/recentcases/recentcases.component';
+import { UserdetailComponent } from './systemdashboard/userdetail/userdetail.component';
+import { SystemdashboardComponent } from './systemdashboard/systemdashboard.component';
 import { NgModule } from '@angular/core';
 import { FeatureShellRoutingModule } from './feature-shell-routing.module';
 import { FeatureShellComponent } from './feature-shell.component';
@@ -9,10 +12,16 @@ import { FeatureShellComponent } from './feature-shell.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthService } from '../auth-shell/auth-shell.service';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { EmployeeActiveComponent } from './dashboard/EmployeeActive/employeeActive.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { SharedModule } from '../shared/shared.module';
+import { MatCardModule } from '@angular/material/card';
+import { SystemdashboardService } from './systemdashboard/systemdashboard.service';
+import { OrganizationdetailComponent } from './systemdashboard/organizationdetail/organizationdetail.component';
+import { MatTableModule } from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 // import { Ng2CompleterModule } from "ng2-completer";
 
 
@@ -25,12 +34,19 @@ import { SharedModule } from '../shared/shared.module';
     // InstitutionModule,
     SelectDropDownModule,
     FeatureShellRoutingModule,
-    CommonModule ,
+    CommonModule,
     SharedModule,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
-  declarations: [FeatureShellComponent, 
-    CalendarComponent, EmployeeActiveComponent
+  declarations: [FeatureShellComponent,
+    CalendarComponent, EmployeeActiveComponent,
+    SystemdashboardComponent,
+    UserdetailComponent,
+    OrganizationdetailComponent,
+    RecentcasesComponent
   ],
-  providers: [AuthService]
+  providers: [AuthService, SystemdashboardService]
 })
 export class FeatureShellModule { }

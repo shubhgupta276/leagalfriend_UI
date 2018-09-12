@@ -1,0 +1,67 @@
+<div class="content-wrapper">
+  <div class="page-heading">
+    {{title}}
+  </div>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- /.box -->
+
+        <div class="box">
+
+          <div class="box-body">
+            <div class="clearfix"></div>
+            <mat-card>
+            <table id="example1" class="table table-bordered table-hover" style="margin-top:5px">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Organization</th>
+                  <th>#</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of userList; let i = index">
+                  <tr>
+                    <td>{{i+1}}</td>
+                    <td>{{item.firstName}} {{item.lastName}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.organization}}</td>
+                    <td (click)="showMoreDetail(i)">More</td>
+                    <ul id="userInfo" style="display:none">
+                      <li>{{item.firstName}}</li>
+                    </ul>
+                  </tr>
+
+                  <tr *ngIf="i==moreIndex">
+                      <td [attr.colspan]="5">
+                          <ul >
+                              <li> <strong>Email ID : </strong>{{item.email}}</li>
+                              <li> <strong>Address : </strong>{{item.address.address1}}</li>
+                              <li> <strong>Mobile Number: </strong>{{item.mobileNumber}}</li>
+                              <li> <strong>subscriptionEndDate : </strong>{{item.subscriptionEndDate}}</li>
+                            </ul>
+                      </td>  
+                  </tr>
+                </ng-container>
+
+              </tbody>
+
+            </table>
+          </mat-card>
+      
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+
+  <!-- /.content -->
+</div>

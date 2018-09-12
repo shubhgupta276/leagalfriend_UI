@@ -26,7 +26,7 @@ export class InvoiceDownloadComponent implements OnInit {
     ngOnInit() {
         try {
             this._activatedRoute.params.subscribe((params) => {
-                // tslint:disable-next-line:radix
+                //  tslint:disable-next-line:radix
                 this.id = parseInt(params.id);
                 this.isInstitutionalTab = JSON.parse(params.institutional);
             });

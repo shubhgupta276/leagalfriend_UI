@@ -139,6 +139,13 @@ export class InstitutionService {
         );
     }
 
+    exportCaseFiles(data: any): Observable<any> {
+
+        return this.apiGateWay.postFile('institution/export/files',
+            data
+        );
+    }
+
     addRemarkHistory(data: any): Observable<any> {
         return this.apiGateWay.post<any>(
             institutionHistoryAddRemarks, data
