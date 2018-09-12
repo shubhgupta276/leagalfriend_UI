@@ -7,7 +7,7 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AddBranchDashboardComponent } from './add-branch/add-branch.component';
 import { AddInstitutionDashboardComponent } from './add-institution/add-institution.component';
-import {MatTabsModule, } from '@angular/material/tabs';
+import { MatTabsModule, } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material';
 import { InvoicechartComponent } from './invoice-chart/invoice-chart.component';
 import { DashboardTilesComponent } from './dashboard-tiles/dashboard-tiles.component';

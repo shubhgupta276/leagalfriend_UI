@@ -90,7 +90,7 @@ export class UserComponent implements OnInit {
   getUsers() {
 
     const $this = this;
-    const client = '?userId=' + localStorage.getItem('client_id');
+    const client = '?clientId=' + localStorage.getItem('client_id');
     if( this.serviceMode == 'customerdetails'){
     this.userService.getAllCustomers(client).subscribe(
       result => {
