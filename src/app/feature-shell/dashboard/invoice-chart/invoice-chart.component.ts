@@ -1,3 +1,4 @@
+import { BranchService } from './../../master/branch/branch.service';
 import { isUndefined } from 'util';
 import { InvoicesService } from './../../invoices/invoices.service';
 import { Component, OnInit } from '@angular/core';
@@ -7,7 +8,7 @@ declare let $;
   selector: 'app-invoice-chart.',
   templateUrl: './invoice-chart.component.html',
   styleUrls: ['./invoice-chart.component.css'],
-  providers: [InvoicesService]
+  providers: [InvoicesService, BranchService]
 })
 export class InvoicechartComponent implements OnInit {
 
@@ -24,14 +25,31 @@ export class InvoicechartComponent implements OnInit {
   endDate: string = '';
   invoicechart;
   invoicepiechart;
-  constructor(private _invoiceService: InvoicesService) { }
+  branches = [];
+  selectedBranch;
+  constructor(private _invoiceService: InvoicesService, private _branchService: BranchService) { }
 
   ngOnInit() {
     this.selectedYear = new Date().getFullYear().toString();
     this.generateYearList();
     this.initInvoiceChart();
     this.initInvoiceInstChart(null);
+    this.initBranches();
     var $this = this;
+
+
+    $('#yearpicker').datepicker({
+      format: 'yyyy',
+      viewMode: 'years',
+      minViewMode: 'years',
+    });
+    $('#yearpicker').change(function () {
+      console.log('yearpicker');
+      $this.selectedYear = $(this).val();
+      $this.updateInvoiceChart();
+    });
+
+
     $('#invoiceFilter').daterangepicker({
       autoApply: true,
       locale: {
@@ -49,16 +67,39 @@ export class InvoicechartComponent implements OnInit {
       }
     );
 
+    $("#yearFilter").datepicker({
+      changeMonth: false,
+      changeYear: true
+    });
 
+
+  }
+
+  
+  initBranches(){
+    this.branches = [];
+    this._branchService.getBranches().subscribe(
+        result => {
+          if (result != null) {
+            result = result.branches;
+            for(let i=0;i<result.length;i++){
+              this.branches.push(result[i].branchName);
+            }
+            
+          }
+        },
+        err => {
+          console.log(err);
+        });
   }
 
   getFormattedDate(value): string {
     var date = new Date(value);
-    return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
   }
   initInvoiceChart() {
 
-    if (this.endDate!='') {
+    if (this.endDate != '') {
       this._invoiceService.getInvoicesAmountByDate(this.selectedYear, this.endDate).subscribe(
         result => {
           this.data = result;
@@ -79,22 +120,22 @@ export class InvoicechartComponent implements OnInit {
   }
 
   initInvoiceInstChart(month) {
-    if (this.endDate!='') {
-      
-      this._invoiceService.getInvoicesInstAmountByDate(this.selectedYear,this.endDate,
-         month).subscribe(
-        result => {
-          this.invoiceInstitutionLabels = [];
-          this.invoiceInstitutionData = [];
-          for (let i = 0; i < result.length; i++) {
-            this.invoiceInstitutionLabels.push(result[i].x);
-            this.invoiceInstitutionData.push(result[i].y);
-          }
-          this.invoiceInstChart();
-        },
-        error => console.log(error)
+    if (this.endDate != '') {
 
-      );
+      this._invoiceService.getInvoicesInstAmountByDate(this.selectedYear, this.endDate,
+        month).subscribe(
+          result => {
+            this.invoiceInstitutionLabels = [];
+            this.invoiceInstitutionData = [];
+            for (let i = 0; i < result.length; i++) {
+              this.invoiceInstitutionLabels.push(result[i].x);
+              this.invoiceInstitutionData.push(result[i].y);
+            }
+            this.invoiceInstChart();
+          },
+          error => console.log(error)
+
+        );
     }
     else {
       this._invoiceService.getInvoicesInstAmount(this.selectedYear, month).subscribe(
@@ -191,7 +232,7 @@ export class InvoicechartComponent implements OnInit {
             var activePoints = this.chart.getElementsAtEvent(e);
             var firstPoint = activePoints[0];
             var month = this.chart.scales['x-axis-0'].ticks[firstPoint._index];
-
+            console.log(this.chart.scales['x-axis-0']);
             if (month != null && !isUndefined(month)) {
               $this.initInvoiceInstChart(month);
             }
@@ -204,7 +245,7 @@ export class InvoicechartComponent implements OnInit {
       };
       var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('invoice-chart');
       var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-    
+
       if (this.invoicechart) {
 
         this.invoicechart.destroy();
@@ -276,9 +317,13 @@ export class InvoicechartComponent implements OnInit {
   }
 
   updateInvoiceChart() {
-    this.initInvoiceChart();
-    this.initInvoiceInstChart(null);
+    if(this.selectedBranch){
 
+    }
+    else{
+      this.initInvoiceChart();
+      this.initInvoiceInstChart(null);
+    }
   }
 
   selectInvoiceTab(value) {

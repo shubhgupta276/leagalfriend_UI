@@ -20,7 +20,10 @@ import { MatCardModule } from '@angular/material/card';
 import { SystemdashboardService } from './systemdashboard/systemdashboard.service';
 import { OrganizationdetailComponent } from './systemdashboard/organizationdetail/organizationdetail.component';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
+// import { Ng2CompleterModule } from "ng2-completer";
+
 
 @NgModule({
   imports: [

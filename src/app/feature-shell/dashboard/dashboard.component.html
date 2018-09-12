@@ -28,78 +28,7 @@
   <!-- Main content -->
   <section class="content">
     <!-- Small boxes (Stat box) -->
-    <div class="row">
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-aqua">
-          <div class="inner">
-            <h3>150</h3>
-
-            <p>Total Customers</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-ios-people-outline"></i>
-          </div>
-          <a (click)="goToPage('/admin/userdetails','customerdetails')" class="small-box-footer">More info
-            <i class="fa fa-arrow-circle-right"></i>
-          </a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-green">
-          <div class="inner">
-            <h3>53
-              <!-- <sup style="font-size: 20px">%</sup> -->
-            </h3>
-
-            <p>Total Cases</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-stats-bars"></i>
-          </div>
-          <a routerLink='/admin/case' class="small-box-footer">More info
-            <i class="fa fa-arrow-circle-right"></i>
-          </a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-yellow">
-          <div class="inner">
-            <h3>44</h3>
-
-            <p>Daily Login</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-person-add"></i>
-          </div>
-          <a class="small-box-footer">More info
-            <i class="fa fa-arrow-circle-right"></i>
-          </a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-          <div class="inner">
-            <h3>65</h3>
-
-            <p>Total Billing</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-pie-graph"></i>
-          </div>
-          <a routerLink='/admin/billing' class="small-box-footer">More info
-            <i class="fa fa-arrow-circle-right"></i>
-          </a>
-        </div>
-      </div>
-      <!-- ./col -->
-    </div>
+    <app-dashboard-tiles></app-dashboard-tiles>
     <!-- /.row -->
     <!-- Main row -->
     <div class="row">
@@ -117,19 +46,20 @@
                 <a id="branchBillMonth" [style.background-color]="branchWiseMonthColor" (click)="selectBranchWiseTab('month');">DateWise</a>
               </li>
             </ul>
-            <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' :branchWiseTab=='year'}" >
+            <div class="input-group pull-right" style="width:250px"  >
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control pull-right" id="branchFilter">
+                <input type="text" class="form-control pull-right" [(ngModel)]="selectedYear" [ngClass]="{ 'hide' :branchWiseTab!='year'}" id="branchyearpicker">
+                <input type="text" class="form-control pull-right" [ngClass]="{ 'hide' :branchWiseTab=='year'}" id="branchFilter">
               </div>
-            <mat-form-field style="float:right" [ngClass]="{ 'hide' :branchWiseTab!='year'}">
+            <!-- <mat-form-field style="float:right" [ngClass]="{ 'hide' :branchWiseTab!='year'}">
                 <mat-select placeholder="Year" (selectionChange)="updateBranchChart()" [(ngModel)]="selectedYear">
                   <mat-option *ngFor="let year of years" [value]="year">
                     {{year}}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
+              </mat-form-field> -->
             </div>
         </div>
         <div class="box-body">
@@ -230,15 +160,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
-                      <tr *ngIf="i<5">
+                      <tr *ngFor="let item of arrActiveEmployeeList |  slice:0:5; let i=index">
                         <td>{{i+1}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.designation}}</td>
                         <td>{{item.lastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
                         <td>{{item.totalLogin}}</td>
                       </tr>
-                    </ng-template> -->
                   </tbody>
                 </table>
               </div>
@@ -327,8 +255,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <ng-template ngFor let-item [ngForOf]="arrCaseList" let-i="index">
-                      <tr *ngIf="i<5">
+                      <tr *ngFor="let item of arrCaseList| slice:0:5; let i=index">
                         <td>{{item.caseId}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.resourceType}}</td>
@@ -337,7 +264,6 @@
                         <td>{{item.employee}}</td>
                         <td>{{item.lastUpdatedDate | date}}</td>
                       </tr>
-                    </ng-template> -->
                   </tbody>
                 </table>
               </div>

@@ -30,7 +30,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgxPermissionsModule.forRoot(),
     BusyModule,
     NgbModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
   ],
   declarations: [
     AppComponent

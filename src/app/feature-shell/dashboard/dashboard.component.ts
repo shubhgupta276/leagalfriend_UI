@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   selectedBranch: any;
   branchWiseYearColor: string = 'orange';
   branchWiseMonthColor: string = '';
-  branches = ['Noida', 'Gurugram', 'Bengaluru'];
+  branches = [];
   branchInstitutionLabels = [];
   branchInstitutionData = [];
   pieChart: any;
@@ -108,14 +108,16 @@ export class DashboardComponent implements OnInit {
       this._billingService.getBillingAmount(client, 'institutional').subscribe(
         data => {
           this.institutionalBilling = data;
-          this.BillingChart(null, null);
+          this._billingService.getBillingAmount(client, 'individual').subscribe(
+            data => {
+              this.individualBilling = data;
+              this.BillingChart(null, null);
+            }
+          );
+
         }
       );
-      this._billingService.getBillingAmount(client, 'individual').subscribe(
-        data => {
-          this.individualBilling = data;
-        }
-      );
+     
 
       this._institutionService.getInstitutions().subscribe(
         result => {
@@ -123,15 +125,19 @@ export class DashboardComponent implements OnInit {
         }
       );
 
-
-      //this.CustomerChart(null, null);
-      //this.BankGraph();
-      //this.BranchChart();
-      // this.RecourseGraph();
       this.MostActiveEmployeeList(client);
       this.CaseUpdateList(client);
 
-      //this.ReceiptChart(null, null);
+      $('#branchyearpicker').datepicker({
+        format: 'yyyy',
+        viewMode: 'years',
+        minViewMode: 'years',
+      });
+      $('#branchyearpicker').change(function () {
+        $this.selectedYear = $(this).val();
+        $this.updateBranchChart();
+      });
+
       $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter,#branchFilter').daterangepicker({
         autoApply: true,
         locale: {
@@ -230,7 +236,13 @@ export class DashboardComponent implements OnInit {
       this.userService.getDailyLogin('month', client, null, null).subscribe(
         data => {
           this.dailyLoginData = data;
-          this.DailyChart(null, null);
+          this.userService.getDailyLoginUser('month', client, null, null).subscribe(
+            data => {
+              this.dailyUserLogin = data;
+              this.DailyChart(null, null);
+            },
+            error => console.log(error)
+          );
         },
         error => console.log(error)
       );
@@ -241,12 +253,7 @@ export class DashboardComponent implements OnInit {
         },
         error => console.log(error)
       );
-      this.userService.getDailyLoginUser('month', client, null, null).subscribe(
-        data => {
-          this.dailyUserLogin = data;
-        },
-        error => console.log(error)
-      );
+      
 
       this.userService.getDailyLoginUser('week', client, null, null).subscribe(
         data => {
@@ -336,10 +343,11 @@ export class DashboardComponent implements OnInit {
             this.userService.getDailyLoginUser('date', this.clientId, start, end).subscribe(
               result => {
                 data1 = result;
+                this.createDailyChart(data, data1, weeklyLabel);
               },
               error => console.log(error)
             );
-            this.createDailyChart(data, data1, weeklyLabel);
+           
           },
           error => console.log(error)
         );
@@ -1070,10 +1078,6 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  goToPage(url, mode) {
-    this._router.navigate([url, { mode: mode }]);
   }
 
   changeColor(selectedId1, id2, id3) {

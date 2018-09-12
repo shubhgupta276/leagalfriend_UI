@@ -1,13 +1,19 @@
 <div class="box box-info">
 <div class="box-header">
     <i class="fa fa-inbox"></i>
-    <h3 class="box-title">Invoice</h3>
+    <h3 class="box-title">Invoice Amount</h3>
     <div class="graph-filter pull-right">
     <ul class="pagination pagination-sm inline">
-        <li>
+        <li >
+            <!-- <b (click)="selectInvoiceTab('year')">
+                <select style="height: 30px;" [style.background-color]="yearColor" (onchange)="updateInvoiceChart()" [(ngModel)]="selectedYear">
+                    <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                  
+                  </select>
+            </b> -->
           <a id="branchBillYear" [style.background-color]="yearColor" (click)="selectInvoiceTab('year');">
-            <b>Yearly</b>
-          </a>
+            <b>Yearly</b>    
+          </a> 
         </li>
         <li>
           <a id="branchBillMonth" [style.background-color]="dateColor" (click)="selectInvoiceTab('date');">
@@ -15,27 +21,36 @@
           </a>
         </li>
       </ul>
-      <!-- <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' :selectedTab=='year'}" >
+      <div class="input-group pull-right" style="width:250px" >
           <div class="input-group-addon">
             <i class="fa fa-calendar"></i>
           </div>
-          <input type="text" class="form-control pull-right" id="invoiceFilter">
-        </div> -->
-      <mat-form-field style="float:right" [ngClass]="{ 'hide' :selectedTab!='year'}">
+          <input type="text" class="form-control pull-right" [(ngModel)]="selectedYear" [ngClass]="{ 'hide' :selectedTab!='year'}" id="yearpicker">
+          <input type="text" class="form-control pull-right" [ngClass]="{ 'hide' :selectedTab=='year'}" id="invoiceFilter">
+        </div>
+      <!-- <mat-form-field style="float:right" [ngClass]="{ 'hide' :selectedTab!='year'}">
           <mat-select placeholder="Year" (selectionChange)="updateInvoiceChart()" [(ngModel)]="selectedYear">
             <mat-option *ngFor="let year of years" [value]="year">
               {{year}}
             </mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
   </div>
   <div class="box-body">
       <div class="col-md-6">
+        <mat-form-field style="float:right">
+          <mat-select placeholder="All Branches" (selectionChange)="updateInvoiceChart()" [(ngModel)]="selectedBranch">
+            <mat-option [value]="All">All Branches</mat-option>
+            <mat-option *ngFor="let branch of branches" [value]="branch">
+              {{branch}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
           <canvas id="invoice-chart" style="height: 450px; width: 950px;"></canvas>
       </div>
       <div class="col-md-6">
-        <canvas id="invoice-institution-chart"></canvas>
+        <canvas id="invoice-institution-chart" ></canvas>
       </div>
     </div>
   </div>
