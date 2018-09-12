@@ -46,19 +46,20 @@
                 <a id="branchBillMonth" [style.background-color]="branchWiseMonthColor" (click)="selectBranchWiseTab('month');">DateWise</a>
               </li>
             </ul>
-            <div class="input-group pull-right" style="width:250px" [ngClass]="{ 'hide' :branchWiseTab=='year'}" >
+            <div class="input-group pull-right" style="width:250px"  >
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control pull-right" id="branchFilter">
+                <input type="text" class="form-control pull-right" [(ngModel)]="selectedYear" [ngClass]="{ 'hide' :branchWiseTab!='year'}" id="branchyearpicker">
+                <input type="text" class="form-control pull-right" [ngClass]="{ 'hide' :branchWiseTab=='year'}" id="branchFilter">
               </div>
-            <mat-form-field style="float:right" [ngClass]="{ 'hide' :branchWiseTab!='year'}">
+            <!-- <mat-form-field style="float:right" [ngClass]="{ 'hide' :branchWiseTab!='year'}">
                 <mat-select placeholder="Year" (selectionChange)="updateBranchChart()" [(ngModel)]="selectedYear">
                   <mat-option *ngFor="let year of years" [value]="year">
                     {{year}}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
+              </mat-form-field> -->
             </div>
         </div>
         <div class="box-body">

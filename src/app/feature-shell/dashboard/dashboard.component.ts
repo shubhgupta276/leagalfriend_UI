@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   selectedBranch: any;
   branchWiseYearColor: string = 'orange';
   branchWiseMonthColor: string = '';
-  branches = ['Noida', 'Gurugram', 'Bengaluru'];
+  branches = [];
   branchInstitutionLabels = [];
   branchInstitutionData = [];
   pieChart: any;
@@ -125,15 +125,19 @@ export class DashboardComponent implements OnInit {
         }
       );
 
-
-      //this.CustomerChart(null, null);
-      //this.BankGraph();
-      //this.BranchChart();
-      // this.RecourseGraph();
       this.MostActiveEmployeeList(client);
       this.CaseUpdateList(client);
 
-      //this.ReceiptChart(null, null);
+      $('#branchyearpicker').datepicker({
+        format: 'yyyy',
+        viewMode: 'years',
+        minViewMode: 'years',
+      });
+      $('#branchyearpicker').change(function () {
+        $this.selectedYear = $(this).val();
+        $this.updateBranchChart();
+      });
+
       $('#dailyFilter , #customerFilter , #caseFilter , #referralFilter,#branchFilter').daterangepicker({
         autoApply: true,
         locale: {
