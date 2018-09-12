@@ -322,10 +322,10 @@ export class EditCaseComponent implements OnInit {
         this.childParentText = this.childcaseSelectedauto[0].text;
       }
     }
+
     this.editCaseForm = this.fb.group({
-
+      title: [c == null ? null : c.title, Validators.required],
       caseId: [c == null ? null : c.caseId, Validators.required],
-
       courtCaseId: [c == null ? null : c.courtCaseId],
       recourse: [c == null ? null : c.recourseId],
       manager: [c == null ? null : c.managerId],
@@ -358,8 +358,8 @@ export class EditCaseComponent implements OnInit {
         this.editCaseForm.disable();
         this._disabledV = '1';
         this.disabled = true;
-        // $("#Compliance").hide();
-        $("#btnSubmit").hide();
+        // $('#Compliance').hide();
+        $('#btnSubmit').hide();
 
       }
     }, 200);
@@ -487,8 +487,8 @@ export class EditCaseComponent implements OnInit {
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
-      // $("#Compliance").hide();
-      $("#btnSubmit").hide();
+      // $('#Compliance').hide();
+      $('#btnSubmit').hide();
 
     }
   }
@@ -640,7 +640,7 @@ export class EditCaseComponent implements OnInit {
       result => {
 
         if (result == 0) {
-          $("#spnEmployee").show();
+          $('#spnEmployee').show();
         }
 
         result.forEach(function (value) {
@@ -666,7 +666,7 @@ export class EditCaseComponent implements OnInit {
       result => {
 
         if (result == 0) {
-          $("#spnEmployee").show();
+          $('#spnEmployee').show();
         }
         result.forEach(function (value) {
 
@@ -736,7 +736,7 @@ export class EditCaseComponent implements OnInit {
         },
 
         legalCase: {
-          id: this.caseId.substr(this.caseId.lastIndexOf("/") + 1),
+          id: this.caseId.substr(this.caseId.lastIndexOf('/') + 1),
         },
 
 
@@ -748,11 +748,11 @@ export class EditCaseComponent implements OnInit {
           if (result.body.httpCode == 200) { //success
 
             $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
-            $(window.location.href = "/admin/case");
+            $(window.location.href = '/admin/case');
           }
           else {
-            var c = confirm("Case can not be moved under compliance as no compliance mapped against recourse code & stage of this case?");
-            var status = document.getElementById("content");
+            var c = confirm('Case can not be moved under compliance as no compliance mapped against recourse code & stage of this case?');
+            var status = document.getElementById('content');
 
             $('#Compliance').prop('checked', false);
             $('#editCaseModal').modal('hide');
@@ -766,7 +766,7 @@ export class EditCaseComponent implements OnInit {
   }
   closeCase() {
 
-    var id = this.caseId;
+    const id = this.caseId;
 
     this.authService.closeCase(id).subscribe(
 
@@ -774,11 +774,7 @@ export class EditCaseComponent implements OnInit {
 
         $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
         $('#editCaseModal').modal('hide');
-        $(window.location.href = "/admin/case");
-        //this.getRunningCase();
-
-        //}
-
+        $(window.location.href = '/admin/case');
       },
       err => {
         console.log(err);
@@ -800,9 +796,9 @@ export class EditCaseComponent implements OnInit {
         // tslint:disable-next-line:no-string-throw
         throw 'enter remarks';
       }
-
       const x = {
         'id': this.id,
+        title: data.title,
         'caseId': this.caseId,
         'courtCaseId': data.courtCaseId,
         // tslint:disable-next-line:radix
@@ -826,17 +822,26 @@ export class EditCaseComponent implements OnInit {
       };
       objEditCase.append('legalCase', JSON.stringify(x));
       objEditCase.append('file', this.myDocument);
-      if (!x.completionDate) {
-        this.updateCase(objEditCase, data);
-      } else {
-        if (confirm('Are you sure you want to close this case?')) {
+      if (this.isValid(data)) {
+        if (!x.completionDate) {
           this.updateCase(objEditCase, data);
+        } else {
+          if (confirm('Are you sure you want to close this case?')) {
+            this.updateCase(objEditCase, data);
+          }
         }
       }
 
     } catch (err) {
       console.log(err);
     }
+  }
+
+  isValid(data: any): boolean {
+    if (!data.title || data.title.length <= 0) {
+      return false;
+    }
+    return true;
   }
 
   updateCase(objEditCase, data) {
@@ -899,16 +904,16 @@ export class EditCaseComponent implements OnInit {
   downloadCaseFile(data) {
     this.authService.downloadFile(data.id).subscribe(
       (result) => {
-        let blob = new Blob([result]);
+        const blob = new Blob([result]);
         saveAs(blob, data.fileName);
       },
       err => {
         console.log(err);
-      })
-  };
+      });
+  }
 
   closeModal() {
-    $("#closebtn1").click();
+    $('#closebtn1').click();
   }
 
 

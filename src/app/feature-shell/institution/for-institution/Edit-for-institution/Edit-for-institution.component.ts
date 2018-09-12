@@ -1,16 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { debuglog } from 'util';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { matchValidator } from '../../../../shared/Utility/util-custom.validation';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { InstitutionService } from '../../institution.service';
-import { Institution } from '../../institution';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { saveAs } from 'file-saver';
 import { StageService } from '../../../master/stage/stage.service';
 import { SharedService } from '../../../../shared/services/shared.service';
-import { parse } from 'querystring';
+import { ListInstitutionFieldShowConfig } from '../../institution-field-show-config';
 declare let $;
 
 @Component({
@@ -38,6 +35,8 @@ export class EditForInstitutionComponent implements OnInit {
   isPageLoad: boolean = true;
   isViewOnlyForUser: boolean = false;
   branchId: any;
+  listFieldMapping: any[] = ListInstitutionFieldShowConfig;
+  isViewMode: boolean = false;
   constructor(
     private fb: FormBuilder,
     private _institutionService: InstitutionService,
@@ -242,8 +241,6 @@ export class EditForInstitutionComponent implements OnInit {
         } else {
           this.disableForm(false);
         }
-        this.editForInstitutionForm.controls['recourse'].disable();
-        // this.editForInstitutionForm.controls['legalCaseId'].disable();
       }, 10);
     }
   }
@@ -256,6 +253,7 @@ export class EditForInstitutionComponent implements OnInit {
         subscribe((result) => {
           if (result) {
             this.caseFiles = result.caseFiles;
+            this.listFieldMapping = this.listFieldMapping.filter(x => x.key.toLowerCase() === result.recourse.toLowerCase());
             this.createForm(result);
           }
         },
@@ -263,6 +261,15 @@ export class EditForInstitutionComponent implements OnInit {
             console.log(err);
           });
     }
+  }
+
+  showField(fieldName: string): boolean {
+    if (this.editData) {
+      if (this.listFieldMapping.length === 0 || this.listFieldMapping.find(x => x.value.toLowerCase() === fieldName.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   submitEditinstitutionUser(data: any) {
@@ -317,21 +324,27 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   disableForm(isDisable) { // disable form if compliance is true
-    if (isDisable) {
-      this.editForInstitutionForm.disable();
-    } else {
-      this.editForInstitutionForm.enable();
-    }
-    this.myFileUpload.nativeElement.disabled = isDisable;
+    setTimeout(() => {
+      this.isViewMode = isDisable;
+      if (isDisable) {
+        this.editForInstitutionForm.disable();
+      } else {
+        this.editForInstitutionForm.enable();
+      }
+      if (this.myFileUpload) {
+        this.myFileUpload.nativeElement.disabled = isDisable;
+      }
+      this.editForInstitutionForm.controls['recourse'].disable();
+    }, 200);
   }
 
   changeCompliance(isChecked) {
-    this.isCompliance = isChecked;
     if (isChecked) {
       if (confirm('Do you want to put this case into compliance?')) {
         this.updateCaseToCompliance();
       }
     } else {
+      this.isCompliance = isChecked;
       this.disableForm(isChecked);
     }
   }
@@ -357,6 +370,7 @@ export class EditForInstitutionComponent implements OnInit {
       (result) => {
         result = result.body;
         if (result.httpCode === 200) {
+          this.isCompliance = true;
           this.editData.compliance = true;
           // this.submitEditinstitutionUser(this.editData);
           $.toaster({ priority: 'success', title: 'Success', message: result.successMessage });
@@ -425,14 +439,15 @@ export class EditForInstitutionComponent implements OnInit {
   }
 
   deleteFile(data) {
-
-    this._institutionService.deleteFile(data.id).subscribe(
-      (result) => {
-        this.caseFiles = this.caseFiles.filter(x => x.id != data.id);
-      },
-      err => {
-        console.log(err);
-      });
+    if (confirm('Are you sure you want to delete?')) {
+      this._institutionService.deleteFile(data.id).subscribe(
+        (result) => {
+          this.caseFiles = this.caseFiles.filter(x => x.id !== data.id);
+        },
+        err => {
+          console.log(err);
+        });
+    }
   }
 
   downloadFile(data) {

@@ -77,6 +77,7 @@ const featureShellRoutes: Routes = [
             { path: 'userdetails', component: UserdetailComponent },
             { path: 'recentcases', component: RecentcasesComponent }, 
             { path: 'orgdetails', component: OrganizationdetailComponent },
+            { path: '', loadChildren: 'app/feature-shell/admin/admin.module#AdminModule' },
             {
                 path: 'dashboard',
                 loadChildren: 'app/feature-shell/dashboard/dashboard.module#DashboardModule',

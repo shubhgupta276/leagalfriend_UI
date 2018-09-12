@@ -1,434 +1,414 @@
 <style>
-  .blink_me {
-    -webkit-animation-name: blinker;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-iteration-count: infinite;
-
-    -moz-animation-name: blinker;
-    -moz-animation-duration: 1s;
-    -moz-animation-timing-function: linear;
-    -moz-animation-iteration-count: infinite;
-
-    animation-name: blinker;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-
-  @-moz-keyframes blinker {
-    0% {
-      opacity: 1.0;
+    .blink_me {
+      -webkit-animation-name: blinker;
+      -webkit-animation-duration: 1s;
+      -webkit-animation-timing-function: linear;
+      -webkit-animation-iteration-count: infinite;
+  
+      -moz-animation-name: blinker;
+      -moz-animation-duration: 1s;
+      -moz-animation-timing-function: linear;
+      -moz-animation-iteration-count: infinite;
+  
+      animation-name: blinker;
+      animation-duration: 1s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
     }
-    50% {
-      opacity: 0.0;
+  
+    @-moz-keyframes blinker {
+      0% {
+        opacity: 1.0;
+      }
+      50% {
+        opacity: 0.0;
+      }
+      100% {
+        opacity: 1.0;
+      }
     }
-    100% {
-      opacity: 1.0;
+  
+    @-webkit-keyframes blinker {
+      0% {
+        opacity: 1.0;
+      }
+      50% {
+        opacity: 0.0;
+      }
+      100% {
+        opacity: 1.0;
+      }
     }
-  }
-
-  @-webkit-keyframes blinker {
-    0% {
-      opacity: 1.0;
+  
+    @keyframes blinker {
+      0% {
+        opacity: 1.0;
+      }
+      50% {
+        opacity: 0.0;
+      }
+      100% {
+        opacity: 1.0;
+      }
     }
-    50% {
-      opacity: 0.0;
-    }
-    100% {
-      opacity: 1.0;
-    }
-  }
-
-  @keyframes blinker {
-    0% {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.0;
-    }
-    100% {
-      opacity: 1.0;
-    }
-  }
-</style>
-<header class="main-header">
-
-  <!-- Logo -->
-  <a routerLink="dashboard" class="logo">
-    <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini">
-      <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
-    </span>
-    <!-- <b>A</b>LT</span> -->
-    <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg">
-      <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
-      <b>Legal</b>Friend</span>
-  </a>
-
-  <!-- Header Navbar: style can be found in header.less -->
-  <nav class="navbar navbar-static-top">
-    <!-- Sidebar toggle button-->
-    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-      <span class="sr-only">Toggle navigation</span>
+  </style>
+  <header class="main-header">
+  
+    <!-- Logo -->
+    <a routerLink="dashboard" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini">
+        <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
+      </span>
+      <!-- <b>A</b>LT</span> -->
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">
+        <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
+        <b>Legal</b>Friend</span>
     </a>
-    <div>
-    </div>
-
-    <!-- Navbar Right Menu -->
-    <div class="navbar-custom-menu">
-      <div class='pm-button' style="float: left;" id=flash *ngIf="showFlash">
-        <span class="blink_me" style="color:red;"> Subscription is going to end on {{subscriptionEndDate.subscriptionEndDate}}</span>
-        <a href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>
-          <img src='https://www.payumoney.com/media/images/payby_payumoney/new_buttons/21.png' />
-        </a>
+  
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <div>
       </div>
-      <ul class="nav navbar-nav">
-        <!-- Notifications: style can be found in dropdown.less -->
-        <li>
-          <div style="width: 200px;padding: 9px;" *ngIf="arBranches && arBranches.length > 0">
-            <app-custom-single-select [data]="arBranches" [config]="branchConfig" (valueChanged)="changeBranch($event)"></app-custom-single-select>
-            <!-- <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown> -->
-          </div>
-        </li>
-        <li class="dropdown notifications-menu" style="display: none">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-bell-o"></i>
-            <span class="label label-warning">10</span>
+  
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <div class='pm-button' style="float: left;" id=flash *ngIf="showFlash">
+          <span class="blink_me" style="color:red;"> Subscription is going to end on {{subscriptionEndDate.subscriptionEndDate}}</span>
+          <a href='https://www.payumoney.com/paybypayumoney/#/B734527DC5DCFE348F1AC3A66A2C48BD'>
+            <img src='https://www.payumoney.com/media/images/payby_payumoney/new_buttons/21.png' />
           </a>
-          <ul class="dropdown-menu">
-            <li class="header">You have 10 notifications</li>
-            <li>
-              <!-- inner menu: contains the actual data -->
-              <ul class="menu">
-                <li>
-                  <a href="#">
-                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the page and may cause design problems
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-users text-red"></i> 5 new members joined
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-user text-red"></i> You changed your username
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="footer">
-              <a href="/admin/Notification">View all</a>
-            </li>
-          </ul>
-        </li>
-        <!-- Tasks: style can be found in dropdown.less -->
-        <li class="dropdown tasks-menu" style="display: none">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-flag-o"></i>
-            <span class="label label-danger">9</span>
-          </a>
-          <ul class="dropdown-menu">
-            <li class="header">You have 9 tasks</li>
-            <li>
-              <!-- inner menu: contains the actual data -->
-              <ul class="menu">
-                <li>
-                  <!-- Task item -->
-                  <a href="#">
-                    <h3>
-                      Design some buttons
-                      <small class="pull-right">20%</small>
-                    </h3>
-                    <div class="progress xs">
-                      <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                        <span class="sr-only">20% Complete</span>
+        </div>
+        <ul class="nav navbar-nav">
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li>
+            <div style="width: 200px;padding: 9px;" *ngIf="arBranches && arBranches.length > 0">
+              <app-custom-single-select [data]="arBranches" [config]="branchConfig" (valueChanged)="changeBranch($event)"></app-custom-single-select>
+              <!-- <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown> -->
+            </div>
+          </li>
+          <li class="dropdown notifications-menu" *ngIf="arNotifications && arNotifications.length>0">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning">{{arNotifications.length}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header"><strong>You have {{arNotifications.length}} notifications</strong></li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li *ngFor="let item of arNotifications">
+                    <a routerLink="/admin/Notification">
+                      <i></i> {{item.subject}}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="footer">
+                <a routerLink="/admin/Notification">View all</a>
+              </li>
+            </ul>
+          </li>
+          <!-- Tasks: style can be found in dropdown.less -->
+          <li class="dropdown tasks-menu" style="display: none">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-flag-o"></i>
+              <span class="label label-danger">9</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have 9 tasks</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li>
+                    <!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Design some buttons
+                        <small class="pull-right">20%</small>
+                      </h3>
+                      <div class="progress xs">
+                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                          <span class="sr-only">20% Complete</span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
-                <!-- end task item -->
-                <li>
-                  <!-- Task item -->
-                  <a href="#">
-                    <h3>
-                      Create a nice theme
-                      <small class="pull-right">40%</small>
-                    </h3>
-                    <div class="progress xs">
-                      <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                        <span class="sr-only">40% Complete</span>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                  <li>
+                    <!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Create a nice theme
+                        <small class="pull-right">40%</small>
+                      </h3>
+                      <div class="progress xs">
+                        <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                          <span class="sr-only">40% Complete</span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
-                <!-- end task item -->
-                <li>
-                  <!-- Task item -->
-                  <a href="#">
-                    <h3>
-                      Some task I need to do
-                      <small class="pull-right">60%</small>
-                    </h3>
-                    <div class="progress xs">
-                      <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                        <span class="sr-only">60% Complete</span>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                  <li>
+                    <!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Some task I need to do
+                        <small class="pull-right">60%</small>
+                      </h3>
+                      <div class="progress xs">
+                        <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                          <span class="sr-only">60% Complete</span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
-                <!-- end task item -->
-                <li>
-                  <!-- Task item -->
-                  <a href="#">
-                    <h3>
-                      Make beautiful transitions
-                      <small class="pull-right">80%</small>
-                    </h3>
-                    <div class="progress xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0"
-                        aria-valuemax="100">
-                        <span class="sr-only">80% Complete</span>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                  <li>
+                    <!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Make beautiful transitions
+                        <small class="pull-right">80%</small>
+                      </h3>
+                      <div class="progress xs">
+                        <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                          aria-valuemax="100">
+                          <span class="sr-only">80% Complete</span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                </ul>
+              </li>
+              <li class="footer">
+                <a href="#">View all tasks</a>
+              </li>
+            </ul>
+          </li>
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{userDetails.Name}}</span>
+            </a>
+            <ul class="dropdown-menu" style="width:173px;">
+  
+              <li class="profile-li">
+                <a routerLink="profile">Profile</a>
+              </li>
+              <li class="profile-li">
+                <a routerLink="../admin/wallet">Wallet
+                  <span class="pull-right">₹150.00</span>
+                </a>
+              </li>
+              <li class="profile-li">
+                <a routerLink="../admin/Referral">Referal</a>
+              </li>
+              <li class="profile-li">
+                <a routerLink="../admin/feedback">Feedback/Suggestion</a>
+              </li>
+              <li class="profile-li">
+                <a (click)="signOutButton()">Sign out</a>
+              </li>
+              <!-- Menu Footer-->
+              <!-- <li class="user-footer">
+                <div class="pull-left">
+                  <a routerLink="profile" class="btn btn-default btn-flat">Profile</a>
+                </div>
+  
+              </li>
+  
+              <li class="user-footer">
+  
+                <div class="pull-left">
+                  <a routerLink="../admin/wallet" class="btn btn-default btn-flat">Wallet $250.00</a>
+                </div>
+  
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a routerLink="../admin/referel" class="btn btn-default btn-flat">Referal</a>
+                </div>
+  
+              </li>
+              <li class="user-footer">
+  
+                <div class="pull-left">
+                  <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li> -->
+            </ul>
+          </li>
+        </ul>
+      </div>
+  
+    </nav>
+  </header>
+  <aside class="main-sidebar" style="min-height: 100%;">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+  
+      <ul class="sidebar-menu" data-widget="tree">
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
+          <li [routerLinkActive]="['active']">
+            <a routerLink="dashboard">
+              <i class="fa fa-dashboard"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+        </ng-template>
+  
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
+          <li [routerLinkActive]="['active']">
+            <a routerLink="user">
+              <i class="fa fa-users"></i>
+              <span>User Management</span>
+            </a>
+          </li>
+        </ng-template>
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER', 'CLIENT_LAWYER_Institutional',
+        'CLIENT_LAWYER_Individual', 'CLIENT_LAWYER_FIRM_Individual']">
+          <li [routerLinkActive]="['active']">
+            <a routerLink="case">
+              <i class="fa fa-balance-scale"></i>
+              <span>Case Management</span>
+            </a>
+          </li>
+        </ng-template>
+  
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
+          <li class="treeview" [routerLinkActive]="['active']">
+            <a (click)="showmastermenu()">
+              <i class="fa fa-laptop"></i>
+              <span>Master Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu" id="limastermenu">
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/court">
+                  <i class="fa fa-circle-o"></i> Court</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/resource">
+                  <i class="fa fa-circle-o"></i> Recourse</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/stage">
+                  <i class="fa fa-circle-o"></i> Recourse Stages</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/compliance">
+                  <i class="fa fa-circle-o"></i> Compliance</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/branch">
+                  <i class="fa fa-circle-o"></i> Branch</a>
+              </li>
+              <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
+                <li [routerLinkActive]="['active']">
+                  <a routerLink="master/institution">
+                    <i class="fa fa-circle-o"></i> Institution</a>
                 </li>
-                <!-- end task item -->
-              </ul>
-            </li>
-            <li class="footer">
-              <a href="#">View all tasks</a>
-            </li>
-          </ul>
-        </li>
-        <!-- User Account: style can be found in dropdown.less -->
-        <li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-            <span class="hidden-xs">{{userDetails.Name}}</span>
-          </a>
-          <ul class="dropdown-menu" style="width:173px;">
-
-            <li class="profile-li">
-              <a routerLink="profile">Profile</a>
-            </li>
-            <li class="profile-li">
-              <a routerLink="../admin/wallet">Wallet
-                <span class="pull-right">₹150.00</span>
-              </a>
-            </li>
-            <li class="profile-li">
-              <a routerLink="../admin/Referral">Referal</a>
-            </li>
-            <li class="profile-li">
-              <a routerLink="../admin/feedback">Feedback/Suggestion</a>
-            </li>
-            <li class="profile-li">
-              <a (click)="signOutButton()">Sign out</a>
-            </li>
-            <!-- Menu Footer-->
-            <!-- <li class="user-footer">
-              <div class="pull-left">
-                <a routerLink="profile" class="btn btn-default btn-flat">Profile</a>
-              </div>
-
-            </li>
-
-            <li class="user-footer">
-
-              <div class="pull-left">
-                <a routerLink="../admin/wallet" class="btn btn-default btn-flat">Wallet $250.00</a>
-              </div>
-
-            </li>
-            <li class="user-footer">
-              <div class="pull-left">
-                <a routerLink="../admin/referel" class="btn btn-default btn-flat">Referal</a>
-              </div>
-
-            </li>
-            <li class="user-footer">
-
-              <div class="pull-left">
-                <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
-              </div>
-            </li> -->
-          </ul>
-        </li>
+              </ng-template>
+              <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM','ADMIN_LAWYER']">
+                <li [routerLinkActive]="['active']">
+                  <a routerLink="master/billing">
+                    <i class="fa fa-circle-o"></i> Billing</a>
+                </li>
+              </ng-template>
+  
+  
+              <li [routerLinkActive]="['active']">
+                <a routerLink="master/templates">
+                  <i class="fa fa-circle-o"></i> Document Templates</a>
+              </li>
+              <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
+                <li [routerLinkActive]="['active']">
+                  <a routerLink="master/invoice">
+                    <i class="fa fa-circle-o"></i> Invoice Templates</a>
+                </li>
+              </ng-template>
+  
+            </ul>
+          </li>
+        </ng-template>
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM','ADMIN_LAWYER']">
+          <li [routerLinkActive]="['active']">
+            <a routerLink="billing">
+              <i class="fa fa-dollar"></i>
+              <span>Billing Management</span>
+            </a>
+          </li>
+        </ng-template>
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM', 'CLIENT_LAWYER_FIRM_Institutional']">
+          <li class="treeview" [routerLinkActive]="['active']">
+            <a (click)="showinstitutionalmenu()">
+              <i class="fa fa-institution"></i>
+              <span>Institutional Clients</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu" id="liinstitutionalmenu">
+              <li [routerLinkActive]="['active']">
+                <a routerLink="institution/againstinstitution">
+                  <i class="fa fa-circle-o"></i>Against Institution</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a routerLink="institution/forinstitution">
+                  <i class="fa fa-circle-o"></i>For Institution</a>
+              </li>
+            </ul>
+          </li>
+        </ng-template>
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
+          <li [routerLinkActive]="['active']">
+            <a routerLink="invoices">
+              <i class="fa fa-file-text"></i>
+              <span>Invoices</span>
+            </a>
+          </li>
+        </ng-template>
+        <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
+        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
+          <li [routerLinkActive]="['active']">
+            <a routerLink="calendar">
+              <i class="fa fa-calendar"></i>
+              <span>Calendar</span>
+              <span class="pull-right-container">
+                <ng-container *ngFor="let item of arrTodayEvents">
+                  <small class="label pull-right" *ngIf="item.length>0" [style.backgroundColor]="item[0].backgroundColor">{{item.length}}</small>
+                </ng-container>
+  
+              </span>
+            </a>
+          </li>
+        </ng-template>
       </ul>
-    </div>
-
-  </nav>
-</header>
-<aside class="main-sidebar" style="min-height: 100%;">
-  <!-- sidebar: style can be found in sidebar.less -->
-  <section class="sidebar">
-    <!-- sidebar menu: : style can be found in sidebar.less -->
-
-    <ul class="sidebar-menu" data-widget="tree">
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
-      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
-        <li [routerLinkActive]="['active']">
-        <a routerLink="dashboard">
-          <i class="fa fa-dashboard"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-      </ng-template>
-      
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
-        <li [routerLinkActive]="['active']">
-          <a routerLink="user">
-            <i class="fa fa-users"></i>
-            <span>User Management</span>
-          </a>
-        </li>
-      </ng-template>
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
-      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER', 'CLIENT_LAWYER_Institutional',
-      'CLIENT_LAWYER_Individual', 'CLIENT_LAWYER_FIRM_Individual']">
-        <li [routerLinkActive]="['active']">
-          <a routerLink="case">
-            <i class="fa fa-balance-scale"></i>
-            <span>Case Management</span>
-          </a>
-        </li>
-      </ng-template>
-
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
-        <li class="treeview" [routerLinkActive]="['active']">
-          <a (click)="showmastermenu()">
-            <i class="fa fa-laptop"></i>
-            <span>Master Management</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu" id="limastermenu">
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/court">
-                <i class="fa fa-circle-o"></i> Court</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/resource">
-                <i class="fa fa-circle-o"></i> Recourse</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/stage">
-                <i class="fa fa-circle-o"></i> Recourse Stages</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/compliance">
-                <i class="fa fa-circle-o"></i> Compliance</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/branch">
-                <i class="fa fa-circle-o"></i> Branch</a>
-            </li>
-            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
-              <li [routerLinkActive]="['active']">
-                <a routerLink="master/institution">
-                  <i class="fa fa-circle-o"></i> Institution</a>
-              </li>
-            </ng-template>
-            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM','ADMIN_LAWYER']">
-              <li [routerLinkActive]="['active']">
-                <a routerLink="master/billing">
-                  <i class="fa fa-circle-o"></i> Billing</a>
-              </li>
-            </ng-template>
-
-
-            <li [routerLinkActive]="['active']">
-              <a routerLink="master/templates">
-                <i class="fa fa-circle-o"></i> Document Templates</a>
-            </li>
-            <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM']">
-              <li [routerLinkActive]="['active']">
-                <a routerLink="master/invoice">
-                  <i class="fa fa-circle-o"></i> Invoice Templates</a>
-              </li>
-            </ng-template>
-
-          </ul>
-        </li>
-      </ng-template>
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM','ADMIN_LAWYER']">
-        <li [routerLinkActive]="['active']">
-          <a routerLink="billing">
-            <i class="fa fa-dollar"></i>
-            <span>Billing Management</span>
-          </a>
-        </li>
-      </ng-template>
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM', 'CLIENT_LAWYER_FIRM_Institutional']">
-        <li class="treeview" [routerLinkActive]="['active']">
-          <a (click)="showinstitutionalmenu()">
-            <i class="fa fa-institution"></i>
-            <span>Institutional Clients</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu" id="liinstitutionalmenu">
-            <li [routerLinkActive]="['active']">
-              <a routerLink="institution/againstinstitution">
-                <i class="fa fa-circle-o"></i>Against Institution</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a routerLink="institution/forinstitution">
-                <i class="fa fa-circle-o"></i>For Institution</a>
-            </li>
-          </ul>
-        </li>
-      </ng-template>
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM']">
-        <li [routerLinkActive]="['active']">
-          <a routerLink="invoices">
-            <i class="fa fa-file-text"></i>
-            <span>Invoices</span>
-          </a>
-        </li>
-      </ng-template>
-      <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
-      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
-        <li [routerLinkActive]="['active']">
-          <a routerLink="calendar">
-            <i class="fa fa-calendar"></i>
-            <span>Calendar</span>
-            <span class="pull-right-container">
-              <ng-container *ngFor="let item of arrTodayEvents">
-                <small class="label pull-right" *ngIf="item.length>0" [style.backgroundColor]="item[0].backgroundColor">{{item.length}}</small>
-              </ng-container>
-
-            </span>
-          </a>
-        </li>
-      </ng-template>
-    </ul>
-  </section>
-  <!-- /.sidebar -->
-</aside>
-
-<!-- Content Wrapper. Contains page content -->
-<router-outlet></router-outlet>
-<!-- /.content-wrapper -->
-
-<!-- Control Sidebar -->
-
-<!-- /.control-sidebar -->
-<!-- Add the sidebar's background. This div must be placed
-     immediately after the control sidebar -->
-<div class="control-sidebar-bg"></div>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  
+  <!-- Content Wrapper. Contains page content -->
+  <router-outlet></router-outlet>
+  <!-- /.content-wrapper -->
+  
+  <!-- Control Sidebar -->
+  
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>

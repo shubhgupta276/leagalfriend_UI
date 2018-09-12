@@ -29,7 +29,6 @@ export class InvoiceFormComponent implements OnInit {
     description: any = '';
     taxableAmount: number = 0;
     taxPercent: number = 0;
-    todayDate: number = Date.now();
     isEditMode: boolean = false;
     isViewMode: boolean = false;
     disableField: boolean = false;
@@ -73,6 +72,7 @@ export class InvoiceFormComponent implements OnInit {
                 this.invoiceTemplateInfo.billToAddress = otherDetail.invoice.billTo;
                 this.invoiceTemplateInfo.CompanyAddress = otherDetail.invoice.billFrom;
                 this.invoiceTemplateInfo.termEndCond = otherDetail.invoice.termsCondition;
+                this.invoiceTemplateInfo.Date = otherDetail.invoice.createdDate;
                 this.description = otherDetail.invoice.description;
                 this.oldInvoiceNo = otherDetail.invoice.invoiceNumber.toString();
                 this.invoiceTemplateInfo.invoiceNo = otherDetail.invoice.invoiceNumber.toString();
