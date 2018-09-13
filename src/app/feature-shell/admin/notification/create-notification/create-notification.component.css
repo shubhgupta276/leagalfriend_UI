@@ -20,12 +20,6 @@
     color: white;
 }
 
-.autoComplete {
-    /* background: transparent;
-    border: none;
-    border-bottom: 1px solid #d2d6de; */
-}
-
 .selected {
     border: solid #86a2af 1px;
     float: left;
