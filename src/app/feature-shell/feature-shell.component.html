@@ -92,45 +92,27 @@
             <!-- <ngx-select-dropdown (change)="changeBranch($event.value[0])" [config]="branchConfig" [options]="arBranches" [multiple]="false"></ngx-select-dropdown> -->
           </div>
         </li>
-        <li class="dropdown notifications-menu" style="display: none">
+        <li class="dropdown notifications-menu" *ngIf="arNotifications && arNotifications.length>0">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i>
-            <span class="label label-warning">10</span>
+            <span class="label label-warning">{{arNotifications.length}}</span>
           </a>
           <ul class="dropdown-menu">
-            <li class="header">You have 10 notifications</li>
+            <li class="header">
+              <strong>You have {{arNotifications.length}} notifications</strong>
+            </li>
             <li>
               <!-- inner menu: contains the actual data -->
               <ul class="menu">
-                <li>
-                  <a href="#">
-                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the page and may cause design problems
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-users text-red"></i> 5 new members joined
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i class="fa fa-user text-red"></i> You changed your username
+                <li *ngFor="let item of arNotifications">
+                  <a routerLink="/admin/Notification">
+                    <i></i> {{item.subject}}
                   </a>
                 </li>
               </ul>
             </li>
             <li class="footer">
-              <a href="/admin/Notification">View all</a>
+              <a routerLink="/admin/Notification">View all</a>
             </li>
           </ul>
         </li>
@@ -240,31 +222,31 @@
             </li>
             <!-- Menu Footer-->
             <!-- <li class="user-footer">
-              <div class="pull-left">
-                <a routerLink="profile" class="btn btn-default btn-flat">Profile</a>
-              </div>
-
-            </li>
-
-            <li class="user-footer">
-
-              <div class="pull-left">
-                <a routerLink="../admin/wallet" class="btn btn-default btn-flat">Wallet $250.00</a>
-              </div>
-
-            </li>
-            <li class="user-footer">
-              <div class="pull-left">
-                <a routerLink="../admin/referel" class="btn btn-default btn-flat">Referal</a>
-              </div>
-
-            </li>
-            <li class="user-footer">
-
-              <div class="pull-left">
-                <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
-              </div>
-            </li> -->
+                <div class="pull-left">
+                  <a routerLink="profile" class="btn btn-default btn-flat">Profile</a>
+                </div>
+  
+              </li>
+  
+              <li class="user-footer">
+  
+                <div class="pull-left">
+                  <a routerLink="../admin/wallet" class="btn btn-default btn-flat">Wallet $250.00</a>
+                </div>
+  
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a routerLink="../admin/referel" class="btn btn-default btn-flat">Referal</a>
+                </div>
+  
+              </li>
+              <li class="user-footer">
+  
+                <div class="pull-left">
+                  <a routerLink="../login" (click)="signOutButton()" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li> -->
           </ul>
         </li>
       </ul>
@@ -279,15 +261,22 @@
 
     <ul class="sidebar-menu" data-widget="tree">
       <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
-      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
+        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
         <li [routerLinkActive]="['active']">
-        <a routerLink="dashboard">
-          <i class="fa fa-dashboard"></i>
-          <span>Dashboard</span>
+          <a routerLink="dashboard">
+            <i class="fa fa-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+      </ng-template>
+
+      <li >
+        <a routerLink="../admin/createnotification">
+          <i class="fa fa-bell"></i>
+          <span>Create Notification</span>
         </a>
       </li>
-      </ng-template>
-      
+
       <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'ADMIN_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="user">
@@ -297,8 +286,8 @@
         </li>
       </ng-template>
       <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
-      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER', 'CLIENT_LAWYER_Institutional',
-      'CLIENT_LAWYER_Individual', 'CLIENT_LAWYER_FIRM_Individual']">
+        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER', 'CLIENT_LAWYER_Institutional',
+        'CLIENT_LAWYER_Individual', 'CLIENT_LAWYER_FIRM_Individual']">
         <li [routerLinkActive]="['active']">
           <a routerLink="case">
             <i class="fa fa-balance-scale"></i>
@@ -403,7 +392,7 @@
         </li>
       </ng-template>
       <ng-template [ngxPermissionsOnly]="['ADMIN_LAWYER_FIRM', 'MANAGER_LAWYER_FIRM', 'EMPLOYEE_LAWYER_FIRM',
-      'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
+        'ADMIN_LAWYER', 'MANAGER_LAWYER', 'EMPLOYEE_LAWYER']">
         <li [routerLinkActive]="['active']">
           <a routerLink="calendar">
             <i class="fa fa-calendar"></i>
@@ -430,5 +419,5 @@
 
 <!-- /.control-sidebar -->
 <!-- Add the sidebar's background. This div must be placed
-     immediately after the control sidebar -->
+       immediately after the control sidebar -->
 <div class="control-sidebar-bg"></div>

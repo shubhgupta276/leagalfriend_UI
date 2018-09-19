@@ -35,20 +35,22 @@
 
                             <div class="invoice-address">
                                 <div class="col-md-12">
-                                    
-                                    <div class="col-md-6" style="margin-left: -26px;">
-                                            <label>Invoice No : </label>
-                                        <span [ngClass]="{'has-error':!invoiceTemplateInfo.invoiceNo || invoiceTemplateInfo.invoiceNo.trim().length<=0}">
-                                            <input type="text" [disabled]="disableField" (change)="invoiceNumberChange()" [(ngModel)]="invoiceTemplateInfo.invoiceNo"
-                                                class="form-control" style="width:50%; display: inline-block;">
-                                            <div style="margin-left:84px" class="text-danger" *ngIf="invoiceNumberAlreadyExists">{{invoiceAlreadyMessage}}</div>
-                                        </span>
 
+                                    <div class="col-md-6" style="margin-left: -26px;">
+                                        <ng-container *ngIf="isEditMode || isViewMode">
+                                            <label>Invoice No : </label>
+                                            <span [ngClass]="{'has-error':!invoiceTemplateInfo.invoiceNo || invoiceTemplateInfo.invoiceNo.trim().length<=0}">
+                                                <span>{{invoiceTemplateInfo.invoiceNo}}</span>
+                                                <!-- <input type="text" [disabled]="disableField" (change)="invoiceNumberChange()" [(ngModel)]="invoiceTemplateInfo.invoiceNo"
+                                                    class="form-control" style="width:50%; display: inline-block;"> -->
+                                                <div style="margin-left:84px" class="text-danger" *ngIf="invoiceNumberAlreadyExists">{{invoiceAlreadyMessage}}</div>
+                                            </span>
+                                        </ng-container>
                                     </div>
                                     <div class="col-md-6" style="text-align:right;padding:0px;">
                                         <div style="display: inline-flex">
-                                                <label>Date :&nbsp;</label>
-                                            <label> {{ todayDate | date}}</label>
+                                            <label>Date :&nbsp;</label>
+                                            <label> {{invoiceTemplateInfo.Date | date:'dd MMM yyyy'}}</label>
                                         </div>
                                     </div>
 
@@ -56,17 +58,19 @@
 
                                 <div class="col-md-12 " style="padding-left: 0px;margin: 20px 0px 20px 0px;">
                                     <div class="col-md-1" style="padding:0px;">
-                                        <label>Bill To</label>
-                                    </div>
-                                    <div class="col-md-5" style="text-align:left" [ngClass]="{'has-error':!invoiceTemplateInfo.billToAddress || invoiceTemplateInfo.billToAddress.trim().length<=0}">
-                                        <textarea [disabled]="disableField" id="txtBillToAddress" [(ngModel)]="invoiceTemplateInfo.billToAddress" rows="2" class="form-control"></textarea>
-                                    </div>
-                                    <div class="col-md-1" style="padding:0px;">
                                         <label>Bill From</label>
                                     </div>
                                     <div class="col-md-5" style="text-align:right" [ngClass]="{'has-error':!invoiceTemplateInfo.CompanyAddress || invoiceTemplateInfo.CompanyAddress.trim().length<=0}">
                                         <textarea id="txtcompanyAddress" [disabled]="disableField" [(ngModel)]="invoiceTemplateInfo.CompanyAddress" rows="2" class="form-control"></textarea>
                                     </div>
+                                    <div class="col-md-1" style="padding:0px;">
+                                        <label>Bill To</label>
+                                    </div>
+                                    <div class="col-md-5" style="text-align:left" [ngClass]="{'has-error':!invoiceTemplateInfo.billToAddress || invoiceTemplateInfo.billToAddress.trim().length<=0}">
+                                        <textarea [disabled]="disableField" id="txtBillToAddress" [(ngModel)]="invoiceTemplateInfo.billToAddress" rows="2" class="form-control"></textarea>
+                                    </div>
+
+
 
                                 </div>
 
@@ -105,7 +109,7 @@
                                         <tr>
                                             <td style="text-align: right;font-weight: bold;font-size: 17px;padding-top: 9px;">Tax</td>
                                             <td>
-                                                <input type="text" [disabled]="disableField" maxlength="5" [(ngModel)]="taxPercent" (change)="taxChange($event.target.value);"
+                                                <input type="text" OnlyNumber="true" [disabled]="disableField" maxlength="5" [(ngModel)]="taxPercent" (change)="taxChange($event.target.value);"
                                                     class="form-control" style="width:70px;display: inline-block;">%
                                             </td>
                                             <td>

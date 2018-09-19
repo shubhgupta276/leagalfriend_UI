@@ -1,0 +1,37 @@
+.email-suggestions ul {
+    list-style-type: none;
+    margin-left: 0px;
+    padding-left: 0px;
+    position: absolute;
+    z-index: 10000;
+    background-color: white;
+    min-width: 202px;
+    border: solid 1px #86a2af;
+    max-width: 381px;
+    word-wrap: break-word;
+}
+
+.email-suggestions ul li {
+    padding: 10px;
+}
+
+.email-suggestions ul li:hover {
+    background-color: #86a2af;
+    color: white;
+}
+
+.selected {
+    border: solid #86a2af 1px;
+    float: left;
+    margin: 2px;
+    padding: 2px 15px;
+}
+
+.selected a {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.email-suggestions {
+    display: block;
+}

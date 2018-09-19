@@ -17,9 +17,7 @@
 
         <div class="box">
           <div class="box-body">
-            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns" (rowDoubleClick)="onRowDoubleClick($event)"
-              [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig" (actionBtnClick)="onActionBtnClick($event)"
-              (actionBtnChangePassword)="onActionBtnClickForChangePasswordPopup($event)">
+            <app-data-table #dataTable [tableData]="tableInputData" [tableColumns]="columns">
             </app-data-table>
           </div>
 
@@ -227,7 +225,7 @@
                   <!-- /.col -->
                   <div class="col-xs-8"></div>
                   <div class="col-xs-4">
-                    <button type="submit"  [disabled]="changePasswordForm.invalid" class="btn btn-primary btn-block btn-flat">Submit</button>
+                    <button type="submit" [disabled]="changePasswordForm.invalid" class="btn btn-primary btn-block btn-flat">Submit</button>
                   </div>
                   <!-- /.col -->
                 </div>

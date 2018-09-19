@@ -8,14 +8,14 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 import { ApiGateway } from './shared/services/api-gateway';
 import { TokenService } from './shared/services/token-service';
-import {MasterTemplateService} from '../app/feature-shell/master/masterTemplates/masterTemplate.component.service';
+import { MasterTemplateService } from '../app/feature-shell/master/masterTemplates/masterTemplate.component.service';
 import { HttpClientModule } from '@angular/common/http'
 import { SharedModule } from './shared/shared.module';
 import { LFAuthantication } from './shared/services/lfAuthantication-service';
 import { StorageService } from './shared/services/storage.service';
 import { Ng2CompleterModule } from 'ng2-completer';
-import {BusyModule} from 'angular2-busy';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BusyModule } from 'angular2-busy';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -30,7 +30,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgxPermissionsModule.forRoot(),
     BusyModule,
     NgbModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
   ],
   declarations: [
     AppComponent
@@ -40,7 +40,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ApiGateway,
     TokenService,
     MasterTemplateService,
-    LFAuthantication ,
+    LFAuthantication,
     StorageService
   ],
   bootstrap: [AppComponent]

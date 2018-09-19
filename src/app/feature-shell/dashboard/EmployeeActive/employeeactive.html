@@ -29,10 +29,10 @@
                 <ng-template ngFor let-item [ngForOf]="arrActiveEmployeeList" let-i="index">
                   <tr>
                     <td>{{i+1}}</td>
-                    <td>{{item.Name}}</td>
-                    <td>{{item.Designation}}</td>
-                    <td>{{item.LastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
-                    <td>{{item.TotalLogin}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.designation}}</td>
+                    <td>{{item.lastLogin | date:'yyyy-MM-dd HH:mm a'}}</td>
+                    <td>{{item.totalLogin}}</td>
                   </tr>
                 </ng-template>
               </tbody>

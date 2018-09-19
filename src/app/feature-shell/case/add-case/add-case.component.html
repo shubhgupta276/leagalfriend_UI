@@ -33,6 +33,21 @@
                     <div class="tab-pane active">
 
                       <div class="form-group row">
+                        <label class="col-sm-3 col-form-label createUserLabel">Title:
+                          <em class="astrick">*</em>
+                        </label>
+                        <div class="col-md-9">
+                          <input class="form-control" placeholder="Title" formControlName="title">
+                        </div>
+
+                        <div class="col-sm-9 valodation-padding" *ngIf="isSubmitClick && addCaseForm.get('title').invalid">
+                          <small class="text-danger">
+                            <span>Title is required </span>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Court Case ID:
                           <!-- <em class="astrick">*</em> -->
                         </label>
@@ -40,6 +55,8 @@
                           <input class="form-control" placeholder="Court Case Id" formControlName="courtCaseId">
                         </div>
                       </div>
+
+
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label createUserLabel">Recourse:
                           <em class="astrick">*</em>

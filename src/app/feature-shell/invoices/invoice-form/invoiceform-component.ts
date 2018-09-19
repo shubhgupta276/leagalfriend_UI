@@ -22,14 +22,13 @@ export class InvoiceFormComponent implements OnInit {
         termEndCond: '',
         Date: null,
         photoUrl: null,
-        invoiceNo: this._datePipe.transform(new Date(), 'ddMMyyyyhhmm'),
+        invoiceNo: '',
         isFromInvoice: false,
         url: null
     };
     description: any = '';
     taxableAmount: number = 0;
     taxPercent: number = 0;
-    todayDate: number = Date.now();
     isEditMode: boolean = false;
     isViewMode: boolean = false;
     disableField: boolean = false;
@@ -61,28 +60,42 @@ export class InvoiceFormComponent implements OnInit {
 
     setInvoiceOtherDetails() {
         const otherDetail = JSON.parse(localStorage.getItem('invoiceOtherDetails'));
-
         if (otherDetail) {
             this.isEditMode = otherDetail.mode === 'edit';
             this.isViewMode = otherDetail.mode === 'view';
             this.disableField = this.isViewMode;
             this.isInstitutional = otherDetail.isInstitutional;
             if (this.isEditMode || this.isViewMode) {
-                this.taxPercent = otherDetail.invoice.tax;
+                this.taxPercent = otherDetail.invoice.taxPercent;
+                this.taxableAmount = otherDetail.invoice.taxAmount;
                 this.editInvoiceId = otherDetail.invoice.id;
                 this.invoiceTemplateInfo.billToAddress = otherDetail.invoice.billTo;
                 this.invoiceTemplateInfo.CompanyAddress = otherDetail.invoice.billFrom;
                 this.invoiceTemplateInfo.termEndCond = otherDetail.invoice.termsCondition;
+                this.invoiceTemplateInfo.Date = otherDetail.invoice.createdDate;
                 this.description = otherDetail.invoice.description;
                 this.oldInvoiceNo = otherDetail.invoice.invoiceNumber.toString();
                 this.invoiceTemplateInfo.invoiceNo = otherDetail.invoice.invoiceNumber.toString();
                 this.institutionId = (otherDetail.invoice.institution) ? otherDetail.invoice.institution.id : 0;
             } else {
-                this.institutionId = otherDetail.institutionId;
-                this.GetAllInstitute();
+                this.institutionId = (this.isInstitutional) ? otherDetail.institutionId : 0;
+                this.getInvoiceNumber();
+                this.getToBillAddress();
             }
             this.GetBillFrom();
         }
+    }
+
+    getInvoiceNumber() {
+        this._invoicesService.getInvoiceNumber().subscribe(
+            (result) => {
+                if (result) {
+                    this.invoiceTemplateInfo.invoiceNo = result + '';
+                }
+            },
+            err => console.log(err)
+        );
+
     }
 
     BindInvoice() {
@@ -141,11 +154,19 @@ export class InvoiceFormComponent implements OnInit {
                 this.invoiceTemplateInfo.url = result.invoiceHeader.logo;
                 if (!this.isEditMode && !this.isViewMode) {
                     const address = result.invoiceFooter.address;
-                    this.invoiceTemplateInfo.billToAddress = address.address1 + ' ,'
+                    this.invoiceTemplateInfo.CompanyAddress = address.address1 + ' ,'
                         + address.city + ' ,' + address.state + ' ,' + address.zipCode;
                     this.invoiceTemplateInfo.termEndCond = result.invoiceFooter.termsCondition;
                 }
             });
+    }
+
+    getToBillAddress() {
+        if (this.isInstitutional) {
+            this.GetAllInstitute();
+        } else {
+            this.getIndividualAddress();
+        }
     }
 
     GetAllInstitute() {
@@ -155,12 +176,27 @@ export class InvoiceFormComponent implements OnInit {
                 if (result.httpCode === 200) {
                     for (let i = 0; i < result.institutions.length; i++) {
                         const obj = result.institutions[i];
-                        if (this.institutionId === this.institutionId) {
-                            this.invoiceTemplateInfo.CompanyAddress = obj.address;
+                        if (this.institutionId === obj.id) {
+                            this.invoiceTemplateInfo.billToAddress = obj.address;
                         }
                     }
                 }
             });
+    }
+
+    getIndividualAddress() {
+        try {
+            this._institutionService.getUserAddress().subscribe(
+                result => {
+                    if (result) {
+                        const address = result.address1 + `, ${result.city}, ${result.state}, ${result.zipCode}`;
+                        this.invoiceTemplateInfo.billToAddress = address;
+                    }
+                });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     invoiceNumberChange() {
@@ -203,8 +239,7 @@ export class InvoiceFormComponent implements OnInit {
     }
 
     isValid() {
-        if (!this.invoiceNumberAlreadyExists && this.description.trim().length > 0 &&
-            this.invoiceTemplateInfo.invoiceNo.trim().length > 0 &&
+        if (this.description.trim().length > 0 &&
             this.invoiceTemplateInfo.billToAddress.trim().length > 0 &&
             this.invoiceTemplateInfo.CompanyAddress.trim().length > 0 &&
             this.invoiceTemplateInfo.termEndCond.trim().length > 0) {
@@ -282,16 +317,18 @@ export class InvoiceFormComponent implements OnInit {
             individualBillings: billingArray,
             institutionalBillings: billingArray,
             invoice: {
-                amount: totalAmount + this.taxableAmount,
+                amount: totalAmount, //  + this.taxableAmount,
                 amountRecieved: true,
                 billFrom: this.invoiceTemplateInfo.CompanyAddress,
                 billTo: this.invoiceTemplateInfo.billToAddress,
                 createdBy: this._storageService.getUserId(),
+                createdDate: new Date(),
                 description: this.description,
                 id: (this.editInvoiceId) ? this.editInvoiceId : 0,
                 institution: { id: this.institutionId },
                 invoiceNumber: this.invoiceTemplateInfo.invoiceNo,
-                tax: this.taxPercent,
+                taxPercent: this.taxPercent,
+                taxAmount: this.taxableAmount,
                 active: 'active',
                 termsCondition: this.invoiceTemplateInfo.termEndCond,
                 updatedBy: this._storageService.getUserId(),

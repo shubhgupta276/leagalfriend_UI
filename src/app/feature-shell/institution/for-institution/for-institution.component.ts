@@ -603,7 +603,35 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
         this.GetAllForIntitution();
     }
 
-    ExportCase() {
+    downloadFile() {
+        if (this.selectedRowsCheckbox.length > 0) {
+            const arrInsitituionId = [];
+            const arrCaseId = [];
+            if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {
+                this.selectedRowsCheckbox.forEach(item => {
+                    arrInsitituionId.push(item.id);
+                    arrCaseId.push(item.caseId);
+                });
+            }
+            const data = {
+                branchId: this.branchData.id,
+                institutionId: this.InstitutionValue.id,
+                institutionalCaseIds: arrInsitituionId,
+                caseIds: arrCaseId
+
+            };
+            this._institutionService.exportCaseFiles(data).subscribe(
+                (result) => {
+                    const blob = new Blob([result]);
+                    saveAs(blob,'casefiles.zip');
+                },
+                err => {
+                    console.log(err);
+                });
+        }
+    }
+
+    downloadCSV() {
         if (this.selectedRowsCheckbox.length > 0) {
             const arrInsitituionId = [];
             if (this.selectedRowsCheckbox && this.selectedRowsCheckbox.length > 0) {

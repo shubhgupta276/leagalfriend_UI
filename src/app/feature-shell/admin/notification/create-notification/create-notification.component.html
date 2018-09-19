@@ -1,0 +1,101 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <div class="page-heading">
+    Create Notification
+  </div>
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- start grid bind -->
+    <div class="row">
+      <div class="col-xs-12">
+
+        <!-- /.box -->
+
+        <div class="box">
+
+          <div class="box-body">
+            <div class="form-group col-md-12">
+              <label class="col-sm-1">&nbsp;</label>
+              <label class="col-sm-2 col-form-label createUserLabel">Notification Type:
+                <em class="astrick">*</em>
+              </label>
+              <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="selectedNotificationType" (change)="notificationTypeChagne()">
+                  <option *ngFor="let item of arNotificationType" [ngValue]="item">{{item.name}}</option>
+                </select>
+              </div>
+
+            </div>
+            <div class="form-group col-md-12" *ngIf="isOtherNotificationSelected()">
+              <label class="col-sm-1">&nbsp;</label>
+              <label class="col-sm-2 col-form-label createUserLabel">Email:
+                <em class="astrick">*</em>
+              </label>
+              <div class="col-md-4" id="divEmail">
+                <input id="txtEmail" class="form-control col-md-12" placeholder="{{autoCompleteConfig.placeholder}}" autocomplete [config]="autoCompleteConfig" [(ngModel)]="searchEmail" 
+                [items]="arFilterEmail" (inputChangedEvent)="filterEmail($event)"
+                  (selectEvent)="selectEmail($event)">
+
+                <!-- <input type="text" placeholder="Type Email" class="form-control autoComplete" [(ngModel)]="searchEmail" (keyup)="filterEmail()">
+
+                <div class="email-suggestions" *ngIf="arFilterEmail && arFilterEmail.length > 0">
+                  <ul>
+                    <li *ngFor="let item of arFilterEmail" (keydown)="keyDown($event)">
+                      <a (click)="selectEmail(item)">{{item.name}}</a>
+                    </li>
+                  </ul>
+                </div>
+                 -->
+                <div *ngFor="let item of arSelectedEmails">
+                  <div class="selected">
+                    <span>{{item.name}}</span>
+                    <a (click)="removeEmail(item)">x</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label class="col-sm-1">&nbsp;</label>
+              <label class="col-sm-2 col-form-label createUserLabel">Subject:
+                <em class="astrick">*</em>
+              </label>
+              <div class="col-md-4">
+                <input class="form-control" [(ngModel)]="subject" placeholder="Subject">
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label class="col-sm-1">&nbsp;</label>
+              <label class="col-sm-2 col-form-label createUserLabel">Description:
+                <em class="astrick">*</em>
+              </label>
+              <div class="col-md-8">
+                <ck-editor name="editor1" [(ngModel)]="description" skin="moono-lisa" language="en" [fullPage]="true"></ck-editor>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <div class="col-md-9">&nbsp;</div>
+              <div class="col-md-2">
+                <input type="submit" [disabled]="!isValid()" (click)="saveNotification()" class="btn btn-modal-addedit" value="Submit" style="float: right;margin-right: -3px !important;">
+              </div>
+              <div class="col-md-1">&nbsp;</div>
+            </div>
+
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <!-- end grid bind -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
