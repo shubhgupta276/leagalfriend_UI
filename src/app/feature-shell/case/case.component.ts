@@ -1,38 +1,27 @@
-import { Component, OnInit, ViewChild, OnDestroy, DebugElement } from '@angular/core';
-import { debuglog } from 'util';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { AuthService } from '../../auth-shell/auth-shell.service';
-import { Branch } from '../../shared/models/auth/case.model';
 import { StorageService } from '../../shared/services/storage.service';
 import { saveAs } from 'file-saver/FileSaver.js';
 import {
   FormGroup,
   FormBuilder,
-  Validators,
-  FormControl
 } from '@angular/forms';
 import {
   Case,
-  CasesRunning,
   CasesCompleted
 } from '../../shared/models/case/case';
-import { forEach } from '@angular/router/src/utils/collection';
 import { EditCaseComponent } from './edit-case/edit-case.component';
-import { Compliance } from '../master/compliance/compliance';
-import { debounce } from 'rxjs/operators/debounce';
-// import { ALPN_ENABLED } from "constants";
 declare var $;
 
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
 import { caseRunningTableConfig, caseCompletedTableConfig } from './case.config';
-import { element } from 'protractor';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActionColumnModel } from '../../shared/models/data-table/action-column.model';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
-import { MasterTemplatesComponent } from '../master/masterTemplates/masterTemplate.component';
 import { setTimeout } from 'timers';
 import { CaseHistoryComponent } from './case-history/case-history-component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MasterService } from '../master/master.service';
 import { AddCaseComponent } from './Add-case/Add-case.component';
 
@@ -90,7 +79,8 @@ export class CaseComponent implements OnInit, OnDestroy {
   recourseConfig: any;
   arCourts: any = [];
   constructor(private fb: FormBuilder, private authService: AuthService, private _activatedRoute: ActivatedRoute,
-    private _storageService: StorageService, private _sharedService: SharedService, private masterService: MasterService) {
+    private _storageService: StorageService, private _sharedService: SharedService, private _router: Router,
+    private masterService: MasterService) {
     this.caseCompleted = CasesCompleted;
   }
 
@@ -171,7 +161,7 @@ export class CaseComponent implements OnInit, OnDestroy {
 
     }
     else {
-      var a = localStorage.getItem("branchData");
+      var a = localStorage.getItem('branchData');
       var b = JSON.parse(a);
     }
 
@@ -227,63 +217,15 @@ export class CaseComponent implements OnInit, OnDestroy {
   onRowClick(event) {
     console.log(event);
   }
-  showEditPop(c, isFromOtherPage = false) {
-    $('#editCaseModal').modal('show');
-    var $this = this
-    var reqData = {
-      caseId: c.id,
-    };
-
-    if (c.compliance == false) {
-      this.authService.getCaseByCaseId(reqData).subscribe(
-
-        result => {
-
-          if (isFromOtherPage) {
-            $this.editChild.showCaseFromOtherPages(result);
-          }
-          else {
-            $this.editChild.createForm(result);
-          }
-          $('#caseLi a').click();
-
-          $('#complianceDiv').show();
-
-          $('#compLi').hide();
-
-        },
-        err => {
-          console.log(err);
-        });
-    }
-    else {
-
-      this.authService.getCaseCompliance(reqData).subscribe(
-
-        result => {
-
-          $('#compLi a').click();
-
-          $('#form1 input,textarea').attr('readonly', 'readonly');
-          // $('#divRecourse').attr('disabled','disabled');
-
-
-          $('#complianceDiv').hide();
-          $('#compLi').show();
-          this.editChild.createFormforcompliance(result);
-
-        },
-        err => {
-          console.log(err);
-        });
-    }
+  showEditPop(data, isFromOtherPage = false) {
+    this._router.navigate(['/admin/case/editcase/' + data.id + '/' + data.compliance]);
   }
   onRowDoubleClick(c) {
     this.showEditPop(c);
   }
   onCaseFilterClick(c) {
 
-    $('#filterCaseModal').modal("show");
+    $('#filterCaseModal').modal('show');
   }
 
   onRowSelect(event) {
@@ -299,12 +241,12 @@ export class CaseComponent implements OnInit, OnDestroy {
   }
 
   onActionBtnClick(event) {
-    if (event.eventType === "history") {
+    if (event.eventType === 'history') {
       $('#modal-default1').modal('show');
       this.historyChild.showHistory(event.data);
-    }
-    else
+    } else {
       this.showEditPop(event.data);
+    }
   }
   onActionHistoryBtnClick(event) {
     this.showEditPop(event);
@@ -363,9 +305,9 @@ export class CaseComponent implements OnInit, OnDestroy {
   }
   filterCaseData() {
     var arDates;
-    let fromToDate = $("#reservation").val();
+    let fromToDate = $('#reservation').val();
     if (fromToDate && fromToDate.length > 0) {
-      arDates = fromToDate.split(" To ");
+      arDates = fromToDate.split(' To ');
       arDates[0] = this.formatDate(arDates[0]);
       arDates[1] = this.formatDate(arDates[1]);
     }
@@ -496,7 +438,7 @@ export class CaseComponent implements OnInit, OnDestroy {
         console.log(result);
         if (result && result.length > 0) {
           this.lstUploadedDocuments = result;
-          }
+        }
       },
       err => {
         console.log(err);
@@ -521,7 +463,7 @@ export class CaseComponent implements OnInit, OnDestroy {
   getSelectedDocument(IsChecked, FileId) {
     if (IsChecked.srcElement.checked) {
       this.SelectedFileIds.push(FileId);
-    }else {
+    } else {
       this.SelectedFileIds = this.SelectedFileIds.filter(function (i) {
         return i !== FileId;
       });
@@ -601,7 +543,6 @@ export class CaseComponent implements OnInit, OnDestroy {
   }
 
   addCase() {
-    this.addChild.AddCaseUser();
-    $('#addCaseModal').modal('show');
+    this._router.navigate(['/admin/case/addcase']);
   }
 }

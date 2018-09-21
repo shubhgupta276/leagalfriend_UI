@@ -9,19 +9,16 @@ import { ApiGateway } from '../../../shared/services/api-gateway';
 import { StorageService } from '../../../shared/services/storage.service';
 import { HttpResponse } from 'selenium-webdriver/http';
 import { CompleterService, CompleterData } from 'ng2-completer';
-
+import { Router } from '@angular/router';
 declare var $;
 @Component({
   selector: 'app-add-case',
   templateUrl: '../add-case/add-case.component.html',
+  styleUrls: ['../add-case/add-case.component.css'],
   providers: [StorageService, AuthService, DatePipe],
   styles: [':host(.completer-dropdown-holder) { position: absolute; background-color: red; }']
-
-
 })
 export class AddCaseComponent implements OnInit {
-  @Input() caseRunning = [];
-  @Output() addCaseSuccess: EventEmitter<any> = new EventEmitter();
   ChildCases: any = [];
   finalData: any = {};
   fileData: File;
@@ -74,35 +71,21 @@ export class AddCaseComponent implements OnInit {
   private _disabledV: string = '0';
   private disabled: boolean = false;
 
-  private get disabledV(): string {
-    return this._disabledV;
+  constructor(private completerService: CompleterService, private fb: FormBuilder, private apiGateWay: ApiGateway,
+    private authService: AuthService, private _storageService: StorageService,
+    private datePipe: DatePipe, private _router: Router) {
+    this.AddCaseUser();
+    this.GetAllCourt();
+    this.bindStateDDL();
+    this.getBranchDDL();
+    this.bindRecourseDDL();
+    this.getManagers();
+    this.getEmployee();
+    this.getRunningCase();
+    this.GetAllCity();
+    this.getCustomer();
   }
 
-  private set disabledV(value: string) {
-    this._disabledV = value;
-    this.disabled = this._disabledV === '1';
-  }
-
-  public selected(value: any): void {
-    console.log('Selected value is: ', value);
-  }
-  public selectedRecourse1(value: any): void {
-    const a = value.id;
-    this.selectedRecourse = value;
-    this.bindStageDDL(a);
-
-
-  }
-  public removed(value: any): void {
-    console.log('Removed value is: ', value);
-  }
-  public typed(value: any): void {
-    console.log('New search input: ', value);
-  }
-
-  public refreshValue(value: any): void {
-    this.value = value;
-  }
   ngOnInit() {
     this.isSubmitClick = false;
     const self = this;
@@ -114,7 +97,30 @@ export class AddCaseComponent implements OnInit {
       });
     });
   }
-
+  private get disabledV(): string {
+    return this._disabledV;
+  }
+  private set disabledV(value: string) {
+    this._disabledV = value;
+    this.disabled = this._disabledV === '1';
+  }
+  public selected(value: any): void {
+    console.log('Selected value is: ', value);
+  }
+  public selectedRecourse1(value: any): void {
+    const a = value.id;
+    this.selectedRecourse = value;
+    this.bindStageDDL(a);
+  }
+  public removed(value: any): void {
+    console.log('Removed value is: ', value);
+  }
+  public typed(value: any): void {
+    console.log('New search input: ', value);
+  }
+  public refreshValue(value: any): void {
+    this.value = value;
+  }
   AddCaseUser() {
     this.isSubmitClick = false;
     this.addCaseForm = this.fb.group({
@@ -139,46 +145,22 @@ export class AddCaseComponent implements OnInit {
       uploadDocument: [],
     });
   }
-  constructor(private completerService: CompleterService, private fb: FormBuilder, private apiGateWay: ApiGateway,
-    private authService: AuthService, private _storageService: StorageService, private datePipe: DatePipe) {
 
-    this.AddCaseUser();
-    this.GetAllCourt();
-    this.bindStateDDL();
-    this.getBranchDDL();
-    this.bindRecourseDDL();
-    this.getManagers();
-    this.getEmployee();
-    // this.bindStageDDL();
-    this.getRunningCase();
-    //this.getEmployee();
-    this.GetAllCity();
-    this.getCustomer();
-
-  }
   GetAllCourt() {
     const $this = this;
-    var reqData = {
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.getCourtDDL(reqData).subscribe(
-
       result => {
-
         result.courts.forEach(function (value) {
-
-
           $this.Court.push({ id: value.id, text: value.courtName });
-
-
         });
-
       },
       err => {
         console.log(err);
       });
   }
-
   GetAllCity() {
     const $this = this;
     const reqData = {
@@ -200,16 +182,13 @@ export class AddCaseComponent implements OnInit {
       email: this._storageService.getUserEmail(),
     };
     this.authService.getBranchDDL(reqData).subscribe(
-
       result => {
-
         if (result.branches.length === 0) {
           $('#spnBranch').show();
         }
         result.branches.forEach(function (value) {
           $this.Branch.push({ id: value.id, text: value.branchName });
         });
-
       },
       err => {
         console.log(err);
@@ -218,17 +197,15 @@ export class AddCaseComponent implements OnInit {
 
   bindStateDDL() {
     this.items = [];
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
     this.authService.bindStateDDL(reqData).subscribe(
-
       result => {
         result.states.forEach(function (value) {
           $this.State.push({ id: value.id, text: value.stateName });
         });
-
       },
       err => {
         console.log(err);
@@ -237,35 +214,25 @@ export class AddCaseComponent implements OnInit {
 
   bindRecourseDDL() {
     this.items = [];
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       email: this._storageService.getUserEmail(),
     };
-
-
-
     this.authService.bindRecourseDDL(reqData).subscribe(
-
       result => {
-
-        //  $(".search-container").find(".ng-pristine ng-valid ng-touched").click({
         result.recourses.forEach(function (value) {
-
           $this.Resource.push({ id: value.id, text: value.recourseName });
         });
-
       },
       err => {
         console.log(err);
       });
 
   }
-
-
   getManagers() {
 
-    var $this = this
-    var reqData = {
+    const $this = this;
+    const reqData = {
       userId: this._storageService.getUserId(),
     };
 
@@ -274,7 +241,6 @@ export class AddCaseComponent implements OnInit {
         if (result.length === 0) {
           $('#spnCustomer').show();
           $('#spnManager').show();
-
         }
 
         result.forEach(function (value) {
@@ -290,8 +256,6 @@ export class AddCaseComponent implements OnInit {
         console.log(err);
       });
   }
-
-
   getEmployee() {
 
     var $this = this
@@ -303,7 +267,7 @@ export class AddCaseComponent implements OnInit {
       result => {
 
         if (result == 0) {
-          $("#spnEmployee").show();
+          $('#spnEmployee').show();
         }
         result.forEach(function (value) {
 
@@ -327,7 +291,7 @@ export class AddCaseComponent implements OnInit {
       result => {
 
         if (result == 0) {
-          $("#spnEmployee").show();
+          $('#spnEmployee').show();
         }
         result.forEach(function (value) {
 
@@ -379,7 +343,7 @@ export class AddCaseComponent implements OnInit {
 
     }
     else {
-      var a = localStorage.getItem("branchData");
+      var a = localStorage.getItem('branchData');
       var b = JSON.parse(a);
     }
     const $this = this;
@@ -448,11 +412,9 @@ export class AddCaseComponent implements OnInit {
         this.authService.submitEditCaseUser(objEditCase).subscribe(
           result => {
             result = result.body;
-            if (result.httpCode == 200) { // success
-              this.addCaseSuccess.emit();
+            if (result.httpCode === 200) { // success
               $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
-              $('#addCaseModal').modal('hide');
-              this.closeModal();
+              this._router.navigate(['/admin/case']);
             }
           },
           err => {

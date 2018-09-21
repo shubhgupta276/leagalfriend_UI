@@ -1,0 +1,7 @@
+.ui-select-choices.dropdown-menu {
+    display: block;
+  }
+
+  .completer-dropdown-holder {
+    background-color: red;
+  }
