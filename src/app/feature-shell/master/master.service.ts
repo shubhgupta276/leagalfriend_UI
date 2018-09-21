@@ -39,6 +39,12 @@ export class MasterService {
       JSON.stringify(templateData)
     );
   }
+  updateDocumentTemplate(templateData) {
+    return this.apiGateWay.put<any>(
+      featureConfig.addDocumentTemplate,
+      JSON.stringify(templateData)
+    );
+  }
   getDocumentTemplatesList(): Observable<any> {
     return this.apiGateWay.get<any>(featureConfig.addDocumentTemplate, null);
   }

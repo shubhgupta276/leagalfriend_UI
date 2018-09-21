@@ -484,14 +484,57 @@ export class CaseComponent implements OnInit, OnDestroy {
 
       for (let j = 0; j < selectedCases.length; j++) {
         let value = atob(localData.document);
-        value = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
-        value = value.replace('@CustomerName', selectedCases[j].customerFirstName);
+        if (selectedCases[j].id) {
+          value = value.replace('@CustomRecordId', selectedCases[j].id.toString());
+        }
+        if (selectedCases[j].parentCaseId) {
+          value = value.replace('@ParentCaseId', selectedCases[j].parentCaseId.toString());
+        }
+        if (selectedCases[j].groundForClosingFile) {
+          value = value.replace('@GroundForClosingFile', selectedCases[j].groundForClosingFile.toString());
+        }
+        if (selectedCases[j].empLastName) {
+          value = value.replace('@EmpLastName', selectedCases[j].empLastName.toString());
+        }
+        if (selectedCases[j].customerLastName) {
+          value = value.replace('@CustomerLastName', selectedCases[j].customerLastName.toString());
+        }
+        if (selectedCases[j].compliance.toString()) {
+          value = value.replace('@Compliance', selectedCases[j].compliance.toString());
+        }
+        if (selectedCases[j].completionDate) {
+          value = value.replace('@CompletionDate', selectedCases[j].completionDate.toString());
+        }
+        if (selectedCases[j].empFirstName) {
+          value = value.replace('@EmpFirstName', selectedCases[j].empFirstName.toString());
+        }
+        if (selectedCases[j].branchName) {
+          value = value.replace('@BranchName', selectedCases[j].branchName.toString());
+        }
+        if (selectedCases[j].nextHearingDate) {
+          value = value.replace('@NextHearingDate', selectedCases[j].nextHearingDate.toString());
+        }
+        if (selectedCases[j].stageName) {
+          value = value.replace('@StageName', selectedCases[j].stageName.toString());
+        }
+        if (selectedCases[j].caseId) {
+          value = value.replace('@CaseId', selectedCases[j].caseId.toString());
+        }
+        if (selectedCases[j].courtCaseId) {
+          value  = value.replace('@CourtCaseId', selectedCases[j].courtCaseId.toString());
+        }
+        if (selectedCases[j].customerFirstName) {
+          value = value.replace('@CustomerName', selectedCases[j].customerFirstName.toString());
+        }
+        if (selectedCases[j].recourseCode) {
+          value = value.replace('@RecourseCode', selectedCases[j].recourseCode.toString());
+        }
         saveAs(new Blob([value], { type: 'application/rtf' }), localData.description);
       }
     }
     $('#lstUploadedDocument').modal('hide');
     this.runningDataTableComponent.selection.clear();
-
+    this.SelectedFileIds = [];
   }
 
   onShowCalendar(items) {

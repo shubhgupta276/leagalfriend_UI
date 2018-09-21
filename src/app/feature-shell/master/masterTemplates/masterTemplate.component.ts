@@ -68,17 +68,17 @@ export class MasterTemplatesComponent implements OnInit {
     );
   }
   onRowClick(event) {
-    console.log(event);
+    // console.log(event);
   }
   onRowDoubleClick(event) {
     this.setDataToPreview(event.id);
   }
 
   onRowSelect(event) {
-    console.log(event);
+    // console.log(event);
   }
   onActionBtnClick(event) {
-    if (event.eventType==='delete' && event.data) {
+    if (event.eventType === 'delete' && event.data) {
         this.deleteTemplate(event.data.id);
     }
   }
@@ -193,11 +193,43 @@ export class MasterTemplatesComponent implements OnInit {
       rtfContent = xJS.convertHtmlToRtf(ckEditorValue);
       const objFileInfo = this.arr.find(x => x.id === this.fileIdSelected);
       objFileInfo.document = btoa(rtfContent);
+      this.updateTemplate();
     });
-    $('#previewFile').modal('hide');
   }
 
-  deleteTemplate(templateId){
+  updateTemplate() {
+    const objFileInfo = this.arr.find(x => x.id === this.fileIdSelected);
+    const documentTemplateModel = new DocumentTemplateModel();
+    documentTemplateModel.createdDate = objFileInfo.createdDate;
+    documentTemplateModel.description = objFileInfo.description;
+    documentTemplateModel.document = objFileInfo.document;
+    documentTemplateModel.id = objFileInfo.id;
+    // tslint:disable-next-line:radix
+    documentTemplateModel.updatedBy = parseInt(
+      localStorage.getItem('client_id')
+    );
+    documentTemplateModel.updatedDate = objFileInfo.updatedDate;
+    // tslint:disable-next-line:radix
+    documentTemplateModel.userId = parseInt(
+      localStorage.getItem('client_id')
+    );
+    this.masterService.updateDocumentTemplate(documentTemplateModel).subscribe(
+      result => {
+        this.getDocuments();
+        if (result && result.httpcode && result.httpcode === 500) {
+          $.toaster({ priority: 'error', title: 'Error', message: result.failureReason });
+        } else {
+          $.toaster({ priority: 'success', title: 'Success', message: 'Template updated successfully' });
+        }
+      },
+      err => {
+        $.toaster({ priority: 'error', title: 'Error', message: 'Error occurred' });
+        console.log(err);
+      }
+    );
+    $('#previewFile').modal('hide');
+  }
+  deleteTemplate(templateId) {
       this.masterService.deleteDocumentTemplate(templateId).subscribe(
         result => {
           this.getDocuments();
