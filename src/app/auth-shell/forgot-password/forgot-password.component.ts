@@ -18,11 +18,13 @@ export class ForgotPasswordComponent implements OnInit {
   public _signup: any;
   public forgotPasswordForm: FormGroup;
   public isMailSent: boolean = false;
-  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService ) {    
+  isCaptcha: boolean= true;
+
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
     this.forgotPasswordForm = fb.group({
-      email: [null, Validators.required]    
-  });
-}
+      email: [null, Validators.required]
+    });
+  }
 
   ngOnInit() {
     this.forgotPasswordPageLayout();
@@ -31,62 +33,61 @@ export class ForgotPasswordComponent implements OnInit {
       (e) => {
         if (e != "") {
           this.forgotPasswordForm.get('email').setValidators([Validators.email]);
-         } else {
+        } else {
           this.forgotPasswordForm.get('email').setValidators([Validators.required]);
-         }
+        }
       }
     )
   }
 
-   forgotPasswordRecovery(data){
- 
- var email=data.email;
-     const signUpDetails = new SignUpModel();
-     signUpDetails.email=data.email;
-     this.authService.forgot_password(email).subscribe(
-     result => {
-       console.log(result);
-       this._signup = result;
-       this.isMailSent = true;
-       // this.router.navigate(['/']);
-     },
-     err => {
-       console.log(err);
-     });
-   }
+  forgotPasswordRecovery(data) {
 
-   redirectToLogin()
-   {
+    var email = data.email;
+    const signUpDetails = new SignUpModel();
+    signUpDetails.email = data.email;
+    this.authService.forgot_password(email).subscribe(
+      result => {
+        console.log(result);
+        this._signup = result;
+        this.isMailSent = true;
+        // this.router.navigate(['/']);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  redirectToLogin() {
     this.router.navigate(['login']);
-   }
-   
-  forgotPasswordPageLayout(){
+  }
+
+  forgotPasswordPageLayout() {
     $(window.document).ready(function () {
-      if($(".login-page")[0]){
-      }else{
+      if ($(".login-page")[0]) {
+      } else {
         $("body").addClass("login-page");
       }
-      if($(".skin-black")[0]){
+      if ($(".skin-black")[0]) {
         $("body").removeClass("skin-black");
       }
-      if($(".sidebar-mini")[0]){
+      if ($(".sidebar-mini")[0]) {
         $("body").removeClass("sidebar-mini");
       }
-      if($(".hold-transition")[0]){
-      }else{
+      if ($(".hold-transition")[0]) {
+      } else {
         $("body").addClass("hold-transition");
       }
-      if($(".login-box")[0]){
-      }else{
+      if ($(".login-box")[0]) {
+      } else {
         $("#wrapper_id").addClass("login-box");
       }
-      if($(".wrapper")[0]){
+      if ($(".wrapper")[0]) {
         $("#wrapper_id").removeClass("wrapper");
       }
-      if($(".register-box")[0]){
+      if ($(".register-box")[0]) {
         $("#wrapper_id").removeClass("register-box");
       }
-      if($(".register-page")[0]){
+      if ($(".register-page")[0]) {
         $("body").removeClass("register-page");
       }
       $("body").removeAttr("style");
@@ -94,7 +95,12 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
- 
+  resolved(captchaResponse: string) {
+    if (captchaResponse && captchaResponse.length > 0) {
+      this.isCaptcha = false;
+    }
+    console.log(`Resolved captcha with response ${captchaResponse}:`);
+  }
 
 
 }
