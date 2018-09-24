@@ -86,6 +86,7 @@ export class EditCaseComponent implements OnInit {
     this._activatdRoute.params.subscribe((param) => {
       this.id = param.id;
       this.isCompliance = JSON.parse(param.isCompliance);
+      this.isRunningCase = !this.isCompliance;
     });
     const self = this;
     $(document).ready(function () {
@@ -101,18 +102,20 @@ export class EditCaseComponent implements OnInit {
 
   getCaseDetails() {
     const reqData = { caseId: this.id };
-    if (!this.isCompliance) {
-      this.authService.getCaseByCaseId(reqData).subscribe(
-        result => {
-          this.createForm(result);
-        },
-        err => {
-          console.log(err);
-        });
-    } else {
+    this.authService.getCaseByCaseId(reqData).subscribe(
+      result => {
+        this.createForm(result);
+      },
+      err => {
+        console.log(err);
+      });
+
+    if (this.isCompliance) {
       this.authService.getCaseCompliance(reqData).subscribe(
         result => {
-          this.createFormforcompliance(result);
+          this.complianceGridData = result;
+          this.disabled = true;
+          // this.createFormforcompliance(result);
         },
         err => {
           console.log(err);
@@ -404,15 +407,9 @@ export class EditCaseComponent implements OnInit {
 
     this._disabledV = '1';
     this.disabled = true;
-    var self = this;
+    const self = this;
     if (c != null) {
-      self.complianceGridData = [];
-      this.caseId = c[0].id;
-      c.forEach(function (value) {
-        self.complianceGridData.push(value.compliance);
-      });
-      // this.complianceGridData=[c[0].compliance];
-
+      self.complianceGridData = c;
       this.recourseSelected = [];
 
       const objFilter = this.Resource.filter(x => x.id === c[0].legalCase.recourseId);
@@ -457,8 +454,10 @@ export class EditCaseComponent implements OnInit {
       this.selectedEmployee = this.employeeSelected[0];
       this.courtPlaceSelected = [];
       const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c[0].legalCase.id);
-      this.courtPlaceSelected.push({ id: c[0].legalCase.id, text: objcourtPlaceSelected[0].text });
-      this.selectedCourtPlace = this.courtPlaceSelected[0];
+      if (objcourtPlaceSelected.length > 0) {
+        this.courtPlaceSelected.push({ id: c[0].legalCase.id, text: objcourtPlaceSelected[0].text });
+        this.selectedCourtPlace = this.courtPlaceSelected[0];
+      }
     }
   }
   createFormforcompliance(c) {
@@ -480,10 +479,8 @@ export class EditCaseComponent implements OnInit {
     }
     this.editCaseForm.disable();
     this.editCaseForm = this.fb.group({
-
-
+      title: [c == null ? null : c[0].legalCase.title, Validators.required],
       caseId: [c == null ? null : c[0].legalCase.caseId, Validators.required],
-
       courtCaseId: [c == null ? null : c[0].legalCase.courtCaseId],
       recourse: [c == null ? null : c.recourseId],
       manager: [c == null ? null : c.managerId],
@@ -505,19 +502,12 @@ export class EditCaseComponent implements OnInit {
       lastHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.lastHearingDate, 'yyyy-MM-dd')],
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.completionDate, 'yyyy-MM-dd')],
-      // if(localStorage)
-      // {
-
-      // }
-
     });
-    if (localStorage.userRole == 'CLIENT') {
+    if (localStorage.userRole === 'CLIENT') {
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
-      // $('#Compliance').hide();
       $('#btnSubmit').hide();
-
     }
   }
 
@@ -637,7 +627,6 @@ export class EditCaseComponent implements OnInit {
         if (c != null) {
 
           setTimeout(() => {
-
             if (c[0] != undefined) {
 
               this.bindDataOnEditForCompliance(c);
@@ -744,10 +733,7 @@ export class EditCaseComponent implements OnInit {
   }
 
   compliance() {
-    const c = confirm('Do you want to compliance this case?');
-    const status = document.getElementById('content');
-
-    if (c == true) {
+    if (confirm('Do you want to compliance this case?')) {
       const reqData = {
         compliance: {
           recourse: {
@@ -760,45 +746,44 @@ export class EditCaseComponent implements OnInit {
         },
 
         legalCase: {
-          id: this.caseId.substr(this.caseId.lastIndexOf('/') + 1),
+          id: this.id,
         },
-
-
       };
       this.authService.caseUpdateCompliance(reqData).subscribe(
-
         result => {
           console.log(result);
-          if (result.body.httpCode == 200) { //success
-
+          if (result.body.httpCode === 200) { // success
             $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
-            $(window.location.href = '/admin/case');
-          }
-          else {
-            var c = confirm('Case can not be moved under compliance as no compliance mapped against recourse code & stage of this case?');
-            var status = document.getElementById('content');
-
-            $('#Compliance').prop('checked', false);
-            $('#editCaseModal').modal('hide');
+            this.editCaseForm.disable();
+            this.isCompliance = true;
+            this.redirectSamePage();
+          } else {
+            alert('Case can not be moved under compliance as no compliance mapped against recourse code & stage of this case?');
           }
         },
         err => {
           console.log(err);
         });
+    } else {
+      $('#Compliance').prop('checked', false);
     }
-
   }
-  closeCase() {
 
-    const id = this.caseId;
+  redirectSamePage() {
+    this.getCaseDetails();
+    this.disabled = this.isCompliance;
+    this._router.navigate(['/admin/case/editcase/' + this.id + '/' + this.isCompliance]);
+  }
 
-    this.authService.closeCase(id).subscribe(
-
+  closeCase(data) {
+    this.authService.closeCase(data.id).subscribe(
       result => {
-
+        this.complianceGridData.splice(this.complianceGridData.findIndex(x => x.id === data.id), 1);
         $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
-        $('#editCaseModal').modal('hide');
-        $(window.location.href = '/admin/case');
+        if (this.complianceGridData.length === 0) {
+          this.isCompliance = false;
+          this.redirectSamePage();
+        }
       },
       err => {
         console.log(err);

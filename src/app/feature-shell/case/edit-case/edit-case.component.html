@@ -8,15 +8,15 @@
     <div class="box-body widget-content">
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-          <li id="caseLi" class="active">
+          <li id="caseLi" [ngClass]="{'active':!isCompliance}">
             <a href="#tab_1" data-toggle="tab">Case Details</a>
           </li>
-          <li id="compLi">
+          <li id="compLi" [ngClass]="{'active':isCompliance}" *ngIf="isCompliance">
             <a href="#tab_2" data-toggle="tab">Compliance</a>
           </li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane active" id="tab_1">
+          <div class="tab-pane" [ngClass]="{'active':!isCompliance}" id="tab_1">
             <form [formGroup]="editCaseForm" id="form1" class="form-horizontal" (ngSubmit)="submitEditCaseUser(editCaseForm.value)">
               <div class="form-body">
                 <div class="tab-content">
@@ -28,8 +28,7 @@
                         <em class="astrick">*</em>
                       </label>
                       <div class="col-md-9">
-
-                        <input type="checkbox" [disabled]="!isRunningCase" name="Compliance" id="Compliance" placeholder="Compliance" value="1" (click)="compliance();">
+                          <input type="checkbox" [checked]="isCompliance" [disabled]="isCompliance" name="Compliance" id="Compliance" placeholder="Compliance" value="1" (click)="compliance();">
                       </div>
                     </div>
 
@@ -325,7 +324,7 @@
                       </label>
                       <div class="col-md-9">
 
-                        <input type="file" class="form-control" (change)="onFileChange($event)">
+                        <input type="file" class="form-control" (change)="onFileChange($event)" [disabled]="isCompliance">
                       </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -398,7 +397,7 @@
               </div>
             </form>
           </div>
-          <div class="tab-pane" id="tab_2">
+          <div class="tab-pane" [ngClass]="{'active':isCompliance}" id="tab_2">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
@@ -408,16 +407,15 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of complianceGridData">
-                  <td>{{item.complianceName}}</td>
+                  <td>{{item.compliance.complianceName}}</td>
                   <td>
-                    <a style="color:cornflowerblue" (click)="closeCase();">Verified & completed</a>
+                    <a style="color:cornflowerblue" (click)="closeCase(item);">Verified & completed</a>
                   </td>
                 </tr>
               </tbody>
             </table>
-
-            <a class="btn btn-modal-addedit" href="/admin/case">Back</a>
-
+            <button type="button" class="btn btn-modal-addedit" data-dismiss="modal" (click)="back()">Back</button>
+            
           </div>
         </div>
       </div>

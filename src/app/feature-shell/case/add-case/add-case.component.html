@@ -307,10 +307,6 @@
 
                 <div class="form-group col-md-6">
                   <div class="col-md-4">
-                    <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
-                Submit
-                <i class="m-icon-swapright m-icon-white"></i>
-              </button> -->
                   </div>
                 </div>
               </div>
@@ -318,10 +314,9 @@
           </div>
 
           <div class="modal-footer modal-footer-addedit">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" (click)="back()">Back</button>
             <button type="submit" class="btn btn-modal-addedit">Submit</button>
-            <!-- <button type="submit" class="btn btn-modal-addedit">Submit</button> -->
-          </div>
+            </div>
         </form>
       </div>
     </div>

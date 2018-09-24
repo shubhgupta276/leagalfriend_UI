@@ -414,7 +414,7 @@ export class AddCaseComponent implements OnInit {
             result = result.body;
             if (result.httpCode === 200) { // success
               $.toaster({ priority: 'success', title: 'Success', message: 'Case saved successfully' });
-              this._router.navigate(['/admin/case']);
+              this.back();
             }
           },
           err => {
@@ -424,6 +424,10 @@ export class AddCaseComponent implements OnInit {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  back() {
+    this._router.navigate(['/admin/case']);
   }
   ndCaseGridOnEdit(data) {
 
