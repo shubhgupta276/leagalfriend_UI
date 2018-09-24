@@ -1,354 +1,324 @@
-<style>
-  .ui-select-choices.dropdown-menu {
-    display: block;
-  }
+<div class="content-wrapper">
+  <div class="page-heading">
+    <span>Add Case</span>
+  </div>
+  <div class="modal-content" style="border-radius: 5px;">
+    <br>
+    <br>
+    <div class="modal-body">
+      <div class="box-body widget-content">
+        <form [formGroup]="addCaseForm" class="form-horizontal" (ngSubmit)="submitAddCaseUser(addCaseForm.value)">
+          <div class="form-body">
+            <div class="tab-content">
+              <div class="tab-pane active">
 
-  .completer-dropdown-holder {
-    background-color: red;
-  }
-</style>
-<div class="modal fade" id="addCaseModal">
-  <div class="modal-dialog">
-    <div class="modal-content" style="border-radius: 5px;">
-      <div class="modal-header modal-header-addedit">
-        <button type="button" id="closebtn1" class="close close-addedit" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">Add Case</h4>
-      </div>
-      <div style="width:120px;height:10%;background-color:black;"></div>
-      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
-        <!-- Edit Case Starts -->
-        <div class="row">
-          <!-- <div class="col-md-12"> -->
-          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-          <div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Title:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9">
+                    <input class="form-control" placeholder="Title" formControlName="title">
+                  </div>
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('title').invalid">
+                    <small class="text-danger">
+                      <span>Title is required </span>
+                    </small>
+                  </div>
+                </div>
 
-
-
-            <div class="box-body widget-content">
-              <form [formGroup]="addCaseForm" class="form-horizontal" (ngSubmit)="submitAddCaseUser(addCaseForm.value)">
-                <div class="form-body">
-                  <div class="tab-content">
-                    <div class="tab-pane active">
-
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Title:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9">
-                          <input class="form-control" placeholder="Title" formControlName="title">
-                        </div>
-
-                        <div class="col-sm-9 valodation-padding" *ngIf="isSubmitClick && addCaseForm.get('title').invalid">
-                          <small class="text-danger">
-                            <span>Title is required </span>
-                          </small>
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Court Case ID:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-                          <input class="form-control" placeholder="Court Case Id" formControlName="courtCaseId">
-                        </div>
-                      </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Court Case ID:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
+                    <input class="form-control" placeholder="Court Case Id" formControlName="courtCaseId">
+                  </div>
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('title').invalid">
+                    <small class="text-danger">
+                      <span>&nbsp;</span>
+                    </small>
+                  </div>
+                </div>
 
 
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Recourse:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9 " id="divRecourse" *ngIf="Resource.length > 0">
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9 " id="divRecourse" *ngIf="Resource.length > 0">
 
 
-                          <ng-select [allowClear]="true" [items]="Resource" [attr.disabled]="disabled" formControlName="recourse" (data)="refreshValue($event)"
-                            (selected)="selectedRecourse1($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No recourse selected">
-                          </ng-select>
+                    <ng-select [allowClear]="true" [items]="Resource" [attr.disabled]="disabled" formControlName="recourse" (data)="refreshValue($event)"
+                      (selected)="selectedRecourse1($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No recourse selected">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-3">&nbsp;</div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('recourse').invalid">
+                    <small class="text-danger">
+                      <span>Please select recourse</span>
+                    </small>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Stage:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9">
 
-                          <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('recourse').invalid">
-                            <small class="text-danger">
-                              <span>Please select recourse</span>
-                            </small>
-                          </div>
+                    <ng-select [allowClear]="true" [items]="Stage" [attr.disabled]="disabled" (data)="refreshValue($event)" id="ddlR" (selected)="selected($event)"
+                      (removed)="removed($event)" (typed)="typed($event)" placeholder="No stage selected" formControlName="stage">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-3">&nbsp;</div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('stage').invalid">
+                    <small class="text-danger">
+                      <span>Please select stage</span>
+                    </small>
+                  </div>
+                </div>
 
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Branch:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9" id="divBranch" *ngIf="Branch.length > 0">
 
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Stage:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9">
+                    <ng-select [allowClear]="true" [items]="Branch" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                      (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" formControlName="branch">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-3">&nbsp;</div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('branch').invalid">
+                    <small class="text-danger">
+                      <span>Please select branch</span>
+                    </small>
+                  </div>
+                  <span style="color:red;display:none;margin-left:20px" id="spnBranch">Please create Branch first in Master</span>
+                </div>
 
-                          <ng-select [allowClear]="true" [items]="Stage" [attr.disabled]="disabled" (data)="refreshValue($event)" id="ddlR" (selected)="selected($event)"
-                            (removed)="removed($event)" (typed)="typed($event)" placeholder="No stage selected" formControlName="stage">
-                          </ng-select>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Manager:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9" id="divManager" *ngIf="Manager.length > 0">
 
-                          <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('stage').invalid">
-                            <small class="text-danger">
-                              <span>Please select stage</span>
-                            </small>
-                          </div>
-                        </div>
-                      </div>
+                    <ng-select [allowClear]="true" [items]="Manager" formControlName="manager" [attr.disabled]="disabled" (data)="refreshValue($event)"
+                      (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No manager selected">
+                    </ng-select>
+                  </div>
 
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Branch:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" id="divBranch" *ngIf="Branch.length > 0">
+                  <div class="col-sm-3">&nbsp;</div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('manager').invalid">
+                    <small class="text-danger">
+                      <span>Please select manager</span>
+                    </small>
+                  </div>
+                  <span style="color:red;display:none;margin-left:20px" id="spnManager">Please create Manager first in User Management</span>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Employee:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9" *ngIf="Employee.length>0">
 
-                          <ng-select [allowClear]="true" [items]="Branch" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                            (removed)="removed($event)" (typed)="typed($event)" placeholder="No branch selected" formControlName="branch">
-                          </ng-select>
+                    <ng-select [allowClear]="true" [items]="Employee" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                      (removed)="removed($event)" (typed)="typed($event)" placeholder="No employee selected" formControlName="employee">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-3">&nbsp;</div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('employee').invalid">
+                    <small class="text-danger">
+                      <span>Please select employee</span>
+                    </small>
+                  </div>
+                  <span style="color:red;display:none;margin-left:20px" id="spnEmployee">Please create Employee first in User Management</span>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9" id="divCustomerName" *ngIf="CustomerName.length > 0">
+                    <ng-select [allowClear]="true" [items]="CustomerName" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                      (removed)="removed($event)" (typed)="typed($event)" placeholder="No customer selected" formControlName="customerName">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-3">&nbsp;</div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('customerName').invalid">
+                    <small class="text-danger">
+                      <span>Please select customer</span>
+                    </small>
+                  </div>
+                  <span style="color:red;display:none;margin-left:20px" id="spnCustomer">Please create Customer first in User Management</span>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Court:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9" id="divCourt" *ngIf="Court.length > 0">
+                    <ng-select [allowClear]="true" [items]="Court" formControlName="court" [attr.disabled]="disabled" (data)="refreshValue($event)"
+                      (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No court selected">
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">State:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9" id="divState" *ngIf="State.length > 0">
+                    <ng-select [allowClear]="true" [items]="State" formControlName="state" [attr.disabled]="disabled" (data)="refreshValue($event)"
+                      (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No state selected">
+                    </ng-select>
 
-                          <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('branch').invalid">
-                            <small class="text-danger">
-                              <span>Please select branch</span>
-                            </small>
-                          </div>
-                        </div>
-                        <span style="color:red;display:none;margin-left:20px" id="spnBranch">Please create Branch first in Master</span>
-                      </div>
+                  </div>
+                  <div class="col-sm-3">&nbsp;</div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('state').invalid">
+                    <small class="text-danger">
+                      <span>Please select state</span>
+                    </small>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
 
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Manager:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" id="divManager" *ngIf="Manager.length > 0">
+                    <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService"
+                      [matchClass]="match" [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
 
-                          <ng-select [allowClear]="true" [items]="Manager" formControlName="manager" [attr.disabled]="disabled" (data)="refreshValue($event)"
-                            (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No manager selected">
-                          </ng-select>
+                  </div>
 
-                          <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('manager').invalid">
-                            <small class="text-danger">
-                              <span>Please select manager</span>
-                            </small>
-                          </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Next Hearing Date:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
 
-                        </div>
-                        <span style="color:red;display:none;margin-left:20px" id="spnManager">Please create Manager first in User Management</span>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Employee:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" *ngIf="Employee.length>0">
-
-                          <ng-select [allowClear]="true" [items]="Employee" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                            (removed)="removed($event)" (typed)="typed($event)" placeholder="No employee selected" formControlName="employee">
-                          </ng-select>
-
-                          <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('employee').invalid">
-                            <small class="text-danger">
-                              <span>Please select employee</span>
-                            </small>
-                          </div>
-                        </div>
-                        <span style="color:red;display:none;margin-left:20px" id="spnEmployee">Please create Employee first in User Management</span>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" id="divCustomerName" *ngIf="CustomerName.length > 0">
-                          <ng-select [allowClear]="true" [items]="CustomerName" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                            (removed)="removed($event)" (typed)="typed($event)" placeholder="No customer selected" formControlName="customerName">
-                          </ng-select>
-
-                          <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('customerName').invalid">
-                            <small class="text-danger">
-                              <span>Please select customer</span>
-                            </small>
-                          </div>
-                        </div>
-                        <span style="color:red;display:none;margin-left:20px" id="spnCustomer">Please create Customer first in User Management</span>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Court:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9" id="divCourt" *ngIf="Court.length > 0">
-                          <ng-select [allowClear]="true" [items]="Court" formControlName="court" [attr.disabled]="disabled" (data)="refreshValue($event)"
-                            (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No court selected">
-                          </ng-select>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">State:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" id="divState" *ngIf="State.length > 0">
-                          <!-- <ngx-select-dropdown (change)="dropChangeState(this)" [config]="config" [options]="arDdl"  
-                                  [(value)]="configData" [multiple]="false" ></ngx-select-dropdown> -->
-                          <ng-select [allowClear]="true" [items]="State" formControlName="state" [attr.disabled]="disabled" (data)="refreshValue($event)"
-                            (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No state selected">
-                          </ng-select>
-
-                          <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('state').invalid">
-                            <small class="text-danger">
-                              <span>Please select state</span>
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-
-                          <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService"
-                            [matchClass]="match" [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
-
-                        </div>
-
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Next Hearing Date:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-
-                          <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                            <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                              size="10" formControlName="nextHearingDate">
-                            <div class="input-group-addon">
-                              <span class="fa fa-calendar"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Remark:
-                          <em class="astrick">*</em>
-                        </label>
-                        <div class="col-md-9" [class.has-error]="isSubmitClick && addCaseForm.get('remark').invalid">
-
-                          <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
-                        </div>
-                        <div class="col-sm-9 valodation-padding" *ngIf="isSubmitClick && addCaseForm.get('remark').invalid">
-                          <small class="text-danger">
-                            <span>Remark is required.</span>
-                          </small>
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Filing date:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-
-                          <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                            <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                              size="10" value="2017-11-07" formControlName="filingdate">
-                            <div class="input-group-addon">
-                              <span class="fa fa-calendar"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-                      <div class="form-group row" *ngIf="CourtPlace.length>0">
-                        <label class="col-sm-3 col-form-label createUserLabel">Court place:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-
-
-                          <ng-select [allowClear]="true" [items]="CourtPlace" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
-                            (removed)="removed($event)" (typed)="typed($event)" placeholder="No court place selected" formControlName="courtplace">
-                          </ng-select>
-
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Opp Lawyer:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-                          <input class="form-control" placeholder="Opp Lawyer" formControlName="oppLawyer">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Child Case:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-
-                          <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr1" [datasource]="dataService1"
-                            [matchClass]="match" [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
-
-                        </div>
-                      </div>
-
-
-
-
-
-
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-                          <!-- <input class="form-control" placeholder="Last Hearing Date" formControlName="lastHearingDate"> -->
-                          <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                            <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                              size="10" formControlName="lastHearingDate">
-                            <div class="input-group-addon">
-                              <span class="fa fa-calendar"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
-                          <!-- <em class="astrick">*</em> -->
-                        </label>
-                        <div class="col-md-9">
-
-                          <input type="file" class="form-control" (change)="onFileChange($event)">
-                        </div>
-
-
-                      </div>
-
-                      <div class="form-group row">
-                        <div class="col-md-4">
-                          <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
-                            Submit
-                            <i class="m-icon-swapright m-icon-white"></i>
-                          </button> -->
-                        </div>
+                    <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                        size="10" formControlName="nextHearingDate">
+                      <div class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="modal-footer modal-footer-addedit">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-modal-addedit">Submit</button>
-                  <!-- <button type="submit" class="btn btn-modal-addedit">Submit</button> -->
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Remark:
+                    <em class="astrick">*</em>
+                  </label>
+                  <div class="col-md-9" [class.has-error]="isSubmitClick && addCaseForm.get('remark').invalid">
+
+                    <textarea name="REMARK" placeholder="Remark" tabindex="8" class="form-control" formControlName="remark">case filed12</textarea>
+                  </div>
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9" *ngIf="isSubmitClick && addCaseForm.get('remark').invalid">
+                    <small class="text-danger">
+                      <span>Remark is required.</span>
+                    </small>
+                  </div>
                 </div>
-              </form>
+
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Filing date:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
+
+                    <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                        size="10" value="2017-11-07" formControlName="filingdate">
+                      <div class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-group col-md-6" *ngIf="CourtPlace.length>0">
+                  <label class="col-sm-3 col-form-label createUserLabel">Court place:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
+
+
+                    <ng-select [allowClear]="true" [items]="CourtPlace" [attr.disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)"
+                      (removed)="removed($event)" (typed)="typed($event)" placeholder="No court place selected" formControlName="courtplace">
+                    </ng-select>
+
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Opp Lawyer:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
+                    <input class="form-control" placeholder="Opp Lawyer" formControlName="oppLawyer">
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Child Case:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
+
+                    <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr1" [datasource]="dataService1"
+                      [matchClass]="match" [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+
+                  </div>
+                </div>
+
+
+
+
+
+
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
+                    <!-- <input class="form-control" placeholder="Last Hearing Date" formControlName="lastHearingDate"> -->
+                    <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                      <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                        size="10" formControlName="lastHearingDate">
+                      <div class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
+                    <!-- <em class="astrick">*</em> -->
+                  </label>
+                  <div class="col-md-9">
+
+                    <input type="file" class="form-control" (change)="onFileChange($event)">
+                  </div>
+
+
+                </div>
+
+                <div class="form-group col-md-6">
+                  <div class="col-md-4">
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <!-- </div> -->
-        </div>
-        <!-- Create User ends -->
+
+          <div class="modal-footer modal-footer-addedit">
+            <button type="button" class="btn btn-default" (click)="back()">Back</button>
+            <button type="submit" class="btn btn-modal-addedit">Submit</button>
+            </div>
+        </form>
       </div>
-
-
     </div>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>
