@@ -45,7 +45,9 @@ export class SignupComponent implements OnInit {
   public isMailSent = false;
   Subscription:any=[];
   UserType:any=[];
-subscriptionId:number;
+  subscriptionId:number;
+
+  isCaptcha:boolean = true;
   constructor(private http: Http,private router: Router, private fb: FormBuilder, private _httpClient: HttpClient,
     private authService: AuthService,private activatedRoute: ActivatedRoute) {
       this.activatedRoute.queryParams.subscribe((params: Params) => {
@@ -136,7 +138,7 @@ subscriptionId:number;
     role: [1],
      // status: [1],
       subscription:[parseInt(subscriptionId), Validators.required],
-      termsAndCondition: [false, Validators.pattern('true')]
+      termsAndCondition: [false, Validators.pattern('true')],
     });
   }
 
@@ -245,6 +247,12 @@ subscriptionId:number;
     this.router.navigate(['login']);
   }
 
+  resolved(captchaResponse : string) {
+      if(captchaResponse  && captchaResponse .length>0){
+        this.isCaptcha =false;
+      }
+      console.log(`Resolved captcha with response ${captchaResponse}:`);
+  }
 
 
 }

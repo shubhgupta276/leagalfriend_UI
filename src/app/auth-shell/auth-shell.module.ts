@@ -13,7 +13,7 @@ import { SignUpModel } from '../shared/models/auth/signup.model';
 import { TokenModel } from '../shared/models/auth/token.model';
 import { changepasswordComponent } from './changepassword/changepassword.component';
 import { HomeComponent } from './home/home.component';
-
+import { RecaptchaModule } from 'ng-recaptcha';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { AuthService } from './auth-shell.service';
 
@@ -27,6 +27,7 @@ import { AuthService } from './auth-shell.service';
     ReactiveFormsModule,
     AuthShellRoutingModule,
     SharedModule,
+    RecaptchaModule.forRoot(),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
       backdropBackgroundColour: 'rgba(0,0,0,0.5)',
