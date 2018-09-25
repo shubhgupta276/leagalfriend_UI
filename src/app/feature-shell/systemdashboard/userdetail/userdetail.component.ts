@@ -21,7 +21,9 @@ import {MatPaginator, MatSort, MatTableDataSource, MatTabGroup} from '@angular/m
 })
 export class UserdetailComponent implements OnInit {
 
-
+  data=[];
+  displayedColumns = ['name','email','organization'];
+  dataSource=new MatTableDataSource;
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
   expandedElement: any;
 
@@ -45,23 +47,17 @@ export class UserdetailComponent implements OnInit {
       });
       const client = '?userId=' + localStorage.getItem('client_id');
     
-      if(this.service == 'trial') {
-            this._systemdashService.getUsers('/trialusers').subscribe(result => {
-            this.userList = result;
-            this.title = 'Trial Users';
-          });
-      }
-      else if(this.service == 'inactiveusers'){
-           this._systemdashService.getUsers('/inactiveusers').subscribe(result => {
-            this.userList = result;
-            this.title = 'Users Inactive Since Last Month';
-          });
-      }
-      else if( this.service == 'customerdetails'){
+   
+      if( this.service == 'customerdetails'){
         this._userService.getAllCustomers(client).subscribe(
           result => {
             this.userList = result;
             this.title = 'Total Customers';
+
+            result.forEach(element => this.data.push(element, { detailRow: true, element }));
+            this.dataSource = new MatTableDataSource(this.data);
+            // this.dataSource.paginator = this.paginator;
+
           });
         }
   }

@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
   public events: any[] = [];
   Customer: any = [];
   errLoginMsg = '';
+  isCaptcha: boolean = true;
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
     const isSignedOut = localStorage.getItem('is_signed_out');
     if (isSignedOut) {
@@ -192,4 +193,11 @@ export class LoginComponent implements OnInit {
         console.log(err);
       });
   }
+
+  resolved(captchaResponse : string) {
+    if(captchaResponse  && captchaResponse .length>0){
+      this.isCaptcha =false;
+    }
+    console.log(`Resolved captcha with response ${captchaResponse}:`);
+}
 }
