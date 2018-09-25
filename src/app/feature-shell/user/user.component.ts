@@ -1,6 +1,6 @@
 import { CustomerType } from './../../shared/models/auth/signup.model';
 import { forEach } from '@angular/router/src/utils/collection';
-import { Component, OnInit, ViewChild, AfterContentInit,ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, ViewEncapsulation } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -58,10 +58,10 @@ export class UserComponent implements OnInit {
   $table: any;
   Branches = [];
   institutions = [];
-  serviceMode:any;
+  serviceMode: any;
   @ViewChild(EditUserComponent) child: EditUserComponent;
   actionColumnConfig: ActionColumnModel;
-  constructor(private fb: FormBuilder, private userService: UserService,private _activatedRoute: ActivatedRoute,
+  constructor(private fb: FormBuilder, private userService: UserService, private _activatedRoute: ActivatedRoute,
     private _storageService: StorageService, private authService: AuthService) {
     this.setRoles();
     this.setStatus();
@@ -69,8 +69,8 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this._activatedRoute.params.subscribe((params: Params) => {
-      this.serviceMode= params.mode;
-     });
+      this.serviceMode = params.mode;
+    });
     this.changePasswordValidation();
     this.setActionConfig();
     this.getUsers();
@@ -91,36 +91,6 @@ export class UserComponent implements OnInit {
 
     const $this = this;
     const client = '?clientId=' + localStorage.getItem('client_id');
-    if( this.serviceMode == 'customerdetails'){
-    this.userService.getAllCustomers(client).subscribe(
-      result => {
-        result.forEach(element=>{
-          if (element.roles.length > 0) {
-            element.roleId = element.roles[0].id;
-            element.roles = element.roles[0].roleName;
-          }
-          if (element.branch != null) {
-            element.branchId = element.branch.id;
-            element.branchName = element.branch.branchName;
-          }
-          if (element.institution != null) {
-            element.institutionId = element.institution.id;
-            element.institutionName = element.institution.institutionName;
-          }
-          if(element.customerType !=null) {
-            element.customerType = element.customerType.name;
-          }
-          element.name = element.firstName + ' ' + element.lastName;
-          this.tableInputData.push(element);
-        });
-        this.dataTableComponent.ngOnInit();
-      },
-      err=>{
-        console.log(err);
-      }
-    );
-  }
-  else{
     this.userService.listUsers(client).subscribe(
       result => {
 
@@ -149,7 +119,6 @@ export class UserComponent implements OnInit {
         console.log(err);
       });
   }
-  }
 
   public addUserToList(user: any) {
     user.roleId = user.roles[0].id;
@@ -169,7 +138,7 @@ export class UserComponent implements OnInit {
         result.forEach(function (value) {
 
           if (result[0].roleName == 'ADMIN') {
-             result.splice(0,1)
+            result.splice(0, 1)
             $this.userRoles = result;
           }
         });

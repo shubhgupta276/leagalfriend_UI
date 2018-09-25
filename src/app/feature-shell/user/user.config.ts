@@ -27,5 +27,5 @@ export const userTableConfig = [
     { uniqueId: 'subscriptionId', displayName: 'subscriptionId', sortable: false, dropDownFilter: false, display: false },
     // { uniqueId: 'userType', displayName: 'userType', sortable: false, dropDownFilter: false, display: false },
     { uniqueId: 'verified', displayName: 'verified', sortable: false, dropDownFilter: false, display: false },
-    { uniqueId: 'customerType', displayName: 'Customer Type', sortable: false, dropDownFilter: false, display: true },
+    { uniqueId: 'customerType', displayName: 'Customer Type', sortable: false, dropDownFilter: false, display: false },
   ];
