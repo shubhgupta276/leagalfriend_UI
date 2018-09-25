@@ -18,10 +18,24 @@ export class CreateNotificationComponent implements OnInit {
   subject: string;
   description: string;
   searchEmail: string;
-  constructor(private _notificationService: NotificationService, private _storageService: StorageService) { }
+
+  selectedItem: any = '';
+  inputChanged: any = '';
+  wikiItems: any[] = [];
+  autoCompleteConfig: any = { 'placeholder': 'Type Email', 'sourceField': ['name'] };
+  constructor(private _notificationService: NotificationService,
+    private _storageService: StorageService) { }
 
   ngOnInit() {
     this.setNotificationType();
+  }
+
+  onSelect(item: any) {
+    this.selectedItem = item;
+  }
+
+  onInputChangedEvent(val: string) {
+    this.inputChanged = val;
   }
 
   setNotificationType() {
@@ -37,9 +51,12 @@ export class CreateNotificationComponent implements OnInit {
   }
 
   notificationTypeChagne() {
-    if (!this.isOtherNotificationSelected()) {
+    if (this.isOtherNotificationSelected()) {
       this.arSelectedEmails = [];
       this.resetEmailSearch();
+      setTimeout(() => {
+        document.getElementById('divEmail').firstElementChild.setAttribute('style', 'display: inline-block;position: relative;width:100%');
+      }, 10);
     }
   }
 
@@ -53,6 +70,9 @@ export class CreateNotificationComponent implements OnInit {
       this.arSelectedEmails.push(email);
     }
     this.resetEmailSearch();
+    setTimeout(() => {
+      document.getElementById('txtEmail').focus();
+    }, 10);
   }
 
   removeEmail(email: any) {
@@ -61,7 +81,7 @@ export class CreateNotificationComponent implements OnInit {
     this.arFilterEmail = [];
   }
 
-  filterEmail() {
+  filterEmail(searchValue: any) {
     this.arFilterEmail = [];
     if (this.searchEmail) {
       this._notificationService.getEmails(this.searchEmail).subscribe(
@@ -83,7 +103,6 @@ export class CreateNotificationComponent implements OnInit {
   }
 
   isValid(): boolean {
-    console.log('call');
     if (this.selectedNotificationType && this.subject && this.description) {
       if (this.isOtherNotificationSelected() && this.arSelectedEmails && this.arSelectedEmails.length <= 0) {
         return false;

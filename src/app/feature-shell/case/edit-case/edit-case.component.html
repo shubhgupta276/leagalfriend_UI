@@ -1,446 +1,424 @@
-<div class="modal fade" id="editCaseModal">
-  <div class="modal-dialog">
-    <div class="modal-content" style="border-radius: 5px;">
-      <div class="modal-header modal-header-addedit">
-        <button type="button" id="closebtn1" class="close close-addedit" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-        <h4 class="modal-title">Edit Case</h4>
-      </div>
-      <div style="width:120px;height:10%;background-color:black;"></div>
-      <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
-        <!-- Edit Case Starts -->
-        <div class="row">
-          <!-- <div class="col-md-12"> -->
-          <input type="hidden" name="base_url" id="base_url" value="http://legalfriend.infinityfreeapp.com/">
-          <div>
-            <div class="box-body widget-content">
-              <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li id="caseLi">
-                    <a href="#tab_1" data-toggle="tab">Case Details</a>
-                  </li>
-                  <li id="compLi">
-                    <a href="#tab_2" data-toggle="tab">Compliance</a>
-                  </li>
-                </ul>
+<div class="content-wrapper">
+  <div class="page-heading">
+    <span>Add Case</span>
+  </div>
+  <div class="modal-content" style="border-radius: 5px;">
+    <br>
+    <br>
+    <div class="box-body widget-content">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li id="caseLi" [ngClass]="{'active':!isCompliance}">
+            <a href="#tab_1" data-toggle="tab">Case Details</a>
+          </li>
+          <li id="compLi" [ngClass]="{'active':isCompliance}" *ngIf="isCompliance">
+            <a href="#tab_2" data-toggle="tab">Compliance</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane" [ngClass]="{'active':!isCompliance}" id="tab_1">
+            <form [formGroup]="editCaseForm" id="form1" class="form-horizontal" (ngSubmit)="submitEditCaseUser(editCaseForm.value)">
+              <div class="form-body">
                 <div class="tab-content">
-                  <div class="tab-pane" id="tab_1">
-                    <form [formGroup]="editCaseForm" id="form1" class="form-horizontal" (ngSubmit)="submitEditCaseUser(editCaseForm.value)">
-                      <div class="form-body">
-                        <div class="tab-content">
-                          <div class="tab-pane active">
+                  <div class="tab-pane active">
+
+                    <br>
+                    <div class="form-group col-md-6" id="complianceDiv" *ngIf="!isViewOnly">
+                      <label class="col-sm-3 col-form-label createUserLabel">Compliance:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9">
+                          <input type="checkbox" [checked]="isCompliance" [disabled]="isCompliance" name="Compliance" id="Compliance" placeholder="Compliance" value="1" (click)="compliance();">
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Title:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9">
+                        <input class="form-control" placeholder="Title" formControlName="title">
+                      </div>
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-9" *ngIf="editCaseForm.get('title').invalid &&  editCaseForm.get('title').touched">
+                        <small class="text-danger">
+                          <span>Title is required </span>
+                        </small>
+                      </div>
+                    </div>
+                    <div class="tab-pane active" id="activity">
+                      <div class="form-group col-md-6">
+                        <label class="col-sm-3 col-form-label createUserLabel">Case ID:
+                          <em class="astrick">*</em>
+                        </label>
+
+                        <div class="col-md-9" [class.has-error]="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
+                          <input class="form-control" id="caseId" placeholder="Case Id" formControlName="caseId" [readonly]="true">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Court Case ID:
+                        <!-- <em class="astrick">*</em> -->
+                      </label>
+                      <div class="col-md-9">
+                        <input class="form-control" id="courtcaseId" placeholder="Court Case Id" formControlName="courtCaseId">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Recourse:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9" *ngIf="Resource.length > 0" id="divRecourse">
+                        <ng-select [allowClear]="true" [active]="recourseSelected" [items]="Resource" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectedRecourse1($event)" [(ngModel)]="recourseData" (removed)="removeRecourse($event)"
+                          (typed)="typed($event)" placeholder="No recourse selected" formControlName="recourse">
+                        </ng-select>
+                        <div class="col-sm-9" *ngIf="!selectedRecourse">
+                          <small class="text-danger">
+                            <span>Please select recourse</span>
+                          </small>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6" *ngIf="Stage.length>0">
+                      <label class="col-sm-3 col-form-label createUserLabel">Stage:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9">
+
+                        <ng-select [allowClear]="true" [items]="Stage" [active]="stageSelected" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectedSatge1($event)" (removed)="removedStage($event)" (typed)="typed($event)" placeholder="No stage selected"
+                          formControlName="stage">
+                        </ng-select>
+                        <div class="col-sm-9" *ngIf="!selectedStage">
+                          <small class="text-danger">
+                            <span>Please select stage</span>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6" *ngIf="Branch.length > 0">
+                      <label class="col-sm-3 col-form-label createUserLabel">Branch:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9" id="divBranch" *ngIf="Branch.length > 0">
+
+                        <ng-select [allowClear]="true" [items]="Branch" [active]="branchSelected" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectedBranch1($event)" (removed)="removedBranch($event)" (typed)="typed($event)" placeholder="No branch selected">
+                        </ng-select>
+                        <div class="col-sm-9" *ngIf="!selectedBranch">
+                          <small class="text-danger">
+                            <span>Please select branch</span>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Manager:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9" id="divManager" *ngIf="Manager.length > 0">
+
+                        <ng-select [allowClear]="true" [items]="Manager" [active]="managerSelected" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectedManager1($event)" (removed)="removedManager($event)" (typed)="typed($event)"
+                          placeholder="No manager selected">
+                        </ng-select>
+                        <div class="col-sm-9" *ngIf="!selectedManager">
+                          <small class="text-danger">
+                            <span>Please select manager</span>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Employee:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9" *ngIf="Employee.length>0">
+
+                        <ng-select [allowClear]="true" [items]="Employee" [active]="employeeSelected" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectEmployee1($event)" (removed)="removedEmployee($event)" (typed)="typed($event)"
+                          placeholder="No employee selected">
+                        </ng-select>
+                        <div class="col-sm-9" *ngIf="!selectedEmployee">
+                          <small class="text-danger">
+                            <span>Please select employee</span>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9" id="divCustomerName" *ngIf="CustomerName.length > 0">
+                        <ng-select [allowClear]="true" [items]="CustomerName" [active]="customerSelected" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectedCustomerName1($event)" (removed)="removedCustomer($event)" (typed)="typed($event)"
+                          placeholder="No customer selected">
+                        </ng-select>
+                        <div class="col-sm-9" *ngIf="!selectedCustomerName">
+                          <small class="text-danger">
+                            <span>Please select customer</span>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Court:
+                        <!-- <em class="astrick">*</em> -->
+                      </label>
+                      <div class="col-md-9" id="divCourt" *ngIf="arCourts.length > 0">
 
 
-                            <div class="form-group row" id="complianceDiv" *ngIf="!isViewOnly">
-                              <label class="col-sm-3 col-form-label createUserLabel">Compliance:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9">
+                        <ng-select [allowClear]="true" [items]="arCourts" [active]="courtSelected" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectedCourt1($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No court selected">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">State:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9" id="divState" *ngIf="State.length > 0">
 
-                                <input type="checkbox" name="Compliance" id="Compliance" placeholder="Compliance" value="1" (click)="compliance();">
-                              </div>
-                            </div>
+                        <ng-select [allowClear]="true" [items]="State" [active]="stateSelected" [disabled]="disabled" (data)="refreshValue($event)"
+                          (selected)="selectedState1($event)" (removed)="removedState($event)" (typed)="typed($event)" placeholder="No state selected">
+                        </ng-select>
+                        <div class="col-sm-9" *ngIf="!selectedState">
+                          <small class="text-danger">
+                            <span>Please select state</span>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
+                        <!-- <em class="astrick">*</em> -->
+                      </label>
+                      <div class="col-md-9">
+                        <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService"
+                          [matchClass]="match" [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
 
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Title: 
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9">
-                                <input class="form-control" placeholder="Title" formControlName="title">
-                              </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Next Hearing Date:
+                        <!-- <em class="astrick">*</em> -->
+                      </label>
+                      <div class="col-md-9">
 
-                              <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('title').invalid && editCaseForm.get('title').touched">
-                                <small class="text-danger">
-                                  <span>Title is required </span>
-                                </small>
-                              </div>
-                            </div>
-                            <div class="tab-pane active" id="activity">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label createUserLabel">Case ID:
-                                  <em class="astrick">*</em>
-                                </label>
-
-                                <div class="col-md-9" [class.has-error]="editCaseForm.get('caseId').invalid &&  editCaseForm.get('caseId').touched">
-                                  <input class="form-control" id="caseId" placeholder="Case Id" formControlName="caseId" [readonly]="true">
-                                </div>
-
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Court Case ID:
-                                <!-- <em class="astrick">*</em> -->
-                              </label>
-                              <div class="col-md-9">
-                                <input class="form-control" id="courtcaseId" placeholder="Court Case Id" formControlName="courtCaseId">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Recourse:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" *ngIf="Resource.length > 0" id="divRecourse">
-                                <ng-select [allowClear]="true" [active]="recourseSelected" [items]="Resource" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedRecourse1($event)" [(ngModel)]="recourseData" (removed)="removeRecourse($event)"
-                                  (typed)="typed($event)" placeholder="No recourse selected" formControlName="recourse">
-                                </ng-select>
-                                <div class="col-sm-9" *ngIf="!selectedRecourse">
-                                  <small class="text-danger">
-                                    <span>Please select recourse</span>
-                                  </small>
-                                </div>
-
-                              </div>
-                            </div>
-                            <div class="form-group row" *ngIf="Stage.length>0">
-                              <label class="col-sm-3 col-form-label createUserLabel">Stage:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9">
-
-                                <ng-select [allowClear]="true" [items]="Stage" [active]="stageSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedSatge1($event)" (removed)="removedStage($event)" (typed)="typed($event)"
-                                  placeholder="No stage selected" formControlName="stage">
-                                </ng-select>
-                                <div class="col-sm-9" *ngIf="!selectedStage">
-                                  <small class="text-danger">
-                                    <span>Please select stage</span>
-                                  </small>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="form-group row" *ngIf="Branch.length > 0">
-                              <label class="col-sm-3 col-form-label createUserLabel">Branch:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" id="divBranch" *ngIf="Branch.length > 0">
-
-                                <ng-select [allowClear]="true" [items]="Branch" [active]="branchSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedBranch1($event)" (removed)="removedBranch($event)" (typed)="typed($event)"
-                                  placeholder="No branch selected">
-                                </ng-select>
-                                <div class="col-sm-9" *ngIf="!selectedBranch">
-                                  <small class="text-danger">
-                                    <span>Please select branch</span>
-                                  </small>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Manager:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" id="divManager" *ngIf="Manager.length > 0">
-
-                                <ng-select [allowClear]="true" [items]="Manager" [active]="managerSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedManager1($event)" (removed)="removedManager($event)" (typed)="typed($event)"
-                                  placeholder="No manager selected">
-                                </ng-select>
-                                <div class="col-sm-9" *ngIf="!selectedManager">
-                                  <small class="text-danger">
-                                    <span>Please select manager</span>
-                                  </small>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Employee:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" *ngIf="Employee.length>0">
-
-                                <ng-select [allowClear]="true" [items]="Employee" [active]="employeeSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectEmployee1($event)" (removed)="removedEmployee($event)" (typed)="typed($event)"
-                                  placeholder="No employee selected">
-                                </ng-select>
-                                <div class="col-sm-9" *ngIf="!selectedEmployee">
-                                  <small class="text-danger">
-                                    <span>Please select employee</span>
-                                  </small>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Customer Name:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" id="divCustomerName" *ngIf="CustomerName.length > 0">
-                                <ng-select [allowClear]="true" [items]="CustomerName" [active]="customerSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedCustomerName1($event)" (removed)="removedCustomer($event)" (typed)="typed($event)"
-                                  placeholder="No customer selected">
-                                </ng-select>
-                                <div class="col-sm-9" *ngIf="!selectedCustomerName">
-                                  <small class="text-danger">
-                                    <span>Please select customer</span>
-                                  </small>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Court:
-                                <!-- <em class="astrick">*</em> -->
-                              </label>
-                              <div class="col-md-9" id="divCourt" *ngIf="Court.length > 0">
-
-
-                                <ng-select [allowClear]="true" [items]="Court" [active]="courtSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedCourt1($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No court selected">
-                                </ng-select>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">State:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" id="divState" *ngIf="State.length > 0">
-
-                                <ng-select [allowClear]="true" [items]="State" [active]="stateSelected" [disabled]="disabled" (data)="refreshValue($event)"
-                                  (selected)="selectedState1($event)" (removed)="removedState($event)" (typed)="typed($event)"
-                                  placeholder="No state selected">
-                                </ng-select>
-                                <div class="col-sm-9" *ngIf="!selectedState">
-                                  <small class="text-danger">
-                                    <span>Please select state</span>
-                                  </small>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Parent Case:
-                                <!-- <em class="astrick">*</em> -->
-                              </label>
-                              <div class="col-md-9">
-                                <ng2-completer formControlName="parentCase" [inputClass]="['form-control']" [(ngModel)]="searchStr" [datasource]="dataService"
-                                  [matchClass]="match" [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
-
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Next Hearing Date:
-                                <!-- <em class="astrick">*</em> -->
-                              </label>
-                              <div class="col-md-9">
-
-                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                  <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                    size="10" value="2017-12-22" formControlName="nextHearingDate">
-                                  <div class="input-group-addon">
-                                    <span class="fa fa-calendar"></span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Remark:
-                                <em class="astrick">*</em>
-                              </label>
-                              <div class="col-md-9" [class.has-error]="editCaseForm.get('remark').invalid">
-
-                                <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
-                              </div>
-                              <div class="col-sm-9 valodation-padding" *ngIf="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
-                                <small class="text-danger">
-                                  <span>Remark is required.</span>
-                                </small>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
-
-                              </label>
-                              <div class="col-md-9">
-                                <!-- <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingfile"> -->
-                                <textarea name="GROUND_OF_CLOSING" tabindex="17" id="GROUND_OF_CLOSING" class="form-control" formControlName="groundforclosingfile"></textarea>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No.:
-
-                              </label>
-                              <div class="col-md-9">
-                                <input class="form-control" placeholder="Disposed off File No." formControlName="disposedoffFileNo">
-                              </div>
-                            </div>
-
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Filing date:
-                                <!-- <em class="astrick">*</em> -->
-                              </label>
-                              <div class="col-md-9">
-
-                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                  <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                    size="10" value="2017-11-07" formControlName="filingdate">
-                                  <div class="input-group-addon">
-                                    <span class="fa fa-calendar"></span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-
-                            <div class="form-group row" *ngIf="CourtPlace.length>0">
-                              <label class="col-sm-3 col-form-label createUserLabel">Court place:
-                                <!-- <em class="astrick">*</em> -->
-                              </label>
-                              <div class="col-md-9">
-
-
-                                <ng-select [allowClear]="true" [items]="CourtPlace" [disabled]="disabled" [active]="courtPlaceSelected" (data)="refreshValue($event)"
-                                  (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No court place selected">
-                                </ng-select>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Opp Lawyer:
-
-                              </label>
-                              <div class="col-md-9">
-                                <input class="form-control" placeholder="Opp Lawyer" formControlName="oppLawyer">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Child Case:
-
-                              </label>
-                              <div class="col-md-9">
-                                <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr1" [datasource]="dataService1"
-                                  [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
-
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
-
-                              </label>
-                              <div class="col-md-9">
-
-                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                  <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                    size="10" value="2017-12-04" formControlName="lastHearingDate">
-                                  <div class="input-group-addon">
-                                    <span class="fa fa-calendar"></span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group row" *ngIf="!isViewOnly">
-                              <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
-
-                              </label>
-                              <div class="col-md-9">
-
-                                <input type="file" class="form-control" (change)="onFileChange($event)">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label createUserLabel">Completion Date:
-
-                              </label>
-                              <div class="col-md-9">
-
-                                <div class="input-group date" name="completionDate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
-                                  <input type="text" tabindex="15" id="completionDate" name="completionDate" readonly="" placeholder="yyyy-mm-dd" class="form-control"
-                                    size="10" value="" formControlName="completionDate">
-                                  <div class="input-group-addon">
-                                    <span class="fa fa-calendar"></span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="form-group row">
-                              <div class="col-md-4">
-                                <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
-                        Submit
-                        <i class="m-icon-swapright m-icon-white"></i>
-                      </button> -->
-                              </div>
-                            </div>
+                        <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                          <input type="text" tabindex="14" id="NEXT_HEARING_DATE" name="NEXT_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                            size="10" value="2017-12-22" formControlName="nextHearingDate">
+                          <div class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
                           </div>
                         </div>
                       </div>
-                      <table id="caseFile" class="table table-bordered table-hover">
-                        <thead>
-                          <tr>
-                            <!-- <th>Select</th> -->
+                    </div>
 
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Remark:
+                        <em class="astrick">*</em>
+                      </label>
+                      <div class="col-md-9" [class.has-error]="editCaseForm.get('remark').invalid">
 
-
-                            <th>fileName</th>
-                            <th>fromDate</th>
-
-
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let items of caseFile;let i=index">
-                            <!-- <td>{{i+1}}</td> -->
-
-
-
-                            <td style="max-width: 253px;word-wrap: break-word;">
-                              <a href="#">{{items.fileName}}</a>
-                            </td>
-                            <td>{{items.fromDate}}</td>
-
-
-                            <td>
-                              <a title="delete" (click)="deleteCaseFile(items);">
-                                <i class="fa fa-trash"></i>
-                              </a>
-                              <a title="delete" (click)="downloadCaseFile(items)">
-                                <i class="fa fa-download" aria-hidden="true"></i>
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <div class="modal-footer modal-footer-addedit">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="submit" *ngIf="isRunningCase" id='btnSubmit' class="btn btn-modal-addedit">Submit</button>
+                        <textarea name="REMARK" tabindex="8" id="REMARK" class="form-control" formControlName="remark">case filed12</textarea>
                       </div>
-                    </form>
-                  </div>
-                  <div class="tab-pane" id="tab_2">
-                    <table class="table table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>Compliance</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let item of complianceGridData">
-                          <td>{{item.complianceName}}</td>
-                          <td>
-                            <a style="color:cornflowerblue" (click)="closeCase();">Verified & completed</a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-9" *ngIf="editCaseForm.get('remark').invalid &&  editCaseForm.get('remark').touched">
+                        <small class="text-danger">
+                          <span>Remark is required.</span>
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Ground for closing file:
 
-                    <a class="btn btn-modal-addedit" href="/admin/case">Back</a>
+                      </label>
+                      <div class="col-md-9">
+                        <!-- <input class="form-control" placeholder="Ground for closing file" formControlName="groundforclosingfile"> -->
+                        <textarea name="GROUND_OF_CLOSING" tabindex="17" id="GROUND_OF_CLOSING" class="form-control" formControlName="groundforclosingfile"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Disposed off File No.:
 
+                      </label>
+                      <div class="col-md-9">
+                        <input class="form-control" placeholder="Disposed off File No." formControlName="disposedoffFileNo">
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Filing date:
+                        <!-- <em class="astrick">*</em> -->
+                      </label>
+                      <div class="col-md-9">
+
+                        <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                          <input type="text" tabindex="9" id="FILING_DATE" name="FILING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                            size="10" value="2017-11-07" formControlName="filingdate">
+                          <div class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group col-md-6" *ngIf="CourtPlace.length>0">
+                      <label class="col-sm-3 col-form-label createUserLabel">Court place:
+                        <!-- <em class="astrick">*</em> -->
+                      </label>
+                      <div class="col-md-9">
+
+
+                        <ng-select [allowClear]="true" [items]="CourtPlace" [disabled]="disabled" [active]="courtPlaceSelected" (data)="refreshValue($event)"
+                          (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No court place selected">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Opp Lawyer:
+
+                      </label>
+                      <div class="col-md-9">
+                        <input class="form-control" placeholder="Opp Lawyer" formControlName="oppLawyer">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Child Case:
+
+                      </label>
+                      <div class="col-md-9">
+                        <ng2-completer formControlName="childCase" [inputClass]="['form-control']" [(ngModel)]="searchStr1" [datasource]="dataService1"
+                          [autofocus]="true" [minSearchLength]="0" [autoHighlight]="true" [fillHighlighted]="false"></ng2-completer>
+
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Last Hearing Date:
+
+                      </label>
+                      <div class="col-md-9">
+
+                        <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                          <input type="text" tabindex="14" id="LAST_HEARING_DATE" name="LAST_HEARING_DATE" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                            size="10" value="2017-12-04" formControlName="lastHearingDate">
+                          <div class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6" *ngIf="!isViewOnly">
+                      <label class="col-sm-3 col-form-label createUserLabel">Upload Document:
+
+                      </label>
+                      <div class="col-md-9">
+
+                        <input type="file" class="form-control" (change)="onFileChange($event)" [disabled]="isCompliance">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="col-sm-3 col-form-label createUserLabel">Completion Date:
+
+                      </label>
+                      <div class="col-md-9">
+
+                        <div class="input-group date" name="completionDate" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                          <input type="text" tabindex="15" id="completionDate" name="completionDate" readonly="" placeholder="yyyy-mm-dd" class="form-control"
+                            size="10" value="" formControlName="completionDate">
+                          <div class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <div class="col-md-4">
+                        <!-- <button type="submit" [disabled]="signupForm.invalid" class="btn green button-submit">
+              Submit
+              <i class="m-icon-swapright m-icon-white"></i>
+            </button> -->
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- </div> -->
+              <table id="caseFile" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <!-- <th>Select</th> -->
+
+
+
+                    <th>fileName</th>
+                    <th>fromDate</th>
+
+
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let items of caseFile;let i=index">
+                    <!-- <td>{{i+1}}</td> -->
+
+
+
+                    <td style="max-width: 253px;word-wrap: break-word;">
+                      <a href="#">{{items.fileName}}</a>
+                    </td>
+                    <td>{{items.fromDate}}</td>
+
+
+                    <td>
+                      <a title="delete" (click)="deleteCaseFile(items);">
+                        <i class="fa fa-trash"></i>
+                      </a>
+                      <a title="download" (click)="downloadCaseFile(items)">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="modal-footer modal-footer-addedit">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="back()">Back</button>
+                <button type="submit" *ngIf="isRunningCase" id='btnSubmit' class="btn btn-modal-addedit">Submit</button>
+              </div>
+            </form>
           </div>
-
+          <div class="tab-pane" [ngClass]="{'active':isCompliance}" id="tab_2">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Compliance</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of complianceGridData">
+                  <td>{{item.compliance.complianceName}}</td>
+                  <td>
+                    <a style="color:cornflowerblue" (click)="closeCase(item);">Verified & completed</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" class="btn btn-modal-addedit" data-dismiss="modal" (click)="back()">Back</button>
+            
+          </div>
         </div>
-
       </div>
-      <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
   </div>
-  <divid="content" />
+</div>

@@ -99,7 +99,7 @@ export class ForgotPasswordComponent implements OnInit {
     if (captchaResponse && captchaResponse.length > 0) {
       this.isCaptcha = false;
     }
-    console.log(`Resolved captcha with response ${captchaResponse}:`);
+    console.log(`Resolved captcha with response ${captchaResponse}`);
   }
 
 

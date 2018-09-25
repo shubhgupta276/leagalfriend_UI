@@ -13,20 +13,19 @@ import { DatePipe } from '@angular/common';
 import { SharedService } from '../../../shared/services/shared.service';
 import { parse } from 'querystring';
 import { CompleterService, CompleterData } from 'ng2-completer';
+import { ActivatedRoute, Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 declare var $;
 @Component({
   selector: 'app-edit-case',
   templateUrl: '../edit-case/edit-case.component.html',
   providers: [StorageService, AuthService, DatePipe]
-  // template:`<h1>test popup</h1>`
 })
 export class EditCaseComponent implements OnInit {
   myDocument: File;
   @Input() tableInputData = [];
-  @Input() Court: any = [];
-  @Input() isRunningCase: boolean;
-  @Output() addCaseSuccess: EventEmitter<any> = new EventEmitter();
+  isRunningCase: boolean = true;
+  arCourts: any[] = [];
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
@@ -40,19 +39,17 @@ export class EditCaseComponent implements OnInit {
   selectedStage: any;
   selectedEmployee: any;
   selectedCourtPlace: any;
-  // arrCompliance = [];
   arr: any = [];
   id: any = [];
-  caseId: any = [];
+  caseId: any;
+  isCompliance: boolean;
   complianceGridData = [];
   caseFile: any[] = [];
   public searchStr1: string;
   dataService: CompleterData;
   dataService1: CompleterData;
   isViewOnly = this._sharedService.isViewOnly();
-
   editCaseForm: FormGroup;
-
   ChildCases: any = [];
   Resource: Array<any> = [];
   Manager: any = [];
@@ -77,21 +74,22 @@ export class EditCaseComponent implements OnInit {
   parentcaseSelectedauto: Array<any> = [];
   childcaseSelectedauto: Array<any> = [];
   stageId: any;
-  isSubmitClick: boolean;
   childCaseText: string;
   childParentText: string;
-  constructor(private fb: FormBuilder, private apiGateWay: ApiGateway,
-    private authService: AuthService, private completerService: CompleterService,
+  constructor(private fb: FormBuilder, private apiGateWay: ApiGateway, private _router: Router,
+    private authService: AuthService, private completerService: CompleterService, private _activatdRoute: ActivatedRoute,
     private _storageService: StorageService, private _sharedService: SharedService, private datePipe: DatePipe) {
     this.createForm(null);
   }
 
   ngOnInit() {
-    this.isSubmitClick = false;
-    this.CourtPlace = this.Court;
+    this._activatdRoute.params.subscribe((param) => {
+      this.id = param.id;
+      this.isCompliance = JSON.parse(param.isCompliance);
+      this.isRunningCase = !this.isCompliance;
+    });
     const self = this;
     $(document).ready(function () {
-
       $('.input-group.date').datepicker().on('changeDate', function (ev) {
         const attrName = $(this).find('input').attr('formControlName');
         const attrValue = $(this).find('input').val();
@@ -102,16 +100,59 @@ export class EditCaseComponent implements OnInit {
     this.bindAllDropdowns();
   }
 
+  getCaseDetails() {
+    const reqData = { caseId: this.id };
+    this.authService.getCaseByCaseId(reqData).subscribe(
+      result => {
+        this.createForm(result);
+      },
+      err => {
+        console.log(err);
+      });
+
+    if (this.isCompliance) {
+      this.authService.getCaseCompliance(reqData).subscribe(
+        result => {
+          this.complianceGridData = result;
+          this.disabled = true;
+          // this.createFormforcompliance(result);
+        },
+        err => {
+          console.log(err);
+        });
+    }
+  }
+
   bindAllDropdowns() {
     this.bindStateDDL();
     this.getBranchDDL();
     this.bindRecourseDDL();
     this.getManagers();
     this.getEmployee();
-    //this.bindStageDDL();
     this.getRunningCase();
     this.BindCompliance();
     this.getCustomer();
+    this.GetAllCourt();
+    setTimeout(() => {
+      this.getCaseDetails();
+    }, 500);
+  }
+
+  GetAllCourt() {
+    const reqData = {
+      email: this._storageService.getUserEmail(),
+    };
+    this.arCourts = [];
+    const $this = this;
+    this.authService.getCourtDDL(reqData).subscribe(
+      result => {
+        result.courts.forEach(function (value) {
+          $this.arCourts.push({ id: value.id, text: value.courtName });
+        });
+      },
+      err => {
+        console.log(err);
+      });
   }
 
   private get disabledV(): string {
@@ -247,7 +288,7 @@ export class EditCaseComponent implements OnInit {
 
     this.courtSelected = [];
     if (c.courtId) {
-      const objCourt = this.Court.filter(x => x.id === c.courtId);
+      const objCourt = this.arCourts.filter(x => x.id === c.courtId);
       this.courtSelected.push({ id: c.courtId, text: objCourt[0].text });
       this.selectedCourt = this.courtSelected[0];
     }
@@ -286,28 +327,23 @@ export class EditCaseComponent implements OnInit {
 
     this.courtPlaceSelected = [];
     const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c.id);
-    this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
-    this.selectedCourtPlace = this.courtPlaceSelected[0];
+    if (objcourtPlaceSelected.length > 0) {
+      this.courtPlaceSelected.push({ id: c.id, text: objcourtPlaceSelected[0].text });
+      this.selectedCourtPlace = this.courtPlaceSelected[0];
+    }
     $('#editCaseModal').modal('show');
-  }
-
-  showCaseFromOtherPages(data) {
-    this.bindAllDropdowns();
-    setTimeout(() => {
-      this.bindStageDDL(data.recourseId, data);
-      this.createForm(data, true);
-    }, 2000);
   }
 
   createForm(c, isFromOtherPage = false) {
     if (c != null) {
-      // this.recourseId = c.recourseId;
-      // this.stageId = c.stageId;
       if (!isFromOtherPage) {
         this.bindStageDDL(c.recourseId, c);
       }
     }
     if (c != null) {
+      if (c.completionDate) {
+        this.isRunningCase = false;
+      }
       if (c.parentCaseId != null) {
 
         const objparentCase = this.ParentCases.filter(x => x.id == c.parentCaseId);
@@ -366,20 +402,14 @@ export class EditCaseComponent implements OnInit {
   }
 
 
-  //............................................for compliance........................
+  // ............................................for compliance........................
   bindDataOnEditForCompliance(c) {
 
     this._disabledV = '1';
     this.disabled = true;
-    var self = this;
+    const self = this;
     if (c != null) {
-      self.complianceGridData = [];
-      this.caseId = c[0].id;
-      c.forEach(function (value) {
-        self.complianceGridData.push(value.compliance);
-      });
-      // this.complianceGridData=[c[0].compliance];
-
+      self.complianceGridData = c;
       this.recourseSelected = [];
 
       const objFilter = this.Resource.filter(x => x.id === c[0].legalCase.recourseId);
@@ -388,7 +418,7 @@ export class EditCaseComponent implements OnInit {
 
 
       this.courtSelected = [];
-      const objCourt = this.Court.filter(x => x.id === c[0].legalCase.courtId);
+      const objCourt = this.arCourts.filter(x => x.id === c[0].legalCase.courtId);
       this.courtSelected.push({ id: c[0].legalCase.courtId, text: objCourt[0].text });
       this.selectedCourt = this.courtSelected[0];
 
@@ -420,42 +450,37 @@ export class EditCaseComponent implements OnInit {
       this.selectedManager = this.managerSelected[0];
       this.employeeSelected = [];
       const objemployeeSelected = this.Employee.filter(x => x.id === c[0].legalCase.employeeId);
-      this.employeeSelected.push({ id: c.employeeId, text: objemployeeSelected[0].text });
+      this.employeeSelected.push({ id: objemployeeSelected[0].id, text: objemployeeSelected[0].text });
       this.selectedEmployee = this.employeeSelected[0];
       this.courtPlaceSelected = [];
       const objcourtPlaceSelected = this.CourtPlace.filter(x => x.id === c[0].legalCase.id);
-      this.courtPlaceSelected.push({ id: c[0].legalCase.id, text: objcourtPlaceSelected[0].text });
-      this.selectedCourtPlace = this.courtPlaceSelected[0];
+      if (objcourtPlaceSelected.length > 0) {
+        this.courtPlaceSelected.push({ id: c[0].legalCase.id, text: objcourtPlaceSelected[0].text });
+        this.selectedCourtPlace = this.courtPlaceSelected[0];
+      }
     }
   }
   createFormforcompliance(c) {
-
-    var self = this;
-
     this.bindStageDDL(c[0].legalCase.recourseId, c);
-
-
     if (c != null) {
       if (c[0].legalCase.parentCaseId != null) {
-
         const objparentCase = this.ParentCases.filter(x => x.id == c[0].legalCase.parentCaseId);
         this.parentcaseSelectedauto.push({ id: c[0].legalCase.parentCaseId, text: objparentCase[0].text });
         this.childCaseText = this.parentcaseSelectedauto[0].text;
       }
-
       if (c[0].legalCase.childCase != null) {
         this.childcaseSelectedauto = [];
+        // tslint:disable-next-line:radix
         const objchild = this.ChildCases.filter(x => x.id === parseInt(c[0].legalCase.childCase));
+        // tslint:disable-next-line:radix
         this.childcaseSelectedauto.push({ id: parseInt(c[0].legalCase.childCase), text: objchild[0].text });
         this.childParentText = this.childcaseSelectedauto[0].text;
       }
     }
     this.editCaseForm.disable();
     this.editCaseForm = this.fb.group({
-
-
+      title: [c == null ? null : c[0].legalCase.title, Validators.required],
       caseId: [c == null ? null : c[0].legalCase.caseId, Validators.required],
-
       courtCaseId: [c == null ? null : c[0].legalCase.courtCaseId],
       recourse: [c == null ? null : c.recourseId],
       manager: [c == null ? null : c.managerId],
@@ -477,19 +502,12 @@ export class EditCaseComponent implements OnInit {
       lastHearingDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.lastHearingDate, 'yyyy-MM-dd')],
       uploadDocument: [],
       completionDate: [c == null ? null : this.datePipe.transform(c[0].legalCase.completionDate, 'yyyy-MM-dd')],
-      // if(localStorage)
-      // {
-
-      // }
-
     });
-    if (localStorage.userRole == 'CLIENT') {
+    if (localStorage.userRole === 'CLIENT') {
       this.editCaseForm.disable();
       this._disabledV = '1';
       this.disabled = true;
-      // $('#Compliance').hide();
       $('#btnSubmit').hide();
-
     }
   }
 
@@ -609,7 +627,6 @@ export class EditCaseComponent implements OnInit {
         if (c != null) {
 
           setTimeout(() => {
-
             if (c[0] != undefined) {
 
               this.bindDataOnEditForCompliance(c);
@@ -716,15 +733,8 @@ export class EditCaseComponent implements OnInit {
   }
 
   compliance() {
-
-    const c = confirm('Do you want to compliance this case?');
-
-    var status = document.getElementById('content');
-
-    if (c == true) {
-      var status = document.getElementById('content');
-
-      var reqData = {
+    if (confirm('Do you want to compliance this case?')) {
+      const reqData = {
         compliance: {
           recourse: {
             id: this.recourseSelected[0].id,
@@ -736,45 +746,44 @@ export class EditCaseComponent implements OnInit {
         },
 
         legalCase: {
-          id: this.caseId.substr(this.caseId.lastIndexOf('/') + 1),
+          id: this.id,
         },
-
-
       };
       this.authService.caseUpdateCompliance(reqData).subscribe(
-
         result => {
           console.log(result);
-          if (result.body.httpCode == 200) { //success
-
+          if (result.body.httpCode === 200) { // success
             $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
-            $(window.location.href = '/admin/case');
-          }
-          else {
-            var c = confirm('Case can not be moved under compliance as no compliance mapped against recourse code & stage of this case?');
-            var status = document.getElementById('content');
-
-            $('#Compliance').prop('checked', false);
-            $('#editCaseModal').modal('hide');
+            this.editCaseForm.disable();
+            this.isCompliance = true;
+            this.redirectSamePage();
+          } else {
+            alert('Case can not be moved under compliance as no compliance mapped against recourse code & stage of this case?');
           }
         },
         err => {
           console.log(err);
         });
+    } else {
+      $('#Compliance').prop('checked', false);
     }
-
   }
-  closeCase() {
 
-    const id = this.caseId;
+  redirectSamePage() {
+    this.getCaseDetails();
+    this.disabled = this.isCompliance;
+    this._router.navigate(['/admin/case/editcase/' + this.id + '/' + this.isCompliance]);
+  }
 
-    this.authService.closeCase(id).subscribe(
-
+  closeCase(data) {
+    this.authService.closeCase(data.id).subscribe(
       result => {
-
+        this.complianceGridData.splice(this.complianceGridData.findIndex(x => x.id === data.id), 1);
         $.toaster({ priority: 'success', title: 'Success', message: 'Complaince has been updated successfully' });
-        $('#editCaseModal').modal('hide');
-        $(window.location.href = '/admin/case');
+        if (this.complianceGridData.length === 0) {
+          this.isCompliance = false;
+          this.redirectSamePage();
+        }
       },
       err => {
         console.log(err);
@@ -789,7 +798,6 @@ export class EditCaseComponent implements OnInit {
     }
   }
   submitEditCaseUser(data) {
-    this.isSubmitClick = true;
     const objEditCase: FormData = new FormData();
     try {
       if (this.editCaseForm.get('remark').invalid) {
@@ -798,7 +806,7 @@ export class EditCaseComponent implements OnInit {
       }
       const x = {
         'id': this.id,
-        title: data.title,
+        'title': data.title,
         'caseId': this.caseId,
         'courtCaseId': data.courtCaseId,
         // tslint:disable-next-line:radix
@@ -848,12 +856,9 @@ export class EditCaseComponent implements OnInit {
     this.authService.updateEditCaseUser(objEditCase).subscribe(
       result => {
 
-        if (result.body.httpCode == 200) { //success
-          this.addCaseSuccess.emit();
-          this.BindCaseGridOnEdit(data);
+        if (result.body.httpCode === 200) { // success
           $.toaster({ priority: 'success', title: 'Success', message: 'Case Updated successfully' });
-          this.closeModal();
-          $('#editCaseModal').modal('hide');
+          this.back();
         }
       },
       err => {
@@ -861,34 +866,10 @@ export class EditCaseComponent implements OnInit {
       });
   }
 
-  BindCaseGridOnEdit(data) {
-
-    this.tableInputData.filter(
-      branch => {
-        if (branch.id == data.caseId) {
-          branch.caseId = data.caseId;
-          branch.childCase = data.childCase;
-
-          branch.court = data.court;
-
-          // branch.cityId = data.city;
-          // branch.cityName = this.getCityName(data.city);
-
-          branch.recourseCode = this.selectedRecourse.text;
-          branch.customerFirstName = this.selectedCustomerName.text;
-
-          branch.employee = this.selectedEmployee.text;
-
-
-          branch.nextHearingDate = data.nextHearingDate;
-
-          branch.branchName = this.selectedBranch.text;
-          branch.stageName = this.selectedStage.text;
-
-        }
-      });
-
+  back() {
+    this._router.navigate(['/admin/case']);
   }
+
   deleteCaseFile(item) {
     if (confirm('Are you sure you want to delete?')) {
       this.authService.deleteCaseById(item.id).subscribe(
@@ -911,12 +892,6 @@ export class EditCaseComponent implements OnInit {
         console.log(err);
       });
   }
-
-  closeModal() {
-    $('#closebtn1').click();
-  }
-
-
-
 }
+
 
