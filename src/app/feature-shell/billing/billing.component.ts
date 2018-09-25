@@ -10,6 +10,7 @@ import { ActionColumnModel } from '../../shared/models/data-table/action-column.
 import { DataTableComponent } from '../../shared/components/data-table/data-table.component';
 import { SharedService } from '../../shared/services/shared.service';
 import { StorageService } from '../../shared/services/storage.service';
+import { Subscription } from '../../../../node_modules/rxjs';
 declare var $;
 
 @Component({
@@ -44,6 +45,8 @@ export class BillingComponent implements OnInit {
     @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
     moduleName = 'Billing';
     searchTextbox = '';
+    branchSubscription: Subscription;
+    branchData: any;
     constructor(private _billingservice: BillingService,
         private _institutionService: InstitutionService,
         private _recourseService: RecourseService,
@@ -63,6 +66,13 @@ export class BillingComponent implements OnInit {
             this.clickInstitutional();
         }, 600);
         this.getAllRecourses();
+
+        this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
+            if (this.branchData) {
+                this.getBillingData();
+            }
+        });
+
         $($.document).ready(function () {
             $('#reservation').daterangepicker({
                 autoUpdateInput: false,
@@ -121,7 +131,8 @@ export class BillingComponent implements OnInit {
     }
     getBillingData() {
         this.tableInputData = [];
-        this._billingservice.getBilling(this.isInstitutionalTab).subscribe(
+        this.branchData = this._storageService.getBranchData();
+        this._billingservice.getBilling(this.branchData.id, this.isInstitutionalTab).subscribe(
             result => {
                 if (result.length > 0) {
                     for (let i = 0; i < result.length; i++) {
