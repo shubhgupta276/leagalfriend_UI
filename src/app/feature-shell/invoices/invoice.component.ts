@@ -9,6 +9,7 @@ import { ActionColumnModel } from '../../shared/models/data-table/action-column.
 import { SharedService } from '../../shared/services/shared.service';
 import { StorageService } from '../../shared/services/storage.service';
 import { DomSanitizer } from '../../../../node_modules/@angular/platform-browser';
+import { Subscription } from '../../../../node_modules/rxjs';
 
 
 declare var $;
@@ -37,6 +38,8 @@ export class InvoiceComponent implements OnInit {
   invoiceId: number;
   paymentReceiveDate: any;
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
+  branchSubscription: Subscription;
+  branchData: any;
   constructor(private fb: FormBuilder, private invoiceService: InvoicesService,
     private _storageService: StorageService, public sanitizer: DomSanitizer,
     private router: Router, private _sharedService: SharedService) {
@@ -48,6 +51,11 @@ export class InvoiceComponent implements OnInit {
     this.isPageLoad = true;
     this.clickInstitutional();
     this.setActionConfig();
+    this.branchSubscription = this._sharedService.getHeaderBranch().subscribe(data => {
+      if (this.branchData) {
+        this.getInvoice();
+      }
+    });
     $('#txtDateFilter').daterangepicker({
       autoUpdateInput: false,
       locale: {
@@ -217,7 +225,8 @@ export class InvoiceComponent implements OnInit {
 
   getInvoice() {
     this.tableInputData = [];
-    this.invoiceService.getInvoiceData(this.isInstitutionalTab).subscribe(
+    this.branchData = this._storageService.getBranchData();
+    this.invoiceService.getInvoiceData(this.branchData.id, this.isInstitutionalTab).subscribe(
       result => {
         result.forEach(item => {
           this.tableInputData.push({

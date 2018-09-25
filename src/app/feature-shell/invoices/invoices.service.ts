@@ -49,12 +49,12 @@ export class InvoicesService {
         return this.apiGateWay.post<any>(url, data);
     }
 
-    getInvoiceData(isInstitutional): Observable<any> {
+    getInvoiceData(branchId, isInstitutional): Observable<any> {
         let url = getInstitutionalInvoice;
         if (!isInstitutional) {
             url = getIndividualInvoice;
         }
-        const apiUrl = url + '?userId=' + this._storageService.getUserId();
+        const apiUrl = url + '?branchId=' + branchId + '&userId=' + this._storageService.getUserId();
         return this.apiGateWay.get<any>(apiUrl, null);
     }
 
@@ -101,35 +101,35 @@ export class InvoicesService {
         return this.apiGateWay.put<any>(apiUrl, null);
     }
 
-    getInvoicesAmount(year): Observable<any>{
+    getInvoicesAmount(year): Observable<any> {
         return this.apiGateWay.get('/invoice/amount?userId=' + this._storageService.getUserId()
-        +'&year='+year);
+            + '&year=' + year);
     }
 
-    getInvoicesInstAmount(year,month): Observable<any>{
-        if(month==null){
+    getInvoicesInstAmount(year, month): Observable<any> {
+        if (month == null) {
             return this.apiGateWay.get('/invoice/inst/amount?userId=' + this._storageService.getUserId()
-            +'&year='+year);
+                + '&year=' + year);
         }
-        else{
+        else {
             return this.apiGateWay.get('/invoice/inst/amount/month?userId=' + this._storageService.getUserId()
-            +'&year='+year+'&month='+month);
+                + '&year=' + year + '&month=' + month);
         }
     }
 
-    getInvoicesAmountByDate(start, end): Observable<any>{
+    getInvoicesAmountByDate(start, end): Observable<any> {
         return this.apiGateWay.get('/invoice/date/amount?userId=' + this._storageService.getUserId()
-        +'&start='+start+'&end='+end);
+            + '&start=' + start + '&end=' + end);
     }
 
-    getInvoicesInstAmountByDate(start, end, month): Observable<any>{
-        if(month==null){
+    getInvoicesInstAmountByDate(start, end, month): Observable<any> {
+        if (month == null) {
             return this.apiGateWay.get('/invoice/date/inst/amount?userId=' + this._storageService.getUserId()
-            +'&start='+start+'&end='+end);
+                + '&start=' + start + '&end=' + end);
         }
-        else{
+        else {
             return this.apiGateWay.get('/invoice/date/inst/amount/month?userId=' + this._storageService.getUserId()
-            +'&start='+start+'&end='+end+'&month='+month);
+                + '&start=' + start + '&end=' + end + '&month=' + month);
         }
     }
 }
