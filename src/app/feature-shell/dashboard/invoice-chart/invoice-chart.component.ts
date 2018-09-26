@@ -119,6 +119,48 @@ export class InvoicechartComponent implements OnInit {
     }
   }
 
+  initInvoiceChartByBranch(){
+     this._invoiceService.getInvoicesAmountByBranch(this.selectedBranch,this.selectedYear, this.endDate).subscribe(
+        result => {
+          this.data = result;
+          this.invoiceChart();
+        },
+        error => console.log(error)
+      );
+  }
+
+  initInvoiceInstChartByBranch(month){
+    if(month){
+      this._invoiceService.getInvoicesInstMonthByBranch(this.selectedBranch,this.selectedYear, this.endDate,month).subscribe(
+        result => {
+          this.invoiceInstitutionLabels = [];
+          this.invoiceInstitutionData = [];
+          for (let i = 0; i < result.length; i++) {
+            this.invoiceInstitutionLabels.push(result[i].x);
+            this.invoiceInstitutionData.push(result[i].y);
+          }
+          this.invoiceInstChart();
+        },
+        error => console.log(error)
+      );
+    }
+    else{
+      this._invoiceService.getInvoicesInstAmountByBranch(this.selectedBranch,this.selectedYear, this.endDate).subscribe(
+        result => {
+          this.invoiceInstitutionLabels = [];
+          this.invoiceInstitutionData = [];
+          for (let i = 0; i < result.length; i++) {
+            this.invoiceInstitutionLabels.push(result[i].x);
+            this.invoiceInstitutionData.push(result[i].y);
+          }
+          this.invoiceInstChart();
+        },
+        error => console.log(error)
+      );
+    }
+    
+  }
+
   initInvoiceInstChart(month) {
     if (this.endDate != '') {
 
@@ -233,13 +275,22 @@ export class InvoicechartComponent implements OnInit {
             var firstPoint = activePoints[0];
             var month = this.chart.scales['x-axis-0'].ticks[firstPoint._index];
             console.log(this.chart.scales['x-axis-0']);
-            if (month != null && !isUndefined(month)) {
+            // if (month != null && !isUndefined(month)) {
+            //   $this.initInvoiceInstChart(month);
+            // }
+            // else {
+            //   $this.initInvoiceInstChart(null);
+            // }
+
+            if (month != null && isUndefined($this.selectedBranch)) {
               $this.initInvoiceInstChart(month);
+            }
+            else if (month != null && !isUndefined($this.selectedBranch)) {
+              $this.initInvoiceInstChartByBranch(month);
             }
             else {
               $this.initInvoiceInstChart(null);
             }
-
           }
         }
       };
@@ -318,7 +369,8 @@ export class InvoicechartComponent implements OnInit {
 
   updateInvoiceChart() {
     if(this.selectedBranch){
-
+      this.initInvoiceChartByBranch();
+      this.initInvoiceInstChartByBranch(null);
     }
     else{
       this.initInvoiceChart();
