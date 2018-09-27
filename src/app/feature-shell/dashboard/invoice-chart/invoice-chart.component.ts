@@ -27,6 +27,7 @@ export class InvoicechartComponent implements OnInit {
   invoicepiechart;
   branches = [];
   selectedBranch;
+  isDataAvailable: boolean= true; 
   constructor(private _invoiceService: InvoicesService, private _branchService: BranchService) { }
 
   ngOnInit() {
@@ -98,12 +99,18 @@ export class InvoicechartComponent implements OnInit {
     return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
   }
   initInvoiceChart() {
-
+    this.isDataAvailable = true;   
     if (this.endDate != '') {
       this._invoiceService.getInvoicesAmountByDate(this.selectedYear, this.endDate).subscribe(
         result => {
           this.data = result;
-          this.invoiceChart();
+          if(this.data && this.data.length>0){
+            this.invoiceChart();      
+          }
+          else{
+            this.isDataAvailable = false;          
+          }
+       
         },
         error => console.log(error)
       );
@@ -112,7 +119,12 @@ export class InvoicechartComponent implements OnInit {
       this._invoiceService.getInvoicesAmount(this.selectedYear).subscribe(
         result => {
           this.data = result;
-          this.invoiceChart();
+          if(this.data && this.data.length>0){
+            this.invoiceChart();      
+          }
+          else{
+            this.isDataAvailable = false;          
+          }
         },
         error => console.log(error)
       );
@@ -120,10 +132,17 @@ export class InvoicechartComponent implements OnInit {
   }
 
   initInvoiceChartByBranch(){
+    this.isDataAvailable = true; 
      this._invoiceService.getInvoicesAmountByBranch(this.selectedBranch,this.selectedYear, this.endDate).subscribe(
         result => {
           this.data = result;
-          this.invoiceChart();
+          if(this.data && this.data.length>0){
+            this.invoiceChart();      
+          }
+          else{
+            this.isDataAvailable = false;          
+          }
+         // this.invoiceChart();
         },
         error => console.log(error)
       );
@@ -219,6 +238,7 @@ export class InvoicechartComponent implements OnInit {
               formatter: function (value, context) {
                 if (value.y >= 1000) {
                   value.y = value.y / 1000;
+                  value.y = value.y.toFixed(3);
                   return 'Rs ' + value.y + 'k';
                 }
                 return 'Rs ' + value.y;
@@ -261,6 +281,7 @@ export class InvoicechartComponent implements OnInit {
                 callback: function (value, index, values) {
                   if (value >= 1000) {
                     value = value / 1000;
+                    value = value.toFixed(3);
                     return 'Rs ' + value + 'k';
                   }
                   return 'Rs ' + value;

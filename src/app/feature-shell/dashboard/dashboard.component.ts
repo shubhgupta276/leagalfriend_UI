@@ -79,6 +79,13 @@ export class DashboardComponent implements OnInit {
   minYear = 2015;
   branchwiseStart: string='';
   branchwiseEnd: string='';
+
+  isBranchChartData: boolean= true;
+  isCustomerChartData: boolean = true; 
+  isCaseChartData: boolean = true; 
+  isDailyChartData: boolean = true; 
+  isBillingChartData: boolean = true;
+
   ngOnInit() {
     try {
       var $this = this;
@@ -111,7 +118,14 @@ export class DashboardComponent implements OnInit {
           this._billingService.getBillingAmount(client, 'individual').subscribe(
             data => {
               this.individualBilling = data;
-              this.BillingChart(null, null);
+              if(this.institutionalBilling && this.institutionalBilling.length>0 || 
+                this.individualBilling && this.individualBilling.length>0){
+                  this.BillingChart(null, null);
+              }
+              else{
+                this.isDailyChartData = false;
+              }
+              // this.BillingChart(null, null);
             }
           );
 
@@ -212,12 +226,13 @@ export class DashboardComponent implements OnInit {
   }
 
   initCustomerChart() {
-
+    this.isCustomerChartData = true; 
 
     this.userService.getAllCustomerCount(this.clientId, 'month', null, null).subscribe(
       data => {
         this.monthTrialCustomer = data;
-        this.CustomerChart(null, null);
+        this.CustomerChart(null,null);
+      
       },
       error => console.log(error)
     );
@@ -225,6 +240,7 @@ export class DashboardComponent implements OnInit {
     this.userService.getAllCustomerCount(this.clientId, 'week', null, null).subscribe(
       data => {
         this.weekTrialCustomer = data;
+       // this.CustomerChart(null,null);
       },
       error => console.log(error)
     );
@@ -247,20 +263,20 @@ export class DashboardComponent implements OnInit {
         error => console.log(error)
       );
 
-      this.userService.getDailyLogin('week', client, null, null).subscribe(
-        data => {
-          this.dailyLoginWeekly = data;
-        },
-        error => console.log(error)
-      );
+      // this.userService.getDailyLogin('week', client, null, null).subscribe(
+      //   data => {
+      //     this.dailyLoginWeekly = data;
+      //   },
+      //   error => console.log(error)
+      // );
       
 
-      this.userService.getDailyLoginUser('week', client, null, null).subscribe(
-        data => {
-          this.dailyUserWeekly = data;
-        },
-        error => console.log(error)
-      );
+      // this.userService.getDailyLoginUser('week', client, null, null).subscribe(
+      //   data => {
+      //     this.dailyUserWeekly = data;
+      //   },
+      //   error => console.log(error)
+      // );
     } catch (error) {
       console.log(error);
     }
@@ -328,6 +344,7 @@ export class DashboardComponent implements OnInit {
   DailyChart(start, end) {
 
     try {
+      this.isDailyChartData = true;
       var $this = this;
       var data;
       var data1;
@@ -343,7 +360,13 @@ export class DashboardComponent implements OnInit {
             this.userService.getDailyLoginUser('date', this.clientId, start, end).subscribe(
               result => {
                 data1 = result;
-                this.createDailyChart(data, data1, weeklyLabel);
+                if(data1 && data1.length>0 || data && data.length>0){
+                  this.createDailyChart(data, data1, weeklyLabel);
+                }
+                else{
+                  this.isDailyChartData = false;
+                }
+                //this.createDailyChart(data, data1, weeklyLabel);
               },
               error => console.log(error)
             );
@@ -359,13 +382,54 @@ export class DashboardComponent implements OnInit {
         data1 = this.dailyUserWeekly;
         weeklyLabel =
           ['1-7', '8-14', '15-21', '22-28', '29-35', '36-42', '43-49', '50-52'];
-        this.createDailyChart(data, data1, weeklyLabel);
+
+          this.userService.getDailyLogin('week', this.clientId, null, null).subscribe(
+            data => {
+              this.dailyLoginWeekly = data;
+              this.userService.getDailyLoginUser('week',  this.clientId, null, null).subscribe(
+                data => {
+                  this.dailyUserWeekly = data;
+                  if(this.dailyLoginWeekly && this.dailyLoginWeekly.length>0 || this.dailyUserWeekly && this.dailyUserWeekly.length>0){
+                    this.createDailyChart(data, data1, weeklyLabel);
+                  }
+                  else{
+                    this.isDailyChartData = false;
+                  }
+                },
+                error => console.log(error)
+              );
+            },
+            error => console.log(error)
+          );
+          
+    
+        
+       // this.createDailyChart(data, data1, weeklyLabel);
       }
       else {
         this.changeColor('dailyFilterMonth', 'dailyFilterWeek', 'dailyFilterDate');
         data = this.dailyLoginData;
         data1 = this.dailyUserLogin;
-        this.createDailyChart(data, data1, weeklyLabel);
+      //  this.createDailyChart(data, data1, weeklyLabel);
+      this.userService.getDailyLogin('month', this.clientId, null, null).subscribe(
+        data => {
+          this.dailyLoginData = data;
+          this.userService.getDailyLoginUser('month', this.clientId, null, null).subscribe(
+            data => {
+              this.dailyUserLogin = data;
+              if(this.dailyLoginData && this.dailyLoginData.length>0 || this.dailyUserLogin && this.dailyUserLogin.length>0){
+                this.createDailyChart(data, data1, weeklyLabel);
+              }
+              else{
+                this.isDailyChartData = false;
+              }
+            },
+            error => console.log(error)
+          );
+        },
+        error => console.log(error)
+      );
+       
       }
     } catch (error) {
       console.log(error);
@@ -456,6 +520,7 @@ export class DashboardComponent implements OnInit {
   }
   CustomerChart(start, end) {
     try {
+      this.isCustomerChartData = true;   
       var trialData;
       var premiumData;
       var weeklyLabel;
@@ -466,7 +531,13 @@ export class DashboardComponent implements OnInit {
         this.userService.getAllCustomerCount(this.clientId, 'date', start, end).subscribe(
           result => {
             trialData = result;
-            this.createCustomerChart(trialData, weeklyLabel);
+            if(trialData && trialData.length>0){
+              this.createCustomerChart(trialData, weeklyLabel);
+            }
+            else{
+              this.isCustomerChartData = false;          
+            }
+            
           }
         );
 
@@ -474,17 +545,42 @@ export class DashboardComponent implements OnInit {
       }
       else if (this.graphMode.customerMode == this.mode.Weekly) {
         this.changeColor('customerFilterWeek', 'customerFilterMonth', 'customerFilterDate');
-        trialData = this.weekTrialCustomer;
+        //trialData = this.weekTrialCustomer;
         weeklyLabel =
           ['1-7', '8-14', '15-21', '22-28', '29-35', '36-42', '43-49', '50-52'];
-        this.createCustomerChart(trialData, weeklyLabel);
+          this.userService.getAllCustomerCount(this.clientId, 'week', null, null).subscribe(
+            data => {
+              this.weekTrialCustomer = data;
+              if(this.weekTrialCustomer  && this.weekTrialCustomer .length>0){
+                this.createCustomerChart(this.weekTrialCustomer, weeklyLabel);
+              }
+              else{
+                this.isCustomerChartData = false;          
+              }
+             // this.CustomerChart(null,null);
+            },
+            error => console.log(error)
+          );
+         
+  
       }
       else {
         this.changeColor('customerFilterMonth', 'customerFilterDate', 'customerFilterWeek');
-        trialData = this.monthTrialCustomer;
-        this.createCustomerChart(trialData, weeklyLabel);
-
-      }
+        //trialData = this.monthTrialCustomer;
+        this.userService.getAllCustomerCount(this.clientId, 'month', null, null).subscribe(
+          data => {
+            this.monthTrialCustomer = data;
+            if(this.monthTrialCustomer && this.monthTrialCustomer.length>0){
+              this.createCustomerChart(this.monthTrialCustomer, weeklyLabel);
+            }
+            else{
+              this.isCustomerChartData = false;          
+            }
+          
+          },
+          error => console.log(error)
+        );
+          }
     } catch (error) {
       console.log(error);
     }
@@ -556,6 +652,7 @@ export class DashboardComponent implements OnInit {
 
   CaseChart(start, end) {
     try {
+      this.isCaseChartData = true;    
       var $this = this;
       var data1;
       var data2;
@@ -574,7 +671,13 @@ export class DashboardComponent implements OnInit {
                 this._caseService.getAllTypeCases('date', this.clientId, start, end).subscribe(
                   result => {
                     data3 = result;
-                    this.createCaseChart(data1, data2, data3, weeklyLabel);
+                  //  this.createCaseChart(data1, data2, data3, weeklyLabel);
+                    if(data3 && data3.length>0|| data1 &&data1.length>0){
+                      this.createCaseChart(data1, data2, data3, weeklyLabel);
+                    }
+                    else{
+                      this.isCaseChartData = false;          
+                    }
                   }
                 );
               }
@@ -594,7 +697,13 @@ export class DashboardComponent implements OnInit {
             this._caseService.getAllTypeCases('week', this.clientId, null, null).subscribe(
               result => {
                 data3 = result;
-                this.createCaseChart(data1, data2, data3, weeklyLabel);
+               // this.createCaseChart(data1, data2, data3, weeklyLabel);
+                if(data3 && data3.length>0|| data1 &&data1.length>0){
+                  this.createCaseChart(data1, data2, data3, weeklyLabel);
+                }
+                else{
+                  this.isCaseChartData = false;          
+                }
               }
             );
           }
@@ -610,7 +719,13 @@ export class DashboardComponent implements OnInit {
             this._caseService.getAllTypeCases('month', this.clientId, null, null).subscribe(
               result => {
                 data3 = result;
-                this.createCaseChart(data1, data2, data3, weeklyLabel);
+                //this.createCaseChart(data1, data2, data3, weeklyLabel);
+                if(data3 && data3.length>0 || data1 &&data1.length>0 ){
+                  this.createCaseChart(data1, data2, data3, weeklyLabel);
+                }
+                else{
+                  this.isCaseChartData = false;          
+                }
               }
             );
           }
@@ -773,6 +888,7 @@ export class DashboardComponent implements OnInit {
               formatter: function (value, context) {
                 if (value.y >= 1000) {
                   value.y = value.y / 1000;
+                  value.y = value.y.toFixed(3);
                   return value.y + 'k';
                 }
                 return value.y;
@@ -814,6 +930,7 @@ export class DashboardComponent implements OnInit {
                 callback: function (value, index, values) {
                   if (value >= 1000) {
                     value = value / 1000;
+                    value = value.toFixed(3);
                     return 'Rs ' + value + 'k';
                   }
                   return 'Rs ' + value;
@@ -938,6 +1055,10 @@ export class DashboardComponent implements OnInit {
                 weight: 'bold'
               },
               formatter: function (value, context) {
+                if (value.y >= 1000) {
+                  value.y = value.y / 1000;
+                  return value.y + 'k';
+                }
                 return value.y;
               }
             }
@@ -946,7 +1067,7 @@ export class DashboardComponent implements OnInit {
             label: "Individual Billing",
             data: data1,
             fill: false,
-            borderColor: '#a0d0e0',
+            borderColor: '#af42ae',
             datalabels: {
               align: 'end',
               anchor: 'end',
@@ -956,7 +1077,11 @@ export class DashboardComponent implements OnInit {
               font: {
                 weight: 'bold'
               },
-              formatter: function (value, context) {
+                formatter: function (value, context) {
+                if (value.y >= 1000) {
+                  value.y = value.y / 1000;
+                  return value.y + 'k';
+                }
                 return value.y;
               }
             }
@@ -989,6 +1114,19 @@ export class DashboardComponent implements OnInit {
                 minRotation: 45
               }
             }],
+            yAxes: [{
+              ticks: {
+                // Create scientific notation labels
+                callback: function (value, index, values) {
+                  if (value >= 1000) {
+                    value = value / 1000;
+                    return 'Rs ' + value + 'k';
+                  }
+                  return 'Rs ' + value;
+
+                }
+              }
+            }]
           },
         }
       };
@@ -1101,7 +1239,13 @@ export class DashboardComponent implements OnInit {
       this._billingService.getInstitutionBilling(this.clientId, this.selectedInstitution).subscribe(
         result => {
           this.institutionalBilling = result;
-          this.BillingChart(null, null);
+          if(this.institutionalBilling && this.institutionalBilling.length>0 || 
+            this.individualBilling && this.individualBilling.length>0){
+              this.BillingChart(null, null);
+          }
+          else{
+            this.isDailyChartData = false;
+          }
         }
       );
       console.log(this.institutionalBilling);
@@ -1110,7 +1254,13 @@ export class DashboardComponent implements OnInit {
       this._billingService.getBillingAmount(this.clientId, 'institutional').subscribe(
         data => {
           this.institutionalBilling = data;
-          this.BillingChart(null, null);
+          if(this.institutionalBilling && this.institutionalBilling.length>0 || 
+            this.individualBilling && this.individualBilling.length>0){
+              this.BillingChart(null, null);
+          }
+          else{
+            this.isDailyChartData = false;
+          }
         }
       );
     }
@@ -1128,25 +1278,35 @@ export class DashboardComponent implements OnInit {
   }
 
   initBranchChart() {
+    this.isBranchChartData =true;
+
     this._billingService.getBranchBilling(this.clientId, this.selectedYear,this.branchwiseEnd).subscribe(
       result => {
         this.lineChartDataValues = result;
-        // for (let i = 0; i < this.lineChartDataValues.length; i++) {
-        //   this.datavalues.push(this.lineChartDataValues[i].y);
-        //   this.lineChartLabels.push(this.lineChartDataValues[i].x);
-        //   this.lineChartData[0].data.push(this.lineChartDataValues[i].y);
-        // }
-        this.BranchChart();
+        if(this.lineChartDataValues && this.lineChartDataValues.length>0){
+          this.BranchChart();       
+        }
+        else{
+          this.isBranchChartData = false;          
+        }
+       
       }
     );
   }
 
   initSelectedBranchChart() {
+    this.isBranchChartData = true; 
     this._billingService.getSelectedBranchBilling(this.clientId, this.selectedBranch,
       this.selectedYear,this.branchwiseEnd).subscribe(
         result => {
           this.lineChartDataValues = result;
-          this.BranchChart();
+          if(this.lineChartDataValues && this.lineChartDataValues.length>0){
+            this.BranchChart();       
+          }
+          else{
+            this.isBranchChartData = false;          
+          }
+          //this.BranchChart();
         }
       );
   }

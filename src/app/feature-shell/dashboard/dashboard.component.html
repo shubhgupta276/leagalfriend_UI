@@ -63,7 +63,9 @@
             </div>
         </div>
         <div class="box-body">
+            
           <div class="col-md-6">
+              
               <mat-form-field style="float:right">
                   <mat-select placeholder="All Branches" (selectionChange)="updateBranchChart()" [(ngModel)]="selectedBranch">
                     <mat-option [value]="All">All Branches</mat-option>
@@ -72,11 +74,20 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-            <canvas id="branch-chart" style="height: 450px; width: 950px;"></canvas>
+                <ng-container *ngIf="isBranchChartData">
+                    <canvas id="branch-chart" style="height: 450px; width: 950px;"></canvas>
+                </ng-container>
+            
             </div>
             <div class="col-md-6">
+                <ng-container *ngIf="isBranchChartData">
             <canvas id="branch-institution-chart"></canvas>
+          </ng-container>
           </div>
+          
+          <ng-container *ngIf="!(isBranchChartData)">
+              <h2 style="text-align: center; height: 175px; margin-top:170px">No Data to Display</h2>
+          </ng-container>
           </div>
 
         </div>  
@@ -108,7 +119,12 @@
               </div>
             </div>
             <div class="box-body">
-              <canvas id="daily-chart" style="position: relative; height: 300px;"></canvas>
+              <ng-container *ngIf="isDailyChartData">
+                  <canvas id="daily-chart" style="position: relative; height: 300px;"></canvas>
+                </ng-container>
+                <ng-container *ngIf="!(isDailyChartData)">
+                    <h2 style="text-align: center; height: 150px; margin-top:150px">No Data to Display</h2>
+                </ng-container>
             </div>
 
           </div>
@@ -138,7 +154,12 @@
               </div>
             </div>
             <div class="box-body">
+              <ng-container *ngIf="isCustomerChartData">
               <canvas id="customer-chart" style="position: relative; height: 300px;"></canvas>
+            </ng-container>
+            <ng-container *ngIf="!(isCustomerChartData)">
+                <h2 style="text-align: center; height: 150px; margin-top:150px">No Data to Display</h2>
+            </ng-container>
             </div>
 
           </div>
@@ -208,7 +229,13 @@
             </div>
             <div class="box-body">
               <!-- <div class="chart tab-pane" id="case-chart" style="position: relative; height: 300px;"></div> -->
-              <canvas id="case-chart" style="position: relative; height: 300px;"></canvas>
+              <!-- <canvas id="case-chart" style="position: relative; height: 300px;"></canvas> -->
+              <ng-container *ngIf="isCaseChartData">
+                  <canvas id="case-chart" style="position: relative; height: 300px;"></canvas>
+                </ng-container>
+                <ng-container *ngIf="!(isCaseChartData)">
+                    <h2 style="text-align: center; height: 150px; margin-top:150px">No Data to Display</h2>
+                </ng-container>
             </div>
 
           </div>
@@ -228,7 +255,13 @@
             </div>
             <div class="box-body">
               <!-- <div class="chart tab-pane" id="customer-chart" style="position: relative; height: 300px;"></div> -->
-              <canvas id="billing-chart" style="position: relative; height: 300px;"></canvas>
+              <ng-container *ngIf="isBillingChartData">
+                  <canvas id="billing-chart" style="position: relative; height: 300px;"></canvas>
+                </ng-container>
+                <ng-container *ngIf="!(isBillingChartData)">
+                    <h2 style="text-align: center; height: 150px; margin-top:150px">No Data to Display</h2>
+                </ng-container>
+  
             </div>
             <div class="box-footer clearfix" style="text-align:center">
               <a routerLink="/admin/billing" class="btn btn-sm btn-default btn-flat">View More</a>
