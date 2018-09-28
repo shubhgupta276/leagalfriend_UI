@@ -132,4 +132,19 @@ export class InvoicesService {
                 + '&start=' + start + '&end=' + end + '&month=' + month);
         }
     }
+
+    getInvoicesAmountByBranch(branch,start, end): Observable<any>{
+        return this.apiGateWay.get('invoice/selectedbranch/amount/?userId='+this._storageService.getUserId()+'&branch='+branch
+        +'&start='+start+'&end='+end);
+    }
+
+    getInvoicesInstAmountByBranch(branch,start, end): Observable<any>{
+        return this.apiGateWay.get('invoice/selectedbranch/inst/amount/?userId='+this._storageService.getUserId()+'&branch='+branch
+        +'&start='+start+'&end='+end);
+    }
+
+    getInvoicesInstMonthByBranch(branch,start, end,month): Observable<any>{
+        return this.apiGateWay.get('invoice/selectedbranch/inst/month/amount/?userId='+this._storageService.getUserId()+'&branch='+branch
+        +'&start='+start+'&end='+end+'&month='+month);
+    }
 }
