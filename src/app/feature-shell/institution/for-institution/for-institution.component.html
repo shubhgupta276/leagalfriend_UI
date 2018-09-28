@@ -2,8 +2,8 @@
   <!-- Content Header (Page header) -->
   <!-- Main content -->
   <div class="page-heading">
-    <span *ngIf="!_institutionService.isAgainstInstitution">Institutional Clients</span>
-    <span *ngIf="_institutionService.isAgainstInstitution">For Against</span>
+    <span *ngIf="!isAgainstInstitution">Institutional Clients</span>
+    <span *ngIf="isAgainstInstitution">For Against</span>
     
   </div>
   <section class="content">
@@ -49,7 +49,7 @@
 
             <app-data-table [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
               (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow" [actionColumnConfig]="actionColumnConfig"
-              [showSearchFilter]="showSearchFilter" (actionBtnClick)="onActionBtnClick($event)" (rowClickShowCalendar)="onShowCalendar($event)">
+              (actionBtnClick)="onActionBtnClick($event)" (rowClickShowCalendar)="onShowCalendar($event)">
             </app-data-table>
 
           </div>

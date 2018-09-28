@@ -12,7 +12,7 @@
                         <div class="col-sm-8">
                             <div class="row case-table-toolbar">
                                 <ul class="nav nav-tabs">
-                                    <li *ngIf="!hideInstitutional" [ngClass]="{'active':isInstitutionalTab==true}">
+                                    <li [ngClass]="{'active':isInstitutionalTab==true}">
                                         <a href="#tab_Institutional" (click)="clickInstitutional()" data-toggle="tab">Institutional</a>
                                     </li>
                                     <li [ngClass]="{'active':isInstitutionalTab==false}">
@@ -30,7 +30,7 @@
                             <input type="text" id="txtSearch" class="input-sm custom-search" placeholder="Search..." [(ngModel)]="searchTextbox" (keyup)="searchFilter($event.target.value)">
                         </div>
                         <app-data-table #invoiceTable [tableData]="tableInputData" [tableColumns]="columns" (rowClick)="onRowClick($event)" (rowDoubleClick)="onRowDoubleClick($event)"
-                            (selectedRows)="onRowSelect($event)" [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow"
+                            [showRowSelect]="rowSelect" [hoverTableRow]="hoverTableRow"
                             [actionColumnConfig]="actionColumnConfig" (actionBtnClick)="onActionBtnClick($event)" [showSearchFilter]="showSearchFilter"
                             [moduleName]="moduleName">
                         </app-data-table>

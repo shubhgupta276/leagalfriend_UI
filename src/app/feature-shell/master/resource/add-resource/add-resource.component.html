@@ -5,7 +5,7 @@
           <button type="button" id="closebtn" class="close close-addedit" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Add Recource</h4>
+          <h4 class="modal-title">Add Recource Request</h4>
         </div>
         <div style="width:120px;height:10%;background-color:black;"></div>
         <div class="modal-body modal-body-adedit" style="margin-top: -15px;">
@@ -19,7 +19,7 @@
                   <div class="form-body">
                     <div class="tab-content">
                       <div class="tab-pane active">
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label class="col-sm-3 col-form-label createUserLabel">Recourse Code:
                               <em class="astrick">*</em>
                             </label>
@@ -36,7 +36,7 @@
                                 <span>Recourse Code already exists.</span>
                               </small>
                             </div>
-                          </div>
+                          </div> -->
                           <div class="form-group row">
                               <label class="col-sm-3 col-form-label createUserLabel">Recourse Name:
                                 <em class="astrick">*</em>
@@ -51,12 +51,12 @@
                               </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label createUserLabel">Recourse Desc:
+                                <label class="col-sm-3 col-form-label createUserLabel">Description:
                                   <em class="astrick">*</em>
                                 </label>
                                 <div class="col-md-9" [class.has-error]="addResourceMasterForm.get('recourseDesc').invalid &&  addResourceMasterForm.get('recourseDesc').touched">
                                   <!-- <input class="form-control" placeholder="Resource Desc" formControlName="recourseDesc"> -->
-                                  <textarea type="text" class="form-control" placeholder="Recourse Desc" formControlName="recourseDesc"></textarea>
+                                  <textarea type="text" class="form-control" placeholder="Description" formControlName="recourseDesc"></textarea>
                                 </div>
                                 <div class="col-sm-9 valodation-padding" *ngIf="addResourceMasterForm.get('recourseDesc').invalid &&  addResourceMasterForm.get('recourseDesc').touched">
                                   <small class="text-danger">

@@ -1,7 +1,7 @@
 <div class="register-logo">
   <img src="/assets/dist/img/logo.png" alt="logo" style="width: 40px;">
   <span style="vertical-align: middle;">
-      <b>Legal</b>Friend</span>
+    <b>Legal</b>Friend</span>
 </div>
 
 <div class="register-box-body">
@@ -113,41 +113,40 @@
           </option>
         </select>
       </div> -->
-      
+
       <div class="form-group has-feedback">
-          <select class="form-control" formControlName="subscription">
-            <option *ngFor="let option of Subscription" [ngValue]="option.id">
-              {{ option.name }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group has-feedback">
+        <select class="form-control" formControlName="subscription" [(ngModel)]="selectedSubscription"> 
+          <option *ngFor="let option of Subscription" [ngValue]="option.id" >
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
         <re-captcha (resolved)="resolved($event)" siteKey="6LdJO3EUAAAAANfmPnY0q5-dH4R6VEk_3LADe-kG"></re-captcha>
-        </div>
+      </div>
       <div class="row">
-          
+
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox" formControlName="termsAndCondition"> I agree to the
-              <a href="#">terms</a>
+              <input type="checkbox" formControlName="termsAndCondition"> I agree to the terms
             </label>
           </div>
         </div>
         <!-- <div class="col-xs-4"> -->
-          <button type="submit" [disabled]="isCaptcha || signupForm.invalid" class="btn btn-signup">Signup</button>
+        <button type="submit" [disabled]="isCaptcha || signupForm.invalid" class="btn btn-signup">Signup</button>
         <!-- </div> -->
       </div>
     </form>
-  
+
     <!-- <div [ngBusy]="{busy: busy, message: 'Loading...', backdrop: false, delay: 1000, minDuration: 600}"></div> -->
     <div class="my-container">
-        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-       
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
     </div>
 
-   
-    
+
+
     <a routerLink="/login" class="text-center">I already have a membership</a>
   </ng-container>
   <!-- end form container -->

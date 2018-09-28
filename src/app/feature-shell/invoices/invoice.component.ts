@@ -275,11 +275,11 @@ export class InvoiceComponent implements OnInit {
     });
   }
 
-  onRowClick() {
+  onRowClick(data) {
 
   }
 
-  onRowDoubleClick() {
+  onRowDoubleClick(data) {
 
   }
 }
