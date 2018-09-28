@@ -21,7 +21,7 @@ export class AddResourceMasterComponent implements OnInit {
 
   AddResourceMaster() {
     this.addResourceMasterForm = this.fb.group({
-      recourseCode: [null, Validators.required],
+      // recourseCode: [null, Validators.required],
       recourseName: [null, Validators.required],
       recourseDesc: [null, Validators.required]
     });
@@ -34,7 +34,7 @@ export class AddResourceMasterComponent implements OnInit {
   submitAddResourceMaster(data: Recourse) {
 
     const reqData = {
-      recourseCode: data.recourseCode,
+      // recourseCode: data.recourseCode,
       recourseName: data.recourseName,
       recourseDesc: data.recourseDesc,
       userId: this._storageService.getUserId()

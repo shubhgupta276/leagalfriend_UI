@@ -67,7 +67,7 @@
                   </label>
                   <div class="col-md-9">
 
-                    <ng-select [allowClear]="true" [items]="Stage" [attr.disabled]="disabled" (data)="refreshValue($event)" id="ddlR" (selected)="selected($event)"
+                    <ng-select [allowClear]="true" [items]="Stage" (data)="refreshValue($event)" id="ddlR" (selected)="selected($event)"
                       (removed)="removed($event)" (typed)="typed($event)" placeholder="No stage selected" formControlName="stage">
                     </ng-select>
                   </div>

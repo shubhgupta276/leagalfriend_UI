@@ -18,7 +18,7 @@ declare var $;
 @Component({
   selector: 'app-add-stage',
   templateUrl: '../add-stage/add-stage.component.html'
-  //template:`<h1>test popup</h1>`
+  // template:`<h1>test popup</h1>`
 })
 export class AddStageMasterComponent implements OnInit {
   @Input() arStage: Stage[];
@@ -31,9 +31,10 @@ export class AddStageMasterComponent implements OnInit {
     this.addStageMasterForm = this.fb.group({
       recourseName: [""],
       recourse: ["", Validators.required],
-      stageCode: [null, Validators.required],
+      // stageCode: [null, Validators.required],
+      stageDesc: [null, Validators.required],
       stageName: [null, Validators.required],
-      status: ["", Validators.required]
+      // status: ["", Validators.required]
     });
   }
 
@@ -44,18 +45,18 @@ export class AddStageMasterComponent implements OnInit {
   submitAddStageMaster(data) {
     const reqData = {
       recourse: { id: data.recourse.id },
-      stageCode: data.stageCode,
+      // stageCode: data.stageCode,
       stageName: data.stageName,
-      statusId: data.status,
+      stageDesc: data.stageDesc,
+      // statusId: data.status,
       userId: this._storageService.getUserId()
     };
 
     this._stageService.addStage(reqData).subscribe(
       result => {
         var _result = result.body;
-
         if (_result.httpCode == 200) { //success
-
+          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
           this.arStage.push(
             {
               recourseId: data.recourse.id,
@@ -67,7 +68,7 @@ export class AddStageMasterComponent implements OnInit {
             }
           );
           this.dataTableComponent.ngOnInit();
-          $.toaster({ priority: 'success', title: 'Success', message: _result.successMessage });
+
           this.AddStageMaster();
           this.closeModal();
           this.subscriberFields();
@@ -89,14 +90,14 @@ export class AddStageMasterComponent implements OnInit {
   }
 
   subscriberFields() {
-    this.addStageMasterForm.get('stageCode').valueChanges.subscribe(
-      (e) => {
-        if (this.arStage.filter(x => x.stageCode.toUpperCase() == e.toUpperCase()).length > 0)
-          this.isStagecodeAlreadyExists = true;
-        else {
-          this.isStagecodeAlreadyExists = false;
-        }
-      }
-    );
+    // this.addStageMasterForm.get('stageCode').valueChanges.subscribe(
+    //   (e) => {
+    //     if (this.arStage.filter(x => x.stageCode.toUpperCase() == e.toUpperCase()).length > 0)
+    //       this.isStagecodeAlreadyExists = true;
+    //     else {
+    //       this.isStagecodeAlreadyExists = false;
+    //     }
+    //   }
+    // );
   }
 }

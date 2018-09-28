@@ -41,7 +41,7 @@
       <div class="col-md-6">
         <mat-form-field style="float:right">
           <mat-select placeholder="All Branches" (selectionChange)="updateInvoiceChart()" [(ngModel)]="selectedBranch">
-            <mat-option [value]="All">All Branches</mat-option>
+            <mat-option [value]="'All'">All Branches</mat-option>
             <mat-option *ngFor="let branch of branches" [value]="branch">
               {{branch}}
             </mat-option>

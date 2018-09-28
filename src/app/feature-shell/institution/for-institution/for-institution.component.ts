@@ -63,6 +63,7 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
     queryRecourseId: any;
     isViewOnlyForUser: boolean = false;
     @ViewChild(HistoryForInstitutionComponent) historyChild: HistoryForInstitutionComponent;
+    isAgainstInstitution: boolean;
     constructor(private fb: FormBuilder,
         private _router: Router,
         private _institutionService: InstitutionService,
@@ -81,6 +82,7 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
         } else {
             _institutionService.isAgainstInstitution = false;
         }
+        this.isAgainstInstitution = _institutionService.isAgainstInstitution;
     }
 
     ngOnInit() {
@@ -623,7 +625,7 @@ export class ForInstitutionComponent implements OnInit, OnDestroy {
             this._institutionService.exportCaseFiles(data).subscribe(
                 (result) => {
                     const blob = new Blob([result]);
-                    saveAs(blob,'casefiles.zip');
+                    saveAs(blob, 'casefiles.zip');
                 },
                 err => {
                     console.log(err);
